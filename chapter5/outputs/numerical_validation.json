@@ -1,0 +1,31 @@
+{
+  "reference_run_rtol": 1e-05,
+  "comparison_rtol": 1e-06,
+  "position_difference_rms_mm": 0.026425876360674685,
+  "position_difference_max_mm": 0.09622932465594425,
+  "reference_samples": 1401,
+  "comparison_samples": 1401,
+  "rtol_tight_metrics": {
+    "final_error_mm": 2.499477239324394,
+    "final_200ms_max_abs_error_mm": 6.766232501571462,
+    "final_200ms_rms_error_mm": 3.597073785809395,
+    "peak_abs_voltage_v": 10.0,
+    "min_absolute_pressure_mpa": 0.0020035923044649075,
+    "max_absolute_pressure_mpa": 30.24369165678746,
+    "max_internal_voltage_v": 10.452476066571002,
+    "min_internal_voltage_v": -6.912399825523208,
+    "saturation_time_s": 0.006,
+    "error_at_1s_mm": -3.383651663951243,
+    "meets_1s_0p05mm": false,
+    "heavy_peak_abs_error_mm": 10.326758348802121,
+    "heavy_rms_error_mm": 9.014178683803216,
+    "unloaded_1p1_to_end_error_p2p_mm": 10.475096314484983,
+    "unloaded_1p1_to_end_voltage_p2p_v": 11.9184078221505,
+    "light_median_kq_m2_s": 2.590005293903837,
+    "heavy_median_kq_m2_s": 0.9507030774518503,
+    "kq_decline_percent": 63.293392500411294,
+    "light_median_p1_mpa": 2.0221417756473725,
+    "heavy_median_p1_mpa": 18.442970808121263
+  },
+  "reference_csv_sha256": "afd904ee369a08b4ff100f4d034978a62f49d4a8da69e2c931dca4cb8e6cb589"
+}
