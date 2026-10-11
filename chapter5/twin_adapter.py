@@ -40,19 +40,22 @@ class ClosedLoopTwin(HydraulicTwin):
     """
     def __init__(self, config=None, load_force=180000., load_window=(.35, .70),
                  valve_tau=.0053, rtol=1e-5, load_ramp=0., makeup_area=.001,
-                 ambient_pressure=1e5):
+                 ambient_pressure=1e5, unload_ramp=None):
         config = physical_config() if config is None else config.copy()
         config['x_work'] = config['L']+1.
         super().__init__(config)
-        values = (valve_tau, load_force, rtol, load_ramp, makeup_area,
+        unload_ramp = load_ramp if unload_ramp is None else unload_ramp
+        values = (valve_tau, load_force, rtol, load_ramp, unload_ramp, makeup_area,
                   ambient_pressure, *load_window)
         if (not all(np.isfinite(v) for v in values) or valve_tau < 0
                 or not 0 <= load_window[0] < load_window[1] or load_force < 0
-                or rtol <= 0 or not 0 <= load_ramp <= (load_window[1]-load_window[0])/2
+                or rtol <= 0 or load_ramp < 0 or unload_ramp < 0
+                or load_ramp+unload_ramp > load_window[1]-load_window[0]
                 or makeup_area < 0 or ambient_pressure < 0 or config['Pr'] <= 0):
             raise ValueError('阀、负载、补油或压力参数无效')
         self.load_force, self.load_window = load_force, load_window
-        self.load_ramp, self.makeup_area = load_ramp, makeup_area
+        self.load_ramp, self.unload_ramp = load_ramp, unload_ramp
+        self.makeup_area = makeup_area
         self.ambient_pressure = ambient_pressure
         self.valve_tau, self.rtol = valve_tau, rtol
         self.valve_state = self.active_force = 0.
@@ -68,10 +71,9 @@ class ClosedLoopTwin(HydraulicTwin):
         start, end = self.load_window
         if not start-1e-10 <= t < end-1e-10:
             return 0.
-        if self.load_ramp == 0:
-            return self.load_force
-        fraction = np.clip(min((t-start)/self.load_ramp,
-                               (end-t)/self.load_ramp, 1.), 0., 1.)
+        rise = (t-start)/self.load_ramp if self.load_ramp else 1.
+        fall = (end-t)/self.unload_ramp if self.unload_ramp else 1.
+        fraction = np.clip(min(rise, fall, 1.), 0., 1.)
         return self.load_force*.5*(1-np.cos(np.pi*fraction))
 
     def _dynamics(self, t, x, u):

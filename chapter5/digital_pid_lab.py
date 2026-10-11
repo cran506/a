@@ -106,7 +106,7 @@ def classroom_plot(results, noise, output):
     fig.subplots_adjust(left=.08, right=.985, top=.90, bottom=.13, hspace=.14)
     fig.text(.08, .035,
              f"真实闭环积分：两组均使用 Ki={ca['ki']:g}、Kd={ca['kd']:g}；"
-             f"阀 τ={ca['valve_tau']*1000:g} ms；重载 {ca['load_force']/1000:g} kN，加载/卸载过渡各 {ca['load_ramp']*1000:g} ms。\n"
+             f"阀 τ={ca['valve_tau']*1000:g} ms；重载 {ca['load_force']/1000:g} kN，加载过渡 {ca['load_ramp']*1000:g} ms，卸载过渡 {ca['unload_ramp']*1000:g} ms。\n"
              f"重载误差 RMS：保守 {ma['heavy_rms_error_mm']:.2f} mm，激进 {mb['heavy_rms_error_mm']:.2f} mm；"
              f"保守组末端真实误差 {ma['final_error_mm']:+.3f} mm。课堂模型补充参数见 README。",
              fontsize=9, color='#333333')
@@ -128,7 +128,8 @@ def run(args):
     output = Path(args.output).resolve()
     output.mkdir(parents=True, exist_ok=True)
     shared = dict(load_force=args.load_force, valve_tau=args.valve_tau,
-                  load_ramp=args.load_ramp, ki=args.classroom_ki,
+                  load_ramp=args.load_ramp, unload_ramp=args.unload_ramp,
+                  ki=args.classroom_ki,
                   kd=args.classroom_kd, rtol=args.rtol)
     experiments = [Experiment('conservative', **shared),
                    Experiment('aggressive', kp=16., **shared),
@@ -159,7 +160,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', default=str(Path(__file__).with_name('outputs')))
     parser.add_argument('--load-force', type=float, default=180000., help='课堂工艺阻力 (N)')
-    parser.add_argument('--load-ramp', type=float, default=.02, help='时窗内加载/卸载过渡 (s)')
+    parser.add_argument('--load-ramp', type=float, default=.04, help='重载接触时的加载过渡 (s)')
+    parser.add_argument('--unload-ramp', type=float, default=.02, help='脱离接触时的卸载过渡 (s)')
     parser.add_argument('--valve-tau', type=float, default=.0053, help='阀芯一阶响应时间常数 (s)')
     parser.add_argument('--classroom-ki', type=float, default=9.)
     parser.add_argument('--classroom-kd', type=float, default=.02)

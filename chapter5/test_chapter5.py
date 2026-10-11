@@ -277,6 +277,49 @@ class TwinAdapterTests(unittest.TestCase):
             with self.subTest(t=t):
                 self.assertAlmostEqual(twin.load_at(t), expected, delta=1e-7)
 
+    def test_asymmetric_contact_and_release_have_independent_timings(self):
+        twin = ClosedLoopTwin(load_force=180000., load_ramp=.04, unload_ramp=.02)
+        for t, expected in ((.35, 0.), (.37, 90000.), (.39, 180000.),
+                            (.68, 180000.), (.69, 90000.), (.7, 0.)):
+            with self.subTest(t=t):
+                self.assertAlmostEqual(twin.load_at(t), expected, delta=1e-7)
+        # 接触变柔和，满载平台与释放阶段的工艺条件仍相同。
+        previous = ClosedLoopTwin(load_force=180000., load_ramp=.02)
+        self.assertLess(twin.load_at(.36), previous.load_at(.36))
+        for t in (.45, .5, .65, .68, .69, .7):
+            self.assertEqual(twin.load_at(t), previous.load_at(t))
+
+    def test_ramp_compatibility_zero_durations_and_nonoverlap_validation(self):
+        legacy = ClosedLoopTwin(load_ramp=.04)
+        explicit = ClosedLoopTwin(load_ramp=.04, unload_ramp=.04)
+        for t in np.arange(1401)*.001:
+            self.assertEqual(legacy.load_at(t), explicit.load_at(t))
+        instantaneous_entry = ClosedLoopTwin(load_ramp=0., unload_ramp=.02)
+        instantaneous_release = ClosedLoopTwin(load_ramp=.04, unload_ramp=0.)
+        self.assertEqual(instantaneous_entry.load_at(.35), instantaneous_entry.load_force)
+        self.assertAlmostEqual(instantaneous_entry.load_at(.69), .5*instantaneous_entry.load_force, delta=1e-7)
+        self.assertEqual(instantaneous_release.load_at(.699), instantaneous_release.load_force)
+        self.assertEqual(instantaneous_release.load_at(.7), 0.)
+        ClosedLoopTwin(load_ramp=.30, unload_ramp=.02)
+        ClosedLoopTwin(load_ramp=.30, unload_ramp=.05)
+        for kwargs in ({'load_ramp': .30, 'unload_ramp': .06},
+                       {'unload_ramp': -.01}, {'unload_ramp': math.nan},
+                       {'load_ramp': math.inf}):
+            with self.subTest(kwargs=kwargs), self.assertRaises(ValueError):
+                ClosedLoopTwin(**kwargs)
+
+    def test_smooth_force_is_latched_across_solver_substeps(self):
+        twin = ClosedLoopTwin(load_force=180000., valve_tau=0.,
+                              load_ramp=.04, unload_ramp=.02)
+        observed = []
+        twin._dynamics = lambda t, y, u: observed.append(twin.active_force) or np.zeros(4)
+        with patch('twin_adapter.solve_ivp', side_effect=self.frozen_solver):
+            for start in (.37, .69):
+                twin.t = start
+                observed.clear()
+                twin.step_voltage(0., .001)
+                np.testing.assert_allclose(observed, [90000., 90000.], rtol=0, atol=1e-7)
+
     def test_solver_failure_and_invalid_pressure_are_not_silently_logged(self):
         twin = ClosedLoopTwin(load_force=0., valve_tau=0.)
         failed = SimpleNamespace(success=False, y=twin.state[:, None], nfev=1, message="test failure")

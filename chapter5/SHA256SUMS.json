@@ -1,15 +1,15 @@
 {
-  "README.md": "ef740af66f871057e3b8daef60466ece0bcd523d442272e3fce2d370878015eb",
+  "README.md": "afd196fc51787a595d0706c87f5ac148236e7484c91247d12d89e28d1c830547",
   "classroom_config.json": "7559d67a9112a327ad9f87c2c9de5876c7171349517c617a8b3ddfc404dd3c74",
   "controllers.py": "305994f363531aa50b88b6c0b54c854b3290507cd775380f953379041dc4fdeb",
-  "digital_pid_lab.py": "3cd139da6ea8a350d2fe5444451e623afe549a87cecdef366eba8fbf1917c2b2",
+  "digital_pid_lab.py": "6dbf6fd8165dd2cec2a6f76d737bb0fada0a75cf974647a86d87e77db0a7e323",
   "hydraulic_digital_twin.py": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f",
-  "outputs/classroom_comparison.png": "0ffcee2559e82c4fe4fa01a3ea33e5408db194e38ff0d6665e666a25b9ff8e33",
+  "outputs/classroom_comparison.png": "9de599e5b82d7ff1a23889bbba7858e99c051de8c17b686a954e79f691db6635",
   "physical_config.json": "0a7ab224a3dc4e55dbf4968d4a30b4b0644b05dab90a475592504dfcb0dad4ed",
   "requirements.txt": "918080dd0563866316e2e00c785771a10801b86a8f388a191541e8de22e0e419",
-  "simulation.py": "cc8378cb70cf40e0e78e8ada2969574145f92c4fc18c88907024870b322b0c12",
-  "test_chapter5.py": "850de9ba94beafb7de4758558dcf5a7567dce9146ec4d7813de8a6ac88d1cfc4",
+  "simulation.py": "4445348dcb1d1d5dc08ad1565957e873dfe40ee72927efc92e88ec8e74329e91",
+  "test_chapter5.py": "de179b40c4e3aec2536ac881f2e2235a0757e9fd9ca5c97eb81a76f64ff64ef3",
   "trajectory.py": "416e5bb0177942d7c7b9f9d09fab3c2f2d478308c9b8e1484c058cc19f4aa746",
-  "twin_adapter.py": "a1d47bf710ef0985834adb970547fd09b2a7eef0212b9fbbd47db3bffe232d63",
-  "validation.json": "de86db54d4875a86d8c925cbbdc425259151bf87b7b0a75a5f4b902946efa163"
+  "twin_adapter.py": "0e87b0919bd69b738dbe70415497f2a492e0eb998115c634b5ebd8000ca46e17",
+  "validation.json": "55c27f327dfb3cab3752a42a5285e08a3153de2d46791a99f83981a75f7b2e96"
 }

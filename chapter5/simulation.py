@@ -21,12 +21,13 @@ class Experiment:
     duration: float = 1.4
     load_force: float = 180000.
     valve_tau: float = .0053
-    load_ramp: float = .02
+    load_ramp: float = .04
     makeup_area: float = .001
     ambient_pressure: float = 1e5
     rtol: float = 1e-5
     adc_bits: int = 12
     sensor_span: float = .3
+    unload_ramp: float | None = .02
 
 
 def simulate(cfg):
@@ -45,7 +46,8 @@ def simulate(cfg):
               integral_separation=cfg.integral_separation)
     twin = ClosedLoopTwin(config=classroom_config(), load_force=cfg.load_force,
                           valve_tau=cfg.valve_tau, rtol=cfg.rtol,
-                          load_ramp=cfg.load_ramp, makeup_area=cfg.makeup_area,
+                          load_ramp=cfg.load_ramp, unload_ramp=cfg.unload_ramp,
+                          makeup_area=cfg.makeup_area,
                           ambient_pressure=cfg.ambient_pressure)
     # 校准原点落在一个ADC代码上；初值避开端盖且液压力平衡。
     origin = sensor.sample(.05)
@@ -74,7 +76,8 @@ def simulate(cfg):
     data.update(time_s=t, reference_m=r, reference_velocity_m_s=rv, reference_acceleration_m_s2=ra)
     meta = asdict(cfg)
     meta.update(origin_m=origin, sensor_lsb_mm=sensor.lsb*1000, radau_nfev=twin.nfev,
-                physical_parameters=twin.p.copy())
+                physical_parameters=twin.p.copy(),
+                unload_ramp=twin.unload_ramp)
     return {'data': data, 'config': meta, 'metrics': metrics(data, cfg)}
 
 
@@ -116,6 +119,12 @@ def metrics(d, cfg):
                                 mean_error_mm=float(np.mean(ew)),
                                 ac_rms_mm=float(np.std(ew)), p2p_mm=float(np.ptp(ew)),
                                 prominent_peaks=int(len(peaks))))
+        contact = (t >= .35)&(t < .45)
+        plateau_u = float(np.median(u[heavy_plateau]))
+        contact_peak_u = float(np.max(u[contact]))
+        out.update(contact_peak_voltage_v=contact_peak_u,
+                   heavy_plateau_median_voltage_v=plateau_u,
+                   contact_voltage_above_plateau_v=max(0., contact_peak_u-plateau_u))
         out['hold_windows'] = windows
         out.update(heavy_peak_abs_error_mm=float(np.max(abs(e[heavy]))),
                    heavy_rms_error_mm=float(np.sqrt(np.mean(e[heavy]**2))),
