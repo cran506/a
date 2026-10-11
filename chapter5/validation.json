@@ -1,0 +1,804 @@
+{
+  "validated_at_utc": "2026-10-11T11:39:35.873420+00:00",
+  "unit_tests_passed": 23,
+  "checks": {
+    "conservative_finite_synchronized_physics": true,
+    "aggressive_finite_synchronized_physics": true,
+    "unfiltered_finite_synchronized_physics": true,
+    "blue_converges_red_has_multiple_persistent_cycles": true,
+    "same_trajectory_quantization_derivative_filtered": true,
+    "rtol_1e6_and_3s_independent_physics_validation": true,
+    "uploaded_twin_preserved_byte_for_byte": true,
+    "default_output_is_one_png": true
+  },
+  "classroom": {
+    "conservative": {
+      "config": {
+        "name": "conservative",
+        "kind": "scurve",
+        "controller": "incremental",
+        "kp": 3.8,
+        "ki": 9.0,
+        "kd": 0.02,
+        "alpha": 0.85,
+        "integral_separation": true,
+        "ts": 0.001,
+        "duration": 1.4,
+        "load_force": 180000.0,
+        "valve_tau": 0.0053,
+        "load_ramp": 0.02,
+        "makeup_area": 0.001,
+        "ambient_pressure": 100000.0,
+        "rtol": 1e-05,
+        "adc_bits": 12,
+        "sensor_span": 0.3,
+        "origin_m": 0.0500244140625,
+        "sensor_lsb_mm": 0.0732421875,
+        "radau_nfev": 27113,
+        "physical_parameters": {
+          "A1": 0.01,
+          "A2": 0.005,
+          "L": 1.0,
+          "V0_1": 0.001,
+          "V0_2": 0.001,
+          "mass": 500.0,
+          "Ps": 21000000.0,
+          "Pr": 100000.0,
+          "beta_e": 1000000000.0,
+          "rho": 870.0,
+          "Cd": 0.62,
+          "w": 0.02,
+          "xv_max": 0.0025,
+          "deadzone": 0.05,
+          "C_ip": 1e-12,
+          "Fs": 800.0,
+          "Fc": 500.0,
+          "vs": 0.05,
+          "sigma": 1000.0,
+          "gamma": 500.0,
+          "x_work": 2.0,
+          "K_env": 50000000.0,
+          "B_env": 100000.0,
+          "C_ep": 0.0
+        }
+      },
+      "metrics": {
+        "final_error_mm": 0.008907198949997808,
+        "final_200ms_max_abs_error_mm": 0.0756513569124262,
+        "final_200ms_rms_error_mm": 0.039120881362021895,
+        "peak_abs_voltage_v": 7.019378016915678,
+        "min_absolute_pressure_mpa": 0.08637935769556254,
+        "max_absolute_pressure_mpa": 21.028414234072997,
+        "max_internal_voltage_v": 7.019378016915678,
+        "min_internal_voltage_v": 0.0,
+        "saturation_time_s": 0.0,
+        "error_at_1s_mm": 0.584585134850657,
+        "meets_1s_0p05mm": false,
+        "hold_windows": [
+          {
+            "start_s": 1.0,
+            "end_s": 1.1,
+            "mean_error_mm": 0.3164743991666457,
+            "ac_rms_mm": 0.13831431757034604,
+            "p2p_mm": 0.4768061341089702,
+            "prominent_peaks": 2
+          },
+          {
+            "start_s": 1.1,
+            "end_s": 1.2000000000000002,
+            "mean_error_mm": 0.11291658082837884,
+            "ac_rms_mm": 0.02504566676182638,
+            "p2p_mm": 0.0971609658210193,
+            "prominent_peaks": 0
+          },
+          {
+            "start_s": 1.2,
+            "end_s": 1.3,
+            "mean_error_mm": 0.049324580221960505,
+            "ac_rms_mm": 0.01100762908843475,
+            "p2p_mm": 0.041261028812938916,
+            "prominent_peaks": 0
+          },
+          {
+            "start_s": 1.3,
+            "end_s": 1.4000000000000001,
+            "mean_error_mm": 0.021639584867267362,
+            "ac_rms_mm": 0.007283132793517536,
+            "p2p_mm": 0.024978504664152634,
+            "prominent_peaks": 0
+          }
+        ],
+        "heavy_peak_abs_error_mm": 17.60190249096607,
+        "heavy_rms_error_mm": 15.548889850363876,
+        "unloaded_1p1_to_end_error_p2p_mm": 0.16471457526320843,
+        "unloaded_1p1_to_end_voltage_p2p_v": 0.0690819796520733,
+        "light_median_kq_m2_s": 2.59544714208488,
+        "heavy_median_kq_m2_s": 0.9418084577532415,
+        "kq_decline_percent": 63.71305573972498,
+        "light_median_p1_mpa": 1.942308672921744,
+        "heavy_median_p1_mpa": 18.49059326574714
+      }
+    },
+    "aggressive": {
+      "config": {
+        "name": "aggressive",
+        "kind": "scurve",
+        "controller": "incremental",
+        "kp": 16.0,
+        "ki": 9.0,
+        "kd": 0.02,
+        "alpha": 0.85,
+        "integral_separation": true,
+        "ts": 0.001,
+        "duration": 1.4,
+        "load_force": 180000.0,
+        "valve_tau": 0.0053,
+        "load_ramp": 0.02,
+        "makeup_area": 0.001,
+        "ambient_pressure": 100000.0,
+        "rtol": 1e-05,
+        "adc_bits": 12,
+        "sensor_span": 0.3,
+        "origin_m": 0.0500244140625,
+        "sensor_lsb_mm": 0.0732421875,
+        "radau_nfev": 55379,
+        "physical_parameters": {
+          "A1": 0.01,
+          "A2": 0.005,
+          "L": 1.0,
+          "V0_1": 0.001,
+          "V0_2": 0.001,
+          "mass": 500.0,
+          "Ps": 21000000.0,
+          "Pr": 100000.0,
+          "beta_e": 1000000000.0,
+          "rho": 870.0,
+          "Cd": 0.62,
+          "w": 0.02,
+          "xv_max": 0.0025,
+          "deadzone": 0.05,
+          "C_ip": 1e-12,
+          "Fs": 800.0,
+          "Fc": 500.0,
+          "vs": 0.05,
+          "sigma": 1000.0,
+          "gamma": 500.0,
+          "x_work": 2.0,
+          "K_env": 50000000.0,
+          "B_env": 100000.0,
+          "C_ep": 0.0
+        }
+      },
+      "metrics": {
+        "final_error_mm": 0.23436388961520227,
+        "final_200ms_max_abs_error_mm": 1.8229246850052228,
+        "final_200ms_rms_error_mm": 0.9439651575701072,
+        "peak_abs_voltage_v": 9.21128846427986,
+        "min_absolute_pressure_mpa": 0.07044051241226848,
+        "max_absolute_pressure_mpa": 20.56543987006914,
+        "max_internal_voltage_v": 9.21128846427986,
+        "min_internal_voltage_v": -4.982283263517306,
+        "saturation_time_s": 0.0,
+        "error_at_1s_mm": -0.8577613686790164,
+        "meets_1s_0p05mm": false,
+        "hold_windows": [
+          {
+            "start_s": 1.0,
+            "end_s": 1.1,
+            "mean_error_mm": -0.2961442709156583,
+            "ac_rms_mm": 0.7203298746402137,
+            "p2p_mm": 2.043730069693106,
+            "prominent_peaks": 4
+          },
+          {
+            "start_s": 1.1,
+            "end_s": 1.2000000000000002,
+            "mean_error_mm": -0.2620353174230333,
+            "ac_rms_mm": 0.7564530505534202,
+            "p2p_mm": 2.1625757044548832,
+            "prominent_peaks": 4
+          },
+          {
+            "start_s": 1.2,
+            "end_s": 1.3,
+            "mean_error_mm": -0.18608696817855644,
+            "ac_rms_mm": 0.8196818993333693,
+            "p2p_mm": 2.4598548944848586,
+            "prominent_peaks": 5
+          },
+          {
+            "start_s": 1.3,
+            "end_s": 1.4000000000000001,
+            "mean_error_mm": -0.3599137059854434,
+            "ac_rms_mm": 0.9769632662978683,
+            "p2p_mm": 3.0390208487188763,
+            "prominent_peaks": 4
+          }
+        ],
+        "heavy_peak_abs_error_mm": 5.360822697287128,
+        "heavy_rms_error_mm": 4.255407144049612,
+        "unloaded_1p1_to_end_error_p2p_mm": 3.0390208487188763,
+        "unloaded_1p1_to_end_voltage_p2p_v": 5.5775030250576005,
+        "light_median_kq_m2_s": 2.5909630443212937,
+        "heavy_median_kq_m2_s": 0.94256278054976,
+        "kq_decline_percent": 63.62114146646714,
+        "light_median_p1_mpa": 2.008103904826816,
+        "heavy_median_p1_mpa": 18.486571937123983
+      }
+    },
+    "unfiltered": {
+      "config": {
+        "name": "unfiltered",
+        "kind": "scurve",
+        "controller": "incremental",
+        "kp": 3.8,
+        "ki": 9.0,
+        "kd": 0.02,
+        "alpha": 0.0,
+        "integral_separation": true,
+        "ts": 0.001,
+        "duration": 1.4,
+        "load_force": 180000.0,
+        "valve_tau": 0.0053,
+        "load_ramp": 0.02,
+        "makeup_area": 0.001,
+        "ambient_pressure": 100000.0,
+        "rtol": 1e-05,
+        "adc_bits": 12,
+        "sensor_span": 0.3,
+        "origin_m": 0.0500244140625,
+        "sensor_lsb_mm": 0.0732421875,
+        "radau_nfev": 51879,
+        "physical_parameters": {
+          "A1": 0.01,
+          "A2": 0.005,
+          "L": 1.0,
+          "V0_1": 0.001,
+          "V0_2": 0.001,
+          "mass": 500.0,
+          "Ps": 21000000.0,
+          "Pr": 100000.0,
+          "beta_e": 1000000000.0,
+          "rho": 870.0,
+          "Cd": 0.62,
+          "w": 0.02,
+          "xv_max": 0.0025,
+          "deadzone": 0.05,
+          "C_ip": 1e-12,
+          "Fs": 800.0,
+          "Fc": 500.0,
+          "vs": 0.05,
+          "sigma": 1000.0,
+          "gamma": 500.0,
+          "x_work": 2.0,
+          "K_env": 50000000.0,
+          "B_env": 100000.0,
+          "C_ep": 0.0
+        }
+      },
+      "metrics": {
+        "final_error_mm": -0.26556142010125683,
+        "final_200ms_max_abs_error_mm": 0.5970014016400682,
+        "final_200ms_rms_error_mm": 0.27946689746186676,
+        "peak_abs_voltage_v": 7.020877745648347,
+        "min_absolute_pressure_mpa": 0.08635629474164636,
+        "max_absolute_pressure_mpa": 20.76040358225467,
+        "max_internal_voltage_v": 7.020877745648347,
+        "min_internal_voltage_v": -0.22061711765746406,
+        "saturation_time_s": 0.0,
+        "error_at_1s_mm": -0.13179592051204558,
+        "meets_1s_0p05mm": false,
+        "hold_windows": [
+          {
+            "start_s": 1.0,
+            "end_s": 1.1,
+            "mean_error_mm": 0.13051276777143989,
+            "ac_rms_mm": 0.47912363457112045,
+            "p2p_mm": 1.7169578697153187,
+            "prominent_peaks": 5
+          },
+          {
+            "start_s": 1.1,
+            "end_s": 1.2000000000000002,
+            "mean_error_mm": -0.1885751806240496,
+            "ac_rms_mm": 0.3762616476609598,
+            "p2p_mm": 1.2016439166050719,
+            "prominent_peaks": 4
+          },
+          {
+            "start_s": 1.2,
+            "end_s": 1.3,
+            "mean_error_mm": -0.23364243264276607,
+            "ac_rms_mm": 0.19735801740823253,
+            "p2p_mm": 0.7543084505220732,
+            "prominent_peaks": 4
+          },
+          {
+            "start_s": 1.3,
+            "end_s": 1.4000000000000001,
+            "mean_error_mm": -0.248076833791345,
+            "ac_rms_mm": 0.03461493193340749,
+            "p2p_mm": 0.18890173861715875,
+            "prominent_peaks": 0
+          }
+        ],
+        "heavy_peak_abs_error_mm": 17.598478190299186,
+        "heavy_rms_error_mm": 15.524954510836206,
+        "unloaded_1p1_to_end_error_p2p_mm": 1.2016439166050719,
+        "unloaded_1p1_to_end_voltage_p2p_v": 1.1533593749999778,
+        "light_median_kq_m2_s": 2.5970237410297425,
+        "heavy_median_kq_m2_s": 0.9417700493211135,
+        "kq_decline_percent": 63.73656372707268,
+        "light_median_p1_mpa": 1.9191495191856194,
+        "heavy_median_p1_mpa": 18.49079793676822
+      }
+    },
+    "quantization_probe": {
+      "raw_derivative_rms_v": 0.055729055581400136,
+      "filtered_derivative_rms_v": 0.006481381015880313,
+      "reduction_percent": 88.36983518155382,
+      "window_s": [
+        0.1,
+        1.0
+      ],
+      "method": "同一保守组位移量化残差重放，Kp=Ki=0，仅微分通道"
+    }
+  },
+  "independent": [
+    {
+      "name": "aggressive_tight_independent",
+      "config": {
+        "name": "aggressive_tight_independent",
+        "kind": "scurve",
+        "controller": "incremental",
+        "kp": 16.0,
+        "ki": 9.0,
+        "kd": 0.02,
+        "alpha": 0.85,
+        "integral_separation": true,
+        "ts": 0.001,
+        "duration": 1.4,
+        "load_force": 180000.0,
+        "valve_tau": 0.0053,
+        "load_ramp": 0.02,
+        "makeup_area": 0.001,
+        "ambient_pressure": 100000.0,
+        "rtol": 1e-06,
+        "adc_bits": 12,
+        "sensor_span": 0.3,
+        "origin_m": 0.0500244140625,
+        "sensor_lsb_mm": 0.0732421875,
+        "radau_nfev": 73592,
+        "physical_parameters": {
+          "A1": 0.01,
+          "A2": 0.005,
+          "L": 1.0,
+          "V0_1": 0.001,
+          "V0_2": 0.001,
+          "mass": 500.0,
+          "Ps": 21000000.0,
+          "Pr": 100000.0,
+          "beta_e": 1000000000.0,
+          "rho": 870.0,
+          "Cd": 0.62,
+          "w": 0.02,
+          "xv_max": 0.0025,
+          "deadzone": 0.05,
+          "C_ip": 1e-12,
+          "Fs": 800.0,
+          "Fc": 500.0,
+          "vs": 0.05,
+          "sigma": 1000.0,
+          "gamma": 500.0,
+          "x_work": 2.0,
+          "K_env": 50000000.0,
+          "B_env": 100000.0,
+          "C_ep": 0.0
+        }
+      },
+      "metrics": {
+        "final_error_mm": 0.23420501271623206,
+        "final_200ms_max_abs_error_mm": 1.8230958880857406,
+        "final_200ms_rms_error_mm": 0.9440007385351922,
+        "peak_abs_voltage_v": 9.21128846427986,
+        "min_absolute_pressure_mpa": 0.07044058533818442,
+        "max_absolute_pressure_mpa": 20.56544204170871,
+        "max_internal_voltage_v": 9.21128846427986,
+        "min_internal_voltage_v": -4.982283263517306,
+        "saturation_time_s": 0.0,
+        "error_at_1s_mm": -0.8578949919164081,
+        "meets_1s_0p05mm": false,
+        "heavy_peak_abs_error_mm": 5.36081982696891,
+        "heavy_rms_error_mm": 4.2554090189668115,
+        "unloaded_1p1_to_end_error_p2p_mm": 3.038958462536434,
+        "unloaded_1p1_to_end_voltage_p2p_v": 5.5775030250576005,
+        "light_median_kq_m2_s": 2.590963206333015,
+        "heavy_median_kq_m2_s": 0.9425627805851494,
+        "kq_decline_percent": 63.62114373985431,
+        "light_median_p1_mpa": 2.008101529694999,
+        "heavy_median_p1_mpa": 18.486571936935245
+      },
+      "windows": [
+        {
+          "window_s": [
+            1.0,
+            1.1
+          ],
+          "mean_error_mm": -0.2857143809414823,
+          "error_p2p_mm": 2.0581775922181853,
+          "max_abs_error_mm": 1.2858742470130968,
+          "rms_error_mm": 0.7788318565820826,
+          "voltage_p2p_v": 3.8411386484659764
+        },
+        {
+          "window_s": [
+            1.1,
+            1.2
+          ],
+          "mean_error_mm": -0.27021621494139003,
+          "error_p2p_mm": 2.1625643053955477,
+          "max_abs_error_mm": 1.3288027367477917,
+          "rms_error_mm": 0.8037441622962024,
+          "voltage_p2p_v": 3.992117819865223
+        },
+        {
+          "window_s": [
+            1.2,
+            1.3
+          ],
+          "mean_error_mm": -0.1848835417417742,
+          "error_p2p_mm": 2.459783424579282,
+          "max_abs_error_mm": 1.4678717738484115,
+          "rms_error_mm": 0.8364048333142783,
+          "voltage_p2p_v": 4.510822349976696
+        },
+        {
+          "window_s": [
+            1.3,
+            1.4
+          ],
+          "mean_error_mm": -0.35423017620866853,
+          "error_p2p_mm": 3.038958462536434,
+          "max_abs_error_mm": 1.8230958880857406,
+          "rms_error_mm": 1.0362914057248576,
+          "voltage_p2p_v": 5.5775030250576005
+        },
+        {
+          "window_s": [
+            1.2,
+            1.4
+          ],
+          "mean_error_mm": -0.27066730801823957,
+          "error_p2p_mm": 3.038958462536434,
+          "max_abs_error_mm": 1.8230958880857406,
+          "rms_error_mm": 0.9440007385351922,
+          "voltage_p2p_v": 5.5775030250576005
+        }
+      ],
+      "elapsed_s": 5.9560821340000984
+    },
+    {
+      "name": "conservative_tight_independent",
+      "config": {
+        "name": "conservative_tight_independent",
+        "kind": "scurve",
+        "controller": "incremental",
+        "kp": 3.8,
+        "ki": 9.0,
+        "kd": 0.02,
+        "alpha": 0.85,
+        "integral_separation": true,
+        "ts": 0.001,
+        "duration": 1.4,
+        "load_force": 180000.0,
+        "valve_tau": 0.0053,
+        "load_ramp": 0.02,
+        "makeup_area": 0.001,
+        "ambient_pressure": 100000.0,
+        "rtol": 1e-06,
+        "adc_bits": 12,
+        "sensor_span": 0.3,
+        "origin_m": 0.0500244140625,
+        "sensor_lsb_mm": 0.0732421875,
+        "radau_nfev": 38497,
+        "physical_parameters": {
+          "A1": 0.01,
+          "A2": 0.005,
+          "L": 1.0,
+          "V0_1": 0.001,
+          "V0_2": 0.001,
+          "mass": 500.0,
+          "Ps": 21000000.0,
+          "Pr": 100000.0,
+          "beta_e": 1000000000.0,
+          "rho": 870.0,
+          "Cd": 0.62,
+          "w": 0.02,
+          "xv_max": 0.0025,
+          "deadzone": 0.05,
+          "C_ip": 1e-12,
+          "Fs": 800.0,
+          "Fc": 500.0,
+          "vs": 0.05,
+          "sigma": 1000.0,
+          "gamma": 500.0,
+          "x_work": 2.0,
+          "K_env": 50000000.0,
+          "B_env": 100000.0,
+          "C_ep": 0.0
+        }
+      },
+      "metrics": {
+        "final_error_mm": 0.008918454188239222,
+        "final_200ms_max_abs_error_mm": 0.07565739461248833,
+        "final_200ms_rms_error_mm": 0.03912989748173445,
+        "peak_abs_voltage_v": 7.019378016915678,
+        "min_absolute_pressure_mpa": 0.08637937814660213,
+        "max_absolute_pressure_mpa": 21.028357989080344,
+        "max_internal_voltage_v": 7.019378016915678,
+        "min_internal_voltage_v": 0.0,
+        "saturation_time_s": 0.0,
+        "error_at_1s_mm": 0.584590563514481,
+        "meets_1s_0p05mm": false,
+        "heavy_peak_abs_error_mm": 17.601904450530817,
+        "heavy_rms_error_mm": 15.548891732539113,
+        "unloaded_1p1_to_end_error_p2p_mm": 0.1647093516306264,
+        "unloaded_1p1_to_end_voltage_p2p_v": 0.0690819796520733,
+        "light_median_kq_m2_s": 2.5954470208406333,
+        "heavy_median_kq_m2_s": 0.9418084577581322,
+        "kq_decline_percent": 63.71305404442076,
+        "light_median_p1_mpa": 1.9423104537103097,
+        "heavy_median_p1_mpa": 18.490593265721078
+      },
+      "windows": [
+        {
+          "window_s": [
+            1.0,
+            1.1
+          ],
+          "mean_error_mm": 0.31506605580282543,
+          "error_p2p_mm": 0.47861940091592503,
+          "max_abs_error_mm": 0.6522472067347906,
+          "rms_error_mm": 0.34410477977502474,
+          "voltage_p2p_v": 0.27627450408593257
+        },
+        {
+          "window_s": [
+            1.1,
+            1.2
+          ],
+          "mean_error_mm": 0.11255365552892002,
+          "error_p2p_mm": 0.09797041120637728,
+          "max_abs_error_mm": 0.1736278058188656,
+          "rms_error_mm": 0.11533868975669839,
+          "voltage_p2p_v": 0.049715690032904436
+        },
+        {
+          "window_s": [
+            1.2,
+            1.3
+          ],
+          "mean_error_mm": 0.0491840691178657,
+          "error_p2p_mm": 0.0415086619048044,
+          "max_abs_error_mm": 0.07565739461248833,
+          "rms_error_mm": 0.05041090898748584,
+          "voltage_p2p_v": 0.04978271429126491
+        },
+        {
+          "window_s": [
+            1.3,
+            1.4
+          ],
+          "mean_error_mm": 0.0215247763216054,
+          "error_p2p_mm": 0.025230278519444704,
+          "max_abs_error_mm": 0.034148732707683926,
+          "rms_error_mm": 0.022746956268868357,
+          "voltage_p2p_v": 0.002197296079634481
+        },
+        {
+          "window_s": [
+            1.2,
+            1.4
+          ],
+          "mean_error_mm": 0.03536042117750695,
+          "error_p2p_mm": 0.0667389404242491,
+          "max_abs_error_mm": 0.07565739461248833,
+          "rms_error_mm": 0.03912989748173445,
+          "voltage_p2p_v": 0.04978271429126491
+        }
+      ],
+      "elapsed_s": 3.327635884999836
+    },
+    {
+      "name": "aggressive_long_independent",
+      "config": {
+        "name": "aggressive_long_independent",
+        "kind": "scurve",
+        "controller": "incremental",
+        "kp": 16.0,
+        "ki": 9.0,
+        "kd": 0.02,
+        "alpha": 0.85,
+        "integral_separation": true,
+        "ts": 0.001,
+        "duration": 3.0,
+        "load_force": 180000.0,
+        "valve_tau": 0.0053,
+        "load_ramp": 0.02,
+        "makeup_area": 0.001,
+        "ambient_pressure": 100000.0,
+        "rtol": 1e-05,
+        "adc_bits": 12,
+        "sensor_span": 0.3,
+        "origin_m": 0.0500244140625,
+        "sensor_lsb_mm": 0.0732421875,
+        "radau_nfev": 184695,
+        "physical_parameters": {
+          "A1": 0.01,
+          "A2": 0.005,
+          "L": 1.0,
+          "V0_1": 0.001,
+          "V0_2": 0.001,
+          "mass": 500.0,
+          "Ps": 21000000.0,
+          "Pr": 100000.0,
+          "beta_e": 1000000000.0,
+          "rho": 870.0,
+          "Cd": 0.62,
+          "w": 0.02,
+          "xv_max": 0.0025,
+          "deadzone": 0.05,
+          "C_ip": 1e-12,
+          "Fs": 800.0,
+          "Fc": 500.0,
+          "vs": 0.05,
+          "sigma": 1000.0,
+          "gamma": 500.0,
+          "x_work": 2.0,
+          "K_env": 50000000.0,
+          "B_env": 100000.0,
+          "C_ep": 0.0
+        }
+      },
+      "metrics": {
+        "final_error_mm": 1.398992266021415,
+        "final_200ms_max_abs_error_mm": 2.8514547880069685,
+        "final_200ms_rms_error_mm": 1.733942127767268,
+        "peak_abs_voltage_v": 9.21128846427986,
+        "min_absolute_pressure_mpa": 0.07044051241226848,
+        "max_absolute_pressure_mpa": 20.56543987006914,
+        "max_internal_voltage_v": 9.21128846427986,
+        "min_internal_voltage_v": -4.982283263517306,
+        "saturation_time_s": 0.0,
+        "error_at_1s_mm": -0.8577613686790164,
+        "meets_1s_0p05mm": false,
+        "heavy_peak_abs_error_mm": 5.360822697287128,
+        "heavy_rms_error_mm": 4.255407144049612,
+        "unloaded_1p1_to_end_error_p2p_mm": 4.7309166568859915,
+        "unloaded_1p1_to_end_voltage_p2p_v": 8.78254117489612,
+        "light_median_kq_m2_s": 2.5909630443212937,
+        "heavy_median_kq_m2_s": 0.94256278054976,
+        "kq_decline_percent": 63.62114146646714,
+        "light_median_p1_mpa": 2.008103904826816,
+        "heavy_median_p1_mpa": 18.486571937123983
+      },
+      "windows": [
+        {
+          "window_s": [
+            1.0,
+            1.1
+          ],
+          "mean_error_mm": -0.2855639494784938,
+          "error_p2p_mm": 2.058161209795073,
+          "max_abs_error_mm": 1.2856930155571156,
+          "rms_error_mm": 0.778767513577962,
+          "voltage_p2p_v": 3.8411386484659764
+        },
+        {
+          "window_s": [
+            1.1,
+            1.2
+          ],
+          "mean_error_mm": -0.2700319294896019,
+          "error_p2p_mm": 2.1625757044548832,
+          "max_abs_error_mm": 1.3286592324504576,
+          "rms_error_mm": 0.8036588109881979,
+          "voltage_p2p_v": 3.992117819865223
+        },
+        {
+          "window_s": [
+            1.2,
+            1.3
+          ],
+          "mean_error_mm": -0.1847009720589195,
+          "error_p2p_mm": 2.4598548944848586,
+          "max_abs_error_mm": 1.4677139462296873,
+          "rms_error_mm": 0.8363807160337581,
+          "voltage_p2p_v": 4.510822349976696
+        },
+        {
+          "window_s": [
+            1.3,
+            1.4
+          ],
+          "mean_error_mm": -0.35402976939533803,
+          "error_p2p_mm": 3.0390208487188763,
+          "max_abs_error_mm": 1.8229246850052228,
+          "rms_error_mm": 1.0362462548889704,
+          "voltage_p2p_v": 5.5775030250576005
+        },
+        {
+          "window_s": [
+            1.2,
+            1.4
+          ],
+          "mean_error_mm": -0.27047613694917805,
+          "error_p2p_mm": 3.0390208487188763,
+          "max_abs_error_mm": 1.8229246850052228,
+          "rms_error_mm": 0.9439651575701072,
+          "voltage_p2p_v": 5.5775030250576005
+        },
+        {
+          "window_s": [
+            1.4,
+            1.6
+          ],
+          "mean_error_mm": -0.34730189396600414,
+          "error_p2p_mm": 3.9121313191601557,
+          "max_abs_error_mm": 2.357392058743857,
+          "rms_error_mm": 1.3104010568129372,
+          "voltage_p2p_v": 7.306655706752895
+        },
+        {
+          "window_s": [
+            1.6,
+            1.8
+          ],
+          "mean_error_mm": -0.41607206748502834,
+          "error_p2p_mm": 4.446952944166027,
+          "max_abs_error_mm": 2.6762792881542263,
+          "rms_error_mm": 1.5620692096083924,
+          "voltage_p2p_v": 8.239838646275487
+        },
+        {
+          "window_s": [
+            1.8,
+            2.0
+          ],
+          "mean_error_mm": -0.4511401733892019,
+          "error_p2p_mm": 4.628374460167311,
+          "max_abs_error_mm": 2.779610243518027,
+          "rms_error_mm": 1.678994366847806,
+          "voltage_p2p_v": 8.588468547090606
+        },
+        {
+          "window_s": [
+            2.0,
+            2.5
+          ],
+          "mean_error_mm": -0.4570144996199641,
+          "error_p2p_mm": 4.711469531800128,
+          "max_abs_error_mm": 2.8320076629211046,
+          "rms_error_mm": 1.718905227083242,
+          "voltage_p2p_v": 8.76759678686225
+        },
+        {
+          "window_s": [
+            2.5,
+            3.0
+          ],
+          "mean_error_mm": -0.5070786975537325,
+          "error_p2p_mm": 4.72273951202698,
+          "max_abs_error_mm": 2.8514547880069685,
+          "rms_error_mm": 1.7396094628063181,
+          "voltage_p2p_v": 8.775746134304892
+        }
+      ],
+      "elapsed_s": 15.105836863999684
+    }
+  ],
+  "limitations": [
+    "1 s处实际误差：保守约0.585mm、激进约-0.858mm；本组参数未满足1s内0.05mm定位精度。",
+    "公开的课堂参数用于性能权衡展示，未经真实设备辨识。"
+  ]
+}

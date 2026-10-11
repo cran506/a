@@ -1,9 +1,10 @@
 """1kHz 感知—控制—ZOH—Radau闭环与当前运行指标。"""
 from dataclasses import dataclass, asdict
+from scipy.signal import find_peaks
 import numpy as np
 from controllers import DigitalPID, PositionalPID
 from trajectory import generate_scurve, time_grid
-from twin_adapter import ClosedLoopTwin, QuantizedSensor
+from twin_adapter import ClosedLoopTwin, QuantizedSensor, classroom_config
 
 
 @dataclass
@@ -12,14 +13,17 @@ class Experiment:
     kind: str = 'scurve'
     controller: str = 'incremental'
     kp: float = 3.8
-    ki: float = 22.
-    kd: float = .06
+    ki: float = 9.
+    kd: float = .02
     alpha: float = .85
     integral_separation: bool = True
     ts: float = .001
     duration: float = 1.4
     load_force: float = 180000.
-    valve_tau: float = .015
+    valve_tau: float = .0053
+    load_ramp: float = .02
+    makeup_area: float = .001
+    ambient_pressure: float = 1e5
     rtol: float = 1e-5
     adc_bits: int = 12
     sensor_span: float = .3
@@ -39,10 +43,15 @@ def simulate(cfg):
     cls = DigitalPID if cfg.controller == 'incremental' else PositionalPID
     pid = cls(cfg.kp, cfg.ki, cfg.kd, cfg.ts, alpha=cfg.alpha,
               integral_separation=cfg.integral_separation)
-    twin = ClosedLoopTwin(load_force=cfg.load_force, valve_tau=cfg.valve_tau, rtol=cfg.rtol)
+    twin = ClosedLoopTwin(config=classroom_config(), load_force=cfg.load_force,
+                          valve_tau=cfg.valve_tau, rtol=cfg.rtol,
+                          load_ramp=cfg.load_ramp, makeup_area=cfg.makeup_area,
+                          ambient_pressure=cfg.ambient_pressure)
     # 校准原点落在一个ADC代码上；初值避开端盖且液压力平衡。
     origin = sensor.sample(.05)
-    twin.reset([origin, 0., twin.p['Pr'], 2*twin.p['Pr']])
+    p2_initial = (twin.p['Pr']*twin.p['A1']
+                  -twin.ambient_pressure*(twin.p['A1']-twin.p['A2']))/twin.p['A2']
+    twin.reset([origin, 0., twin.p['Pr'], p2_initial])
     names = ['position_m', 'velocity_m_s', 'p1_pa', 'p2_pa', 'measured_m',
              'error_m', 'sampled_error_m', 'voltage_v', 'raw_voltage_v',
              'derivative_v', 'integral_state_v', 'valve_normalized', 'load_n', 'kq_m2_s']
@@ -54,7 +63,7 @@ def simulate(cfg):
         pos = x-origin
         feedback = sensor.sample(x)-origin
         u = pid.update(r[i], feedback)
-        active = cfg.load_force if .35-1e-10 <= ti < .70-1e-10 else 0.
+        active = twin.load_at(ti)
         values = [pos, vel, p1, p2, feedback, r[i]-pos, r[i]-feedback,
                   u, pid.last_raw, pid.last_d, pid.last_i, twin.valve_state,
                   active, twin.extension_kq()]
@@ -64,7 +73,8 @@ def simulate(cfg):
             twin.step_voltage(u, cfg.ts)
     data.update(time_s=t, reference_m=r, reference_velocity_m_s=rv, reference_acceleration_m_s2=ra)
     meta = asdict(cfg)
-    meta.update(origin_m=origin, sensor_lsb_mm=sensor.lsb*1000, radau_nfev=twin.nfev)
+    meta.update(origin_m=origin, sensor_lsb_mm=sensor.lsb*1000, radau_nfev=twin.nfev,
+                physical_parameters=twin.p.copy())
     return {'data': data, 'config': meta, 'metrics': metrics(data, cfg)}
 
 
@@ -95,6 +105,18 @@ def metrics(d, cfg):
         kp_light = float(np.nanmedian(d['kq_m2_s'][light_plateau]))
         kp_heavy = float(np.nanmedian(d['kq_m2_s'][heavy_plateau]))
         late = t >= 1.1
+        windows = []
+        for start in (1., 1.1, 1.2, 1.3):
+            window = (t >= start-1e-10) & (t < start+.1-1e-10)
+            if not np.any(window):
+                continue
+            ew = e[window]
+            peaks, _ = find_peaks(ew, prominence=.15, distance=max(1, round(.008/cfg.ts)))
+            windows.append(dict(start_s=start, end_s=start+.1,
+                                mean_error_mm=float(np.mean(ew)),
+                                ac_rms_mm=float(np.std(ew)), p2p_mm=float(np.ptp(ew)),
+                                prominent_peaks=int(len(peaks))))
+        out['hold_windows'] = windows
         out.update(heavy_peak_abs_error_mm=float(np.max(abs(e[heavy]))),
                    heavy_rms_error_mm=float(np.sqrt(np.mean(e[heavy]**2))),
                    unloaded_1p1_to_end_error_p2p_mm=float(np.ptp(e[late])),
@@ -129,7 +151,7 @@ def quantization_probe(result):
     q_error = d['position_m']-d['measured_m']
     trace = {'time_s': d['time_s'], 'quantization_error_mm': q_error*1000}
     for alpha, key in [(0., 'raw_derivative_v'), (.85, 'filtered_derivative_v')]:
-        pid = DigitalPID(0., 0., .06, result['config']['ts'], alpha=alpha,
+        pid = DigitalPID(0., 0., result['config']['kd'], result['config']['ts'], alpha=alpha,
                          out_min=-1e6, out_max=1e6, integral_separation=False)
         trace[key] = np.array([pid.update(e, 0.) for e in q_error])
     mask = (d['time_s'] >= .1)&(d['time_s'] <= 1.)

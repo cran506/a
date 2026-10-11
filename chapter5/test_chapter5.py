@@ -255,6 +255,28 @@ class TwinAdapterTests(unittest.TestCase):
         self.assertLess(extension[2], 0.)
         self.assertLess(retraction[3], 0.)
 
+    def test_absolute_pressure_has_balanced_ambient_force(self):
+        twin = ClosedLoopTwin(load_force=0.)
+        state = np.array([.05, 0., twin.p['Pr'], twin.p['Pr']])
+        self.assertAlmostEqual(twin._dynamics(0., state, 0.)[1], 0., places=12)
+
+    def test_makeup_valves_admit_oil_only_below_tank_pressure(self):
+        twin = ClosedLoopTwin(load_force=0.)
+        twin.p['C_ip'] = twin.p['C_ep'] = 0.
+        state = np.array([.05, 0., .8*twin.p['Pr'], .8*twin.p['Pr']])
+        low = twin._dynamics(0., state, 0.)
+        self.assertTrue(np.all(low[2:] > 0.))
+        state[2:] = 1.2*twin.p['Pr']
+        np.testing.assert_array_equal(twin._dynamics(0., state, 0.)[2:], [0., 0.])
+
+    def test_smooth_load_remains_inside_window_and_preserves_plateau(self):
+        twin = ClosedLoopTwin(load_force=180000., load_ramp=.02)
+        for t, expected in ((.349, 0.), (.35, 0.), (.36, 90000.),
+                            (.37, 180000.), (.5, 180000.), (.68, 180000.),
+                            (.69, 90000.), (.7, 0.), (.701, 0.)):
+            with self.subTest(t=t):
+                self.assertAlmostEqual(twin.load_at(t), expected, delta=1e-7)
+
     def test_solver_failure_and_invalid_pressure_are_not_silently_logged(self):
         twin = ClosedLoopTwin(load_force=0., valve_tau=0.)
         failed = SimpleNamespace(success=False, y=twin.state[:, None], nfev=1, message="test failure")

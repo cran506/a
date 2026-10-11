@@ -1,4 +1,4 @@
-"""保留上传的 HydraulicTwin；补齐第3/5章闭环所需的接口。"""
+"""原始 HydraulicTwin 的闭环适配：有向节流、补油、阀动态与工艺负载。"""
 import json
 from pathlib import Path
 import numpy as np
@@ -7,14 +7,22 @@ from hydraulic_digital_twin import HydraulicTwin
 
 
 def physical_config():
+    """上传 twin 的原始示例参数，未改成课堂整定值。"""
     return json.loads(Path(__file__).with_name('physical_config.json').read_text())
+
+
+def classroom_config():
+    """公开的课堂阀配置；不是第四章辨识结果。"""
+    config = physical_config()
+    config.update(json.loads(Path(__file__).with_name('classroom_config.json').read_text()))
+    return config
 
 
 class QuantizedSensor:
     """0~300mm 的12bit ADC，LSB=量程/4096，饱和代码0~4095。"""
     def __init__(self, bits=12, span=.3):
         if bits < 1 or bits > 24 or span <= 0:
-            raise ValueError("ADC 参数无效")
+            raise ValueError('ADC 参数无效')
         self.bits, self.span = bits, span
         self.levels = 2**bits
         self.lsb = span/self.levels
@@ -25,22 +33,27 @@ class QuantizedSensor:
 
 
 class ClosedLoopTwin(HydraulicTwin):
-    """四阶液压模型加一阶实际阀芯滞后；控制指令在周期内 ZOH。
+    """四阶液压状态 + 一阶阀芯；1ms 周期内控制和外载保持不变。
 
-    原文件不改。按第3章PPT补上负压差回流符号；外载直接作用于牛顿方程。
-    矩形负载按控制采样时刻锁存，使积分器不跨越未定位的切换点。
+    保留原 twin 的摩擦、有效模量、泄漏和端盖模型。节流使用有向压差，
+    低压腔通过油箱补油单向阀吸油；不裁剪积分后的压力或输出位移。
     """
     def __init__(self, config=None, load_force=180000., load_window=(.35, .70),
-                 valve_tau=.015, rtol=1e-5):
+                 valve_tau=.0053, rtol=1e-5, load_ramp=0., makeup_area=.001,
+                 ambient_pressure=1e5):
         config = physical_config() if config is None else config.copy()
-        # 禁用原开环例子的 x=0.4m 工件；改用显式工艺时窗外载。
         config['x_work'] = config['L']+1.
         super().__init__(config)
-        if (not all(np.isfinite(v) for v in (valve_tau, load_force, rtol, *load_window))
-                or valve_tau < 0 or not 0 <= load_window[0] < load_window[1]
-                or load_force < 0 or rtol <= 0 or config['Pr'] <= 2000):
-            raise ValueError("阀时间常数、负载幅值或时窗无效")
+        values = (valve_tau, load_force, rtol, load_ramp, makeup_area,
+                  ambient_pressure, *load_window)
+        if (not all(np.isfinite(v) for v in values) or valve_tau < 0
+                or not 0 <= load_window[0] < load_window[1] or load_force < 0
+                or rtol <= 0 or not 0 <= load_ramp <= (load_window[1]-load_window[0])/2
+                or makeup_area < 0 or ambient_pressure < 0 or config['Pr'] <= 0):
+            raise ValueError('阀、负载、补油或压力参数无效')
         self.load_force, self.load_window = load_force, load_window
+        self.load_ramp, self.makeup_area = load_ramp, makeup_area
+        self.ambient_pressure = ambient_pressure
         self.valve_tau, self.rtol = valve_tau, rtol
         self.valve_state = self.active_force = 0.
         self.nfev = 0
@@ -51,44 +64,45 @@ class ClosedLoopTwin(HydraulicTwin):
         self.nfev = 0
         return state
 
-    def _get_beta(self, pressure):
-        """低压气穴等效近似：体积模量在蒸气压处趋零。
-
-        原来的残余0.001*beta不能保证绝对压力非负。只在低于回油背压
-        时增加气穴衰减，令压力趋近蒸气压而非跨越它；不裁剪最终压力。
-        Pv=2kPa 是本实验补充的近似参数，非多相气穴模型。
-        """
-        vapor_pressure = 2000.
-        factor = np.clip((pressure-vapor_pressure)/(self.p['Pr']-vapor_pressure), 0., 1.)
-        return super()._get_beta(pressure)*factor
+    def load_at(self, t):
+        start, end = self.load_window
+        if not start-1e-10 <= t < end-1e-10:
+            return 0.
+        if self.load_ramp == 0:
+            return self.load_force
+        fraction = np.clip(min((t-start)/self.load_ramp,
+                               (end-t)/self.load_ramp, 1.), 0., 1.)
+        return self.load_force*.5*(1-np.cos(np.pi*fraction))
 
     def _dynamics(self, t, x, u):
-        d = np.asarray(super()._dynamics(t, x, u), dtype=float)
-        xp, _, p1, p2 = x
+        xp, velocity, p1, p2 = x
         p = self.p
-        ue = np.sign(u)*max(abs(u)-p['deadzone'], 0.)
-        area = p['Cd']*p['w']*abs(ue*p['xv_max'])
-        if ue >= 0:
-            delta1, delta2 = p['Ps']-p1, p['Pr']-p2
-            old1, old2 = area*np.sqrt(2/p['rho']*abs(delta1)), -area*np.sqrt(2/p['rho']*abs(delta2))
-        else:
-            delta1, delta2 = p['Pr']-p1, p['Ps']-p2
-            old1, old2 = -area*np.sqrt(2/p['rho']*abs(delta1)), area*np.sqrt(2/p['rho']*abs(delta2))
-        signed1 = area*np.sign(delta1)*np.sqrt(2/p['rho']*abs(delta1))
-        signed2 = area*np.sign(delta2)*np.sqrt(2/p['rho']*abs(delta2))
         v1, v2 = p['V0_1']+p['A1']*xp, p['V0_2']+p['A2']*(p['L']-xp)
         if min(v1, v2) <= 0:
             raise RuntimeError('液压腔容积非正，停止仿真')
-        d[2] += self._get_beta(p1)/v1*(signed1-old1)
-        d[3] += self._get_beta(p2)/v2*(signed2-old2)
-        d[1] -= self.active_force/p['mass']
-        return d
+        ue = np.sign(u)*max(abs(u)-p['deadzone'], 0.)
+        area = p['Cd']*p['w']*abs(ue*p['xv_max'])
+        delta1, delta2 = ((p['Ps']-p1, p['Pr']-p2) if ue >= 0
+                          else (p['Pr']-p1, p['Ps']-p2))
+        q1 = area*np.sign(delta1)*np.sqrt(2/p['rho']*abs(delta1))
+        q2 = area*np.sign(delta2)*np.sqrt(2/p['rho']*abs(delta2))
+        # 双向缸的两腔各接油箱补油单向阀；仅 P<Pr 时有流入。
+        q1 += p['Cd']*self.makeup_area*np.sqrt(2/p['rho']*max(p['Pr']-p1, 0.))
+        q2 += p['Cd']*self.makeup_area*np.sqrt(2/p['rho']*max(p['Pr']-p2, 0.))
+        leak = p['C_ip']*(p1-p2)
+        dp1 = self._get_beta(p1)/v1*(q1-p['A1']*velocity-leak-p['C_ep']*p1)
+        dp2 = self._get_beta(p2)/v2*(q2+p['A2']*velocity+leak-p['C_ep']*p2)
+        # P1/P2 是绝对压；活塞杆外端的大气力必须纳入力平衡。
+        drive = p1*p['A1']-p2*p['A2']-self.ambient_pressure*(p['A1']-p['A2'])
+        dv = (drive-self._friction(velocity)-self._env_force(xp, velocity)
+              -self.active_force)/p['mass']
+        return np.array([velocity, dv, dp1, dp2])
 
     def step_voltage(self, voltage, dt):
-        if not np.isfinite(voltage) or dt <= 0:
-            raise ValueError("电压必须有限，dt必须为正")
+        if not np.isfinite(voltage) or not np.isfinite(dt) or dt <= 0:
+            raise ValueError('电压必须有限，dt必须为正且有限')
         command = float(np.clip(voltage, -10., 10.))/10.
-        self.active_force = (self.load_force if self.load_window[0]-1e-10 <= self.t < self.load_window[1]-1e-10 else 0.)
+        self.active_force = self.load_at(self.t)
         if self.valve_tau == 0:
             self.valve_state = command
             fun = lambda t, y: self._dynamics(t, y, command)
@@ -112,9 +126,6 @@ class ClosedLoopTwin(HydraulicTwin):
         return self.state.copy()
 
     def extension_kq(self):
-        """按当前P1计算伸出支路的潜在 dQ1/dxv，Ps<=P1则NaN。
-
-        不按实际阀方向筛选；阀反向时该值不是当前活动支路的局部增益。
-        """
+        """按 P1 计算伸出支路 dQ1/dxv；反向阀位时只是潜在增益。"""
         dp = self.p['Ps']-self.state[2]
         return self.p['Cd']*self.p['w']*np.sqrt(2*dp/self.p['rho']) if dp > 0 else np.nan
