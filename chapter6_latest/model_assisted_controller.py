@@ -6,22 +6,26 @@
 import math
 import numpy as np
 from controllers import DigitalPID
-from hydraulic_digital_twin import HydraulicTwin
+from media_model import AeratedHydraulicModel
 
 
 class ModelAssistedController:
     def __init__(self, pid_params, phys_params, enable_ff=True,
                  enable_gain_sched=True, pressure_alpha=.2,
-                 valve_tau=.0025, enable_valve_inverse=True, gain_prediction_s=0.):
-        if (not all(math.isfinite(v) for v in (pressure_alpha,valve_tau,gain_prediction_s))
-                or not 0 <= pressure_alpha < 1 or valve_tau < 0 or gain_prediction_s < 0):
+                 valve_tau=.0025, enable_valve_inverse=True, gain_prediction_s=0.,
+                 zero_flow_band_v=.01, deadzone_slew_v_s=40.,force_error_gain_s=80.):
+        if (not all(math.isfinite(v) for v in (pressure_alpha,valve_tau,gain_prediction_s,zero_flow_band_v,deadzone_slew_v_s,force_error_gain_s))
+                or not 0 <= pressure_alpha < 1 or valve_tau < 0 or gain_prediction_s < 0
+                or zero_flow_band_v<0 or deadzone_slew_v_s<=0 or force_error_gain_s<0):
             raise ValueError('压力滤波或阀响应参数无效')
         self.pid = DigitalPID(**pid_params)
         self.p = phys_params.copy()
-        self.model = HydraulicTwin(self.p)
+        self.model = AeratedHydraulicModel(self.p)
         self.enable_ff, self.enable_gain_sched = enable_ff, enable_gain_sched
         self.pressure_alpha = pressure_alpha
         self.gain_prediction_s = gain_prediction_s
+        self.zero_flow_band_v,self.deadzone_slew_v_s=zero_flow_band_v,deadzone_slew_v_s
+        self.force_error_gain_s=force_error_gain_s
         self.valve_tau, self.enable_valve_inverse = valve_tau, enable_valve_inverse
         self.k_flow = self.p['Cd']*self.p['w']*(self.p['xv_max']/10)*math.sqrt(2/self.p['rho'])
         self.deadzone_v = 10*self.p['deadzone']
@@ -38,7 +42,26 @@ class ModelAssistedController:
         self.pressure_filtered = np.array([self.p['Pr'], self.p['Pr']], dtype=float)
         self.previous_valve_target_v = 0.
         self.previous_nominal_force = 0.
+        self.deadzone_offset_v = 0.
+        self.deadzone_initialized = False
         self.last = {}
+
+    def _deadzone_inverse(self,linear_v,moving):
+        """显著流量精确反演；近零流量时有限速度渡过死区，冷启动仍预开。
+
+        精确死区逆的两侧极限相差2δ，不可能既精确又跨零连续。
+        公开的0.01V线性流量带内允许短暂小流量失配，偏置限速40V/s。
+        """
+        desired=math.copysign(self.deadzone_v,linear_v) if abs(linear_v)>1e-6 else 0.
+        if self.deadzone_initialized and abs(linear_v)<self.zero_flow_band_v:
+            change=self.deadzone_slew_v_s*self.pid.ts
+            offset=self.deadzone_offset_v+float(np.clip(desired-self.deadzone_offset_v,-change,change))
+        else:
+            offset=desired
+        self.deadzone_offset_v=offset
+        self.deadzone_initialized=self.deadzone_initialized or moving
+        self.last['deadzone_offset_v']=offset
+        return linear_v+offset
 
     def _friction_rate(self, velocity, acceleration):
         p = self.p
@@ -119,11 +142,16 @@ class ModelAssistedController:
                 force_rate = self.p['mass']*jerk_d+self._friction_rate(vd,ad)+known_force_rate_n_s
             self.previous_nominal_force = nominal_force
             self.last['desired_force_n'] = force
+            p1,p2=self.pressure_filtered
+            actual_force=p1*self.p['A1']-p2*self.p['A2']-self.p.get('ambient_pressure',1e5)*(self.p['A1']-self.p['A2'])
+            correction=self.force_error_gain_s*(force-actual_force)
+            self.last.update(actual_force_n=actual_force,planned_force_rate_n_s=force_rate,
+                             force_error_correction_n_s=correction,force_error_gain_s=self.force_error_gain_s)
+            force_rate+=correction
             moving = abs(vd)>1e-8 or abs(ad)>1e-6 or abs(force_rate)>1e-6
-            if moving:
-                linear_v = self._inverse_force_rate(origin_m+y_meas[0],vd,force_rate,known_force_rate_n_s)
-                if abs(linear_v)>1e-6:
-                    valve_target = linear_v+math.copysign(self.deadzone_v,linear_v)
+            # 停止后仍解连续性与泄漏，不把FF关断再切换符号持位偏置。
+            linear_v = self._inverse_force_rate(origin_m+y_meas[0],vd,force_rate,known_force_rate_n_s)
+            valve_target = self._deadzone_inverse(linear_v,moving)
             valve_target = float(np.clip(valve_target,-10.,10.))
             if self.enable_valve_inverse and self.valve_tau:
                 a = math.exp(-self.pid.ts/self.valve_tau)
@@ -136,11 +164,8 @@ class ModelAssistedController:
             else:
                 self.previous_valve_target_v = ff
         # 合成输出的动态余量，防止 FF + 已独立限幅的 PID 再次溢出。
-        # 停止后的 PID 小残差也必须越过物理死区，否则内泄漏会造成持位漂移。
-        e,di,d = self.pid._terms(r_state[0],y_meas[0])
-        feedback_candidate = self.pid.u_prev+self.pid.kp*(e-self.pid.e_prev)+di+d-self.pid.d_filt_prev
-        hold_bias = (math.copysign(self.deadzone_v,feedback_candidate)
-                     if self.enable_ff and not moving and abs(feedback_candidate)>1e-6 else 0.)
+        # 持位由持续逆模型补偿泄漏，PID无额外符号死区项，消除ADC触发的±δ切换。
+        hold_bias = 0.
         self.pid.out_min, self.pid.out_max = -10.-ff-hold_bias,10.-ff-hold_bias
         fb_linear = self.pid.update(target=r_state[0],feedback=y_meas[0])
         fb = fb_linear+hold_bias

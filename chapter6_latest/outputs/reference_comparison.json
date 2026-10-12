@@ -1,0 +1,126 @@
+{
+  "reference_source": "User-provided chapter 6 reference image; target numbers visually estimated or stated in its captions.",
+  "method": "Actual simulation metrics, no fitting or replacement of plotted state arrays. Target values are approximate, not raw reference data.",
+  "rows": [
+    {
+      "metric": "reference velocity at 0.16s",
+      "unit": "m/s",
+      "target_approx": 0.032,
+      "previous": 0.088,
+      "new": 0.032
+    },
+    {
+      "metric": "PID start, absolute sample time",
+      "unit": "ms",
+      "target_approx": 80.0,
+      "previous": 82.0,
+      "new": 81.0
+    },
+    {
+      "metric": "PID first startup velocity peak",
+      "unit": "m/s",
+      "target_approx": 0.058,
+      "previous": null,
+      "new": 0.059656641974523375
+    },
+    {
+      "metric": "PID first startup velocity peak time",
+      "unit": "s",
+      "target_approx": 0.105,
+      "previous": null,
+      "new": 0.10300000000000001
+    },
+    {
+      "metric": "PID loaded positive position error peak",
+      "unit": "mm",
+      "target_approx": 1.48,
+      "previous": 3.023397,
+      "new": 1.3846749182985647
+    },
+    {
+      "metric": "PID loaded peak time",
+      "unit": "s",
+      "target_approx": 0.54,
+      "previous": 0.565,
+      "new": 0.54
+    },
+    {
+      "metric": "PID error at 0.60s",
+      "unit": "mm",
+      "target_approx": -0.7,
+      "previous": 2.344,
+      "new": -0.586926370432006
+    },
+    {
+      "metric": "PID minimum loaded velocity",
+      "unit": "m/s",
+      "target_approx": 0.14,
+      "previous": 0.093441,
+      "new": 0.13127937122785432
+    },
+    {
+      "metric": "nominal minimum loaded velocity",
+      "unit": "m/s",
+      "target_approx": 0.14,
+      "previous": 0.10206,
+      "new": 0.1336483075491939
+    },
+    {
+      "metric": "full minimum loaded velocity",
+      "unit": "m/s",
+      "target_approx": 0.194,
+      "previous": 0.194327,
+      "new": 0.19709995633532107
+    },
+    {
+      "metric": "full light-load median voltage",
+      "unit": "V",
+      "target_approx": 2.5,
+      "previous": 2.351534,
+      "new": 2.356129423506892
+    },
+    {
+      "metric": "full heavy-load median voltage",
+      "unit": "V",
+      "target_approx": 4.2,
+      "previous": 4.630381,
+      "new": 4.253617467092366
+    },
+    {
+      "metric": "full maximum absolute error",
+      "unit": "mm",
+      "target_upper_bound": 0.05,
+      "previous": 0.042309,
+      "new": 0.043705096398422016
+    },
+    {
+      "metric": "full stop maximum voltage step",
+      "unit": "V/sample",
+      "target_shape": "continuous transition; no +/-2V impulses",
+      "previous_shape": "hard deadzone inversion and holding bias transition",
+      "new": 0.20014894495004076
+    },
+    {
+      "metric": "PID startup valley after first peak",
+      "unit": "m/s",
+      "target_approx": 0.01,
+      "previous": null,
+      "new": -0.0019174946571566486
+    },
+    {
+      "metric": "PID startup valley time",
+      "unit": "s",
+      "target_approx": 0.145,
+      "previous": null,
+      "new": 0.146
+    },
+    {
+      "metric": "PID velocity at 0.16s",
+      "unit": "m/s",
+      "target_approx": 0.018,
+      "previous": 0.09295,
+      "new": 0.02799540708574295
+    }
+  ],
+  "remaining_differences": "Peak time and valley are not identical to the reference. Low-pressure compressibility and force feedback are explicitly configured classroom model assumptions. Both feedforward groups share the same force feedback; the accuracy claim applies to a known model-matched load plan."
+}

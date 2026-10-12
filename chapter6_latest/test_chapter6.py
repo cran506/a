@@ -11,7 +11,9 @@ from scipy.integrate import trapezoid
 from controllers import DigitalPID
 from model_assisted_controller import ModelAssistedController
 from twin_adapter import ClosedLoopTwin,classroom_config
-from trajectory import generate_scurve
+from trajectory import generate_scurve,generate_process_scurve
+from hydraulic_digital_twin import HydraulicTwin
+from media_model import AeratedHydraulicModel
 from simulation import Experiment,planned_load
 
 
@@ -81,7 +83,7 @@ class CompositeControllerTests(unittest.TestCase):
         self.assertGreater(c.last['linear_voltage_v'],0.)
 
     def test_retraction_uses_negative_inverse_and_real_second_chamber_pressure(self):
-        c=self.controller(pressure_alpha=0.,gain_prediction_s=0.,enable_valve_inverse=False)
+        c=self.controller(pressure_alpha=0.,gain_prediction_s=0.,enable_valve_inverse=False,force_error_gain_s=0.)
         _,ff,_=c.update((0.,-.1,-.2),(0.,-.1),(2e6,17e6),jerk_d=-5.,origin_m=.08)
         self.assertLess(ff,-c.deadzone_v)
         self.assertAlmostEqual(c.last['supply_delta_pa'],self.p['Ps']-17e6)
@@ -108,7 +110,8 @@ class CompositeControllerTests(unittest.TestCase):
         for _ in range(5):
             total,ff,fb=c.update((.001,0.,0.),(0.,0.),(1e5,1e5))
             self.assertAlmostEqual(c.pid.u_prev,.1)
-            self.assertAlmostEqual(fb,.5)
+            self.assertAlmostEqual(fb,.1)
+            self.assertEqual(c.last['holding_deadzone_compensation_v'],0.)
             self.assertAlmostEqual(total,ff+fb)
 
     def test_unknown_load_cannot_change_command_before_measurements_change(self):
@@ -121,9 +124,37 @@ class CompositeControllerTests(unittest.TestCase):
             commands.append(c.update((0.,.2,0.),(x-.01,v),(p1,p2),jerk_d=0.,origin_m=.01))
         self.assertEqual(commands[0],commands[1])
 
+    def test_continuous_holding_inverse_compensates_real_leakage(self):
+        c=self.controller(pressure_alpha=0.,enable_valve_inverse=False,force_error_gain_s=0.)
+        _,ff,_=c.update((0.,0.,0.),(0.,0.),(4.55e6,9e6),jerk_d=0.,origin_m=.14)
+        self.assertLess(ff,-c.deadzone_v)
+        twin=ClosedLoopTwin(config=self.p,load_force=0.,valve_tau=0.)
+        derivatives=twin._dynamics(0.,np.array([.14,0.,4.55e6,9e6]),ff/10)
+        self.assertAlmostEqual(self.p['A1']*derivatives[2]-self.p['A2']*derivatives[3],0.,delta=1e-5)
+
+    def test_small_flow_reversal_crosses_deadzone_without_hard_jump(self):
+        c=self.controller()
+        self.assertGreater(c._deadzone_inverse(.001,True),.4)
+        before=c.deadzone_offset_v
+        for _ in range(20):
+            c._deadzone_inverse(-.001,False)
+            self.assertLessEqual(abs(c.deadzone_offset_v-before),40*.001+1e-12)
+            before=c.deadzone_offset_v
+        self.assertAlmostEqual(before,-.4,places=12)
+
+    def test_force_error_feedback_uses_net_absolute_pressure_force(self):
+        c=self.controller(pressure_alpha=0.,force_error_gain_s=80.)
+        c.update((0.,.2,0.),(0.,.2),(2e6,1e6),jerk_d=0.,origin_m=.05)
+        actual=2e6*self.p['A1']-1e6*self.p['A2']-1e5*(self.p['A1']-self.p['A2'])
+        expected=80*(c.last['desired_force_n']-actual)
+        self.assertAlmostEqual(c.last['actual_force_n'],actual)
+        self.assertAlmostEqual(c.last['force_error_correction_n_s'],expected)
+        self.assertAlmostEqual(c.last['desired_force_rate_n_s'],c.last['planned_force_rate_n_s']+expected)
+
     def test_protection_and_parameter_validation(self):
         for kwargs in ({'gain_prediction_s':-1.},{'gain_prediction_s':math.nan},
-                       {'valve_tau':math.inf},{'pressure_alpha':1.}):
+                       {'valve_tau':math.inf},{'pressure_alpha':1.},
+                       {'force_error_gain_s':-1.},{'zero_flow_band_v':-1.},{'deadzone_slew_v_s':0.}):
             with self.subTest(kwargs=kwargs),self.assertRaises(ValueError):self.controller(**kwargs)
         c=self.controller(pressure_alpha=0.)
         with self.assertRaises(ValueError):c.update((0.,0.,0.),(0.,0.),(-1.,1e5))
@@ -141,6 +172,32 @@ class ReferenceTests(unittest.TestCase):
         np.testing.assert_array_equal(x[1000:],np.full(201,.13))
         np.testing.assert_array_equal(v[1000:],np.zeros(201))
         self.assertAlmostEqual(float(trapezoid(v,t)),.13,places=8)
+
+    def test_process_reference_is_analytic_and_matches_approach_cruise_hold(self):
+        t,x,v,a,j=generate_process_scurve()
+        self.assertAlmostEqual(v[160],.032,places=12)
+        self.assertAlmostEqual(v[350],.2,places=12)
+        self.assertAlmostEqual(v[500],.2,places=12)
+        self.assertLessEqual(abs(j).max(),40.)
+        np.testing.assert_array_equal(x[1000:],np.full(201,.13))
+        np.testing.assert_array_equal(v[1000:],np.zeros(201))
+        self.assertAlmostEqual(float(trapezoid(v,t)),.13,delta=1e-7)
+        for index in (20,75,120,200,300,500,850,980):
+            self.assertAlmostEqual((x[index+1]-x[index-1])/.002,v[index],delta=1e-5)
+            self.assertAlmostEqual((v[index+1]-v[index-1])/.002,a[index],delta=1e-8)
+
+    def test_media_zero_air_restores_original_and_air_has_physical_compliance(self):
+        p=classroom_config()
+        zero=AeratedHydraulicModel(dict(p,air_fraction_at_pr=0.))
+        original=HydraulicTwin(p)
+        mixed=AeratedHydraulicModel(p)
+        for pressure in (1e5,5e5,2.5e6,17e6):
+            self.assertEqual(zero._get_beta(pressure),original._get_beta(pressure))
+            self.assertGreater(mixed._get_beta(pressure),0.)
+            self.assertLess(mixed._get_beta(pressure),original._get_beta(pressure))
+        self.assertLess(mixed._get_beta(1e5),2e7)
+        self.assertGreater(mixed._get_beta(17e6),1.7e9)
+        with self.assertRaises(ValueError):AeratedHydraulicModel(dict(p,air_fraction_at_pr=1.))
 
     def test_known_process_reference_matches_applied_load_and_stays_continuous(self):
         cfg=Experiment('reference')

@@ -104,12 +104,16 @@ def _footer(results):
     second = (f"{scenario}；载荷 {float(cfg['load_force'])/1000:g} kN，"
               f"{float(cfg['load_start']):g}–{float(cfg['load_end']):g} s，"
               f"加载/卸载过渡 {load_ramp_ms:g}/{float(cfg['unload_ramp'])*1000:g} ms；腔压、速度由真实 ODE 连续演化。")
-    third = (f"阀 τ={tau_ms:g} ms；两类前馈共同采用一阶阀的 ZOH 逆模型；"
-             "压力调度使用传感压力。所有注释来自本次计算，非指定目标值。")
+    parameters=cfg['physical_parameters']
+    third=(f"含气油 α0={100*parameters.get('air_fraction_at_pr',0):g}% @ Pr；"
+           f"两类模型辅助共同使用液压力误差反馈 λ={cfg.get('force_error_gain_s',0):g} /s，"
+           f"σ={parameters['sigma']:g} N·s/m，γ={parameters['gamma']:g} / (m/s)；课堂参数，非设备辨识值。")
+    fourth = (f"阀 τ={tau_ms:g} ms；共同采用一阶阀 ZOH 逆模型与近零死区在线过渡；"
+              "图线未事后滤波，注释来自本次计算。")
     prediction = float(cfg.get("gain_prediction_s", 0.)) * 1000
     if prediction:
-        third += f" 完整组含 {prediction:g} ms 工艺导数增益预测。"
-    return "\n".join((first, second, third))
+        fourth += f" 完整组含 {prediction:g} ms 工艺导数增益预测。"
+    return "\n".join((first, second, third, fourth))
 
 
 def plot_comparison(results, output):
@@ -125,7 +129,7 @@ def plot_comparison(results, output):
                 "axes.unicode_minus": False, "font.size": 10,
                 "figure.dpi": 120, "savefig.dpi": 180}
     with plt.rc_context(settings):
-        fig, axes = plt.subplots(2, 2, figsize=(15.2, 9.4))
+        fig, axes = plt.subplots(2, 2, figsize=(16.4, 8.6))
         error_ax, voltage_ax, start_ax, load_ax = axes.flat
         fig.suptitle("第六章 模型辅助复合控制：起动补偿与重载流量增益实时线性化",
                      fontsize=17, y=.978)
@@ -213,12 +217,12 @@ def plot_comparison(results, output):
                    point, location, color)
         error_ax.legend(loc="lower left", fontsize=9, framealpha=.93)
         voltage_ax.legend(loc="upper right", fontsize=9, framealpha=.93)
-        start_ax.legend(loc="lower right", fontsize=8.5, framealpha=.93)
+        start_ax.legend(loc="lower left", fontsize=8.5, framealpha=.93)
         load_ax.legend(loc="upper right", fontsize=8.5, framealpha=.93)
         fig.subplots_adjust(left=.075, right=.985, top=.905, bottom=.165,
                             hspace=.34, wspace=.23)
-        fig.text(.075, .095, _footer(results), fontsize=8.6, color="#444444",
-                 va="top", linespacing=1.8)
+        fig.text(.075, .095, _footer(results), fontsize=8.2, color="#444444",
+                 va="top", linespacing=1.6)
         path = output / "model_assisted_comparison.png"
         try:
             fig.savefig(path, facecolor="white")

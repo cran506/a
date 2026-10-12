@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parent
 STRATEGIES = (("pid", False, False), ("nominal", True, False), ("full", True, True))
 
 
-def run_experiments(*, known_load=True, rtol=1e-5):
+def run_experiments(*, known_load=True, rtol=1e-6):
     results = {}
     for name, enable_ff, enable_gain_sched in STRATEGIES:
         config = Experiment(name, enable_ff=enable_ff, enable_gain_sched=enable_gain_sched,
@@ -32,7 +32,7 @@ def save_data(results, output):
     for key, result in results.items():
         fields = list(result["data"])
         with (output / f"{key}.csv").open("w", encoding="utf-8", newline="") as stream:
-            writer = csv.writer(stream)
+            writer = csv.writer(stream,lineterminator='\n')
             writer.writerow(fields)
             writer.writerows(zip(*(result["data"][field] for field in fields)))
     summary = {
@@ -51,7 +51,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--save-data", action="store_true", help="另存三组原始 CSV 和指标 JSON")
     parser.add_argument("--unknown-load", action="store_true", help="外载不告知前馈，用于检查适用条件")
-    parser.add_argument("--rtol", type=float, default=1e-5, help="Radau 相对容差，默认 1e-5")
+    parser.add_argument("--rtol", type=float, default=1e-6, help="Radau 相对容差，默认 1e-6")
     parser.add_argument("--output", type=Path, help="输出目录，默认当前代码旁的 outputs")
     args = parser.parse_args()
     if not 0 < args.rtol < 1:

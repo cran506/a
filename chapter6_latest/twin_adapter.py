@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import numpy as np
 from scipy.integrate import solve_ivp
-from hydraulic_digital_twin import HydraulicTwin
+from media_model import AeratedHydraulicModel
 
 
 def physical_config():
@@ -32,7 +32,7 @@ class QuantizedSensor:
         return code*self.lsb
 
 
-class ClosedLoopTwin(HydraulicTwin):
+class ClosedLoopTwin(AeratedHydraulicModel):
     """四阶液压状态 + 一阶阀芯；1ms 周期内控制和外载保持不变。
 
     保留原 twin 的摩擦、有效模量、泄漏和端盖模型。节流使用有向压差，
