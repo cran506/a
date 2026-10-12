@@ -2,6 +2,7 @@
 
 结合第 3、4、5 章 PPT、上传的液压数字孪生和 Word 中的 PID、S 型轨迹代码，生成一张三联结果图：位移跟踪、真实跟踪误差、控制电压。三组闭环仿真分别展示保守增益、激进增益和未滤波微分的表现。
 
+- [最新完整交付文件夹](chapter5_latest/)
 - [三联结果图](chapter5/outputs/classroom_comparison.png)
 - [单图交付 ZIP](deliverables/第五章_PID单图交付.zip)
 - [代码运行与模型说明](chapter5/README.md)
