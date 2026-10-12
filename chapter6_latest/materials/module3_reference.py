@@ -1,0 +1,120 @@
+# Word 原始模块三参考，保留其实现及原始参数键；实际仿真使用 ../model_assisted_controller.py。
+import numpy as np
+from controllers import DigitalPID
+
+"""
+================================================================================
+《智能流体传动与控制》 第六章 课堂编程实践
+文件名: model_assisted_lab.py
+对应教材章节:
+    - 6.1 二自由度前馈-反馈复合控制架构 (图 6.1: 前馈主导 u_ff + 反馈托底 u_fb)
+    - 6.2 基于逆动力学的合外力前馈策略 (式 6.1: F_drive = m*a_d + sigma*v_d + F_f + F_ext)
+    - 6.3 电液伺服非线性特性的逆模型补偿 (式 6.2 流量增益实时线性化、式 6.3 死区逆补偿)
+    - 6.4 模型辅助控制的动态性能评估 (代码清单 6.1、图 6.4 起动瞬态、图 6.5 突变负载抗扰动刚度)
+
+【实验内容与学习指引】
+本程序针对存在显著伺服阀正遮盖死区、Stribeck 静-动摩擦跳变以及负载压差流量增益衰减的
+非对称阀控液压缸系统，开展三组递进式控制架构对比实验：
+
+  1. 策略 1 [纯 PID 反馈控制 (单自由度误差驱动，enable_ff=False)]：
+     - 起动表现 (0 ~ 0.16 s)：由于初始位置偏差为 0，控制器需耗时约 80 ms 累积误差积分以突破
+       静摩擦与死区阈值 (u_break = 1.20 V)，期间滑块处于“有压力无位移”的物理粘滞死区；
+       突破静摩擦瞬间因摩擦阻力由静摩擦陡降至动摩擦，且积分器已累积过量控制量，诱发显著的起动速度超调 (图 6.4)。
+     - 重载表现 (t = 0.50 s)：当滑块以 0.20 m/s 恒速巡航接触工件时，驱动腔压力 P1 急剧升高，
+       阀口有效压差 (Ps - P1) 缩窄使物理流量增益 Kq 衰减约 45%，速度显著跌落至 0.15 m/s (图 6.5)。
+
+  2. 策略 2 [标称前馈 + PID 控制 (含逆动力学与死区逆补偿，但无实时压差增益调度)]：
+     - 起动表现：在 t = 0+ 瞬间输出 1.20 V 起动前馈脉冲，消除起动死区与速度超调；
+     - 重载表现：因前馈通路采用标称空载压差计算流量映射，无法感知 0.50 s 负载引起的压差收窄，
+       在突加负载瞬间同样发生明显的速度跌落与动态位置偏差。
+
+  3. 策略 3 [完整模型辅助控制 (ModelAssistedController，严格对应教材代码清单 6.1)]：
+     - 完整集成逆动力学合外力前馈、层流泄漏补偿、基于实测压力的流量增益实时线性化 (式 6.2)
+       以及死区逆函数补偿 (式 6.3)。
+     - 在 t = 0+ 实现零延迟平稳起动；在 t = 0.50 s 负载突变瞬间，利用实测压力反馈主动将控制电压
+       从 2.50 V 阶跃拉升至 4.20 V，抵消物理流量增益衰减，实现全工况高精度跟踪 (误差 < 0.05 mm)。
+================================================================================
+"""
+
+
+# ==============================================================================
+# 模块三：模型辅助复合控制器 (严格对应教材 6.4 节代码清单 6.1)
+# ==============================================================================
+class ModelAssistedController:
+    """
+    模型辅助二自由度复合控制器：物理机理前馈 (u_ff) + 误差反馈 (u_fb)
+    核心逻辑 (对应教材代码清单 6.1)：
+      遵循“期望运动状态 -> 逆动力学受力需求 -> 腔室理论建压与层流泄漏补偿 -> 压差流量增益实时线性化
+      -> 死区逆函数补偿”的物理因果链，在动作发生瞬间直接输出标称控制量 u_ff，由下层 PID 消除残差。
+    """
+    def __init__(self, pid_params, phys_params, enable_ff=True, enable_gain_sched=True):
+        # 1. 初始化底层的 PID 调节器 (用于消除未建模残差)
+        self.pid = DigitalPID(**pid_params)
+        # 2. 注入第四章辨识得到的物理参数 (m, sigma, Ct, A1, A2, K_flow, deadzone 等)
+        self.p = phys_params.copy()
+        self.enable_ff = enable_ff                  # 是否启用逆动力学与死区前馈通路
+        self.enable_gain_sched = enable_gain_sched  # 是否启用基于实测压力的流量增益实时线性化
+
+    def _calc_stribeck(self, vd):
+        """计算期望速度 vd 对应的非线性摩擦力 (Stribeck 模型，对应教材式 6.1 中的 F_f(v_d))"""
+        if abs(vd) <= 1e-6:
+            return 0.0
+        p = self.p
+        f_mag = p['Fc'] + (p['Fs'] - p['Fc']) * np.exp(-(vd / p['vs'])**2)
+        return f_mag * np.sign(vd)
+
+    def update(self, r_state, y_meas, P_meas):
+        """
+        单步复合控制律解算 (严格对应教材代码清单 6.1 的 6 个步骤)
+        :param r_state: [pos_d, vel_d, acc_d] 期望轨迹状态 (m, m/s, m/s^2)
+        :param y_meas:  [pos, vel] 实测运动状态
+        :param P_meas:  [P1, P2] 实测腔室压力 (P1:无杆腔, P2:有杆腔, Pa)
+        """
+        # --- 1. 状态解耦与参数切换 ---
+        vd, ad = r_state[1], r_state[2]
+        
+        # 若关闭前馈通路 (策略 1: 纯 PID 控制)，则完全依赖下层 PID 误差反馈驱动
+        if not self.enable_ff:
+            u_fb = self.pid.update(target=r_state[0], feedback=y_meas[0])
+            return np.clip(u_fb, -10.0, 10.0), 0.0, u_fb
+
+        # 根据运动方向切换有效作用面积 (伸出: 无杆腔 A1 进油；缩回: 有杆腔 A2 进油)
+        if vd >= 0.0:
+            A_act = self.p['A1']
+            P_return_est = self.p['P2_0']
+        else:
+            A_act = self.p['A2']
+            P_return_est = self.p['P1_0']
+
+        # --- 2. 逆动力学前馈 (对应教材式 6.1: F_drive = m * ad + sigma * vd + F_fric) ---
+        v_eff_ff = vd if abs(vd) > 1e-6 else (1e-5 * np.sign(ad) if abs(ad) > 1e-4 else 0.0)
+        F_fric   = self._calc_stribeck(v_eff_ff)
+        F_drive  = self.p['m'] * ad + self.p['sigma'] * vd + F_fric
+
+        # --- 3. 流量计算与层流泄漏补偿 ---
+        P_req_est = (F_drive + P_return_est * self.p['A2']) / A_act - self.p['P1_0'] if vd >= 0.0 \
+                    else (P_return_est * self.p['A1'] - F_drive) / A_act - self.p['P2_0']
+        
+        # --- 4. 流量增益实时线性化 (对应教材式 6.2: Feedback Linearization) ---
+        # 策略 3 使用实测压力 P_meas[0] 实时计算有效阀口压差 delta_P = Ps - P_drive_real；
+        # 策略 2 仅使用标称空载压力 P1_0，无法感知外部突加负载引起的压差收窄与增益衰减。
+        P_drive_real = P_meas[0] if (self.enable_gain_sched and vd >= 0.0) else self.p['P1_0']
+        delta_P = max(self.p['Ps'] - P_drive_real, 5.0e5)
+        
+        Q_leak = self.p['Ct'] * max(P_req_est, 0.0) * np.sqrt(delta_P / (self.p['Ps'] - self.p['P1_0']))
+        
+        active_motion = (vd > 1e-6) or (abs(vd) <= 1e-6 and ad > 1e-4)
+        if active_motion:
+            Q_total = A_act * vd + Q_leak
+            # 逆解孔口流量方程: u_lin = Q_total / (K_flow * sqrt(delta_P))
+            u_lin = Q_total / (self.p['K_flow'] * np.sqrt(delta_P))
+            # --- 5. 基于逆函数的死区补偿 (对应教材式 6.3 & 图 6.3b) ---
+            u_ff = u_lin + self.p['deadzone']
+        else:
+            u_lin = 0.0
+            u_ff  = 0.0
+
+        # --- 6. PID 反馈修正与合成输出 ---
+        u_fb = self.pid.update(target=r_state[0], feedback=y_meas[0])
+        u_total = np.clip(u_ff + u_fb, -10.0, 10.0)
+        return u_total, u_ff, u_fb

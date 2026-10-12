@@ -1,0 +1,110 @@
+{
+  ".gitignore": {
+    "bytes": 23,
+    "sha256": "6feaded4e28ea86e001a6751b4e3d960e8b7c31b9616ff9936b79297086e809b"
+  },
+  "README.md": {
+    "bytes": 14683,
+    "sha256": "abbac265d7394d230f3dbde198ab43f9f648f50ac3f47c74bad380728641022a"
+  },
+  "classroom_config.json": {
+    "bytes": 116,
+    "sha256": "936e486965cddc56490f56cbd3b7e924be042fade3d80e34609545c7fb3cff00"
+  },
+  "controllers.py": {
+    "bytes": 2479,
+    "sha256": "305994f363531aa50b88b6c0b54c854b3290507cd775380f953379041dc4fdeb"
+  },
+  "hydraulic_digital_twin.py": {
+    "bytes": 16725,
+    "sha256": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f"
+  },
+  "materials/chap06-ppt.pdf": {
+    "bytes": 629346,
+    "sha256": "1f83c1f3826c7ad4eee561ce63b98c52b2e64c225b77b4696c69c4ffd92e2b1f"
+  },
+  "materials/chap06.txt": {
+    "bytes": 16120,
+    "sha256": "0f901865f7f4fa35d2317998da3191dd8cbbf2e38f1877aa7f6d0e073619c0e8"
+  },
+  "materials/module3_reference.py": {
+    "bytes": 7428,
+    "sha256": "3d92b4d271b95d8ba454ed9409cf005c2a57f78202c06cc9690422f16126e47b"
+  },
+  "materials/module3_reference.txt": {
+    "bytes": 7251,
+    "sha256": "2e6dc3e976de63468d155ceb4b0a5330c98f89740a40f2f7660567c8da8134e9"
+  },
+  "materials/智能流体传动与控1.docx": {
+    "bytes": 18294,
+    "sha256": "f1e43754bd6d8f38fd98fb4599f5fe0c4c5c4b9c94971e3c9759af5cf7e5d5a6"
+  },
+  "model_assisted_controller.py": {
+    "bytes": 8431,
+    "sha256": "3f110392aea17e50ed307b0c92fafdb5d8b8257e457fa6e82b3ae0977dcd72a5"
+  },
+  "model_assisted_lab.py": {
+    "bytes": 3070,
+    "sha256": "f4c44df291a5de1fb5c284139b2e839f40173f95b2c0f5f173c9d21403779a2b"
+  },
+  "outputs/full.csv": {
+    "bytes": 482896,
+    "sha256": "666d2c79756f42b3d71bf28ee96c90b4f0220aba3d87b1a06849741e6d5b5a20"
+  },
+  "outputs/model_assisted_comparison.png": {
+    "bytes": 588490,
+    "sha256": "59aa98fbcc8c55a933a1aca2430d7b7f31bba520c978aa2671900ede0c3eb2b3"
+  },
+  "outputs/nominal.csv": {
+    "bytes": 481853,
+    "sha256": "b66d1bbbc5e11d4529a30eb2b189c5aa0c40f304286f3a275e6ac81e874b1857"
+  },
+  "outputs/pid.csv": {
+    "bytes": 403945,
+    "sha256": "a8f37de4b8d77aa1e6697e6a4b824d6fcb66552bf4c87cc00cdbf0efcfa10bdf"
+  },
+  "outputs/summary.json": {
+    "bytes": 9190,
+    "sha256": "641730d778dfc081867ce7a50c35416ae4b9321a60606db9c757977de9724469"
+  },
+  "outputs/validation.json": {
+    "bytes": 15625,
+    "sha256": "dd842cbdafb9f86cf0834422cc64bf0c37473debf97bbf35e46c5b9264435743"
+  },
+  "package_delivery.py": {
+    "bytes": 1969,
+    "sha256": "6cfc149d0eb1c9f4aef8b13f0b4198c214d21f393e21a6fffa544b1440884f4a"
+  },
+  "physical_config.json": {
+    "bytes": 400,
+    "sha256": "0a7ab224a3dc4e55dbf4968d4a30b4b0644b05dab90a475592504dfcb0dad4ed"
+  },
+  "plotting.py": {
+    "bytes": 11529,
+    "sha256": "dc0e7502461579cc0e6e3ed936964f35052a79a9182dcc7e9f0ea54df68d455c"
+  },
+  "requirements.txt": {
+    "bytes": 49,
+    "sha256": "918080dd0563866316e2e00c785771a10801b86a8f388a191541e8de22e0e419"
+  },
+  "simulation.py": {
+    "bytes": 7339,
+    "sha256": "a45f2483ea3eb05783416d0f463b7b2e52fa3647bce61c8793369b6773282c0d"
+  },
+  "test_chapter6.py": {
+    "bytes": 8471,
+    "sha256": "fb66df5ab8755bf372c8ded45311df0a5dfc33ac44d74924d62ad9ce1abc7e92"
+  },
+  "trajectory.py": {
+    "bytes": 2018,
+    "sha256": "416e5bb0177942d7c7b9f9d09fab3c2f2d478308c9b8e1484c058cc19f4aa746"
+  },
+  "twin_adapter.py": {
+    "bytes": 6293,
+    "sha256": "ae8d968f5ae2a7652a01681fc7b4d64eb771c5e50dfd70db5e9f04f87c2f714a"
+  },
+  "verify_experiment.py": {
+    "bytes": 7308,
+    "sha256": "3400e175b0208f6a2d41d23aafabccb685ebf955b0d63443247a26d530655082"
+  }
+}

@@ -1,0 +1,153 @@
+"""模块三：有量纲的双腔逆模型前馈 + 数字 PID 残差反馈。
+
+沿用 Word 的三策略开关，补齐 PPT 的已知工艺负载、真实建压流量和阀动态。
+控制器仅接收参考计划及传感器值，不读取被控对象的真实外载或积分器导数。
+"""
+import math
+import numpy as np
+from controllers import DigitalPID
+from hydraulic_digital_twin import HydraulicTwin
+
+
+class ModelAssistedController:
+    def __init__(self, pid_params, phys_params, enable_ff=True,
+                 enable_gain_sched=True, pressure_alpha=.2,
+                 valve_tau=.0025, enable_valve_inverse=True, gain_prediction_s=0.):
+        if (not all(math.isfinite(v) for v in (pressure_alpha,valve_tau,gain_prediction_s))
+                or not 0 <= pressure_alpha < 1 or valve_tau < 0 or gain_prediction_s < 0):
+            raise ValueError('压力滤波或阀响应参数无效')
+        self.pid = DigitalPID(**pid_params)
+        self.p = phys_params.copy()
+        self.model = HydraulicTwin(self.p)
+        self.enable_ff, self.enable_gain_sched = enable_ff, enable_gain_sched
+        self.pressure_alpha = pressure_alpha
+        self.gain_prediction_s = gain_prediction_s
+        self.valve_tau, self.enable_valve_inverse = valve_tau, enable_valve_inverse
+        self.k_flow = self.p['Cd']*self.p['w']*(self.p['xv_max']/10)*math.sqrt(2/self.p['rho'])
+        self.deadzone_v = 10*self.p['deadzone']
+        # 两个阀口共用阀芯，按面积比与力平衡计算空载巡航标称压力。
+        k = (self.p['A1']/self.p['A2'])**2
+        force = self.model._friction(.2)
+        atmosphere = self.p.get('ambient_pressure', 1e5)*(self.p['A1']-self.p['A2'])
+        p2 = (self.p['A1']*(self.p['Ps']+k*self.p['Pr'])-atmosphere-force)/(k*self.p['A1']+self.p['A2'])
+        self.nominal_pressures = np.array([self.p['Ps']-k*(p2-self.p['Pr']), p2])
+        self.reset()
+
+    def reset(self):
+        self.pid.reset()
+        self.pressure_filtered = np.array([self.p['Pr'], self.p['Pr']], dtype=float)
+        self.previous_valve_target_v = 0.
+        self.previous_nominal_force = 0.
+        self.last = {}
+
+    def _friction_rate(self, velocity, acceleration):
+        p = self.p
+        expo = math.exp(-(velocity/p['vs'])**2)
+        magnitude = p['Fc']+(p['Fs']-p['Fc'])*expo
+        slope = -2*velocity/p['vs']**2*(p['Fs']-p['Fc'])*expo
+        smooth_sign = math.tanh(p['gamma']*velocity)
+        derivative = slope*smooth_sign + magnitude*p['gamma']*(1-smooth_sign**2)+p['sigma']
+        return derivative*acceleration
+
+    def _inverse_force_rate(self, position, vd, desired_force_rate, known_force_rate=0.):
+        p = self.p
+        p1, p2 = self.pressure_filtered
+        v1, v2 = p['V0_1']+p['A1']*position, p['V0_2']+p['A2']*(p['L']-position)
+        if min(v1, v2) <= 0:
+            raise ValueError('液压腔容积必须为正')
+        c1, c2 = self.model._get_beta(p1)/v1, self.model._get_beta(p2)/v2
+        leak = p['C_ip']*(p1-p2)
+        # 液压力 Fh=A1*P1-A2*P2 的连续性方程：Fh_dot=G*u_lin+H。
+        h = -(p['A1']**2*c1+p['A2']**2*c2)*vd-(p['A1']*c1+p['A2']*c2)*leak
+        h += -p['A1']*c1*p.get('C_ep',0.)*p1+p['A2']*c2*p.get('C_ep',0.)*p2
+        # 与 Twin 相同的两腔补油支路；绝不裁剪积分后的压力。
+        area = p.get('makeup_area', .001)
+        h += p['A1']*c1*p['Cd']*area*math.sqrt(2/p['rho']*max(p['Pr']-p1,0.))
+        h -= p['A2']*c2*p['Cd']*area*math.sqrt(2/p['rho']*max(p['Pr']-p2,0.))
+        numerator = desired_force_rate-h
+        pressures = self.pressure_filtered.copy() if self.enable_gain_sched else self.nominal_pressures
+        if self.enable_gain_sched and self.gain_prediction_s:
+            ratio=(p['A1']/p['A2'])**2
+            delta=self.gain_prediction_s*known_force_rate/(ratio*p['A1']+p['A2'])
+            pressures += np.array([ratio*delta,-delta])
+        drive1, drive2 = pressures
+        if numerator >= 0:
+            delta_in = max(p['Ps']-drive1, 5e5)
+            b1 = self.k_flow*math.sqrt(delta_in)
+            outlet = drive2-p['Pr']
+            b2 = -self.k_flow*math.copysign(math.sqrt(abs(outlet)),outlet)
+        else:
+            delta_in = max(p['Ps']-drive2, 5e5)
+            outlet = drive1-p['Pr']
+            b1 = self.k_flow*math.copysign(math.sqrt(abs(outlet)),outlet)
+            b2 = -self.k_flow*math.sqrt(delta_in)
+        g = p['A1']*c1*b1-p['A2']*c2*b2
+        if g <= 0:
+            raise ValueError('局部逆模型增益非正，当前工作点不可用')
+        linear_v = numerator/g
+        self.last.update(inverse_gain_n_s_v=g, desired_force_rate_n_s=desired_force_rate,
+                         continuity_bias_n_s=h, supply_delta_pa=delta_in,
+                         linear_voltage_v=linear_v)
+        return linear_v
+
+    def update(self, r_state, y_meas, P_meas, *, jerk_d=None,
+               known_force_n=0., known_force_rate_n_s=0., origin_m=0.):
+        """返回总电压、实际前馈电压、反馈电压，单位均为 V。
+
+        r_state=[位置m,速度m/s,加速度m/s²]；y_meas=[相对位置m,速度m/s]。
+        known_force/rate 只允许来自公共参考计划；未知外载应传0。
+        jerk_d 是规划器的解析跃度，不是实测加速度强差分。
+        """
+        values = [*r_state,*y_meas,*P_meas,known_force_n,known_force_rate_n_s,origin_m]
+        if jerk_d is not None:
+            values.append(jerk_d)
+        if not np.all(np.isfinite(values)):
+            raise ValueError('参考与测量必须为有限数值')
+        if min(P_meas) <= 0:
+            raise ValueError('实测绝对压力必须为正')
+        self.pressure_filtered = self.pressure_alpha*self.pressure_filtered+(1-self.pressure_alpha)*np.asarray(P_meas)
+        self.last = {}
+        ff_raw, ff, valve_target = 0., 0., 0.
+        moving = False
+        if self.enable_ff:
+            _, vd, ad = r_state
+            nominal_force = self.p['mass']*ad+self.model._friction(vd)
+            force = nominal_force+known_force_n
+            if jerk_d is None:
+                force_rate = (nominal_force-self.previous_nominal_force)/self.pid.ts+known_force_rate_n_s
+            else:
+                force_rate = self.p['mass']*jerk_d+self._friction_rate(vd,ad)+known_force_rate_n_s
+            self.previous_nominal_force = nominal_force
+            self.last['desired_force_n'] = force
+            moving = abs(vd)>1e-8 or abs(ad)>1e-6 or abs(force_rate)>1e-6
+            if moving:
+                linear_v = self._inverse_force_rate(origin_m+y_meas[0],vd,force_rate,known_force_rate_n_s)
+                if abs(linear_v)>1e-6:
+                    valve_target = linear_v+math.copysign(self.deadzone_v,linear_v)
+            valve_target = float(np.clip(valve_target,-10.,10.))
+            if self.enable_valve_inverse and self.valve_tau:
+                a = math.exp(-self.pid.ts/self.valve_tau)
+                ff_raw = (valve_target-a*self.previous_valve_target_v)/(1-a)
+            else:
+                ff_raw = valve_target
+            ff = float(np.clip(ff_raw,-10.,10.))
+            if self.enable_valve_inverse and self.valve_tau:
+                self.previous_valve_target_v = a*self.previous_valve_target_v+(1-a)*ff
+            else:
+                self.previous_valve_target_v = ff
+        # 合成输出的动态余量，防止 FF + 已独立限幅的 PID 再次溢出。
+        # 停止后的 PID 小残差也必须越过物理死区，否则内泄漏会造成持位漂移。
+        e,di,d = self.pid._terms(r_state[0],y_meas[0])
+        feedback_candidate = self.pid.u_prev+self.pid.kp*(e-self.pid.e_prev)+di+d-self.pid.d_filt_prev
+        hold_bias = (math.copysign(self.deadzone_v,feedback_candidate)
+                     if self.enable_ff and not moving and abs(feedback_candidate)>1e-6 else 0.)
+        self.pid.out_min, self.pid.out_max = -10.-ff-hold_bias,10.-ff-hold_bias
+        fb_linear = self.pid.update(target=r_state[0],feedback=y_meas[0])
+        fb = fb_linear+hold_bias
+        total = float(np.clip(ff+fb,-10.,10.))
+        self.last.update(feedforward_requested_v=ff_raw, valve_target_v=valve_target,
+                         feedback_requested_v=self.pid.last_raw,
+                         requested_voltage_v=ff+self.pid.last_raw+hold_bias,
+                         holding_deadzone_compensation_v=hold_bias,
+                         feedforward_v=ff,feedback_v=fb,voltage_v=total)
+        return total,ff,fb

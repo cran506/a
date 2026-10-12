@@ -1,28 +1,48 @@
-# 第五章数字 PID 单图实验
+# 智能流体传动与控制课堂编程
+
+## 第六章模型辅助复合控制
+
+在同一液压数字孪生上对比纯 PID、标称前馈 + PID 和完整模型辅助控制，输出一张四联图：全程误差、控制电压、起动速度和负载切换速度。模块三、独立运行入口、原始参考材料、CSV 和验证记录统一放在新文件夹中。
+
+- [第六章完整交付文件夹](chapter6_latest/)
+- [模块三控制器代码](chapter6_latest/model_assisted_controller.py)
+- [四联结果图](chapter6_latest/outputs/model_assisted_comparison.png)
+- [第六章交付 ZIP](chapter6_latest/deliverables/第六章_模型辅助控制交付.zip)
+- [运行方式、结果与适用条件](chapter6_latest/README.md)
+
+```bash
+cd chapter6_latest
+python -m pip install -r requirements.txt
+python model_assisted_lab.py --save-data
+```
+
+已知工艺负载基准中，完整组全程最大真实误差约 0.042 mm，加载最低速度约 0.194 m/s，纯 PID 在 82 ms 达到运动阈值。前馈采用公开的已知负载计划；未知外载的独立对照及适用条件见第六章说明。数值来自真实积分，课堂参数与参考图中的理想参数分别说明。
+
+## 第五章数字 PID 单图实验
 
 结合第 3、4、5 章 PPT、上传的液压数字孪生和 Word 中的 PID、S 型轨迹代码，生成一张三联结果图：位移跟踪、真实跟踪误差、控制电压。三组闭环仿真分别展示保守增益、激进增益和未滤波微分的表现。
 
 - [最新完整交付文件夹](chapter5_latest/)
-- [三联结果图](chapter5/outputs/classroom_comparison.png)
-- [单图交付 ZIP](deliverables/第五章_PID单图交付.zip)
-- [代码运行与模型说明](chapter5/README.md)
+- [三联结果图](chapter5_latest/chapter5/outputs/classroom_comparison.png)
+- [单图交付 ZIP](chapter5_latest/deliverables/第五章_PID单图交付.zip)
+- [代码运行与模型说明](chapter5_latest/chapter5/README.md)
 
 从项目根目录运行：
 
 ```bash
-cd chapter5
+cd chapter5_latest/chapter5
 python -m pip install -r requirements.txt
 python digital_pid_lab.py
 ```
 
-默认只输出 `chapter5/outputs/classroom_comparison.png`。需要复核原始数据时运行 `python digital_pid_lab.py --save-data`，另外保存三组 CSV 和 `summary.json`，用于诊断。
+默认只输出 `chapter5_latest/chapter5/outputs/classroom_comparison.png`。需要复核原始数据时运行 `python digital_pid_lab.py --save-data`，另外保存三组 CSV 和 `summary.json`，用于诊断。
 
 本次将实际接触负载设为 40 ms 加载、20 ms 卸载的余弦过渡，保留激进组卸载后的振荡。激进组加载电压峰值由约 9.21 V 降为 7.31 V，超出重载平台的部分减少约 90%；PID、阀和其余物理参数保持相同。保守组末端真实误差由约 +0.009 mm 增至 +0.019 mm，最后 0.1 s 仍处于 ±0.05 mm 内。
 
 从项目根目录运行验证：
 
 ```bash
-python -m unittest discover -s chapter5 -v
+python -m unittest discover -s chapter5_latest/chapter5 -v
 ```
 
 26 项公式和接口测试已通过。
