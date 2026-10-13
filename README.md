@@ -1,5 +1,22 @@
 # 智能流体传动与控制课堂编程
 
+## 第五章作业 5-1：PID 抗积分饱和对比
+
+新项目在相同液压对象、PID 增益和 ±10 V 限幅下，对比位置式的积分累积与增量式的截断输出记忆。独立目录包含 `work_5_1.py`、一张三联图、两种微分模式的 CSV、Word 报告、验证记录和完整 ZIP。
+
+- [完整项目与运行说明](homework5_1/README.md)
+- [三联结果图](homework5_1/outputs/anti_windup_comparison.png)
+- [作业 5-1 完整 ZIP](homework5_1/deliverables/作业5-1_PID抗积分饱和完整交付.zip)
+- [Word 实验报告](homework5_1/deliverables/作业5-1_PID抗积分饱和实验报告.docx)
+
+```bash
+cd homework5_1
+python -m pip install -r requirements.txt
+python work_5_1.py
+```
+
+默认两组共同对测量值微分，避免阶跃参考的微分冲击；原误差微分公式可切换复核。本次位置式超调约 30.77%，增量式约 0.55%，位置式在真实误差反向后仍有约 13 ms 的退饱和迟滞。精确数据与参考图差异见项目说明。
+
 ## 第六章模型辅助复合控制
 
 在同一液压数字孪生上对比纯 PID、标称前馈 + PID 和完整模型辅助控制，输出一张四联图：全程误差、控制电压、起动速度和负载切换速度。模块三、独立运行入口、原始参考材料、CSV 和验证记录统一放在新文件夹中。

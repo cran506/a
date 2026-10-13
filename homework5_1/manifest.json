@@ -1,0 +1,121 @@
+{
+  "project": "homework5_1",
+  "files": {
+    "README.md": {
+      "bytes": 8372,
+      "sha256": "2e8b55b32577512c1ceb593cc538573330408181415148fc421f411812463ecc"
+    },
+    "classroom_config.json": {
+      "bytes": 25,
+      "sha256": "0224eb1c4fbc72e2b4d40c4a3fed67ae0f085623f3d13f1cd89eb3efd0f2bda2"
+    },
+    "deliverables/作业5-1_PID抗积分饱和实验报告.docx": {
+      "bytes": 645538,
+      "sha256": "6def9318bc448c7b958e0de1e99cda4b7e169c1a8c195ed824c491ce4f975c29"
+    },
+    "experiment_config.json": {
+      "bytes": 322,
+      "sha256": "d572c05e4c650bce8a71b5dd8c46d1c81b2ece40e0b87daee9af97300aa6d9fb"
+    },
+    "friction_model.py": {
+      "bytes": 1941,
+      "sha256": "d9e6fb113aed1458d184c26b3d5ec71d276035fce02732ecc1f7860a898b3d00"
+    },
+    "hydraulic_digital_twin.py": {
+      "bytes": 16725,
+      "sha256": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f"
+    },
+    "media_model.py": {
+      "bytes": 1357,
+      "sha256": "860f31dffe6d796fa96f1a5ea54192754c31abba025a4fe8396422c854b51102"
+    },
+    "outputs/anti_windup_comparison.png": {
+      "bytes": 667818,
+      "sha256": "02005a82ef31a39416b48d760197a8d564980592092100e4ed81f6f8a195a652"
+    },
+    "outputs/incremental.csv": {
+      "bytes": 436405,
+      "sha256": "102939a2a13023cb8235aa3a055d93a87752d7a89bf29fe7ccc32cba6b3b40f8"
+    },
+    "outputs/incremental_friction_events.json": {
+      "bytes": 9474,
+      "sha256": "7deb7e77903136c203cc6c128c2d9de17667e65a35629e408593a13ac1810c28"
+    },
+    "outputs/positional.csv": {
+      "bytes": 448730,
+      "sha256": "d27aff2731235504af05e5f610ab5fd411c496a4d59deb0a7bccdad42a6b09da"
+    },
+    "outputs/positional_friction_events.json": {
+      "bytes": 7851,
+      "sha256": "a2812de304f99a2a36b1f87ed50668b21ae122bdab6b8f02542220e888448c9f"
+    },
+    "outputs/summary.json": {
+      "bytes": 5727,
+      "sha256": "e6ac9b038d8325e06eba3ec6b4d154f905c8ff80bc5b9adc35ca9dcc0276062c"
+    },
+    "outputs/validation.json": {
+      "bytes": 3938,
+      "sha256": "60af0864e315fa1a0b5e1a88fb19f3f793688f715c4ee1ac57582d93f78ae9d3"
+    },
+    "outputs_error_derivative/incremental.csv": {
+      "bytes": 433444,
+      "sha256": "d34536ecb6ff4017ef53bbf5a22f30d05c99d03368faedaea714d7f61004ffbe"
+    },
+    "outputs_error_derivative/incremental_friction_events.json": {
+      "bytes": 8354,
+      "sha256": "0f68051e7e853ed0f55bda44bf5ccd9641a9cf2c89deca9cec566af2e25091b5"
+    },
+    "outputs_error_derivative/positional.csv": {
+      "bytes": 448873,
+      "sha256": "e6cc8ab80444f50d6c6b4763fe0b07ea6837e01924dd55421a68e2c755735736"
+    },
+    "outputs_error_derivative/positional_friction_events.json": {
+      "bytes": 7848,
+      "sha256": "fe0774ce44b1d05c73489e5728cad8b937911c6ab9f8a87cf5adb927a6e74c9d"
+    },
+    "outputs_error_derivative/summary.json": {
+      "bytes": 5761,
+      "sha256": "7b634e748c4aae495e2c0ed2aa0c98c630c7a83cd6c415a1b8b4e2aa561cc13a"
+    },
+    "outputs_error_derivative/validation.json": {
+      "bytes": 1206,
+      "sha256": "3100a5a8a71a01bbdd4e4be954cba779ad0ee1864ee2b102461b301d03880228"
+    },
+    "package_delivery.py": {
+      "bytes": 8949,
+      "sha256": "483584712afb8f7af63e5fbbe020af0cae60d201624f54be8004a201c546531b"
+    },
+    "physical_config.json": {
+      "bytes": 400,
+      "sha256": "0a7ab224a3dc4e55dbf4968d4a30b4b0644b05dab90a475592504dfcb0dad4ed"
+    },
+    "pid_algorithms.py": {
+      "bytes": 3466,
+      "sha256": "02fe790fc0f9e36bee1d65395b79334cf1d080b94f0ba6883eed6dba7d34ab96"
+    },
+    "plotting.py": {
+      "bytes": 11254,
+      "sha256": "8102e2659ee2765a306216c01d898dc5e2bcc8c0e348bdaad8f06a23420b68f6"
+    },
+    "requirements.txt": {
+      "bytes": 69,
+      "sha256": "f0baa2c7207b27bf34c02ba5d3852cc3ca6ac5111f7ab548be9f61f5ac28490d"
+    },
+    "test_homework.py": {
+      "bytes": 16597,
+      "sha256": "fdcdd90dd2ab41cea0e9953e600f34e942177ac8709f445adcdeb62475782f47"
+    },
+    "twin_adapter.py": {
+      "bytes": 13124,
+      "sha256": "a4e3d944a4c5ae1d2a75a33fc118755bdf0f80af0d1dd0c62f35b05129ef5c47"
+    },
+    "verify_results.py": {
+      "bytes": 6056,
+      "sha256": "461aa057912a9fde2cd53d66d0a717fd8c854c16fe23ebb7902981f73fc2f791"
+    },
+    "work_5_1.py": {
+      "bytes": 12526,
+      "sha256": "a0e90687af7721bc9439f62d06bd3e1a1de70028a19e4ca38a22e60b1e0ebe56"
+    }
+  }
+}

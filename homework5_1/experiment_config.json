@@ -1,0 +1,17 @@
+{
+  "kp": 4.2,
+  "ki": 22.0,
+  "kd": 0.06,
+  "alpha": 0.85,
+  "derivative_mode": "measurement",
+  "ts": 0.001,
+  "duration": 1.2,
+  "step_time": 0.05,
+  "step_amplitude_m": 0.1,
+  "voltage_limit_v": 10.0,
+  "adc_bits": 12,
+  "sensor_span_m": 0.3,
+  "initial_position_m": 0.05,
+  "valve_tau_s": 0.0053,
+  "rtol": 0.00001
+}

@@ -1,0 +1,189 @@
+{
+  "positional": {
+    "config": {
+      "controller": "positional",
+      "kp": 4.2,
+      "ki": 22.0,
+      "kd": 0.06,
+      "alpha": 0.85,
+      "derivative_mode": "measurement",
+      "ts": 0.001,
+      "duration": 1.2,
+      "step_time": 0.05,
+      "step_amplitude_m": 0.1,
+      "voltage_limit_v": 10.0,
+      "adc_bits": 12,
+      "sensor_span_m": 0.3,
+      "initial_position_m": 0.05,
+      "valve_tau_s": 0.0053,
+      "rtol": 1e-05,
+      "origin_m": 0.0500244140625,
+      "adc_lsb_mm": 0.0732421875,
+      "physical_parameters": {
+        "A1": 0.01,
+        "A2": 0.005,
+        "L": 1.0,
+        "V0_1": 0.001,
+        "V0_2": 0.001,
+        "mass": 500.0,
+        "Ps": 21000000.0,
+        "Pr": 100000.0,
+        "beta_e": 1000000000.0,
+        "rho": 870.0,
+        "Cd": 0.62,
+        "w": 0.02,
+        "xv_max": 0.002775,
+        "deadzone": 0.05,
+        "C_ip": 1e-12,
+        "Fs": 800.0,
+        "Fc": 500.0,
+        "vs": 0.05,
+        "sigma": 1000.0,
+        "gamma": 500.0,
+        "x_work": 2.0,
+        "K_env": 50000000.0,
+        "B_env": 100000.0,
+        "C_ep": 0.0
+      },
+      "integrator": "Radau + friction events",
+      "radau_nfev": 22568,
+      "release_count": 42,
+      "restick_count": 8,
+      "source_twin_sha256": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f"
+    },
+    "metrics": {
+      "peak_position_mm": 130.7686810344003,
+      "peak_time_s": 0.301,
+      "overshoot_percent": 30.76868103440028,
+      "max_internal_voltage_v": 43.003159179687515,
+      "first_positive_saturation_s": 0.05,
+      "initial_positive_saturation_exit_s": 0.217,
+      "crossing_time_interpolated_s": 0.2040581580260178,
+      "first_nonpositive_true_error_sample_s": 0.20500000000000002,
+      "first_nonpositive_sampled_error_s": 0.20500000000000002,
+      "desaturation_delay_after_crossing_ms": 12.94184197398221,
+      "exit_relative_to_crossing_ms": 12.94184197398221,
+      "sampled_error_desaturation_delay_ms": 11.999999999999982,
+      "max_explicit_integral_v": 17.677504882812514,
+      "final_error_mm": 0.05065838689982671,
+      "last_100ms_max_abs_error_mm": 0.06619602924101686,
+      "physical_saturation_duration_ms": 167.0,
+      "output_max_abs_v": 10.0,
+      "state_max_abs_v": 10.0,
+      "min_pressure_pa": 98715.43089611955,
+      "max_pressure_pa": 18735303.269817654
+    }
+  },
+  "incremental": {
+    "config": {
+      "controller": "incremental",
+      "kp": 4.2,
+      "ki": 22.0,
+      "kd": 0.06,
+      "alpha": 0.85,
+      "derivative_mode": "measurement",
+      "ts": 0.001,
+      "duration": 1.2,
+      "step_time": 0.05,
+      "step_amplitude_m": 0.1,
+      "voltage_limit_v": 10.0,
+      "adc_bits": 12,
+      "sensor_span_m": 0.3,
+      "initial_position_m": 0.05,
+      "valve_tau_s": 0.0053,
+      "rtol": 1e-05,
+      "origin_m": 0.0500244140625,
+      "adc_lsb_mm": 0.0732421875,
+      "physical_parameters": {
+        "A1": 0.01,
+        "A2": 0.005,
+        "L": 1.0,
+        "V0_1": 0.001,
+        "V0_2": 0.001,
+        "mass": 500.0,
+        "Ps": 21000000.0,
+        "Pr": 100000.0,
+        "beta_e": 1000000000.0,
+        "rho": 870.0,
+        "Cd": 0.62,
+        "w": 0.02,
+        "xv_max": 0.002775,
+        "deadzone": 0.05,
+        "C_ip": 1e-12,
+        "Fs": 800.0,
+        "Fc": 500.0,
+        "vs": 0.05,
+        "sigma": 1000.0,
+        "gamma": 500.0,
+        "x_work": 2.0,
+        "K_env": 50000000.0,
+        "B_env": 100000.0,
+        "C_ep": 0.0
+      },
+      "integrator": "Radau + friction events",
+      "radau_nfev": 41830,
+      "release_count": 59,
+      "restick_count": 1,
+      "source_twin_sha256": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f"
+    },
+    "metrics": {
+      "peak_position_mm": 100.54943495152548,
+      "peak_time_s": 0.794,
+      "overshoot_percent": 0.5494349515254848,
+      "max_internal_voltage_v": 42.22,
+      "first_positive_saturation_s": 0.05,
+      "initial_positive_saturation_exit_s": 0.055,
+      "crossing_time_interpolated_s": 0.6441601765125591,
+      "first_nonpositive_true_error_sample_s": 0.645,
+      "first_nonpositive_sampled_error_s": 0.645,
+      "desaturation_delay_after_crossing_ms": 0.0,
+      "exit_relative_to_crossing_ms": -589.160176512559,
+      "sampled_error_desaturation_delay_ms": 0.0,
+      "max_explicit_integral_v": null,
+      "final_error_mm": -0.1132490669631947,
+      "last_100ms_max_abs_error_mm": 0.1132490669631947,
+      "physical_saturation_duration_ms": 5.0,
+      "output_max_abs_v": 10.0,
+      "state_max_abs_v": 10.0,
+      "min_pressure_pa": 95426.0109890244,
+      "max_pressure_pa": 6486645.103189255
+    }
+  },
+  "reference_comparison": {
+    "positional": {
+      "max_internal_voltage_v": {
+        "reference": 42.5,
+        "actual": 43.003159179687515,
+        "difference": 0.5031591796875148
+      },
+      "crossing_time_interpolated_s": {
+        "reference": 0.204,
+        "actual": 0.2040581580260178,
+        "difference": 5.815802601780162e-05
+      },
+      "initial_positive_saturation_exit_s": {
+        "reference": 0.216,
+        "actual": 0.217,
+        "difference": 0.0010000000000000009
+      },
+      "overshoot_percent": {
+        "reference": 31.4,
+        "actual": 30.76868103440028,
+        "difference": -0.6313189655997178
+      }
+    },
+    "incremental": {
+      "initial_positive_saturation_exit_s": {
+        "reference": 0.061,
+        "actual": 0.055,
+        "difference": -0.005999999999999998
+      },
+      "overshoot_percent": {
+        "reference": 1.0,
+        "actual": 0.5494349515254848,
+        "difference": -0.4505650484745152
+      }
+    }
+  },
+  "derivative_note": "Both controllers share derivative-on-measurement (no setpoint kick)."
+}
