@@ -67,7 +67,7 @@ class CompositeControllerTests(unittest.TestCase):
         self.assertEqual(c.update((0.,0.,0.),(0.,0.),(1e5,1e5)),(0.,0.,0.))
 
     def test_planned_jerk_produces_calculated_valve_precharge(self):
-        c=self.controller(pressure_alpha=0.,startup_transition_s=0.)
+        c=self.controller(pressure_alpha=0.,enable_startup_regularization=False)
         _,ff,_=c.update((0.,0.,0.),(0.,0.),(1e5,1e5),jerk_d=8.,origin_m=.01)
         a=math.exp(-.001/.0025)
         self.assertAlmostEqual(ff,c.last['valve_target_v']/(1-a),places=12)
@@ -77,20 +77,20 @@ class CompositeControllerTests(unittest.TestCase):
 
     def test_zero_leakage_still_allows_mass_force_precharge(self):
         self.p['C_ip']=0.
-        c=self.controller(pressure_alpha=0.,enable_valve_inverse=False,startup_transition_s=0.)
+        c=self.controller(pressure_alpha=0.,enable_valve_inverse=False,enable_startup_regularization=False)
         c.update((0.,0.,.5),(0.,0.),(1e5,1e5),origin_m=.01)
         self.assertGreater(c.last['valve_target_v'],c.deadzone_v)
         self.assertGreater(c.last['linear_voltage_v'],0.)
 
     def test_retraction_uses_negative_inverse_and_real_second_chamber_pressure(self):
         c=self.controller(pressure_alpha=0.,gain_prediction_s=0.,enable_valve_inverse=False,
-                          force_error_gain_s=0.,startup_transition_s=0.)
+                          force_error_gain_s=0.,enable_startup_regularization=False)
         _,ff,_=c.update((0.,-.1,-.2),(0.,-.1),(2e6,17e6),jerk_d=-5.,origin_m=.08)
         self.assertLess(ff,-c.deadzone_v)
         self.assertAlmostEqual(c.last['supply_delta_pa'],self.p['Ps']-17e6)
 
     def test_total_saturation_tracks_feedback_headroom(self):
-        c=self.controller(pressure_alpha=0.,startup_transition_s=0.)
+        c=self.controller(pressure_alpha=0.,enable_startup_regularization=False)
         total,ff,fb=c.update((.1,.2,.5),(0.,0.),(1e5,1e5),jerk_d=8.,
                               known_force_rate_n_s=1e12,origin_m=.01)
         self.assertEqual(total,10.)
@@ -98,7 +98,7 @@ class CompositeControllerTests(unittest.TestCase):
         self.assertAlmostEqual(c.pid.u_prev,fb-c.last['holding_deadzone_compensation_v'])
 
     def test_saturated_feedforward_remembers_achievable_valve_state(self):
-        c=self.controller(pressure_alpha=0.,startup_transition_s=0.)
+        c=self.controller(pressure_alpha=0.,enable_startup_regularization=False)
         c.update((0.,.2,.5),(0.,0.),(1e5,1e5),jerk_d=8.,known_force_rate_n_s=1e12,origin_m=.01)
         self.assertGreater(c.last['feedforward_requested_v'],10.)
         a=math.exp(-.001/.0025)
@@ -119,8 +119,8 @@ class CompositeControllerTests(unittest.TestCase):
         twins=[ClosedLoopTwin(config=self.p,load_force=f) for f in (0.,163000.)]
         controllers=[self.controller() for _ in twins]
         for twin in twins:twin.reset([.01,0.,1e5,1e5])
-        # 比较完整起动过渡，避免首指令恒零使因果性验证退化为空洞比较。
-        samples=math.ceil(controllers[0].startup_transition_s/self.pid['ts'])+3
+        # 比较初始边界误差衰减期间的整段指令，而非只检查第一个采样。
+        samples=math.ceil(5*controllers[0].valve_tau/self.pid['ts'])+3
         traces=[]
         for c,twin in zip(controllers,twins):
             x,v,p1,p2=twin.state
@@ -131,7 +131,7 @@ class CompositeControllerTests(unittest.TestCase):
 
     def test_continuous_holding_inverse_compensates_real_leakage(self):
         c=self.controller(pressure_alpha=0.,enable_valve_inverse=False,
-                          force_error_gain_s=0.,startup_transition_s=0.)
+                          force_error_gain_s=0.,enable_startup_regularization=False)
         _,ff,_=c.update((0.,0.,0.),(0.,0.),(4.55e6,9e6),jerk_d=0.,origin_m=.14)
         self.assertLess(ff,-c.deadzone_v)
         twin=ClosedLoopTwin(config=self.p,load_force=0.,valve_tau=0.)
@@ -149,7 +149,7 @@ class CompositeControllerTests(unittest.TestCase):
         self.assertAlmostEqual(before,-.4,places=12)
 
     def test_force_error_feedback_uses_net_absolute_pressure_force(self):
-        c=self.controller(pressure_alpha=0.,force_error_gain_s=80.,startup_transition_s=0.)
+        c=self.controller(pressure_alpha=0.,force_error_gain_s=80.,enable_startup_regularization=False)
         c.update((0.,.2,0.),(0.,.2),(2e6,1e6),jerk_d=0.,origin_m=.05)
         actual=2e6*self.p['A1']-1e6*self.p['A2']-1e5*(self.p['A1']-self.p['A2'])
         expected=80*(c.last['desired_force_n']-actual)
@@ -157,82 +157,97 @@ class CompositeControllerTests(unittest.TestCase):
         self.assertAlmostEqual(c.last['force_error_correction_n_s'],expected)
         self.assertAlmostEqual(c.last['desired_force_rate_n_s'],c.last['planned_force_rate_n_s']+expected)
 
-    def test_default_startup_waits_for_motion_intent_without_consuming_transition(self):
+    def test_idle_wait_does_not_consume_the_startup_boundary_condition(self):
         waiting=self.controller()
         fresh=self.controller()
-        self.assertEqual(waiting.startup_transition_s,.008)
+        self.assertTrue(waiting.enable_startup_regularization)
         for _ in range(25):
             self.assertEqual(waiting.update((0.,0.,0.),(0.,0.),(1e5,1e5)),(0.,0.,0.))
-        samples=math.ceil(waiting.startup_transition_s/self.pid['ts'])+2
+        samples=math.ceil(5*waiting.valve_tau/waiting.pid.ts)+3
         for index in range(samples):
             expected=fresh.update((0.,0.,0.),(0.,0.),(1e5,1e5),jerk_d=8.,origin_m=.01)
             actual=waiting.update((0.,0.,0.),(0.,0.),(1e5,1e5),jerk_d=8.,origin_m=.01)
             self.assertEqual(actual,expected)
             if index==0:
-                self.assertEqual(actual,(0.,0.,0.))
-                self.assertGreater(waiting.last['unshaped_valve_target_v'],0.)
+                self.assertGreater(actual[1],0.)
+                self.assertAlmostEqual(actual[1],waiting.last['valve_target_v'],places=12)
+                a=math.exp(-waiting.pid.ts/waiting.valve_tau)
+                self.assertAlmostEqual(waiting.previous_valve_target_v,(1-a)*actual[1],places=12)
+                self.assertLess(waiting.previous_valve_target_v,actual[1])
 
-    def test_startup_target_is_bounded_and_smooth_in_both_directions(self):
+    def test_constant_nonzero_target_has_constant_command_in_both_directions(self):
         for target in (.45,-.45):
             with self.subTest(target=target):
                 c=self.controller()
-                samples=math.ceil(c.startup_transition_s/c.pid.ts)+1
-                values=np.array([c._startup_target(target) for _ in range(samples)])
-                directed=values*math.copysign(1.,target)
-                self.assertEqual(values[0],0.)
-                self.assertAlmostEqual(values[-1],target,places=12)
-                self.assertTrue(np.all(directed>=0.))
-                self.assertTrue(np.all(directed<=abs(target)))
-                increments=np.diff(directed)
-                self.assertTrue(np.all(increments>=0.))
-                self.assertLess(float(increments.max()),abs(target)/2)
-                # 两端平坦，不能以线性斜坡或末端跳变代替平滑接入。
-                self.assertLess(float(increments[0]),float(increments.max())/3)
-                self.assertLess(float(increments[-1]),float(increments.max())/3)
+                twin=ClosedLoopTwin(config=self.p,load_force=0.,valve_tau=c.valve_tau,rtol=1e-7)
+                twin.reset([.01,0.,1e5,1e5])
+                self.assertEqual(twin.valve_state,0.)
+                a=math.exp(-c.pid.ts/c.valve_tau)
+                samples=math.ceil(5*c.valve_tau/c.pid.ts)+3
+                for index in range(samples):
+                    command=c._valve_inverse(target)
+                    # 对恒定参考应持续发出同一模型目标，不能先boost再骤降。
+                    self.assertAlmostEqual(command,target,delta=1e-7)
+                    twin.step_voltage(command,c.pid.ts)
+                    expected=target*(1-a**(index+1))
+                    self.assertAlmostEqual(10*twin.valve_state,expected,delta=1e-7)
+                    c.previous_valve_target_v=10*twin.valve_state
 
-    def test_completed_startup_does_not_retrigger_after_zero_or_direction_change(self):
+    def test_changing_reference_preserves_the_original_decaying_boundary_error(self):
         c=self.controller()
-        samples=math.ceil(c.startup_transition_s/c.pid.ts)+1
-        for _ in range(samples):c._startup_target(.45)
-        for target in (0.,0.,-.35,.6,0.,-.2):
-            self.assertEqual(c._startup_target(target),target)
+        twin=ClosedLoopTwin(config=self.p,load_force=0.,valve_tau=c.valve_tau,rtol=1e-7)
+        twin.reset([.01,0.,1e5,1e5])
+        a=math.exp(-c.pid.ts/c.valve_tau)
+        targets=(.45,.45,.5,.55,0.,0.,-.35,-.35,.6,.6,0.,-.2)
+        initial_error=targets[0]
+        for index,target in enumerate(targets):
+            command=c._valve_inverse(target)
+            self.assertLess(abs(command),10.)
+            twin.step_voltage(command,c.pid.ts)
+            # 独立正向积分应只保留原初态误差的自然衰减；过零不能重启补偿。
+            expected=target-initial_error*a**(index+1)
+            self.assertAlmostEqual(10*twin.valve_state,expected,delta=1e-7)
+            c.previous_valve_target_v=10*twin.valve_state
 
-    def test_reset_repeats_the_same_physical_startup_commands(self):
+    def test_reset_repeats_the_same_nonzero_startup_commands(self):
         c=self.controller()
-        samples=math.ceil(c.startup_transition_s/c.pid.ts)+3
+        samples=math.ceil(5*c.valve_tau/c.pid.ts)+3
         def trace():
             return [c.update((0.,0.,0.),(0.,0.),(1e5,1e5),jerk_d=8.,origin_m=.01)
                     for _ in range(samples)]
         first=trace()
-        self.assertTrue(any(abs(command[1])>1e-8 for command in first[1:]))
+        self.assertGreater(first[0][1],0.)
         c.reset()
+        self.assertEqual(c.previous_valve_target_v,0.)
         self.assertEqual(trace(),first)
 
-    def test_startup_valve_memory_matches_applied_voltage_even_during_saturation(self):
+    def test_startup_valve_memory_matches_actual_commands_after_saturation(self):
         parameters=dict(self.pid,kp=0.,ki=0.,kd=0.)
         c=ModelAssistedController(parameters,self.p,pressure_alpha=0.)
         twin=ClosedLoopTwin(config=self.p,load_force=0.,valve_tau=c.valve_tau,rtol=1e-7)
         twin.reset([.01,0.,1e5,1e5])
         saturated=False
-        samples=math.ceil(c.startup_transition_s/c.pid.ts)+6
+        samples=math.ceil(5*c.valve_tau/c.pid.ts)+3
         for index in range(samples):
             x,v,p1,p2=twin.state
+            rate=0. if index==0 else 1e12
             total,ff,fb=c.update((0.,0.,0.),(x-.01,v),(p1,p2),jerk_d=8.,
-                                 known_force_rate_n_s=1e12,origin_m=.01)
+                                 known_force_rate_n_s=rate,origin_m=.01)
             self.assertEqual(fb,0.)
             self.assertEqual(total,ff)
             self.assertLessEqual(abs(total),10.)
             if index==0:
-                self.assertEqual(ff,0.)
-                self.assertGreater(c.last['unshaped_valve_target_v'],0.)
-                self.assertEqual(c.previous_valve_target_v,0.)
+                self.assertEqual(twin.valve_state,0.)
+                self.assertGreater(ff,0.)
+                self.assertAlmostEqual(ff,c.last['valve_target_v'],places=12)
+                self.assertLess(c.previous_valve_target_v,ff)
             twin.step_voltage(total,c.pid.ts)
-            # Twin独立积分的一阶阀状态应等于实际FF的记忆，不能记未施加目标。
+            # 未限幅目标不能写入FF记忆；独立Twin接受的是实际有限电压。
             self.assertAlmostEqual(c.previous_valve_target_v,10*twin.valve_state,delta=1e-6)
             saturated=saturated or abs(c.last['feedforward_requested_v'])>10.
         self.assertTrue(saturated)
 
-    def test_startup_shaping_leaves_pure_pid_commands_unchanged(self):
+    def test_startup_regularization_leaves_pure_pid_commands_unchanged(self):
         c=self.controller(enable_ff=False,enable_gain_sched=False)
         baseline=DigitalPID(**self.pid)
         for target,measurement in ((0.,0.),(.0001,0.),(.0002,.00005),(.0001,.00015),
@@ -245,9 +260,7 @@ class CompositeControllerTests(unittest.TestCase):
     def test_protection_and_parameter_validation(self):
         for kwargs in ({'gain_prediction_s':-1.},{'gain_prediction_s':math.nan},
                        {'valve_tau':math.inf},{'pressure_alpha':1.},
-                       {'force_error_gain_s':-1.},{'zero_flow_band_v':-1.},{'deadzone_slew_v_s':0.},
-                       {'startup_transition_s':-.001},{'startup_transition_s':math.nan},
-                       {'startup_transition_s':math.inf}):
+                       {'force_error_gain_s':-1.},{'zero_flow_band_v':-1.},{'deadzone_slew_v_s':0.}):
             with self.subTest(kwargs=kwargs),self.assertRaises(ValueError):self.controller(**kwargs)
         c=self.controller(pressure_alpha=0.)
         with self.assertRaises(ValueError):c.update((0.,0.,0.),(0.,0.),(-1.,1e5))

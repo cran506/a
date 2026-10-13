@@ -108,7 +108,8 @@ def _footer(results):
     third=(f"含气油 α0={100*parameters.get('air_fraction_at_pr',0):g}% @ Pr；"
            f"两类模型辅助共同使用液压力误差反馈 λ={cfg.get('force_error_gain_s',0):g} /s，"
            f"σ={parameters['sigma']:g} N·s/m，γ={parameters['gamma']:g} / (m/s)；课堂参数，非设备辨识值。")
-    fourth = (f"阀 τ={tau_ms:g} ms；两类前馈起动预开 {cfg.get('startup_transition_s',0)*1000:g} ms 平滑接入，再作阀 ZOH 逆补偿；"
+    boundary = "逆模型从非零电压起动，阀初值误差按真实极点衰减" if cfg.get('enable_startup_regularization',False) else "采用逐周期精确阀逆补偿"
+    fourth = (f"阀 τ={tau_ms:g} ms；{boundary}；"
               "图线未事后滤波，注释来自本次计算。")
     prediction = float(cfg.get("gain_prediction_s", 0.)) * 1000
     if prediction:
@@ -199,10 +200,9 @@ def plot_comparison(results, output):
         preopen_ax.set_xlim(0.,20.)
         if full_metrics.get("first_feedforward_ms") is not None:
             data = results["full"]["data"]
-            window=np.flatnonzero(time<=max(.02,results['full']['config']['startup_transition_s']+results['full']['config']['valve_tau']))
-            index=int(window[np.argmax(np.abs(data['voltage_v'][window]))])
+            index=0
             _arrow(voltage_ax,
-                   f"完整组 {results['full']['config']['startup_transition_s']*1000:g} ms 平滑预开\n起动电压峰值 {_number(full_metrics['startup_peak_abs_voltage_v'])} V",
+                   f"完整组逆模型首指令\n{_number(full_metrics['startup_initial_voltage_v'])} V @ 0 ms",
                    (float(time[index]), float(data["voltage_v"][index])),
                    (.48, .24), "#d42424")
         threshold = full_metrics["startup_velocity_threshold_m_s"]

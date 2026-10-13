@@ -14,11 +14,10 @@ class ModelAssistedController:
                  enable_gain_sched=True, pressure_alpha=.2,
                  valve_tau=.0025, enable_valve_inverse=True, gain_prediction_s=0.,
                  zero_flow_band_v=.01, deadzone_slew_v_s=40.,force_error_gain_s=80.,
-                 startup_transition_s=.008):
-        if (not all(math.isfinite(v) for v in (pressure_alpha,valve_tau,gain_prediction_s,zero_flow_band_v,deadzone_slew_v_s,force_error_gain_s,startup_transition_s))
+                 enable_startup_regularization=True):
+        if (not all(math.isfinite(v) for v in (pressure_alpha,valve_tau,gain_prediction_s,zero_flow_band_v,deadzone_slew_v_s,force_error_gain_s))
                 or not 0 <= pressure_alpha < 1 or valve_tau < 0 or gain_prediction_s < 0
-                or zero_flow_band_v<0 or deadzone_slew_v_s<=0 or force_error_gain_s<0
-                or startup_transition_s<0):
+                or zero_flow_band_v<0 or deadzone_slew_v_s<=0 or force_error_gain_s<0):
             raise ValueError('压力滤波或阀响应参数无效')
         self.pid = DigitalPID(**pid_params)
         self.p = phys_params.copy()
@@ -28,7 +27,7 @@ class ModelAssistedController:
         self.gain_prediction_s = gain_prediction_s
         self.zero_flow_band_v,self.deadzone_slew_v_s=zero_flow_band_v,deadzone_slew_v_s
         self.force_error_gain_s=force_error_gain_s
-        self.startup_transition_s = startup_transition_s
+        self.enable_startup_regularization = enable_startup_regularization
         self.valve_tau, self.enable_valve_inverse = valve_tau, enable_valve_inverse
         self.k_flow = self.p['Cd']*self.p['w']*(self.p['xv_max']/10)*math.sqrt(2/self.p['rho'])
         self.deadzone_v = 10*self.p['deadzone']
@@ -47,35 +46,39 @@ class ModelAssistedController:
         self.previous_nominal_force = 0.
         self.deadzone_offset_v = 0.
         self.deadzone_initialized = False
-        self.startup_sample = None
+        self.startup_valve_mismatch_v = None
         self.last = {}
 
-    def _startup_target(self, valve_target):
-        """首次非零预开目标用五次平滑阶跃接入，完成后不再触发。
+    def _valve_inverse(self, valve_target):
+        """动态逆补偿允许冷启动初值误差按真实阀极点自然衰减。
 
-        在阀动态逆补偿之前整形真实目标；0ms 从零起步，窗口两端
-        权重的一、二阶导数为零。空闲等待不消耗窗口，reset 后重新计时。
+        首次非零目标直接作为非零首指令，不要求零阀芯在一个周期内
+        达到该目标。减去解析齐次误差项，避免参考阶跃被动态逆放大。
+        FF阀记忆始终从零按真正施加且限幅后的指令更新，不伪造阀初态。
         """
-        if self.startup_sample is None and abs(valve_target)>1e-8:
-            self.startup_sample = 0
-        if self.startup_transition_s == 0:
-            weight = 1.
-        elif self.startup_sample is None:
-            weight = 0.
-        else:
-            progress = min(self.startup_sample*self.pid.ts/self.startup_transition_s,1.)
-            weight = progress**3*(10.+progress*(-15.+6.*progress))
-        self.last.update(unshaped_valve_target_v=valve_target,startup_weight=weight)
-        if self.startup_sample is not None:
-            self.startup_sample += 1
-        return weight*valve_target
+        if not self.enable_valve_inverse or not self.valve_tau:
+            self.last.update(startup_valve_mismatch_v=0.,startup_inverse_correction_v=0.)
+            return valve_target
+        a = math.exp(-self.pid.ts/self.valve_tau)
+        exact = (valve_target-a*self.previous_valve_target_v)/(1-a)
+        mismatch = 0.
+        if self.enable_startup_regularization:
+            if self.startup_valve_mismatch_v is None and abs(valve_target)>1e-8:
+                self.startup_valve_mismatch_v = valve_target-self.previous_valve_target_v
+            mismatch = self.startup_valve_mismatch_v or 0.
+            if self.startup_valve_mismatch_v is not None:
+                self.startup_valve_mismatch_v *= a
+        correction = a*mismatch/(1-a)
+        self.last.update(startup_valve_mismatch_v=mismatch,
+                         startup_inverse_correction_v=correction)
+        return exact-correction
 
     def _deadzone_inverse(self,linear_v,moving):
         """显著流量精确反演；近零流量时有限速度渡过死区。
 
         精确死区逆的两侧极限相差2δ，不可能既精确又跨零连续。
         公开的0.01V线性流量带内允许短暂小流量失配，偏置限速40V/s。
-        起动目标另由 _startup_target 平滑接入，再进行阀动态逆补偿。
+        首次非零预开不作从零幅值衰减，由 _valve_inverse 处理初值相容性。
         """
         desired=math.copysign(self.deadzone_v,linear_v) if abs(linear_v)>1e-6 else 0.
         if self.deadzone_initialized and abs(linear_v)<self.zero_flow_band_v:
@@ -178,14 +181,10 @@ class ModelAssistedController:
             linear_v = self._inverse_force_rate(origin_m+y_meas[0],vd,force_rate,known_force_rate_n_s)
             valve_target = self._deadzone_inverse(linear_v,moving)
             valve_target = float(np.clip(valve_target,-10.,10.))
-            valve_target = self._startup_target(valve_target)
-            if self.enable_valve_inverse and self.valve_tau:
-                a = math.exp(-self.pid.ts/self.valve_tau)
-                ff_raw = (valve_target-a*self.previous_valve_target_v)/(1-a)
-            else:
-                ff_raw = valve_target
+            ff_raw = self._valve_inverse(valve_target)
             ff = float(np.clip(ff_raw,-10.,10.))
             if self.enable_valve_inverse and self.valve_tau:
+                a = math.exp(-self.pid.ts/self.valve_tau)
                 self.previous_valve_target_v = a*self.previous_valve_target_v+(1-a)*ff
             else:
                 self.previous_valve_target_v = ff

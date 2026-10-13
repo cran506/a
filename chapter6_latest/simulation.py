@@ -22,7 +22,7 @@ class Experiment:
     pressure_alpha: float = .2
     gain_prediction_s: float = .001
     force_error_gain_s: float = 80.
-    startup_transition_s: float = .008
+    enable_startup_regularization: bool = True
     load_force: float = 153000.
     load_ramp: float = .025
     unload_ramp: float = .03
@@ -63,7 +63,7 @@ def simulate(cfg):
     controller=ModelAssistedController(pid,p,cfg.enable_ff,cfg.enable_gain_sched,
                                       pressure_alpha=cfg.pressure_alpha,valve_tau=cfg.valve_tau,
                                       gain_prediction_s=cfg.gain_prediction_s,force_error_gain_s=cfg.force_error_gain_s,
-                                      startup_transition_s=cfg.startup_transition_s)
+                                      enable_startup_regularization=cfg.enable_startup_regularization)
     t,r,rv,ra,jerk=generate_process_scurve(dist=.13,T_move=1.,T_total=cfg.duration,dt=cfg.ts)
     names=['position_m','velocity_m_s','p1_pa','p2_pa','measured_m','error_m',
            'voltage_v','feedforward_v','feedback_v','requested_voltage_v',
@@ -72,7 +72,7 @@ def simulate(cfg):
            'pressure_filtered_2_pa','inverse_gain_n_s_v','force_rate_ref_n_s',
            'holding_deadzone_compensation_v','reference_force_n','measured_force_n',
            'planned_force_rate_n_s','force_error_correction_n_s','deadzone_offset_v',
-           'unshaped_valve_target_v','startup_weight']
+           'startup_valve_mismatch_v','startup_inverse_correction_v']
     data={k:np.empty_like(t) for k in names}
     for i,ti in enumerate(t):
         x,v,p1,p2=twin.state
@@ -88,7 +88,7 @@ def simulate(cfg):
                 info['holding_deadzone_compensation_v'],info.get('desired_force_n',0.),
                 info.get('actual_force_n',0.),info.get('planned_force_rate_n_s',0.),
                 info.get('force_error_correction_n_s',0.),info.get('deadzone_offset_v',0.),
-                info.get('unshaped_valve_target_v',0.),info.get('startup_weight',0.)]
+                info.get('startup_valve_mismatch_v',0.),info.get('startup_inverse_correction_v',0.)]
         for key,value in zip(names,values):data[key][i]=value
         if i+1<len(t):twin.step_voltage(u,cfg.ts)
     if not np.isclose(twin.t,t[-1],rtol=0.,atol=1e-10):
@@ -117,7 +117,7 @@ def metrics(d,cfg):
     contact_error_index=int(contact_indices[np.argmax(e[contact])])
     stop=(t>=.95)&(t<=1.05)
     hold=t>=1.
-    preopen=t<=max(.02,cfg.startup_transition_s+cfg.valve_tau)
+    preopen=t<=.02
     light_kq=float(np.nanmedian(d['kq_m2_s'][light]));heavy_kq=float(np.nanmedian(d['kq_m2_s'][heavy]))
     return dict(max_abs_error_mm=float(np.max(abs(e))),rms_error_mm=float(np.sqrt(np.mean(e**2))),
                 final_error_mm=float(e[-1]),startup_velocity_threshold_m_s=threshold,

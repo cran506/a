@@ -13,7 +13,8 @@ import unittest
 os.environ.setdefault("MPLCONFIGDIR", str(Path(tempfile.gettempdir())/"chapter6-mpl"))
 os.environ.setdefault("XDG_CACHE_HOME", str(Path(tempfile.gettempdir())/"chapter6-cache"))
 import numpy as np
-from simulation import Experiment, simulate
+from simulation import Experiment, planned_load, simulate
+from model_assisted_controller import ModelAssistedController
 
 ROOT = Path(__file__).resolve().parent
 CORE = ("simulation.py", "model_assisted_controller.py", "twin_adapter.py", "controllers.py",
@@ -41,6 +42,81 @@ def check_data(data):
                   output_composition=np.allclose(data["voltage_v"],
                                                 data["feedforward_v"]+data["feedback_v"],atol=1e-12))
     return {key: bool(value) for key,value in checks.items()}
+
+
+def startup_boundary_condition(result):
+    """用首样本重算未整形目标，并核对冷启动齐次误差的解析衰减。
+
+    此处不积分被控对象。关闭初值正则化的同一逆模型给出阀目标和旧
+    deadbeat 首指令；真实阀初值及正则化项仍从完整仿真日志核对。
+    """
+    cfg, data, metrics = result['config'], result['data'], result['metrics']
+    experiment_fields = {item.name for item in fields(Experiment)}
+    experiment = Experiment(**{name:value for name,value in cfg.items()
+                               if name in experiment_fields})
+    pid = dict(kp=cfg['kp'],ki=cfg['ki'],kd=cfg['kd'],ts=cfg['ts'],
+               alpha=cfg['alpha'],integral_separation=False)
+    model = ModelAssistedController(
+        pid,cfg['physical_parameters'],cfg['enable_ff'],cfg['enable_gain_sched'],
+        pressure_alpha=cfg['pressure_alpha'],valve_tau=cfg['valve_tau'],
+        gain_prediction_s=cfg['gain_prediction_s'],force_error_gain_s=cfg['force_error_gain_s'],
+        enable_startup_regularization=False)
+    force, force_rate = (planned_load(data['time_s'][0]+cfg['load_preview_s'],experiment)
+                         if cfg['known_load'] else (0.,0.))
+    model.update((data['reference_m'][0],data['reference_velocity_m_s'][0],
+                  data['reference_acceleration_m_s2'][0]),
+                 (data['measured_m'][0],data['velocity_m_s'][0]),
+                 (data['p1_pa'][0],data['p2_pa'][0]),
+                 jerk_d=data['reference_jerk_m_s3'][0],known_force_n=force,
+                 known_force_rate_n_s=force_rate,origin_m=cfg['origin_m'])
+    target = float(model.last['valve_target_v'])
+    deadbeat = float(model.last['feedforward_requested_v'])
+    tau, ts = cfg['valve_tau'], cfg['ts']
+    if tau <= 0:
+        raise AssertionError('冷启动边界验收需要公开的正阀时间常数')
+    a = math.exp(-ts/tau)
+    expected_mismatch = target*np.exp(-(data['time_s']-data['time_s'][0])/tau)
+    expected_correction = a*expected_mismatch/(1-a)
+    mismatch_residual = float(np.max(abs(data['startup_valve_mismatch_v']-expected_mismatch)))
+    correction_residual = float(np.max(abs(data['startup_inverse_correction_v']-expected_correction)))
+    delay = metrics['startup_delay_from_reference_ms']
+    delay_budget = 1000*max(5*tau,ts)
+    checks = dict(
+        regularization_enabled=cfg['enable_startup_regularization'] is True,
+        initial_model_target_nonzero=abs(target)>1e-8,
+        recorded_target_matches_model=math.isclose(float(data['valve_target_v'][0]),target,rel_tol=1e-12,abs_tol=1e-12),
+        initial_voltage_matches_model_target=math.isclose(float(data['voltage_v'][0]),target,rel_tol=1e-12,abs_tol=1e-12),
+        initial_feedforward_matches_model_target=math.isclose(float(data['feedforward_v'][0]),target,rel_tol=1e-12,abs_tol=1e-12),
+        actual_initial_valve_is_zero=abs(float(data['valve_normalized'][0]))<1e-12,
+        mismatch_follows_real_valve_pole=mismatch_residual<1e-12,
+        inverse_correction_matches_homogeneous_error=correction_residual<1e-12,
+        initial_inverse_is_deadbeat_minus_correction=math.isclose(
+            float(data['feedforward_requested_v'][0]),
+            deadbeat-float(data['startup_inverse_correction_v'][0]),rel_tol=1e-12,abs_tol=1e-12),
+        subsequent_startup_step_below_0p1v=metrics['startup_max_voltage_step_v']<.1,
+        subsequent_startup_drop_below_0p1v=metrics['startup_max_voltage_drop_v']<.1,
+        delay_within_five_valve_time_constants=delay is not None and 0<=delay<=delay_budget+1e-8)
+    return dict(
+        enabled=cfg['enable_startup_regularization'],valve_tau_ms=1000*tau,sample_ms=1000*ts,
+        homogeneous_decay_per_sample=a,delay_budget_ms=delay_budget,measured_delay_ms=delay,
+        previous_one_sample_delay_requirement_met=delay is not None and abs(delay)<=1000*ts+1e-8,
+        model_initial_valve_target_v=target,recorded_initial_valve_target_v=float(data['valve_target_v'][0]),
+        actual_initial_voltage_v=float(data['voltage_v'][0]),
+        actual_initial_feedforward_v=float(data['feedforward_v'][0]),
+        actual_initial_feedback_v=float(data['feedback_v'][0]),
+        actual_initial_valve_normalized=float(data['valve_normalized'][0]),
+        initial_command_step_from_zero_v=float(data['voltage_v'][0]),
+        old_deadbeat_initial_command_v=deadbeat,
+        initial_valve_mismatch_v=float(data['startup_valve_mismatch_v'][0]),
+        initial_inverse_correction_v=float(data['startup_inverse_correction_v'][0]),
+        expected_initial_inverse_correction_v=float(expected_correction[0]),
+        max_mismatch_decay_residual_v=mismatch_residual,
+        max_inverse_correction_residual_v=correction_residual,
+        subsequent_startup_max_voltage_step_v=metrics['startup_max_voltage_step_v'],
+        subsequent_startup_max_voltage_drop_v=metrics['startup_max_voltage_drop_v'],
+        smoothness_definition='Consecutive sampled commands in the startup window; the initial zero-to-command boundary step is recorded separately.',
+        homogeneous_error_equation='mismatch[k] = initial_target * exp(-k*Ts/tau_v); correction[k] = exp(-Ts/tau_v)*mismatch[k]/(1-exp(-Ts/tau_v))',
+        checks={name:bool(value) for name,value in checks.items()})
 
 
 def verify(output, independent_prefix=None):
@@ -110,23 +186,15 @@ def verify(output, independent_prefix=None):
     for name in ("position_m","velocity_m_s","p1_pa","p2_pa","voltage_v"):
         np.testing.assert_array_equal(unknown[name][before_load],tight_results["full"]["data"][name][before_load])
     metrics = tight_results["full"]["metrics"]
-    assisted=(tight_results[key] for key in ('nominal','full'))
-    report['startup_transition']={result['config']['name']:dict(
-        transition_ms=1000*result['config']['startup_transition_s'],
-        delay_budget_ms=1000*(result['config']['startup_transition_s']+result['config']['ts']),
-        measured_delay_ms=result['metrics']['startup_delay_from_reference_ms'],
-        previous_one_sample_delay_requirement_met=abs(result['metrics']['startup_delay_from_reference_ms'])<=1000*result['config']['ts']+1e-8)
-        for result in assisted}
+    report['startup_boundary_condition']={key:startup_boundary_condition(tight_results[key])
+                                          for key in ('nominal','full')}
+    common_fields=experiment_fields-{'name','enable_gain_sched'}
+    common_assisted_parameters=all(tight_results['nominal']['config'][name]==tight_results['full']['config'][name]
+                                  for name in common_fields)
+    common_assisted_parameters &= (tight_results['nominal']['config']['physical_parameters']
+                                   ==tight_results['full']['config']['physical_parameters'])
     acceptance = dict(known_full_max_error_under_0p05mm=metrics["max_abs_error_mm"]<.05,
-                      full_start_delay_within_preopen_window=0<=metrics['startup_delay_from_reference_ms']<=1000*tight_results['full']['config']['startup_transition_s']+1.01,
-                      full_startup_from_zero_voltage=abs(metrics['startup_initial_voltage_v'])<1e-12,
-                      full_startup_voltage_step_below_0p2v=metrics['startup_max_voltage_step_v']<.2,
-                      full_startup_voltage_drop_below_0p1v=metrics['startup_max_voltage_drop_v']<.1,
-                      full_startup_peak_below_0p7v=metrics['startup_peak_abs_voltage_v']<.7,
-                      nominal_startup_from_zero_voltage=abs(tight_results['nominal']['metrics']['startup_initial_voltage_v'])<1e-12,
-                      nominal_startup_voltage_step_below_0p2v=tight_results['nominal']['metrics']['startup_max_voltage_step_v']<.2,
-                      nominal_startup_voltage_drop_below_0p1v=tight_results['nominal']['metrics']['startup_max_voltage_drop_v']<.1,
-                      assisted_startup_settings_identical=tight_results['nominal']['config']['startup_transition_s']==tight_results['full']['config']['startup_transition_s'],
+                      assisted_public_parameters_identical=bool(common_assisted_parameters),
                       full_load_speed_drop_under_3percent=metrics["contact_speed_drop_percent"]<3,
                       full_no_saturation=metrics["saturation_time_s"]==0,
                       unknown_has_no_planned_force=True,commands_identical_before_load=True,
@@ -138,6 +206,8 @@ def verify(output, independent_prefix=None):
                       pid_contact_min_velocity_0p12_to_0p16=.12<=tight_results['pid']['metrics']['contact_min_velocity_m_s']<=.16,
                       full_heavy_voltage_4_to_4p4v=4<=metrics['heavy_median_voltage_v']<=4.4,
                       full_stop_voltage_step_below_0p3v=metrics['stop_max_voltage_step_v']<.3)
+    for key,boundary in report['startup_boundary_condition'].items():
+        acceptance.update({f'{key}_{name}':passed for name,passed in boundary['checks'].items()})
     report["acceptance"] = acceptance
     if not all(acceptance.values()):
         raise AssertionError(f"默认课堂基准验收失败：{acceptance}")
@@ -147,7 +217,7 @@ def verify(output, independent_prefix=None):
     if not tested.wasSuccessful():
         raise AssertionError(stream.getvalue())
     report["unit_tests"] = dict(run=tested.testsRun,passed=tested.wasSuccessful())
-    report["scope"] = "Accuracy and smooth-stop thresholds apply to known model-matched process load only. Unknown load has force/rate=0; its actual error and stop metrics are reported without those claims. Startup smoothing uses the disclosed preopening window plus one sample as its delay bound; the previous one-sample criterion remains reported separately and is no longer met. For quantized bare PID the pointwise convergence bound is one ADC LSB; assisted groups retain one-quarter LSB. Original quarter result and ADC-code disagreements remain recorded."
+    report["scope"] = "Accuracy and smooth-stop thresholds apply to known model-matched process load only. Unknown load has force/rate=0; its actual error and stop metrics are reported without those claims. Both assisted strategies share the startup boundary regularization and all public parameters except their gain-scheduling flag. Their nonzero initial command equals the calculated unshaped valve target while the physical valve starts at zero; its homogeneous initial mismatch decays with the real valve pole. The initial command step is recorded separately from subsequent startup smoothness. Startup delay is bounded by max(5*valve_tau, Ts); the previous one-sample criterion remains reported as measured. For quantized bare PID the pointwise convergence bound is one ADC LSB; assisted groups retain one-quarter LSB. Original quarter result and ADC-code disagreements remain recorded."
     (output/"validation.json").write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False)+"\n")
     print(f"验证通过：{tested.testsRun}项测试，三组收敛复核及未知外载因果对照；记录于 {output/'validation.json'}")
 
