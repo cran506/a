@@ -22,6 +22,8 @@ class Experiment:
     pressure_alpha: float = .2
     gain_prediction_s: float = .001
     force_error_gain_s: float = 80.
+    velocity_error_gain_s: float = 60.
+    zero_flow_band_v: float = .03
     enable_startup_regularization: bool = True
     load_force: float = 153000.
     load_ramp: float = .025
@@ -63,7 +65,8 @@ def simulate(cfg):
     controller=ModelAssistedController(pid,p,cfg.enable_ff,cfg.enable_gain_sched,
                                       pressure_alpha=cfg.pressure_alpha,valve_tau=cfg.valve_tau,
                                       gain_prediction_s=cfg.gain_prediction_s,force_error_gain_s=cfg.force_error_gain_s,
-                                      enable_startup_regularization=cfg.enable_startup_regularization)
+                                      enable_startup_regularization=cfg.enable_startup_regularization,
+                                      velocity_error_gain_s=cfg.velocity_error_gain_s,zero_flow_band_v=cfg.zero_flow_band_v)
     t,r,rv,ra,jerk=generate_process_scurve(dist=.13,T_move=1.,T_total=cfg.duration,dt=cfg.ts)
     names=['position_m','velocity_m_s','p1_pa','p2_pa','measured_m','error_m',
            'voltage_v','feedforward_v','feedback_v','requested_voltage_v',
@@ -72,7 +75,11 @@ def simulate(cfg):
            'pressure_filtered_2_pa','inverse_gain_n_s_v','force_rate_ref_n_s',
            'holding_deadzone_compensation_v','reference_force_n','measured_force_n',
            'planned_force_rate_n_s','force_error_correction_n_s','deadzone_offset_v',
-           'startup_valve_mismatch_v','startup_inverse_correction_v']
+           'startup_valve_mismatch_v','startup_inverse_correction_v',
+           'reference_friction_n','reference_motion_direction','friction_force_n',
+           'net_drive_force_n','sticking','slip_direction','release_pending',
+           'release_event_count','restick_event_count','planned_inverse_force_n',
+           'velocity_damping_force_n','static_hold_force_adjustment_n']
     data={k:np.empty_like(t) for k in names}
     for i,ti in enumerate(t):
         x,v,p1,p2=twin.state
@@ -81,6 +88,7 @@ def simulate(cfg):
         u,ff,fb=controller.update((r[i],rv[i],ra[i]),(measured,v),(p1,p2),jerk_d=jerk[i],
                                   known_force_n=force,known_force_rate_n_s=force_rate,origin_m=origin)
         info=controller.last
+        friction=twin.friction_diagnostics()
         values=[x-origin,v,p1,p2,measured,r[i]-(x-origin),u,ff,fb,info['requested_voltage_v'],
                 info['feedforward_requested_v'],info['valve_target_v'],twin.valve_state,
                 twin.load_at(ti),force,twin.extension_kq(),*controller.pressure_filtered,
@@ -88,7 +96,12 @@ def simulate(cfg):
                 info['holding_deadzone_compensation_v'],info.get('desired_force_n',0.),
                 info.get('actual_force_n',0.),info.get('planned_force_rate_n_s',0.),
                 info.get('force_error_correction_n_s',0.),info.get('deadzone_offset_v',0.),
-                info.get('startup_valve_mismatch_v',0.),info.get('startup_inverse_correction_v',0.)]
+                info.get('startup_valve_mismatch_v',0.),info.get('startup_inverse_correction_v',0.),
+                info.get('reference_friction_n',0.),info.get('reference_motion_direction',0.),
+                friction['friction_force_n'],friction['net_drive_force_n'],float(friction['sticking']),
+                friction['slip_direction'],float(friction['release_pending']),
+                friction['release_count'],friction['restick_count'],info.get('planned_inverse_force_n',0.),
+                info.get('velocity_damping_force_n',0.),info.get('static_hold_force_adjustment_n',0.)]
         for key,value in zip(names,values):data[key][i]=value
         if i+1<len(t):twin.step_voltage(u,cfg.ts)
     if not np.isclose(twin.t,t[-1],rtol=0.,atol=1e-10):
@@ -98,8 +111,14 @@ def simulate(cfg):
     meta=asdict(cfg);meta.update(origin_m=origin,sensor_lsb_mm=sensor.lsb*1000,
                                k_flow_m3_s_v_sqrt_pa=controller.k_flow,
                                nominal_pressures_pa=controller.nominal_pressures.tolist(),
-                               radau_nfev=twin.nfev,physical_parameters=twin.p.copy())
-    return dict(data=data,config=meta,metrics=metrics(data,cfg))
+                               radau_nfev=twin.nfev,physical_parameters=twin.p.copy(),
+                               friction_events=twin.friction_events.copy())
+    measured=metrics(data,cfg)
+    release=next((event for event in twin.friction_events if event['kind']=='release'),None)
+    measured.update(first_breakaway_ms=1000*release['time_s'] if release else None,
+                    first_breakaway_net_force_n=release['net_drive_n'] if release else None,
+                    friction_release_events=twin.release_count,friction_restick_events=twin.restick_count)
+    return dict(data=data,config=meta,metrics=measured)
 
 
 def metrics(d,cfg):
@@ -130,6 +149,8 @@ def metrics(d,cfg):
                 startup_max_voltage_drop_v=float(max(0.,np.max(-np.diff(u[preopen])))),
                 startup_peak_abs_voltage_v=float(np.max(abs(u[preopen]))),
                 startup_initial_voltage_v=float(u[0]),
+                startup_reference_friction_n=float(d['reference_friction_n'][0]),
+                startup_reference_force_n=float(d['reference_force_n'][0]),
                 startup_delay_from_reference_ms=float((t[started[0]]-t[reference_started[0]])*1000) if len(started) and len(reference_started) else None,
                 startup_velocity_rmse_m_s=float(np.sqrt(np.mean((v[startup]-vr[startup])**2))),
                 startup_velocity_overshoot_m_s=float(np.max(v[startup]-vr[startup])),

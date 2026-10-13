@@ -1,12 +1,16 @@
 {
+  "generated_at_utc": "2026-10-13T03:50:06.547774+00:00",
+  "strict_reference": false,
+  "overall_passed": true,
   "source_sha256": {
-    "simulation.py": "5414d0541f9e2bb59902daf55a55f3b5d03e5d938a149c86d19d4e195c5492f8",
-    "model_assisted_controller.py": "83b26b4f831a228c596663f5aa91b71ba87a74a5feb44fd8b5effaaba2561aab",
-    "twin_adapter.py": "9778388aa66b37baf94e390cfc1e7dae1ec84477cbc8165ca17c8c22724d46fc",
+    "simulation.py": "4a13185b3fab7df2a714e589cf3abb33467329cf0b6e097d6231aa8c0bc49167",
+    "model_assisted_controller.py": "7e88f5ebea496e2b86a6c04a4eb7f2184823c3d93aa84e21ce548f475756209e",
+    "twin_adapter.py": "2b9930b378280b0565114964cadfb857493d6de0995d20852ca4dc40bbed0e8b",
     "controllers.py": "305994f363531aa50b88b6c0b54c854b3290507cd775380f953379041dc4fdeb",
     "trajectory.py": "63d4161a40293dc8f92f647dd214668f958dc9ef5d9ddd79a9d35fd8d739b3f7",
     "hydraulic_digital_twin.py": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f",
     "media_model.py": "860f31dffe6d796fa96f1a5ea54192754c31abba025a4fe8396422c854b51102",
+    "friction_model.py": "d9e6fb113aed1458d184c26b3d5ec71d276035fce02732ecc1f7860a898b3d00",
     "physical_config.json": "0a7ab224a3dc4e55dbf4968d4a30b4b0644b05dab90a475592504dfcb0dad4ed",
     "classroom_config.json": "70b091cc969f434db0a8d6ac920c3e1a890d6b42c14d86d240a7456df91841a5"
   },
@@ -20,7 +24,13 @@
       "positive_pressure": true,
       "voltage_bounded": true,
       "valve_bounded": true,
-      "output_composition": true
+      "output_composition": true,
+      "common_time_s": true,
+      "common_reference_m": true,
+      "common_reference_velocity_m_s": true,
+      "common_reference_acceleration_m_s2": true,
+      "common_reference_jerk_m_s3": true,
+      "common_load_n": true
     },
     "nominal": {
       "finite": true,
@@ -29,7 +39,13 @@
       "positive_pressure": true,
       "voltage_bounded": true,
       "valve_bounded": true,
-      "output_composition": true
+      "output_composition": true,
+      "common_time_s": true,
+      "common_reference_m": true,
+      "common_reference_velocity_m_s": true,
+      "common_reference_acceleration_m_s2": true,
+      "common_reference_jerk_m_s3": true,
+      "common_load_n": true
     },
     "full": {
       "finite": true,
@@ -38,7 +54,13 @@
       "positive_pressure": true,
       "voltage_bounded": true,
       "valve_bounded": true,
-      "output_composition": true
+      "output_composition": true,
+      "common_time_s": true,
+      "common_reference_m": true,
+      "common_reference_velocity_m_s": true,
+      "common_reference_acceleration_m_s2": true,
+      "common_reference_jerk_m_s3": true,
+      "common_load_n": true
     }
   },
   "tighter_integration": {
@@ -57,6 +79,8 @@
         "pressure_alpha": 0.2,
         "gain_prediction_s": 0.001,
         "force_error_gain_s": 80.0,
+        "velocity_error_gain_s": 60.0,
+        "zero_flow_band_v": 0.03,
         "enable_startup_regularization": true,
         "load_force": 153000.0,
         "load_ramp": 0.025,
@@ -75,7 +99,7 @@
           2555555.5585564934,
           4711111.110360877
         ],
-        "radau_nfev": 62963,
+        "radau_nfev": 66281,
         "physical_parameters": {
           "A1": 0.01,
           "A2": 0.005,
@@ -105,50 +129,415 @@
           "ambient_pressure": 100000.0,
           "makeup_area": 0.001,
           "C_ep": 0.0
-        }
+        },
+        "friction_events": [
+          {
+            "time_s": 0.08838757731264325,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999999,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.13532012495261136,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -316.2622017425615,
+            "friction_n": -316.2622017425615
+          },
+          {
+            "time_s": 0.17571269431882394,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999987,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.21252327589502235,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -2091.0956306222206,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.21767042267398376,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 3162.8933741244364,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.23477808366823955,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8950.604706822134,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.24016828227112155,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 48360.22758903277,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.25108864788557717,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -16712.596195737846,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.25520567865699134,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 69781.71523465136,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.26519772070437275,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -18462.659930920036,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.2677967077316826,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 52880.89099425261,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9199894872608665,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -4291.105449335973,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9228626836584812,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 2673.0705505685473,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9327924019043127,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8037.050726705242,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9387890208474552,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 7800.184943063767,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.94633046418136,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8891.79817215542,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9525866613400878,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8116.420540544128,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9601261225226784,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8314.079987657642,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.966251525947717,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8360.39377669408,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9742511410711094,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -9292.94400066535,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.980265314593812,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 10174.619398765812,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9882859754529111,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -12194.11478059124,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9945125891222996,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 13434.360153074693,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.002216679564412,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -15542.62098206193,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0086448913968462,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 16335.03974552004,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0160040128499046,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -17479.320275384867,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0225294401093403,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 17406.31825367376,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.029500511562658,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -16692.23498240395,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0360430341630922,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 16172.815676552891,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0426132434047848,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -13395.926763735759,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0491446934181752,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 12413.578740993016,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0557037110342742,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -10018.693768869227,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.062220600934804,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8673.622632171613,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.068795761528069,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -6625.300990164862,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0752854985152633,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 5049.181926779911,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0819069259533223,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -3243.238405848504,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0882951958295137,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1594.384503713536,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0953374951172432,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 42.791385043594346,
+            "friction_n": 42.791385043594346
+          },
+          {
+            "time_s": 1.111530756839025,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000001000004,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1216132033247517,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 487.3998419288873,
+            "friction_n": 487.3998419288873
+          },
+          {
+            "time_s": 1.125355756734678,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999421,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.138095782904413,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 337.1939894471434,
+            "friction_n": 337.1939894471434
+          },
+          {
+            "time_s": 1.1397185037023707,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000513,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1512611379700142,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1279.27240790637,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.152749788983075,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 319.2091993988797,
+            "friction_n": 319.2091993988797
+          },
+          {
+            "time_s": 1.1544216015025064,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999567,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1650541169291588,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1333.5972852062187,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1679665728611097,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 297.2946567230247,
+            "friction_n": 297.2946567230247
+          },
+          {
+            "time_s": 1.1715591716430638,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.181177045867953,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 265.9555843645794,
+            "friction_n": 265.9555843645794
+          },
+          {
+            "time_s": 1.1887396868899032,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          }
+        ]
       },
       "metrics": {
-        "max_abs_error_mm": 1.3846636554013663,
-        "rms_error_mm": 0.4133395380468281,
-        "final_error_mm": 0.08147787436119103,
+        "max_abs_error_mm": 1.382646209182492,
+        "rms_error_mm": 0.4248644323361991,
+        "final_error_mm": 0.09121285573182591,
         "startup_velocity_threshold_m_s": 0.0001,
-        "motion_start_ms": 81.0,
+        "motion_start_ms": 90.0,
         "reference_threshold_ms": 5.0,
         "first_feedforward_ms": null,
         "first_feedforward_voltage_v": null,
-        "startup_max_abs_error_mm": 0.45833408716857155,
+        "startup_max_abs_error_mm": 0.5818480040926908,
         "startup_max_voltage_step_v": 0.001820300032600794,
         "startup_max_voltage_drop_v": 0.0,
         "startup_peak_abs_voltage_v": 0.015293924815262181,
         "startup_initial_voltage_v": 0.0,
-        "startup_delay_from_reference_ms": 76.0,
-        "startup_velocity_rmse_m_s": 0.017327730049967058,
-        "startup_velocity_overshoot_m_s": 0.0445489425518448,
+        "startup_reference_friction_n": 0.0,
+        "startup_reference_force_n": 0.0,
+        "startup_delay_from_reference_ms": 84.99999999999999,
+        "startup_velocity_rmse_m_s": 0.020362083542191912,
+        "startup_velocity_overshoot_m_s": 0.055509680215594756,
         "startup_prominent_overshoot_peaks": 1,
-        "startup_first_peak_time_s": 0.10300000000000001,
-        "startup_first_peak_velocity_m_s": 0.05965663485953711,
+        "startup_first_peak_time_s": 0.10200000000000001,
+        "startup_first_peak_velocity_m_s": 0.07017864487887687,
         "reference_velocity_at_0p16_m_s": 0.032,
-        "contact_min_velocity_m_s": 0.13149962899990433,
-        "contact_speed_drop_percent": 34.250185500047834,
-        "contact_max_abs_error_mm": 1.3846636554013663,
-        "contact_added_error_mm": 1.3874290772513813,
+        "contact_min_velocity_m_s": 0.13099376191014697,
+        "contact_speed_drop_percent": 34.503119044926514,
+        "contact_max_abs_error_mm": 1.382646209182492,
+        "contact_added_error_mm": 1.3846583335427043,
         "contact_error_peak_time_s": 0.54,
-        "error_at_0p60_mm": -0.5871574561888415,
-        "light_median_voltage_v": 2.3530405158275984,
-        "heavy_median_voltage_v": 4.626883232146399,
-        "light_median_p1_mpa": 2.551069498826202,
-        "heavy_median_p1_mpa": 16.121755270179364,
-        "kq_decline_percent": 48.578327908882926,
-        "peak_abs_voltage_v": 5.121032029046858,
-        "stop_peak_abs_voltage_v": 0.7134723016815046,
-        "stop_max_voltage_step_v": 0.13339290396226686,
-        "stop_voltage_total_variation_v": 6.297314126260939,
-        "hold_max_abs_velocity_m_s": 0.08841123785632117,
+        "error_at_0p60_mm": -0.5857038977083312,
+        "light_median_voltage_v": 2.352124794912169,
+        "heavy_median_voltage_v": 4.6246027909189715,
+        "light_median_p1_mpa": 2.5514363004791076,
+        "heavy_median_p1_mpa": 16.120568115082968,
+        "kq_decline_percent": 48.57156016287132,
+        "peak_abs_voltage_v": 5.12091064856535,
+        "stop_peak_abs_voltage_v": 0.6905933200600595,
+        "stop_max_voltage_step_v": 0.13064612725833025,
+        "stop_voltage_total_variation_v": 5.731821274314667,
+        "hold_max_abs_velocity_m_s": 0.08157280699100233,
         "saturation_time_s": 0.0,
-        "min_absolute_pressure_mpa": 0.0990370622555429,
-        "max_absolute_pressure_mpa": 16.54226029528693,
+        "min_absolute_pressure_mpa": 0.09903312904150063,
+        "max_absolute_pressure_mpa": 16.544298420468348,
         "meets_full_0p05mm": false,
-        "meets_full_0p1mm": false
+        "meets_full_0p1mm": false,
+        "first_breakaway_ms": 88.38757731264326,
+        "first_breakaway_net_force_n": 800.0000009999999,
+        "friction_release_events": 44,
+        "friction_restick_events": 7
       },
       "checks": {
         "finite": true,
@@ -159,11 +548,11 @@
         "valve_bounded": true,
         "output_composition": true
       },
-      "max_position_difference_mm": 0.003820349095184916,
-      "difference_under_quarter_adc_lsb": false,
+      "max_position_difference_mm": 2.523381670282987e-06,
+      "difference_under_quarter_adc_lsb": true,
       "position_difference_bound_mm": 0.00457763671875,
       "difference_under_position_bound": true,
-      "adc_code_disagreement_samples": 119
+      "adc_code_disagreement_samples": 0
     },
     "nominal": {
       "config": {
@@ -180,6 +569,8 @@
         "pressure_alpha": 0.2,
         "gain_prediction_s": 0.001,
         "force_error_gain_s": 80.0,
+        "velocity_error_gain_s": 60.0,
+        "zero_flow_band_v": 0.03,
         "enable_startup_regularization": true,
         "load_force": 153000.0,
         "load_ramp": 0.025,
@@ -198,7 +589,7 @@
           2555555.5585564934,
           4711111.110360877
         ],
-        "radau_nfev": 41837,
+        "radau_nfev": 48326,
         "physical_parameters": {
           "A1": 0.01,
           "A2": 0.005,
@@ -228,50 +619,128 @@
           "ambient_pressure": 100000.0,
           "makeup_area": 0.001,
           "C_ep": 0.0
-        }
+        },
+        "friction_events": [
+          {
+            "time_s": 0.02046248640307602,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000001,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9456532249782696,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -58.03634336722098,
+            "friction_n": -58.03634336722098
+          },
+          {
+            "time_s": 0.9465734225915227,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000149,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9567992615267693,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -1205.0038297204592,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9613466406138207,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -531.8478995759942,
+            "friction_n": -531.8478995759942
+          },
+          {
+            "time_s": 0.9757552727583372,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000001000004,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0030352409065286,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -699.5821931089231,
+            "friction_n": -699.5821931089231
+          },
+          {
+            "time_s": 1.035115368600932,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1212169301669939,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 214.37317418145904,
+            "friction_n": 214.37317418145904
+          },
+          {
+            "time_s": 1.134809043810725,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000001000004,
+            "friction_n": 800.0
+          }
+        ]
       },
       "metrics": {
-        "max_abs_error_mm": 1.366888645286557,
-        "rms_error_mm": 0.3327391067862519,
-        "final_error_mm": -0.13304622766441287,
+        "max_abs_error_mm": 1.3651381798265168,
+        "rms_error_mm": 0.33269020912814967,
+        "final_error_mm": -0.126030616114714,
         "startup_velocity_threshold_m_s": 0.0001,
-        "motion_start_ms": 11.0,
+        "motion_start_ms": 22.0,
         "reference_threshold_ms": 5.0,
         "first_feedforward_ms": 0.0,
-        "first_feedforward_voltage_v": 0.41229978706983494,
-        "startup_max_abs_error_mm": 0.007561460497060572,
-        "startup_max_voltage_step_v": 0.03471351121297289,
-        "startup_max_voltage_drop_v": 0.03471351121297289,
-        "startup_peak_abs_voltage_v": 0.45234344075882893,
-        "startup_initial_voltage_v": 0.41229978706983494,
-        "startup_delay_from_reference_ms": 5.999999999999999,
-        "startup_velocity_rmse_m_s": 0.00024986345591609114,
-        "startup_velocity_overshoot_m_s": 0.00042822300301383065,
-        "startup_prominent_overshoot_peaks": 0,
-        "startup_first_peak_time_s": null,
-        "startup_first_peak_velocity_m_s": null,
+        "first_feedforward_voltage_v": 0.5697370615637232,
+        "startup_max_abs_error_mm": 0.0339246477306578,
+        "startup_max_voltage_step_v": 0.030808960693499032,
+        "startup_max_voltage_drop_v": 0.030808960693499032,
+        "startup_peak_abs_voltage_v": 0.5769754402804611,
+        "startup_initial_voltage_v": 0.5697370615637232,
+        "startup_reference_friction_n": 800.0,
+        "startup_reference_force_n": 800.0,
+        "startup_delay_from_reference_ms": 16.999999999999996,
+        "startup_velocity_rmse_m_s": 0.002542119220442266,
+        "startup_velocity_overshoot_m_s": 0.0055486712812752165,
+        "startup_prominent_overshoot_peaks": 4,
+        "startup_first_peak_time_s": 0.147,
+        "startup_first_peak_velocity_m_s": 0.0342673565113317,
         "reference_velocity_at_0p16_m_s": 0.032,
-        "contact_min_velocity_m_s": 0.1336305423446764,
-        "contact_speed_drop_percent": 33.18472882766181,
-        "contact_max_abs_error_mm": 1.366888645286557,
-        "contact_added_error_mm": 1.3685307691822661,
+        "contact_min_velocity_m_s": 0.1339025358672209,
+        "contact_speed_drop_percent": 33.048732066389555,
+        "contact_max_abs_error_mm": 1.3651381798265168,
+        "contact_added_error_mm": 1.3659895689833168,
         "contact_error_peak_time_s": 0.545,
-        "error_at_0p60_mm": -0.4409232320440326,
-        "light_median_voltage_v": 2.356235187238926,
-        "heavy_median_voltage_v": 4.759014723283099,
-        "light_median_p1_mpa": 2.5514750014799823,
-        "heavy_median_p1_mpa": 16.12270554208758,
-        "kq_decline_percent": 48.58277159844341,
-        "peak_abs_voltage_v": 5.1142724191161015,
-        "stop_peak_abs_voltage_v": 0.5836263389143119,
-        "stop_max_voltage_step_v": 0.22075037716893042,
-        "stop_voltage_total_variation_v": 1.7521901903354091,
-        "hold_max_abs_velocity_m_s": 0.009276887312509967,
+        "error_at_0p60_mm": -0.43422094682650514,
+        "light_median_voltage_v": 2.3565176322117276,
+        "heavy_median_voltage_v": 4.762728921587074,
+        "light_median_p1_mpa": 2.5509391483177737,
+        "heavy_median_p1_mpa": 16.125125738303833,
+        "kq_decline_percent": 48.596276744898084,
+        "peak_abs_voltage_v": 5.110447665102367,
+        "stop_peak_abs_voltage_v": 0.5904374859699553,
+        "stop_max_voltage_step_v": 0.21723495632069773,
+        "stop_voltage_total_variation_v": 2.142839857484912,
+        "hold_max_abs_velocity_m_s": 0.01070710221640816,
         "saturation_time_s": 0.0,
         "min_absolute_pressure_mpa": 0.1,
-        "max_absolute_pressure_mpa": 16.50572376833088,
+        "max_absolute_pressure_mpa": 16.504853617685264,
         "meets_full_0p05mm": false,
-        "meets_full_0p1mm": false
+        "meets_full_0p1mm": false,
+        "first_breakaway_ms": 20.46248640307602,
+        "first_breakaway_net_force_n": 800.0000010000001,
+        "friction_release_events": 6,
+        "friction_restick_events": 4
       },
       "checks": {
         "finite": true,
@@ -282,7 +751,7 @@
         "valve_bounded": true,
         "output_composition": true
       },
-      "max_position_difference_mm": 5.624378740520797e-07,
+      "max_position_difference_mm": 4.1041353648907375e-07,
       "difference_under_quarter_adc_lsb": true,
       "position_difference_bound_mm": 0.0011444091796875,
       "difference_under_position_bound": true,
@@ -303,6 +772,8 @@
         "pressure_alpha": 0.2,
         "gain_prediction_s": 0.001,
         "force_error_gain_s": 80.0,
+        "velocity_error_gain_s": 60.0,
+        "zero_flow_band_v": 0.03,
         "enable_startup_regularization": true,
         "load_force": 153000.0,
         "load_ramp": 0.025,
@@ -321,7 +792,7 @@
           2555555.5585564934,
           4711111.110360877
         ],
-        "radau_nfev": 35671,
+        "radau_nfev": 44482,
         "physical_parameters": {
           "A1": 0.01,
           "A2": 0.005,
@@ -351,50 +822,275 @@
           "ambient_pressure": 100000.0,
           "makeup_area": 0.001,
           "C_ep": 0.0
-        }
+        },
+        "friction_events": [
+          {
+            "time_s": 0.020930661944485156,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999999,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9848477521716107,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -172.1049246747607,
+            "friction_n": -172.1049246747607
+          },
+          {
+            "time_s": 0.9976790999464386,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999894,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0169608592033643,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 389.5541187801464,
+            "friction_n": 389.5541187801464
+          },
+          {
+            "time_s": 1.0213654157150713,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999167,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0271337008529575,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -538.1567304889795,
+            "friction_n": -538.1567304889795
+          },
+          {
+            "time_s": 1.0357619632134387,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999749,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0402569145127292,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -660.0797392257955,
+            "friction_n": -660.0797392257955
+          },
+          {
+            "time_s": 1.0468430733214262,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999931,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0513653897426563,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -656.053764746488,
+            "friction_n": -656.053764746488
+          },
+          {
+            "time_s": 1.0576977130796903,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.062979141857916,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -587.3488580482808,
+            "friction_n": -587.3488580482808
+          },
+          {
+            "time_s": 1.0690054003557126,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999894,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0753533298943325,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -410.10569904920703,
+            "friction_n": -410.10569904920703
+          },
+          {
+            "time_s": 1.0818589233487677,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999894,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0858145328950946,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -685.2861982986797,
+            "friction_n": -685.2861982986797
+          },
+          {
+            "time_s": 1.0906921075281717,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000258,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0953899511986818,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -638.861890043263,
+            "friction_n": -638.861890043263
+          },
+          {
+            "time_s": 1.1022352566362537,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999821,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.10792138610113,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -538.2821748100105,
+            "friction_n": -538.2821748100105
+          },
+          {
+            "time_s": 1.1156054845181964,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999967,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.119388420802885,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -694.724843292046,
+            "friction_n": -694.724843292046
+          },
+          {
+            "time_s": 1.1259296993038779,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000185,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.127532354059743,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -764.4461744541586,
+            "friction_n": -764.4461744541586
+          },
+          {
+            "time_s": 1.1309318284573446,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000258,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1322549622335563,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -771.3076361520943,
+            "friction_n": -771.3076361520943
+          },
+          {
+            "time_s": 1.136272476394586,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.000001000004,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.140003185732278,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -703.2149327823645,
+            "friction_n": -703.2149327823645
+          },
+          {
+            "time_s": 1.1516761301885177,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1527400289632665,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -780.2051942789512,
+            "friction_n": -780.2051942789512
+          },
+          {
+            "time_s": 1.199896916213276,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          }
+        ]
       },
       "metrics": {
-        "max_abs_error_mm": 0.04320652095538002,
-        "rms_error_mm": 0.007478037932704993,
-        "final_error_mm": 0.0035416220370010354,
+        "max_abs_error_mm": 0.04444996723010873,
+        "rms_error_mm": 0.01200934083119169,
+        "final_error_mm": 0.008344869100535002,
         "startup_velocity_threshold_m_s": 0.0001,
-        "motion_start_ms": 11.0,
+        "motion_start_ms": 23.0,
         "reference_threshold_ms": 5.0,
         "first_feedforward_ms": 0.0,
-        "first_feedforward_voltage_v": 0.41192743523274133,
-        "startup_max_abs_error_mm": 0.006358778894016527,
-        "startup_max_voltage_step_v": 0.03360544262071036,
-        "startup_max_voltage_drop_v": 0.03360544262071036,
-        "startup_peak_abs_voltage_v": 0.4512560212672082,
-        "startup_initial_voltage_v": 0.41192743523274133,
-        "startup_delay_from_reference_ms": 5.999999999999999,
-        "startup_velocity_rmse_m_s": 0.00024733132096759153,
-        "startup_velocity_overshoot_m_s": 0.00043394745167221055,
-        "startup_prominent_overshoot_peaks": 0,
-        "startup_first_peak_time_s": null,
-        "startup_first_peak_velocity_m_s": null,
+        "first_feedforward_voltage_v": 0.5645986062118302,
+        "startup_max_abs_error_mm": 0.033831246749994576,
+        "startup_max_voltage_step_v": 0.03006827872029244,
+        "startup_max_voltage_drop_v": 0.03006827872029244,
+        "startup_peak_abs_voltage_v": 0.5716216587777343,
+        "startup_initial_voltage_v": 0.5645986062118302,
+        "startup_reference_friction_n": 800.0,
+        "startup_reference_force_n": 800.0,
+        "startup_delay_from_reference_ms": 18.0,
+        "startup_velocity_rmse_m_s": 0.0027160751698833367,
+        "startup_velocity_overshoot_m_s": 0.006056152912853163,
+        "startup_prominent_overshoot_peaks": 4,
+        "startup_first_peak_time_s": 0.147,
+        "startup_first_peak_velocity_m_s": 0.03481205502665669,
         "reference_velocity_at_0p16_m_s": 0.032,
-        "contact_min_velocity_m_s": 0.1971639239886655,
-        "contact_speed_drop_percent": 1.4180380056672548,
-        "contact_max_abs_error_mm": 0.012635245592973465,
-        "contact_added_error_mm": 0.013191234519066564,
+        "contact_min_velocity_m_s": 0.19700701214574762,
+        "contact_speed_drop_percent": 1.4964939271261968,
+        "contact_max_abs_error_mm": 0.013230636905420257,
+        "contact_added_error_mm": 0.013589895968862953,
         "contact_error_peak_time_s": 0.507,
-        "error_at_0p60_mm": 0.004376258520635834,
-        "light_median_voltage_v": 2.3561609620756787,
-        "heavy_median_voltage_v": 4.253835176788177,
-        "light_median_p1_mpa": 2.5511274222687845,
-        "heavy_median_p1_mpa": 16.16358101714591,
-        "kq_decline_percent": 48.79916508818026,
-        "peak_abs_voltage_v": 4.487701190596316,
-        "stop_peak_abs_voltage_v": 0.675239113819282,
-        "stop_max_voltage_step_v": 0.20837508053163478,
-        "stop_voltage_total_variation_v": 1.7534029992772784,
-        "hold_max_abs_velocity_m_s": 0.002713377604577765,
+        "error_at_0p60_mm": 0.004429305569750297,
+        "light_median_voltage_v": 2.35615060880063,
+        "heavy_median_voltage_v": 4.253912828862537,
+        "light_median_p1_mpa": 2.5512126535117607,
+        "heavy_median_p1_mpa": 16.163852247565647,
+        "kq_decline_percent": 48.8004825340411,
+        "peak_abs_voltage_v": 4.477952336721754,
+        "stop_peak_abs_voltage_v": 0.6698094013770871,
+        "stop_max_voltage_step_v": 0.21780328577621477,
+        "stop_voltage_total_variation_v": 3.1047556532678926,
+        "hold_max_abs_velocity_m_s": 0.0012731746279606357,
         "saturation_time_s": 0.0,
         "min_absolute_pressure_mpa": 0.1,
-        "max_absolute_pressure_mpa": 16.22816993356711,
+        "max_absolute_pressure_mpa": 16.235614984473052,
         "meets_full_0p05mm": true,
-        "meets_full_0p1mm": true
+        "meets_full_0p1mm": true,
+        "first_breakaway_ms": 20.930661944485156,
+        "first_breakaway_net_force_n": 800.0000009999999,
+        "friction_release_events": 16,
+        "friction_restick_events": 15
       },
       "checks": {
         "finite": true,
@@ -405,7 +1101,7 @@
         "valve_bounded": true,
         "output_composition": true
       },
-      "max_position_difference_mm": 4.960500621375985e-07,
+      "max_position_difference_mm": 1.00649429346511e-05,
       "difference_under_quarter_adc_lsb": true,
       "position_difference_bound_mm": 0.0011444091796875,
       "difference_under_position_bound": true,
@@ -427,6 +1123,8 @@
       "pressure_alpha": 0.2,
       "gain_prediction_s": 0.001,
       "force_error_gain_s": 80.0,
+      "velocity_error_gain_s": 60.0,
+      "zero_flow_band_v": 0.03,
       "enable_startup_regularization": true,
       "load_force": 153000.0,
       "load_ramp": 0.025,
@@ -445,7 +1143,7 @@
         2555555.5585564934,
         4711111.110360877
       ],
-      "radau_nfev": 44393,
+      "radau_nfev": 51498,
       "physical_parameters": {
         "A1": 0.01,
         "A2": 0.005,
@@ -475,50 +1173,212 @@
         "ambient_pressure": 100000.0,
         "makeup_area": 0.001,
         "C_ep": 0.0
-      }
+      },
+      "friction_events": [
+        {
+          "time_s": 0.020930661944485156,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999999,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9345401067664614,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -8029.952466927014,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.941026772248551,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 6512.181708501215,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9476072671453223,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -4619.595130165631,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.954041499130097,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 2979.3222133453564,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9607424103497865,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -1280.9955802081095,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0108275418010004,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 2581.8453432775277,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.014843774567945,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -1909.6567169155169,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0210355766935082,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 1801.489778561605,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0258335163243029,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -1214.674197860084,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0325593775092388,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 1828.4378155650556,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0363932172340764,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -938.286686535961,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0426703132446422,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 806.6791391898878,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0446295104427592,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": 634.627401361533,
+          "friction_n": 634.627401361533
+        },
+        {
+          "time_s": 1.0469604050261685,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000009996947,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.053577142878001,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 1124.844445742805,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0617815638088242,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": 649.9509688489925,
+          "friction_n": 649.9509688489925
+        },
+        {
+          "time_s": 1.0633910918687304,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000010000003,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.1545319257717976,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": 405.37407198840083,
+          "friction_n": 405.37407198840083
+        },
+        {
+          "time_s": 1.155976182961436,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999712,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.1648789731993365,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": 568.8843934480901,
+          "friction_n": 568.8843934480901
+        },
+        {
+          "time_s": 1.1679922708546213,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000010000003,
+          "friction_n": 800.0
+        }
+      ]
     },
     "metrics": {
-      "max_abs_error_mm": 1.6615006607501315,
-      "rms_error_mm": 0.35595493926953264,
-      "final_error_mm": -0.0333087801021037,
+      "max_abs_error_mm": 1.623263504433925,
+      "rms_error_mm": 0.32352818841897335,
+      "final_error_mm": -0.18663661447332336,
       "startup_velocity_threshold_m_s": 0.0001,
-      "motion_start_ms": 11.0,
+      "motion_start_ms": 23.0,
       "reference_threshold_ms": 5.0,
       "first_feedforward_ms": 0.0,
-      "first_feedforward_voltage_v": 0.41192743523274133,
-      "startup_max_abs_error_mm": 0.006358778894016527,
-      "startup_max_voltage_step_v": 0.03360544262071036,
-      "startup_max_voltage_drop_v": 0.03360544262071036,
-      "startup_peak_abs_voltage_v": 0.4512560212672082,
-      "startup_initial_voltage_v": 0.41192743523274133,
-      "startup_delay_from_reference_ms": 5.999999999999999,
-      "startup_velocity_rmse_m_s": 0.00024733132096759153,
-      "startup_velocity_overshoot_m_s": 0.00043394745167221055,
-      "startup_prominent_overshoot_peaks": 0,
-      "startup_first_peak_time_s": null,
-      "startup_first_peak_velocity_m_s": null,
+      "first_feedforward_voltage_v": 0.5645986062118302,
+      "startup_max_abs_error_mm": 0.033831246749994576,
+      "startup_max_voltage_step_v": 0.03006827872029244,
+      "startup_max_voltage_drop_v": 0.03006827872029244,
+      "startup_peak_abs_voltage_v": 0.5716216587777343,
+      "startup_initial_voltage_v": 0.5645986062118302,
+      "startup_reference_friction_n": 800.0,
+      "startup_reference_force_n": 800.0,
+      "startup_delay_from_reference_ms": 18.0,
+      "startup_velocity_rmse_m_s": 0.0027160751698833367,
+      "startup_velocity_overshoot_m_s": 0.006056152912853163,
+      "startup_prominent_overshoot_peaks": 4,
+      "startup_first_peak_time_s": 0.147,
+      "startup_first_peak_velocity_m_s": 0.03481205502665669,
       "reference_velocity_at_0p16_m_s": 0.032,
-      "contact_min_velocity_m_s": 0.14193737792038974,
-      "contact_speed_drop_percent": 29.031311039805136,
-      "contact_max_abs_error_mm": 0.8177525512535339,
-      "contact_added_error_mm": 0.818308540179627,
+      "contact_min_velocity_m_s": 0.14263205772642368,
+      "contact_speed_drop_percent": 28.683971136788166,
+      "contact_max_abs_error_mm": 0.8134834331761931,
+      "contact_added_error_mm": 0.8138426922396358,
       "contact_error_peak_time_s": 0.527,
-      "error_at_0p60_mm": -0.32084490986371283,
-      "light_median_voltage_v": 2.3561609620756787,
-      "heavy_median_voltage_v": 4.3496896625179,
-      "light_median_p1_mpa": 2.5511274222687845,
-      "heavy_median_p1_mpa": 16.141759074684103,
-      "kq_decline_percent": 48.683785903141974,
-      "peak_abs_voltage_v": 4.717816193688005,
-      "stop_peak_abs_voltage_v": 2.751165440119272,
-      "stop_max_voltage_step_v": 2.4550475363481903,
-      "stop_voltage_total_variation_v": 23.383357524832917,
-      "hold_max_abs_velocity_m_s": 0.05205671595334565,
+      "error_at_0p60_mm": -0.3175562157481798,
+      "light_median_voltage_v": 2.35615060880063,
+      "heavy_median_voltage_v": 4.357102552919432,
+      "light_median_p1_mpa": 2.5512126535117607,
+      "heavy_median_p1_mpa": 16.140331408785407,
+      "kq_decline_percent": 48.67612788672293,
+      "peak_abs_voltage_v": 4.714050595326351,
+      "stop_peak_abs_voltage_v": 0.615978850652917,
+      "stop_max_voltage_step_v": 0.22716810602795012,
+      "stop_voltage_total_variation_v": 3.8485559901337987,
+      "hold_max_abs_velocity_m_s": 0.01857860296341983,
       "saturation_time_s": 0.0,
       "min_absolute_pressure_mpa": 0.1,
-      "max_absolute_pressure_mpa": 16.45216600282679,
+      "max_absolute_pressure_mpa": 16.44532634167772,
       "meets_full_0p05mm": false,
-      "meets_full_0p1mm": false
+      "meets_full_0p1mm": false,
+      "first_breakaway_ms": 20.930661944485156,
+      "first_breakaway_net_force_n": 800.0000009999999,
+      "friction_release_events": 18,
+      "friction_restick_events": 4
     },
     "checks": {
       "finite": true,
@@ -528,22 +1388,258 @@
       "voltage_bounded": true,
       "valve_bounded": true,
       "output_composition": true
+    },
+    "before_load_causality_checks": {
+      "position_m": true,
+      "velocity_m_s": true,
+      "p1_pa": true,
+      "p2_pa": true,
+      "voltage_v": true
     }
   },
   "acceptance": {
-    "known_full_max_error_under_0p05mm": true,
-    "assisted_public_parameters_identical": true,
-    "full_load_speed_drop_under_3percent": true,
-    "full_no_saturation": true,
+    "original_twin_unchanged": true,
+    "known_planned_process_load": true,
+    "pid_csv_finite": true,
+    "pid_csv_sample_count_correct": true,
+    "pid_csv_clock_correct": true,
+    "pid_csv_positive_pressure": true,
+    "pid_csv_voltage_bounded": true,
+    "pid_csv_valve_bounded": true,
+    "pid_csv_output_composition": true,
+    "pid_csv_common_time_s": true,
+    "pid_csv_common_reference_m": true,
+    "pid_csv_common_reference_velocity_m_s": true,
+    "pid_csv_common_reference_acceleration_m_s2": true,
+    "pid_csv_common_reference_jerk_m_s3": true,
+    "pid_csv_common_load_n": true,
+    "pid_default_friction_initial_cold_static_state": true,
+    "pid_default_friction_mode_logs_valid": true,
+    "pid_default_friction_release_pending_only_while_sticking": true,
+    "pid_default_friction_stationary_samples_present": true,
+    "pid_default_friction_sticking_velocity_is_exactly_zero": true,
+    "pid_default_friction_static_friction_inside_fs_cone": true,
+    "pid_default_friction_static_net_inside_fs_cone": true,
+    "pid_default_friction_static_force_balance": true,
+    "pid_default_friction_net_force_matches_pressure_environment_and_current_load": true,
+    "pid_default_friction_sliding_force_matches_directed_stribeck_branch": true,
+    "pid_default_friction_event_fields_valid": true,
+    "pid_default_friction_event_clock_valid": true,
+    "pid_default_friction_release_events_have_static_threshold_and_direction": true,
+    "pid_default_friction_restick_events_have_force_balance": true,
+    "pid_default_friction_sampled_release_counts_match_events": true,
+    "pid_default_friction_sampled_restick_counts_match_events": true,
+    "pid_default_friction_metric_release_count_matches_events": true,
+    "pid_default_friction_metric_restick_count_matches_events": true,
+    "pid_default_friction_first_breakaway_time_matches_release_event": true,
+    "pid_default_friction_first_breakaway_force_matches_release_event": true,
+    "pid_default_friction_first_cold_breakaway_at_static_threshold": true,
+    "pid_default_friction_actual_release_precedes_sampled_motion": true,
+    "pid_default_friction_position_held_until_first_release": true,
+    "nominal_csv_finite": true,
+    "nominal_csv_sample_count_correct": true,
+    "nominal_csv_clock_correct": true,
+    "nominal_csv_positive_pressure": true,
+    "nominal_csv_voltage_bounded": true,
+    "nominal_csv_valve_bounded": true,
+    "nominal_csv_output_composition": true,
+    "nominal_csv_common_time_s": true,
+    "nominal_csv_common_reference_m": true,
+    "nominal_csv_common_reference_velocity_m_s": true,
+    "nominal_csv_common_reference_acceleration_m_s2": true,
+    "nominal_csv_common_reference_jerk_m_s3": true,
+    "nominal_csv_common_load_n": true,
+    "nominal_default_friction_initial_cold_static_state": true,
+    "nominal_default_friction_mode_logs_valid": true,
+    "nominal_default_friction_release_pending_only_while_sticking": true,
+    "nominal_default_friction_stationary_samples_present": true,
+    "nominal_default_friction_sticking_velocity_is_exactly_zero": true,
+    "nominal_default_friction_static_friction_inside_fs_cone": true,
+    "nominal_default_friction_static_net_inside_fs_cone": true,
+    "nominal_default_friction_static_force_balance": true,
+    "nominal_default_friction_net_force_matches_pressure_environment_and_current_load": true,
+    "nominal_default_friction_sliding_force_matches_directed_stribeck_branch": true,
+    "nominal_default_friction_event_fields_valid": true,
+    "nominal_default_friction_event_clock_valid": true,
+    "nominal_default_friction_release_events_have_static_threshold_and_direction": true,
+    "nominal_default_friction_restick_events_have_force_balance": true,
+    "nominal_default_friction_sampled_release_counts_match_events": true,
+    "nominal_default_friction_sampled_restick_counts_match_events": true,
+    "nominal_default_friction_metric_release_count_matches_events": true,
+    "nominal_default_friction_metric_restick_count_matches_events": true,
+    "nominal_default_friction_first_breakaway_time_matches_release_event": true,
+    "nominal_default_friction_first_breakaway_force_matches_release_event": true,
+    "nominal_default_friction_first_cold_breakaway_at_static_threshold": true,
+    "nominal_default_friction_actual_release_precedes_sampled_motion": true,
+    "nominal_default_friction_position_held_until_first_release": true,
+    "full_csv_finite": true,
+    "full_csv_sample_count_correct": true,
+    "full_csv_clock_correct": true,
+    "full_csv_positive_pressure": true,
+    "full_csv_voltage_bounded": true,
+    "full_csv_valve_bounded": true,
+    "full_csv_output_composition": true,
+    "full_csv_common_time_s": true,
+    "full_csv_common_reference_m": true,
+    "full_csv_common_reference_velocity_m_s": true,
+    "full_csv_common_reference_acceleration_m_s2": true,
+    "full_csv_common_reference_jerk_m_s3": true,
+    "full_csv_common_load_n": true,
+    "full_default_friction_initial_cold_static_state": true,
+    "full_default_friction_mode_logs_valid": true,
+    "full_default_friction_release_pending_only_while_sticking": true,
+    "full_default_friction_stationary_samples_present": true,
+    "full_default_friction_sticking_velocity_is_exactly_zero": true,
+    "full_default_friction_static_friction_inside_fs_cone": true,
+    "full_default_friction_static_net_inside_fs_cone": true,
+    "full_default_friction_static_force_balance": true,
+    "full_default_friction_net_force_matches_pressure_environment_and_current_load": true,
+    "full_default_friction_sliding_force_matches_directed_stribeck_branch": true,
+    "full_default_friction_event_fields_valid": true,
+    "full_default_friction_event_clock_valid": true,
+    "full_default_friction_release_events_have_static_threshold_and_direction": true,
+    "full_default_friction_restick_events_have_force_balance": true,
+    "full_default_friction_sampled_release_counts_match_events": true,
+    "full_default_friction_sampled_restick_counts_match_events": true,
+    "full_default_friction_metric_release_count_matches_events": true,
+    "full_default_friction_metric_restick_count_matches_events": true,
+    "full_default_friction_first_breakaway_time_matches_release_event": true,
+    "full_default_friction_first_breakaway_force_matches_release_event": true,
+    "full_default_friction_first_cold_breakaway_at_static_threshold": true,
+    "full_default_friction_actual_release_precedes_sampled_motion": true,
+    "full_default_friction_position_held_until_first_release": true,
+    "pid_tighter_finite": true,
+    "pid_tighter_sample_count_correct": true,
+    "pid_tighter_clock_correct": true,
+    "pid_tighter_positive_pressure": true,
+    "pid_tighter_voltage_bounded": true,
+    "pid_tighter_valve_bounded": true,
+    "pid_tighter_output_composition": true,
+    "pid_tighter_friction_initial_cold_static_state": true,
+    "pid_tighter_friction_mode_logs_valid": true,
+    "pid_tighter_friction_release_pending_only_while_sticking": true,
+    "pid_tighter_friction_stationary_samples_present": true,
+    "pid_tighter_friction_sticking_velocity_is_exactly_zero": true,
+    "pid_tighter_friction_static_friction_inside_fs_cone": true,
+    "pid_tighter_friction_static_net_inside_fs_cone": true,
+    "pid_tighter_friction_static_force_balance": true,
+    "pid_tighter_friction_net_force_matches_pressure_environment_and_current_load": true,
+    "pid_tighter_friction_sliding_force_matches_directed_stribeck_branch": true,
+    "pid_tighter_friction_event_fields_valid": true,
+    "pid_tighter_friction_event_clock_valid": true,
+    "pid_tighter_friction_release_events_have_static_threshold_and_direction": true,
+    "pid_tighter_friction_restick_events_have_force_balance": true,
+    "pid_tighter_friction_sampled_release_counts_match_events": true,
+    "pid_tighter_friction_sampled_restick_counts_match_events": true,
+    "pid_tighter_friction_metric_release_count_matches_events": true,
+    "pid_tighter_friction_metric_restick_count_matches_events": true,
+    "pid_tighter_friction_first_breakaway_time_matches_release_event": true,
+    "pid_tighter_friction_first_breakaway_force_matches_release_event": true,
+    "pid_tighter_friction_first_cold_breakaway_at_static_threshold": true,
+    "pid_tighter_friction_actual_release_precedes_sampled_motion": true,
+    "pid_tighter_friction_position_held_until_first_release": true,
+    "pid_integration_difference_under_position_bound": true,
+    "nominal_tighter_finite": true,
+    "nominal_tighter_sample_count_correct": true,
+    "nominal_tighter_clock_correct": true,
+    "nominal_tighter_positive_pressure": true,
+    "nominal_tighter_voltage_bounded": true,
+    "nominal_tighter_valve_bounded": true,
+    "nominal_tighter_output_composition": true,
+    "nominal_tighter_friction_initial_cold_static_state": true,
+    "nominal_tighter_friction_mode_logs_valid": true,
+    "nominal_tighter_friction_release_pending_only_while_sticking": true,
+    "nominal_tighter_friction_stationary_samples_present": true,
+    "nominal_tighter_friction_sticking_velocity_is_exactly_zero": true,
+    "nominal_tighter_friction_static_friction_inside_fs_cone": true,
+    "nominal_tighter_friction_static_net_inside_fs_cone": true,
+    "nominal_tighter_friction_static_force_balance": true,
+    "nominal_tighter_friction_net_force_matches_pressure_environment_and_current_load": true,
+    "nominal_tighter_friction_sliding_force_matches_directed_stribeck_branch": true,
+    "nominal_tighter_friction_event_fields_valid": true,
+    "nominal_tighter_friction_event_clock_valid": true,
+    "nominal_tighter_friction_release_events_have_static_threshold_and_direction": true,
+    "nominal_tighter_friction_restick_events_have_force_balance": true,
+    "nominal_tighter_friction_sampled_release_counts_match_events": true,
+    "nominal_tighter_friction_sampled_restick_counts_match_events": true,
+    "nominal_tighter_friction_metric_release_count_matches_events": true,
+    "nominal_tighter_friction_metric_restick_count_matches_events": true,
+    "nominal_tighter_friction_first_breakaway_time_matches_release_event": true,
+    "nominal_tighter_friction_first_breakaway_force_matches_release_event": true,
+    "nominal_tighter_friction_first_cold_breakaway_at_static_threshold": true,
+    "nominal_tighter_friction_actual_release_precedes_sampled_motion": true,
+    "nominal_tighter_friction_position_held_until_first_release": true,
+    "nominal_integration_difference_under_position_bound": true,
+    "full_tighter_finite": true,
+    "full_tighter_sample_count_correct": true,
+    "full_tighter_clock_correct": true,
+    "full_tighter_positive_pressure": true,
+    "full_tighter_voltage_bounded": true,
+    "full_tighter_valve_bounded": true,
+    "full_tighter_output_composition": true,
+    "full_tighter_friction_initial_cold_static_state": true,
+    "full_tighter_friction_mode_logs_valid": true,
+    "full_tighter_friction_release_pending_only_while_sticking": true,
+    "full_tighter_friction_stationary_samples_present": true,
+    "full_tighter_friction_sticking_velocity_is_exactly_zero": true,
+    "full_tighter_friction_static_friction_inside_fs_cone": true,
+    "full_tighter_friction_static_net_inside_fs_cone": true,
+    "full_tighter_friction_static_force_balance": true,
+    "full_tighter_friction_net_force_matches_pressure_environment_and_current_load": true,
+    "full_tighter_friction_sliding_force_matches_directed_stribeck_branch": true,
+    "full_tighter_friction_event_fields_valid": true,
+    "full_tighter_friction_event_clock_valid": true,
+    "full_tighter_friction_release_events_have_static_threshold_and_direction": true,
+    "full_tighter_friction_restick_events_have_force_balance": true,
+    "full_tighter_friction_sampled_release_counts_match_events": true,
+    "full_tighter_friction_sampled_restick_counts_match_events": true,
+    "full_tighter_friction_metric_release_count_matches_events": true,
+    "full_tighter_friction_metric_restick_count_matches_events": true,
+    "full_tighter_friction_first_breakaway_time_matches_release_event": true,
+    "full_tighter_friction_first_breakaway_force_matches_release_event": true,
+    "full_tighter_friction_first_cold_breakaway_at_static_threshold": true,
+    "full_tighter_friction_actual_release_precedes_sampled_motion": true,
+    "full_tighter_friction_position_held_until_first_release": true,
+    "full_integration_difference_under_position_bound": true,
+    "unknown_tighter_finite": true,
+    "unknown_tighter_sample_count_correct": true,
+    "unknown_tighter_clock_correct": true,
+    "unknown_tighter_positive_pressure": true,
+    "unknown_tighter_voltage_bounded": true,
+    "unknown_tighter_valve_bounded": true,
+    "unknown_tighter_output_composition": true,
+    "unknown_tighter_friction_initial_cold_static_state": true,
+    "unknown_tighter_friction_mode_logs_valid": true,
+    "unknown_tighter_friction_release_pending_only_while_sticking": true,
+    "unknown_tighter_friction_stationary_samples_present": true,
+    "unknown_tighter_friction_sticking_velocity_is_exactly_zero": true,
+    "unknown_tighter_friction_static_friction_inside_fs_cone": true,
+    "unknown_tighter_friction_static_net_inside_fs_cone": true,
+    "unknown_tighter_friction_static_force_balance": true,
+    "unknown_tighter_friction_net_force_matches_pressure_environment_and_current_load": true,
+    "unknown_tighter_friction_sliding_force_matches_directed_stribeck_branch": true,
+    "unknown_tighter_friction_event_fields_valid": true,
+    "unknown_tighter_friction_event_clock_valid": true,
+    "unknown_tighter_friction_release_events_have_static_threshold_and_direction": true,
+    "unknown_tighter_friction_restick_events_have_force_balance": true,
+    "unknown_tighter_friction_sampled_release_counts_match_events": true,
+    "unknown_tighter_friction_sampled_restick_counts_match_events": true,
+    "unknown_tighter_friction_metric_release_count_matches_events": true,
+    "unknown_tighter_friction_metric_restick_count_matches_events": true,
+    "unknown_tighter_friction_first_breakaway_time_matches_release_event": true,
+    "unknown_tighter_friction_first_breakaway_force_matches_release_event": true,
+    "unknown_tighter_friction_first_cold_breakaway_at_static_threshold": true,
+    "unknown_tighter_friction_actual_release_precedes_sampled_motion": true,
+    "unknown_tighter_friction_position_held_until_first_release": true,
     "unknown_has_no_planned_force": true,
     "commands_identical_before_load": true,
+    "all_strategies_share_cold_initial_state": true,
+    "known_full_max_error_under_0p05mm": true,
+    "all_three_public_parameters_identical": true,
+    "assisted_startup_settings_identical": true,
+    "full_load_speed_drop_under_3percent": true,
+    "full_no_saturation": true,
     "process_reference_matches_0p16_target": true,
-    "pid_start_in_70_to_90ms": true,
-    "pid_has_startup_peak": true,
-    "pid_startup_peak_0p045_to_0p07m_s": true,
-    "pid_contact_error_1p1_to_1p7mm": true,
-    "pid_contact_min_velocity_0p12_to_0p16": true,
-    "full_heavy_voltage_4_to_4p4v": true,
     "full_stop_voltage_step_below_0p3v": true,
     "nominal_regularization_enabled": true,
     "nominal_initial_model_target_nonzero": true,
@@ -556,7 +1652,8 @@
     "nominal_initial_inverse_is_deadbeat_minus_correction": true,
     "nominal_subsequent_startup_step_below_0p1v": true,
     "nominal_subsequent_startup_drop_below_0p1v": true,
-    "nominal_delay_within_five_valve_time_constants": true,
+    "nominal_initial_reference_friction_is_directed_static_limit": true,
+    "nominal_recorded_initial_reference_force_matches_model": true,
     "full_regularization_enabled": true,
     "full_initial_model_target_nonzero": true,
     "full_recorded_target_matches_model": true,
@@ -568,7 +1665,1786 @@
     "full_initial_inverse_is_deadbeat_minus_correction": true,
     "full_subsequent_startup_step_below_0p1v": true,
     "full_subsequent_startup_drop_below_0p1v": true,
-    "full_delay_within_five_valve_time_constants": true
+    "full_initial_reference_friction_is_directed_static_limit": true,
+    "full_recorded_initial_reference_force_matches_model": true,
+    "unit_tests_passed": true
+  },
+  "static_friction": {
+    "default": {
+      "pid": {
+        "fs_n": 800.0,
+        "force_balance_tolerance_n": 1.0000227373675443e-06,
+        "balanced_stick_samples": 163,
+        "release_pending_samples": 0,
+        "max_static_balance_residual_n": 0.0,
+        "max_net_force_residual_n": 5.340552888810635e-09,
+        "max_sliding_branch_residual_n": 0.0,
+        "first_release_event": {
+          "time_s": 0.08838759018619236,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999992,
+          "friction_n": 800.0
+        },
+        "sampled_motion_start_ms": 90.0,
+        "sample_threshold_after_release_ms": 1.6124098138076448,
+        "events": [
+          {
+            "time_s": 0.08838759018619236,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999992,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.1353201325203107,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -316.2616620248052,
+            "friction_n": -316.2616620248052
+          },
+          {
+            "time_s": 0.17571269706258644,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009998903,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.2125232775791055,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -2091.0932296163546,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.21767042210708368,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 3162.8819006964077,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.23477809129675342,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8950.601209647655,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.2401682873368605,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 48360.20964374032,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.25108865250272455,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -16712.60368316622,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.25520568236374375,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 69781.74614015063,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.265197722208042,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -18462.677280582408,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.2677967128494778,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 52881.00969201999,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9199894872960205,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -4291.105384282517,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9228626836773871,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 2673.0705594171886,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9327924019289419,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8037.048089238149,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9387890249111398,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 7800.217708631404,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9463304624085384,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8891.834498145548,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9525866367403744,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8116.524980794991,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9601260930744505,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8314.130062316748,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9662515028747581,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8360.425667246676,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9742511215236375,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -9292.92989264914,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9802653061573581,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 10174.63998826118,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9882859685196587,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -12194.085960040964,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9945125812459966,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 13434.316989675819,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0022166766679916,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -15542.581585859221,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0086448899620006,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 16334.986986590582,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0160040136690458,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -17479.28114823799,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0225294409702466,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 17406.272848948534,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0295005146608078,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -16692.191454750384,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0360430374524,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 16172.765280076881,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0426132555849195,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -13395.90055049222,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0491447059004062,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 12413.547763893472,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.055703723977683,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -10018.664791542265,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0622206141222474,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8673.591261893736,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0687957752715171,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -6625.271981338847,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0752855122419873,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 5049.152653548794,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0819069406988149,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -3243.2107408672637,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.088295208991249,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1594.3576188555562,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0953375258117666,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 42.817206475861894,
+            "friction_n": 42.817206475861894
+          },
+          {
+            "time_s": 1.1115302476153237,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999931,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1216130473862336,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 487.4286855425271,
+            "friction_n": 487.4286855425271
+          },
+          {
+            "time_s": 1.1253557644039403,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999603,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1380957821424245,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 337.19787114353676,
+            "friction_n": 337.19787114353676
+          },
+          {
+            "time_s": 1.1397185077360772,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000877,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1512611398737267,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1279.2740247541515,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.152749795417436,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 319.20749500007514,
+            "friction_n": 319.20749500007514
+          },
+          {
+            "time_s": 1.1544216087654704,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.000001000044,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1650541191720352,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1333.6002274728962,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1679665865489148,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 297.29172565121553,
+            "friction_n": 297.29172565121553
+          },
+          {
+            "time_s": 1.1715591783496013,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000222,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.181177048647559,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 265.95620579013485,
+            "friction_n": 265.95620579013485
+          },
+          {
+            "time_s": 1.1887397524585879,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          }
+        ],
+        "timing_definition": "first_breakaway is the continuous release event; motion_start is the first sampled velocity over the declared threshold.",
+        "load_timing_definition": "Sample force diagnostics use the current load; event forces use the interval-held load. A release at a ZOH boundary may follow that boundary sample.",
+        "checks": {
+          "initial_cold_static_state": true,
+          "mode_logs_valid": true,
+          "release_pending_only_while_sticking": true,
+          "stationary_samples_present": true,
+          "sticking_velocity_is_exactly_zero": true,
+          "static_friction_inside_fs_cone": true,
+          "static_net_inside_fs_cone": true,
+          "static_force_balance": true,
+          "net_force_matches_pressure_environment_and_current_load": true,
+          "sliding_force_matches_directed_stribeck_branch": true,
+          "event_fields_valid": true,
+          "event_clock_valid": true,
+          "release_events_have_static_threshold_and_direction": true,
+          "restick_events_have_force_balance": true,
+          "sampled_release_counts_match_events": true,
+          "sampled_restick_counts_match_events": true,
+          "metric_release_count_matches_events": true,
+          "metric_restick_count_matches_events": true,
+          "first_breakaway_time_matches_release_event": true,
+          "first_breakaway_force_matches_release_event": true,
+          "first_cold_breakaway_at_static_threshold": true,
+          "actual_release_precedes_sampled_motion": true,
+          "position_held_until_first_release": true
+        }
+      },
+      "nominal": {
+        "fs_n": 800.0,
+        "force_balance_tolerance_n": 1.0000227373675443e-06,
+        "balanced_stick_samples": 81,
+        "release_pending_samples": 0,
+        "max_static_balance_residual_n": 0.0,
+        "max_net_force_residual_n": 5.340552888810635e-09,
+        "max_sliding_branch_residual_n": 0.0,
+        "first_release_event": {
+          "time_s": 0.02046248706424632,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000010000003,
+          "friction_n": 800.0
+        },
+        "sampled_motion_start_ms": 22.0,
+        "sample_threshold_after_release_ms": 1.5375129357536785,
+        "events": [
+          {
+            "time_s": 0.02046248706424632,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9456532261627822,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -58.03544777848947,
+            "friction_n": -58.03544777848947
+          },
+          {
+            "time_s": 0.9465734205327785,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000113,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9567992612374668,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -1205.0027421729465,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.961346631752646,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -531.8487037017003,
+            "friction_n": -531.8487037017003
+          },
+          {
+            "time_s": 0.975755252600256,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000000999953,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0030352281855162,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -699.5878338966868,
+            "friction_n": -699.5878338966868
+          },
+          {
+            "time_s": 1.0351154757409806,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000076,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.121216932322945,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 214.37353542810524,
+            "friction_n": 214.37353542810524
+          },
+          {
+            "time_s": 1.1348091467073502,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000001000004,
+            "friction_n": 800.0
+          }
+        ],
+        "timing_definition": "first_breakaway is the continuous release event; motion_start is the first sampled velocity over the declared threshold.",
+        "load_timing_definition": "Sample force diagnostics use the current load; event forces use the interval-held load. A release at a ZOH boundary may follow that boundary sample.",
+        "checks": {
+          "initial_cold_static_state": true,
+          "mode_logs_valid": true,
+          "release_pending_only_while_sticking": true,
+          "stationary_samples_present": true,
+          "sticking_velocity_is_exactly_zero": true,
+          "static_friction_inside_fs_cone": true,
+          "static_net_inside_fs_cone": true,
+          "static_force_balance": true,
+          "net_force_matches_pressure_environment_and_current_load": true,
+          "sliding_force_matches_directed_stribeck_branch": true,
+          "event_fields_valid": true,
+          "event_clock_valid": true,
+          "release_events_have_static_threshold_and_direction": true,
+          "restick_events_have_force_balance": true,
+          "sampled_release_counts_match_events": true,
+          "sampled_restick_counts_match_events": true,
+          "metric_release_count_matches_events": true,
+          "metric_restick_count_matches_events": true,
+          "first_breakaway_time_matches_release_event": true,
+          "first_breakaway_force_matches_release_event": true,
+          "first_cold_breakaway_at_static_threshold": true,
+          "actual_release_precedes_sampled_motion": true,
+          "position_held_until_first_release": true
+        }
+      },
+      "full": {
+        "fs_n": 800.0,
+        "force_balance_tolerance_n": 1.0000227373675443e-06,
+        "balanced_stick_samples": 163,
+        "release_pending_samples": 0,
+        "max_static_balance_residual_n": 0.0,
+        "max_net_force_residual_n": 5.340552888810635e-09,
+        "max_sliding_branch_residual_n": 0.0,
+        "first_release_event": {
+          "time_s": 0.020930652775441313,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.000000999999,
+          "friction_n": 800.0
+        },
+        "sampled_motion_start_ms": 23.0,
+        "sample_threshold_after_release_ms": 2.069347224558687,
+        "events": [
+          {
+            "time_s": 0.020930652775441313,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000000999999,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9848477531095539,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -172.10498702740006,
+            "friction_n": -172.10498702740006
+          },
+          {
+            "time_s": 0.9976787241419787,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0169608796657783,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 389.534768608115,
+            "friction_n": 389.534768608115
+          },
+          {
+            "time_s": 1.0213653690792464,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999094,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0271337281521986,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -538.1457245387028,
+            "friction_n": -538.1457245387028
+          },
+          {
+            "time_s": 1.0357619282259782,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999421,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0402570172783931,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -660.070922522078,
+            "friction_n": -660.070922522078
+          },
+          {
+            "time_s": 1.0468429452911727,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000185,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0513658160520913,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -656.0164493154989,
+            "friction_n": -656.0164493154989
+          },
+          {
+            "time_s": 1.0576977700923302,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000404,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0629789855233742,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -587.3715128368858,
+            "friction_n": -587.3715128368858
+          },
+          {
+            "time_s": 1.069005208037208,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000258,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0753533789666705,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -410.0490042918136,
+            "friction_n": -410.0490042918136
+          },
+          {
+            "time_s": 1.081858975666939,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999858,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0858142364906374,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -685.3029641270223,
+            "friction_n": -685.3029641270223
+          },
+          {
+            "time_s": 1.0906921130935956,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000222,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.095389968257635,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -638.8610718227937,
+            "friction_n": -638.8610718227937
+          },
+          {
+            "time_s": 1.1022351412356324,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000113,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1079214762854188,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -538.2532973132329,
+            "friction_n": -538.2532973132329
+          },
+          {
+            "time_s": 1.115600581888958,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999858,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.119403594721165,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -693.8447303154462,
+            "friction_n": -693.8447303154462
+          },
+          {
+            "time_s": 1.1259310366426014,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.127524952992937,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -764.6610077720652,
+            "friction_n": -764.6610077720652
+          },
+          {
+            "time_s": 1.1309326926361047,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000149,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.132250596686869,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -771.4305061100094,
+            "friction_n": -771.4305061100094
+          },
+          {
+            "time_s": 1.1362734771283332,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.000001000004,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1400011461828672,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -703.3273344060763,
+            "friction_n": -703.3273344060763
+          },
+          {
+            "time_s": 1.1516759907159728,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.152740228697729,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -780.1982476495214,
+            "friction_n": -780.1982476495214
+          },
+          {
+            "time_s": 1.199896917742462,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000076,
+            "friction_n": 800.0
+          }
+        ],
+        "timing_definition": "first_breakaway is the continuous release event; motion_start is the first sampled velocity over the declared threshold.",
+        "load_timing_definition": "Sample force diagnostics use the current load; event forces use the interval-held load. A release at a ZOH boundary may follow that boundary sample.",
+        "checks": {
+          "initial_cold_static_state": true,
+          "mode_logs_valid": true,
+          "release_pending_only_while_sticking": true,
+          "stationary_samples_present": true,
+          "sticking_velocity_is_exactly_zero": true,
+          "static_friction_inside_fs_cone": true,
+          "static_net_inside_fs_cone": true,
+          "static_force_balance": true,
+          "net_force_matches_pressure_environment_and_current_load": true,
+          "sliding_force_matches_directed_stribeck_branch": true,
+          "event_fields_valid": true,
+          "event_clock_valid": true,
+          "release_events_have_static_threshold_and_direction": true,
+          "restick_events_have_force_balance": true,
+          "sampled_release_counts_match_events": true,
+          "sampled_restick_counts_match_events": true,
+          "metric_release_count_matches_events": true,
+          "metric_restick_count_matches_events": true,
+          "first_breakaway_time_matches_release_event": true,
+          "first_breakaway_force_matches_release_event": true,
+          "first_cold_breakaway_at_static_threshold": true,
+          "actual_release_precedes_sampled_motion": true,
+          "position_held_until_first_release": true
+        }
+      }
+    },
+    "tighter": {
+      "pid": {
+        "fs_n": 800.0,
+        "force_balance_tolerance_n": 1.0000227373675443e-06,
+        "balanced_stick_samples": 163,
+        "release_pending_samples": 0,
+        "max_static_balance_residual_n": 0.0,
+        "max_net_force_residual_n": 5.340552888810635e-09,
+        "max_sliding_branch_residual_n": 0.0,
+        "first_release_event": {
+          "time_s": 0.08838757731264325,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999999,
+          "friction_n": 800.0
+        },
+        "sampled_motion_start_ms": 90.0,
+        "sample_threshold_after_release_ms": 1.6124226873567409,
+        "events": [
+          {
+            "time_s": 0.08838757731264325,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999999,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.13532012495261136,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -316.2622017425615,
+            "friction_n": -316.2622017425615
+          },
+          {
+            "time_s": 0.17571269431882394,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999987,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.21252327589502235,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -2091.0956306222206,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.21767042267398376,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 3162.8933741244364,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.23477808366823955,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8950.604706822134,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.24016828227112155,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 48360.22758903277,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.25108864788557717,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -16712.596195737846,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.25520567865699134,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 69781.71523465136,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.26519772070437275,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -18462.659930920036,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.2677967077316826,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 52880.89099425261,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9199894872608665,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -4291.105449335973,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9228626836584812,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 2673.0705505685473,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9327924019043127,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8037.050726705242,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9387890208474552,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 7800.184943063767,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.94633046418136,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8891.79817215542,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9525866613400878,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8116.420540544128,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9601261225226784,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8314.079987657642,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.966251525947717,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8360.39377669408,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9742511410711094,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -9292.94400066535,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.980265314593812,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 10174.619398765812,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9882859754529111,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -12194.11478059124,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9945125891222996,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 13434.360153074693,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.002216679564412,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -15542.62098206193,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0086448913968462,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 16335.03974552004,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0160040128499046,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -17479.320275384867,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0225294401093403,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 17406.31825367376,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.029500511562658,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -16692.23498240395,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0360430341630922,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 16172.815676552891,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0426132434047848,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -13395.926763735759,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0491446934181752,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 12413.578740993016,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0557037110342742,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -10018.693768869227,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.062220600934804,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8673.622632171613,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.068795761528069,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -6625.300990164862,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0752854985152633,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 5049.181926779911,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0819069259533223,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -3243.238405848504,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0882951958295137,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1594.384503713536,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0953374951172432,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 42.791385043594346,
+            "friction_n": 42.791385043594346
+          },
+          {
+            "time_s": 1.111530756839025,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000001000004,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1216132033247517,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 487.3998419288873,
+            "friction_n": 487.3998419288873
+          },
+          {
+            "time_s": 1.125355756734678,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999421,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.138095782904413,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 337.1939894471434,
+            "friction_n": 337.1939894471434
+          },
+          {
+            "time_s": 1.1397185037023707,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000513,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1512611379700142,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1279.27240790637,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.152749788983075,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 319.2091993988797,
+            "friction_n": 319.2091993988797
+          },
+          {
+            "time_s": 1.1544216015025064,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999567,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1650541169291588,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1333.5972852062187,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1679665728611097,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 297.2946567230247,
+            "friction_n": 297.2946567230247
+          },
+          {
+            "time_s": 1.1715591716430638,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.181177045867953,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 265.9555843645794,
+            "friction_n": 265.9555843645794
+          },
+          {
+            "time_s": 1.1887396868899032,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          }
+        ],
+        "timing_definition": "first_breakaway is the continuous release event; motion_start is the first sampled velocity over the declared threshold.",
+        "load_timing_definition": "Sample force diagnostics use the current load; event forces use the interval-held load. A release at a ZOH boundary may follow that boundary sample.",
+        "checks": {
+          "initial_cold_static_state": true,
+          "mode_logs_valid": true,
+          "release_pending_only_while_sticking": true,
+          "stationary_samples_present": true,
+          "sticking_velocity_is_exactly_zero": true,
+          "static_friction_inside_fs_cone": true,
+          "static_net_inside_fs_cone": true,
+          "static_force_balance": true,
+          "net_force_matches_pressure_environment_and_current_load": true,
+          "sliding_force_matches_directed_stribeck_branch": true,
+          "event_fields_valid": true,
+          "event_clock_valid": true,
+          "release_events_have_static_threshold_and_direction": true,
+          "restick_events_have_force_balance": true,
+          "sampled_release_counts_match_events": true,
+          "sampled_restick_counts_match_events": true,
+          "metric_release_count_matches_events": true,
+          "metric_restick_count_matches_events": true,
+          "first_breakaway_time_matches_release_event": true,
+          "first_breakaway_force_matches_release_event": true,
+          "first_cold_breakaway_at_static_threshold": true,
+          "actual_release_precedes_sampled_motion": true,
+          "position_held_until_first_release": true
+        }
+      },
+      "nominal": {
+        "fs_n": 800.0,
+        "force_balance_tolerance_n": 1.0000227373675443e-06,
+        "balanced_stick_samples": 81,
+        "release_pending_samples": 0,
+        "max_static_balance_residual_n": 0.0,
+        "max_net_force_residual_n": 5.340552888810635e-09,
+        "max_sliding_branch_residual_n": 0.0,
+        "first_release_event": {
+          "time_s": 0.02046248640307602,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000010000001,
+          "friction_n": 800.0
+        },
+        "sampled_motion_start_ms": 22.0,
+        "sample_threshold_after_release_ms": 1.5375135969239793,
+        "events": [
+          {
+            "time_s": 0.02046248640307602,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000001,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9456532249782696,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -58.03634336722098,
+            "friction_n": -58.03634336722098
+          },
+          {
+            "time_s": 0.9465734225915227,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000149,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9567992615267693,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -1205.0038297204592,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9613466406138207,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -531.8478995759942,
+            "friction_n": -531.8478995759942
+          },
+          {
+            "time_s": 0.9757552727583372,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000001000004,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0030352409065286,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -699.5821931089231,
+            "friction_n": -699.5821931089231
+          },
+          {
+            "time_s": 1.035115368600932,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1212169301669939,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 214.37317418145904,
+            "friction_n": 214.37317418145904
+          },
+          {
+            "time_s": 1.134809043810725,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000001000004,
+            "friction_n": 800.0
+          }
+        ],
+        "timing_definition": "first_breakaway is the continuous release event; motion_start is the first sampled velocity over the declared threshold.",
+        "load_timing_definition": "Sample force diagnostics use the current load; event forces use the interval-held load. A release at a ZOH boundary may follow that boundary sample.",
+        "checks": {
+          "initial_cold_static_state": true,
+          "mode_logs_valid": true,
+          "release_pending_only_while_sticking": true,
+          "stationary_samples_present": true,
+          "sticking_velocity_is_exactly_zero": true,
+          "static_friction_inside_fs_cone": true,
+          "static_net_inside_fs_cone": true,
+          "static_force_balance": true,
+          "net_force_matches_pressure_environment_and_current_load": true,
+          "sliding_force_matches_directed_stribeck_branch": true,
+          "event_fields_valid": true,
+          "event_clock_valid": true,
+          "release_events_have_static_threshold_and_direction": true,
+          "restick_events_have_force_balance": true,
+          "sampled_release_counts_match_events": true,
+          "sampled_restick_counts_match_events": true,
+          "metric_release_count_matches_events": true,
+          "metric_restick_count_matches_events": true,
+          "first_breakaway_time_matches_release_event": true,
+          "first_breakaway_force_matches_release_event": true,
+          "first_cold_breakaway_at_static_threshold": true,
+          "actual_release_precedes_sampled_motion": true,
+          "position_held_until_first_release": true
+        }
+      },
+      "full": {
+        "fs_n": 800.0,
+        "force_balance_tolerance_n": 1.0000227373675443e-06,
+        "balanced_stick_samples": 163,
+        "release_pending_samples": 0,
+        "max_static_balance_residual_n": 0.0,
+        "max_net_force_residual_n": 5.340552888810635e-09,
+        "max_sliding_branch_residual_n": 0.0,
+        "first_release_event": {
+          "time_s": 0.020930661944485156,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999999,
+          "friction_n": 800.0
+        },
+        "sampled_motion_start_ms": 23.0,
+        "sample_threshold_after_release_ms": 2.0693380555148444,
+        "events": [
+          {
+            "time_s": 0.020930661944485156,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999999,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9848477521716107,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -172.1049246747607,
+            "friction_n": -172.1049246747607
+          },
+          {
+            "time_s": 0.9976790999464386,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999894,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0169608592033643,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 389.5541187801464,
+            "friction_n": 389.5541187801464
+          },
+          {
+            "time_s": 1.0213654157150713,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999167,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0271337008529575,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -538.1567304889795,
+            "friction_n": -538.1567304889795
+          },
+          {
+            "time_s": 1.0357619632134387,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999749,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0402569145127292,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -660.0797392257955,
+            "friction_n": -660.0797392257955
+          },
+          {
+            "time_s": 1.0468430733214262,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999931,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0513653897426563,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -656.053764746488,
+            "friction_n": -656.053764746488
+          },
+          {
+            "time_s": 1.0576977130796903,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.062979141857916,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -587.3488580482808,
+            "friction_n": -587.3488580482808
+          },
+          {
+            "time_s": 1.0690054003557126,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999894,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0753533298943325,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -410.10569904920703,
+            "friction_n": -410.10569904920703
+          },
+          {
+            "time_s": 1.0818589233487677,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999894,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0858145328950946,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -685.2861982986797,
+            "friction_n": -685.2861982986797
+          },
+          {
+            "time_s": 1.0906921075281717,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000258,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0953899511986818,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -638.861890043263,
+            "friction_n": -638.861890043263
+          },
+          {
+            "time_s": 1.1022352566362537,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999821,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.10792138610113,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -538.2821748100105,
+            "friction_n": -538.2821748100105
+          },
+          {
+            "time_s": 1.1156054845181964,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999967,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.119388420802885,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -694.724843292046,
+            "friction_n": -694.724843292046
+          },
+          {
+            "time_s": 1.1259296993038779,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000185,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.127532354059743,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -764.4461744541586,
+            "friction_n": -764.4461744541586
+          },
+          {
+            "time_s": 1.1309318284573446,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000258,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1322549622335563,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -771.3076361520943,
+            "friction_n": -771.3076361520943
+          },
+          {
+            "time_s": 1.136272476394586,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.000001000004,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.140003185732278,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -703.2149327823645,
+            "friction_n": -703.2149327823645
+          },
+          {
+            "time_s": 1.1516761301885177,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1527400289632665,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -780.2051942789512,
+            "friction_n": -780.2051942789512
+          },
+          {
+            "time_s": 1.199896916213276,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          }
+        ],
+        "timing_definition": "first_breakaway is the continuous release event; motion_start is the first sampled velocity over the declared threshold.",
+        "load_timing_definition": "Sample force diagnostics use the current load; event forces use the interval-held load. A release at a ZOH boundary may follow that boundary sample.",
+        "checks": {
+          "initial_cold_static_state": true,
+          "mode_logs_valid": true,
+          "release_pending_only_while_sticking": true,
+          "stationary_samples_present": true,
+          "sticking_velocity_is_exactly_zero": true,
+          "static_friction_inside_fs_cone": true,
+          "static_net_inside_fs_cone": true,
+          "static_force_balance": true,
+          "net_force_matches_pressure_environment_and_current_load": true,
+          "sliding_force_matches_directed_stribeck_branch": true,
+          "event_fields_valid": true,
+          "event_clock_valid": true,
+          "release_events_have_static_threshold_and_direction": true,
+          "restick_events_have_force_balance": true,
+          "sampled_release_counts_match_events": true,
+          "sampled_restick_counts_match_events": true,
+          "metric_release_count_matches_events": true,
+          "metric_restick_count_matches_events": true,
+          "first_breakaway_time_matches_release_event": true,
+          "first_breakaway_force_matches_release_event": true,
+          "first_cold_breakaway_at_static_threshold": true,
+          "actual_release_precedes_sampled_motion": true,
+          "position_held_until_first_release": true
+        }
+      },
+      "unknown": {
+        "fs_n": 800.0,
+        "force_balance_tolerance_n": 1.0000227373675443e-06,
+        "balanced_stick_samples": 29,
+        "release_pending_samples": 0,
+        "max_static_balance_residual_n": 0.0,
+        "max_net_force_residual_n": 5.340552888810635e-09,
+        "max_sliding_branch_residual_n": 0.0,
+        "first_release_event": {
+          "time_s": 0.020930661944485156,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999999,
+          "friction_n": 800.0
+        },
+        "sampled_motion_start_ms": 23.0,
+        "sample_threshold_after_release_ms": 2.0693380555148444,
+        "events": [
+          {
+            "time_s": 0.020930661944485156,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999999,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9345401067664614,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8029.952466927014,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.941026772248551,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 6512.181708501215,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9476072671453223,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -4619.595130165631,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.954041499130097,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 2979.3222133453564,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9607424103497865,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -1280.9955802081095,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0108275418010004,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 2581.8453432775277,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.014843774567945,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -1909.6567169155169,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0210355766935082,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1801.489778561605,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0258335163243029,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -1214.674197860084,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0325593775092388,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1828.4378155650556,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0363932172340764,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -938.286686535961,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0426703132446422,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 806.6791391898878,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0446295104427592,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 634.627401361533,
+            "friction_n": 634.627401361533
+          },
+          {
+            "time_s": 1.0469604050261685,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009996947,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.053577142878001,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1124.844445742805,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0617815638088242,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 649.9509688489925,
+            "friction_n": 649.9509688489925
+          },
+          {
+            "time_s": 1.0633910918687304,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1545319257717976,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 405.37407198840083,
+            "friction_n": 405.37407198840083
+          },
+          {
+            "time_s": 1.155976182961436,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999712,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1648789731993365,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 568.8843934480901,
+            "friction_n": 568.8843934480901
+          },
+          {
+            "time_s": 1.1679922708546213,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          }
+        ],
+        "timing_definition": "first_breakaway is the continuous release event; motion_start is the first sampled velocity over the declared threshold.",
+        "load_timing_definition": "Sample force diagnostics use the current load; event forces use the interval-held load. A release at a ZOH boundary may follow that boundary sample.",
+        "checks": {
+          "initial_cold_static_state": true,
+          "mode_logs_valid": true,
+          "release_pending_only_while_sticking": true,
+          "stationary_samples_present": true,
+          "sticking_velocity_is_exactly_zero": true,
+          "static_friction_inside_fs_cone": true,
+          "static_net_inside_fs_cone": true,
+          "static_force_balance": true,
+          "net_force_matches_pressure_environment_and_current_load": true,
+          "sliding_force_matches_directed_stribeck_branch": true,
+          "event_fields_valid": true,
+          "event_clock_valid": true,
+          "release_events_have_static_threshold_and_direction": true,
+          "restick_events_have_force_balance": true,
+          "sampled_release_counts_match_events": true,
+          "sampled_restick_counts_match_events": true,
+          "metric_release_count_matches_events": true,
+          "metric_restick_count_matches_events": true,
+          "first_breakaway_time_matches_release_event": true,
+          "first_breakaway_force_matches_release_event": true,
+          "first_cold_breakaway_at_static_threshold": true,
+          "actual_release_precedes_sampled_motion": true,
+          "position_held_until_first_release": true
+        }
+      }
+    }
   },
   "startup_boundary_condition": {
     "nominal": {
@@ -577,23 +3453,32 @@
       "sample_ms": 1.0,
       "homogeneous_decay_per_sample": 0.6703200460356393,
       "delay_budget_ms": 12.5,
-      "measured_delay_ms": 5.999999999999999,
+      "measured_delay_ms": 16.999999999999996,
       "previous_one_sample_delay_requirement_met": false,
-      "model_initial_valve_target_v": 0.41229978706983506,
-      "recorded_initial_valve_target_v": 0.41229978706983506,
-      "actual_initial_voltage_v": 0.41229978706983494,
-      "actual_initial_feedforward_v": 0.41229978706983494,
+      "previous_five_valve_time_constant_delay_requirement_met": false,
+      "first_breakaway_ms": 20.46248640307602,
+      "first_breakaway_net_force_n": 800.0000010000001,
+      "sampled_motion_start_ms": 22.0,
+      "startup_reference_friction_n": 800.0,
+      "startup_reference_force_n": 800.0,
+      "model_initial_valve_target_v": 0.5697370615637232,
+      "recorded_initial_valve_target_v": 0.5697370615637232,
+      "actual_initial_voltage_v": 0.5697370615637232,
+      "reference_initial_voltage_v": 1.2,
+      "difference_from_reference_initial_voltage_v": -0.6302629384362768,
+      "initial_voltage_reference_comparison": "The earlier approximate 1.2 V reference has no stated tolerance; the difference is reported without inventing a pass range.",
+      "actual_initial_feedforward_v": 0.5697370615637232,
       "actual_initial_feedback_v": 0.0,
       "actual_initial_valve_normalized": 0.0,
-      "initial_command_step_from_zero_v": 0.41229978706983494,
-      "old_deadbeat_initial_command_v": 1.2506061776337356,
-      "initial_valve_mismatch_v": 0.41229978706983506,
-      "initial_inverse_correction_v": 0.8383063905639007,
-      "expected_initial_inverse_correction_v": 0.8383063905639007,
-      "max_mismatch_decay_residual_v": 2.7755575615628914e-17,
-      "max_inverse_correction_residual_v": 5.551115123125783e-17,
-      "subsequent_startup_max_voltage_step_v": 0.03471351121297289,
-      "subsequent_startup_max_voltage_drop_v": 0.03471351121297289,
+      "initial_command_step_from_zero_v": 0.5697370615637232,
+      "old_deadbeat_initial_command_v": 1.7281519689404996,
+      "initial_valve_mismatch_v": 0.5697370615637232,
+      "initial_inverse_correction_v": 1.1584149073767764,
+      "expected_initial_inverse_correction_v": 1.1584149073767764,
+      "max_mismatch_decay_residual_v": 5.551115123125783e-17,
+      "max_inverse_correction_residual_v": 2.220446049250313e-16,
+      "subsequent_startup_max_voltage_step_v": 0.030808960693499032,
+      "subsequent_startup_max_voltage_drop_v": 0.030808960693499032,
       "smoothness_definition": "Consecutive sampled commands in the startup window; the initial zero-to-command boundary step is recorded separately.",
       "homogeneous_error_equation": "mismatch[k] = initial_target * exp(-k*Ts/tau_v); correction[k] = exp(-Ts/tau_v)*mismatch[k]/(1-exp(-Ts/tau_v))",
       "checks": {
@@ -608,7 +3493,8 @@
         "initial_inverse_is_deadbeat_minus_correction": true,
         "subsequent_startup_step_below_0p1v": true,
         "subsequent_startup_drop_below_0p1v": true,
-        "delay_within_five_valve_time_constants": true
+        "initial_reference_friction_is_directed_static_limit": true,
+        "recorded_initial_reference_force_matches_model": true
       }
     },
     "full": {
@@ -617,23 +3503,32 @@
       "sample_ms": 1.0,
       "homogeneous_decay_per_sample": 0.6703200460356393,
       "delay_budget_ms": 12.5,
-      "measured_delay_ms": 5.999999999999999,
+      "measured_delay_ms": 18.0,
       "previous_one_sample_delay_requirement_met": false,
-      "model_initial_valve_target_v": 0.41192743523274133,
-      "recorded_initial_valve_target_v": 0.41192743523274133,
-      "actual_initial_voltage_v": 0.41192743523274133,
-      "actual_initial_feedforward_v": 0.41192743523274133,
+      "previous_five_valve_time_constant_delay_requirement_met": false,
+      "first_breakaway_ms": 20.930661944485156,
+      "first_breakaway_net_force_n": 800.0000009999999,
+      "sampled_motion_start_ms": 23.0,
+      "startup_reference_friction_n": 800.0,
+      "startup_reference_force_n": 800.0,
+      "model_initial_valve_target_v": 0.5645986062118302,
+      "recorded_initial_valve_target_v": 0.5645986062118302,
+      "actual_initial_voltage_v": 0.5645986062118302,
+      "reference_initial_voltage_v": 1.2,
+      "difference_from_reference_initial_voltage_v": -0.6354013937881697,
+      "initial_voltage_reference_comparison": "The earlier approximate 1.2 V reference has no stated tolerance; the difference is reported without inventing a pass range.",
+      "actual_initial_feedforward_v": 0.5645986062118302,
       "actual_initial_feedback_v": 0.0,
       "actual_initial_valve_normalized": 0.0,
-      "initial_command_step_from_zero_v": 0.41192743523274133,
-      "old_deadbeat_initial_command_v": 1.2494767433669074,
-      "initial_valve_mismatch_v": 0.41192743523274133,
-      "initial_inverse_correction_v": 0.8375493081341661,
-      "expected_initial_inverse_correction_v": 0.8375493081341661,
-      "max_mismatch_decay_residual_v": 2.7755575615628914e-17,
-      "max_inverse_correction_residual_v": 8.326672684688674e-17,
-      "subsequent_startup_max_voltage_step_v": 0.03360544262071036,
-      "subsequent_startup_max_voltage_drop_v": 0.03360544262071036,
+      "initial_command_step_from_zero_v": 0.5645986062118302,
+      "old_deadbeat_initial_command_v": 1.7125657760582704,
+      "initial_valve_mismatch_v": 0.5645986062118302,
+      "initial_inverse_correction_v": 1.1479671698464402,
+      "expected_initial_inverse_correction_v": 1.1479671698464402,
+      "max_mismatch_decay_residual_v": 5.551115123125783e-17,
+      "max_inverse_correction_residual_v": 1.1102230246251565e-16,
+      "subsequent_startup_max_voltage_step_v": 0.03006827872029244,
+      "subsequent_startup_max_voltage_drop_v": 0.03006827872029244,
       "smoothness_definition": "Consecutive sampled commands in the startup window; the initial zero-to-command boundary step is recorded separately.",
       "homogeneous_error_equation": "mismatch[k] = initial_target * exp(-k*Ts/tau_v); correction[k] = exp(-Ts/tau_v)*mismatch[k]/(1-exp(-Ts/tau_v))",
       "checks": {
@@ -648,13 +3543,153 @@
         "initial_inverse_is_deadbeat_minus_correction": true,
         "subsequent_startup_step_below_0p1v": true,
         "subsequent_startup_drop_below_0p1v": true,
-        "delay_within_five_valve_time_constants": true
+        "initial_reference_friction_is_directed_static_limit": true,
+        "recorded_initial_reference_force_matches_model": true
       }
     }
   },
-  "unit_tests": {
-    "run": 26,
-    "passed": true
+  "legacy_reference_checks": {
+    "pid_start_in_70_to_90ms": {
+      "actual": 90.0,
+      "target": {
+        "minimum": 70,
+        "maximum": 90
+      },
+      "met": true,
+      "reason": null
+    },
+    "pid_has_startup_peak": {
+      "actual": true,
+      "target": {
+        "equals": true
+      },
+      "met": true,
+      "reason": null
+    },
+    "pid_startup_peak_0p045_to_0p07m_s": {
+      "actual": 0.07017864487887687,
+      "target": {
+        "minimum": 0.045,
+        "maximum": 0.07
+      },
+      "met": false,
+      "reason": "The measured value does not meet the retained reference target."
+    },
+    "pid_contact_error_1p1_to_1p7mm": {
+      "actual": 1.382646209182492,
+      "target": {
+        "minimum": 1.1,
+        "maximum": 1.7
+      },
+      "met": true,
+      "reason": null
+    },
+    "pid_contact_min_velocity_0p12_to_0p16": {
+      "actual": 0.13099376191014697,
+      "target": {
+        "minimum": 0.12,
+        "maximum": 0.16
+      },
+      "met": true,
+      "reason": null
+    },
+    "full_heavy_voltage_4_to_4p4v": {
+      "actual": 4.253912828862537,
+      "target": {
+        "minimum": 4,
+        "maximum": 4.4
+      },
+      "met": true,
+      "reason": null
+    },
+    "nominal_delay_within_five_valve_time_constants": {
+      "actual": 16.999999999999996,
+      "target": {
+        "minimum": 0,
+        "maximum": 12.5
+      },
+      "met": false,
+      "reason": "True static breakaway requires pressure to reach Fs. Five valve time constants bound actuator initial-error decay, not the complete pressure-building and breakaway time."
+    },
+    "nominal_previous_one_sample_delay_requirement": {
+      "actual": 16.999999999999996,
+      "target": {
+        "minimum": -1.0,
+        "maximum": 1.0
+      },
+      "met": false,
+      "reason": "True static breakaway requires pressure to reach Fs. Five valve time constants bound actuator initial-error decay, not the complete pressure-building and breakaway time."
+    },
+    "full_delay_within_five_valve_time_constants": {
+      "actual": 18.0,
+      "target": {
+        "minimum": 0,
+        "maximum": 12.5
+      },
+      "met": false,
+      "reason": "True static breakaway requires pressure to reach Fs. Five valve time constants bound actuator initial-error decay, not the complete pressure-building and breakaway time."
+    },
+    "full_previous_one_sample_delay_requirement": {
+      "actual": 18.0,
+      "target": {
+        "minimum": -1.0,
+        "maximum": 1.0
+      },
+      "met": false,
+      "reason": "True static breakaway requires pressure to reach Fs. Five valve time constants bound actuator initial-error decay, not the complete pressure-building and breakaway time."
+    }
   },
-  "scope": "Accuracy and smooth-stop thresholds apply to known model-matched process load only. Unknown load has force/rate=0; its actual error and stop metrics are reported without those claims. Both assisted strategies share the startup boundary regularization and all public parameters except their gain-scheduling flag. Their nonzero initial command equals the calculated unshaped valve target while the physical valve starts at zero; its homogeneous initial mismatch decays with the real valve pole. The initial command step is recorded separately from subsequent startup smoothness. Startup delay is bounded by max(5*valve_tau, Ts); the previous one-sample criterion remains reported as measured. For quantized bare PID the pointwise convergence bound is one ADC LSB; assisted groups retain one-quarter LSB. Original quarter result and ADC-code disagreements remain recorded."
+  "errors": [],
+  "common_strategy_parameters": {
+    "allowed_differences": [
+      "name",
+      "enable_ff",
+      "enable_gain_sched"
+    ],
+    "checks": {
+      "adc_bits": true,
+      "alpha": true,
+      "duration": true,
+      "enable_startup_regularization": true,
+      "force_error_gain_s": true,
+      "gain_prediction_s": true,
+      "kd": true,
+      "ki": true,
+      "known_load": true,
+      "kp": true,
+      "load_end": true,
+      "load_force": true,
+      "load_preview_s": true,
+      "load_ramp": true,
+      "load_start": true,
+      "pressure_alpha": true,
+      "rtol": true,
+      "sensor_span": true,
+      "ts": true,
+      "unload_ramp": true,
+      "valve_tau": true,
+      "velocity_error_gain_s": true,
+      "zero_flow_band_v": true,
+      "physical_parameters": true
+    }
+  },
+  "unit_tests": {
+    "run": 38,
+    "passed": true,
+    "failures": 0,
+    "errors": 0,
+    "output": "......................................\n----------------------------------------------------------------------\nRan 38 tests in 0.854s\n\nOK\n"
+  },
+  "mechanism_and_numerical_passed": true,
+  "all_legacy_reference_targets_met": false,
+  "failed_hard_checks": [],
+  "failed_legacy_reference_targets": [
+    "pid_startup_peak_0p045_to_0p07m_s",
+    "nominal_delay_within_five_valve_time_constants",
+    "nominal_previous_one_sample_delay_requirement",
+    "full_delay_within_five_valve_time_constants",
+    "full_previous_one_sample_delay_requirement"
+  ],
+  "status": "passed",
+  "scope": "Accuracy and smooth-stop thresholds apply to the known model-matched process load only; unknown-load error and stop metrics carry no such claim. All three strategies share the physical and public experiment settings except name and their two strategy flags. Both assisted strategies use the same startup settings. The directed static limit Fs determines the model-derived first valve target; the physical valve starts at zero and its homogeneous initial mismatch follows the real actuator pole. The initial command step is recorded separately from subsequent startup smoothness. Continuous release events and sampled velocity thresholds are distinct diagnostics. All retained legacy performance ranges, including max(5*valve_tau, Ts) startup delay and the former one-sample delay, remain reported with actual values, targets and reasons. Default success requires all mechanism and numerical acceptance checks; --strict-reference additionally requires every retained reference target. For quantized bare PID the pointwise convergence bound remains one ADC LSB; assisted groups retain one-quarter LSB. Original quarter results and ADC-code disagreements remain recorded."
 }

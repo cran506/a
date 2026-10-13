@@ -15,12 +15,16 @@ from trajectory import generate_scurve,generate_process_scurve
 from hydraulic_digital_twin import HydraulicTwin
 from media_model import AeratedHydraulicModel
 from simulation import Experiment,planned_load
+from friction_model import (sliding_friction,sliding_friction_slope,
+                            breakaway_friction)
 
 
 class CompositeControllerTests(unittest.TestCase):
     def setUp(self):
         self.p=classroom_config();self.p.update(ambient_pressure=1e5,makeup_area=.001)
-        self.pid=dict(kp=3.8,ki=100.,kd=.02,ts=.001,alpha=.85,integral_separation=False)
+        cfg=Experiment('controller_test')
+        self.pid=dict(kp=cfg.kp,ki=cfg.ki,kd=cfg.kd,ts=cfg.ts,alpha=cfg.alpha,
+                      integral_separation=False)
 
     def controller(self,**kwargs):
         return ModelAssistedController(self.pid,self.p,**kwargs)
@@ -38,7 +42,7 @@ class CompositeControllerTests(unittest.TestCase):
         c=self.controller();p1,p2=c.nominal_pressures;p=self.p
         self.assertAlmostEqual((p['Ps']-p1)/(p2-p['Pr']),(p['A1']/p['A2'])**2,places=12)
         force=p1*p['A1']-p2*p['A2']-p['ambient_pressure']*(p['A1']-p['A2'])
-        self.assertAlmostEqual(force,c.model._friction(.2),places=7)
+        self.assertAlmostEqual(force,sliding_friction(.2,self.p),places=7)
 
     def test_dual_chamber_inverse_matches_independent_twin_pressure_derivatives(self):
         twin=ClosedLoopTwin(config=self.p,load_force=0.,valve_tau=0.)
@@ -55,12 +59,15 @@ class CompositeControllerTests(unittest.TestCase):
                 measured=self.p['A1']*d[2]-self.p['A2']*d[3]
                 self.assertAlmostEqual(measured,force_rate,delta=max(1e-5,abs(force_rate)*1e-10))
 
-    def test_analytic_friction_rate_matches_original_model_finite_difference(self):
+    def test_analytic_friction_rate_matches_the_sliding_branch(self):
         c=self.controller()
-        for v in (0.,.001,.03,.2,-.04):
+        for v in (.001,.03,.2,-.04):
             epsilon=1e-7
-            slope=(c.model._friction(v+epsilon)-c.model._friction(v-epsilon))/(2*epsilon)
+            slope=(sliding_friction(v+epsilon,self.p)-sliding_friction(v-epsilon,self.p))/(2*epsilon)
             self.assertAlmostEqual(c._friction_rate(v,.7),slope*.7,delta=max(1e-4,abs(slope)*1e-6))
+        # At zero use the one-sided slip derivative, not a central difference
+        # through the jump between negative and positive slip branches.
+        self.assertEqual(c._friction_rate(0.,.7),self.p['sigma']*.7)
 
     def test_zero_reference_without_motion_intent_has_no_hidden_pulse(self):
         c=self.controller()
@@ -71,8 +78,9 @@ class CompositeControllerTests(unittest.TestCase):
         _,ff,_=c.update((0.,0.,0.),(0.,0.),(1e5,1e5),jerk_d=8.,origin_m=.01)
         a=math.exp(-.001/.0025)
         self.assertAlmostEqual(ff,c.last['valve_target_v']/(1-a),places=12)
-        self.assertGreater(ff,1.2)
-        self.assertLess(ff,1.3)
+        self.assertGreater(c.last['valve_target_v'],c.deadzone_v)
+        self.assertEqual(c.last['reference_friction_n'],self.p['Fs'])
+        self.assertEqual(c.last['planned_inverse_force_n'],self.p['Fs'])
         self.assertAlmostEqual(c.previous_valve_target_v,c.last['valve_target_v'],places=12)
 
     def test_zero_leakage_still_allows_mass_force_precharge(self):
@@ -156,6 +164,98 @@ class CompositeControllerTests(unittest.TestCase):
         self.assertAlmostEqual(c.last['actual_force_n'],actual)
         self.assertAlmostEqual(c.last['force_error_correction_n_s'],expected)
         self.assertAlmostEqual(c.last['desired_force_rate_n_s'],c.last['planned_force_rate_n_s']+expected)
+
+    def test_motion_intent_uses_static_friction_and_known_force_in_both_directions(self):
+        # Direction follows velocity, then acceleration, then analytic jerk.
+        # A future motion intent can precharge a genuinely stationary piston.
+        cases=((0.,0.,10.,1.),(0.,0.,-10.,-1.),
+               (0.,.2,-10.,1.),(0.,-.2,10.,-1.),
+               (.01,-.2,-10.,1.),(-.01,.2,10.,-1.))
+        for velocity,acceleration,jerk,direction in cases:
+            with self.subTest(velocity=velocity,acceleration=acceleration,jerk=jerk):
+                c=self.controller(pressure_alpha=0.)
+                c.update((0.,velocity,acceleration),(0.,velocity),(1e5,1e5),
+                         jerk_d=jerk,known_force_n=123.,origin_m=.01)
+                friction=sliding_friction(velocity,self.p,direction)
+                expected=self.p['mass']*acceleration+friction+123.
+                self.assertEqual(c.last['reference_motion_direction'],direction)
+                self.assertEqual(c.last['reference_friction_n'],friction)
+                self.assertAlmostEqual(c.last['planned_inverse_force_n'],expected)
+                self.assertEqual(c.last['velocity_damping_force_n'],0.)
+                self.assertEqual(c.last['static_hold_force_adjustment_n'],0.)
+                self.assertAlmostEqual(c.last['desired_force_n'],expected)
+
+    def test_velocity_damping_is_shared_current_measurement_feedback(self):
+        logs=[]
+        for scheduled in (False,True):
+            c=self.controller(pressure_alpha=0.,enable_gain_sched=scheduled)
+            c.update((0.,.2,.3),(0.,.15),(2e6,1e5),jerk_d=0.,known_force_n=5000.,origin_m=.01)
+            planned=self.p['mass']*.3+sliding_friction(.2,self.p)+5000.
+            damping=self.p['mass']*c.velocity_error_gain_s*(.2-.15)
+            self.assertAlmostEqual(c.last['planned_inverse_force_n'],planned)
+            self.assertAlmostEqual(c.last['velocity_damping_force_n'],damping)
+            self.assertAlmostEqual(c.last['desired_force_n'],planned+damping)
+            # No derivative of this sensor-dependent term is invented as a
+            # known reference rate; only analytic trajectory/load derivatives.
+            expected_rate=sliding_friction_slope(.2,self.p)*.3
+            self.assertAlmostEqual(c.last['planned_force_rate_n_s'],expected_rate)
+            logs.append(tuple(c.last[key] for key in ('planned_inverse_force_n',
+                                                      'velocity_damping_force_n',
+                                                      'desired_force_n','planned_force_rate_n_s')))
+        self.assertEqual(logs[0],logs[1])
+
+    def test_stationary_hold_preserves_only_the_valid_static_force_cone(self):
+        known=1000.
+        for offset in (-1200.,-400.,0.,400.,1200.):
+            with self.subTest(offset=offset):
+                c=self.controller(pressure_alpha=0.)
+                actual=known+offset
+                p2=self.p['Pr']
+                p1=(actual+p2*self.p['A2']+1e5*(self.p['A1']-self.p['A2']))/self.p['A1']
+                c.update((0.,0.,0.),(0.,0.),(p1,p2),jerk_d=0.,
+                         known_force_n=known,origin_m=.01)
+                expected=known+np.clip(offset,-self.p['Fs'],self.p['Fs'])
+                self.assertEqual(c.last['reference_motion_direction'],0.)
+                self.assertEqual(c.last['reference_friction_n'],0.)
+                self.assertEqual(c.last['planned_inverse_force_n'],known)
+                self.assertEqual(c.last['velocity_damping_force_n'],0.)
+                self.assertAlmostEqual(c.last['desired_force_n'],expected)
+                self.assertAlmostEqual(c.last['static_hold_force_adjustment_n'],expected-known)
+                self.assertAlmostEqual(c.last['force_error_correction_n_s'],
+                                       c.force_error_gain_s*(expected-actual))
+
+    def test_feedforward_really_prebuilds_pressure_before_breakaway(self):
+        parameters=dict(self.pid,kp=0.,ki=0.,kd=0.)
+        c=ModelAssistedController(parameters,self.p,pressure_alpha=0.)
+        twin=ClosedLoopTwin(config=self.p,load_force=0.,valve_tau=c.valve_tau,rtol=1e-7)
+        twin.reset([.01,0.,self.p['Pr'],self.p['Pr']])
+        built_while_stuck=False
+        first_command=None
+        for _ in range(80):
+            x,v,p1,p2=twin.state
+            command,ff,fb=c.update((0.,0.,0.),(x-.01,v),(p1,p2),jerk_d=10.,origin_m=.01)
+            self.assertEqual(fb,0.)
+            self.assertEqual(command,ff)
+            if first_command is None:
+                first_command=command
+                self.assertEqual(twin.valve_state,0.)
+                self.assertGreater(command,0.)
+                self.assertAlmostEqual(command,c.last['valve_target_v'],places=12)
+                self.assertEqual(c.last['planned_inverse_force_n'],self.p['Fs'])
+            twin.step_voltage(command,c.pid.ts)
+            if twin.sticking:
+                self.assertEqual(twin.state[0],.01)
+                self.assertEqual(twin.state[1],0.)
+                built_while_stuck |= twin.state[2]>self.p['Pr']+1.
+            if twin.release_count:
+                break
+        self.assertTrue(built_while_stuck)
+        self.assertGreater(twin.release_count,0)
+        release=twin.friction_events[0]
+        self.assertEqual(release['kind'],'release')
+        self.assertEqual(release['direction'],1)
+        self.assertGreater(release['time_s'],0.)
+        self.assertAlmostEqual(release['net_drive_n'],self.p['Fs']+twin.friction_force_tolerance,delta=1e-3)
 
     def test_idle_wait_does_not_consume_the_startup_boundary_condition(self):
         waiting=self.controller()
@@ -260,13 +360,144 @@ class CompositeControllerTests(unittest.TestCase):
     def test_protection_and_parameter_validation(self):
         for kwargs in ({'gain_prediction_s':-1.},{'gain_prediction_s':math.nan},
                        {'valve_tau':math.inf},{'pressure_alpha':1.},
-                       {'force_error_gain_s':-1.},{'zero_flow_band_v':-1.},{'deadzone_slew_v_s':0.}):
+                       {'force_error_gain_s':-1.},{'zero_flow_band_v':-1.},{'deadzone_slew_v_s':0.},
+                       {'velocity_error_gain_s':-1.},{'velocity_error_gain_s':math.inf}):
             with self.subTest(kwargs=kwargs),self.assertRaises(ValueError):self.controller(**kwargs)
         c=self.controller(pressure_alpha=0.)
         with self.assertRaises(ValueError):c.update((0.,0.,0.),(0.,0.),(-1.,1e5))
         c.update((0.,.2,0.),(0.,.2),(self.p['Ps']-1.,1e5),jerk_d=0.,origin_m=.08)
         self.assertGreaterEqual(c.last['supply_delta_pa'],5e5)
         self.assertTrue(np.isfinite(c.last['voltage_v']))
+
+
+class HybridFrictionTests(unittest.TestCase):
+    def setUp(self):
+        self.p=classroom_config()
+
+    def constant_load_twin(self,force,velocity=0.):
+        # A signed deterministic test fixture, not an extra controller input.
+        p=dict(self.p,C_ip=0.,C_ep=0.)
+        twin=ClosedLoopTwin(config=p,load_force=0.,valve_tau=.0025,rtol=1e-7)
+        twin.load_at=lambda time:force
+        twin.reset([.01,velocity,p['Pr'],p['Pr']])
+        return twin
+
+    def test_slip_limits_retain_static_friction_and_dissipate_energy(self):
+        for direction in (-1,1):
+            self.assertEqual(breakaway_friction(direction,self.p),direction*self.p['Fs'])
+            self.assertEqual(sliding_friction(0.,self.p,direction),direction*self.p['Fs'])
+            for speed in (1e-9,.001,.02,.05,.2):
+                velocity=direction*speed
+                self.assertGreater(sliding_friction(velocity,self.p)*velocity,0.)
+                epsilon=1e-8
+                finite=(sliding_friction(velocity+epsilon,self.p,direction)
+                        -sliding_friction(velocity-epsilon,self.p,direction))/(2*epsilon)
+                self.assertAlmostEqual(sliding_friction_slope(velocity,self.p,direction),finite,
+                                       delta=max(1e-4,abs(finite)*1e-6))
+        self.assertEqual(sliding_friction(0.,self.p),0.)
+
+    def test_subthreshold_external_forces_are_balanced_without_drift(self):
+        for force in (-self.p['Fs'],-400.,0.,400.,self.p['Fs']):
+            with self.subTest(force=force):
+                twin=self.constant_load_twin(force)
+                before=twin.state.copy()
+                twin.step_voltage(0.,.01)
+                np.testing.assert_array_equal(twin.state,before)
+                diagnostics=twin.friction_diagnostics()
+                self.assertTrue(diagnostics['sticking'])
+                self.assertFalse(diagnostics['release_pending'])
+                self.assertEqual(diagnostics['net_drive_force_n'],-force)
+                self.assertEqual(diagnostics['friction_force_n'],-force)
+                self.assertEqual(twin.friction_events,[])
+
+    def test_superthreshold_external_forces_cause_physical_release(self):
+        for force in (-1000.,1000.):
+            with self.subTest(force=force):
+                twin=self.constant_load_twin(force)
+                twin.step_voltage(0.,.001)
+                direction=-int(np.sign(force))
+                self.assertGreater(direction*twin.state[1],0.)
+                self.assertGreater(direction*(twin.state[0]-.01),0.)
+                event=twin.friction_events[0]
+                self.assertEqual(event['kind'],'release')
+                self.assertEqual(event['time_s'],0.)
+                self.assertEqual(event['direction'],direction)
+                self.assertGreater(abs(event['net_drive_n']),self.p['Fs'])
+
+    def test_pressure_and_valve_evolve_while_piston_is_stuck(self):
+        for direction in (-1,1):
+            with self.subTest(direction=direction):
+                twin=self.constant_load_twin(0.)
+                pressure_changed=False
+                for _ in range(60):
+                    twin.step_voltage(direction*2.,.00025)
+                    if twin.sticking:
+                        self.assertEqual(twin.state[0],.01)
+                        self.assertEqual(twin.state[1],0.)
+                        self.assertGreater(direction*twin.valve_state,0.)
+                        pressure_changed |= bool(np.max(abs(twin.state[2:]-self.p['Pr']))>1.)
+                    if twin.release_count:
+                        break
+                self.assertTrue(pressure_changed)
+                self.assertGreater(twin.release_count,0)
+                event=twin.friction_events[0]
+                self.assertEqual(event['direction'],direction)
+                self.assertGreater(event['time_s'],0.)
+                self.assertAlmostEqual(abs(event['net_drive_n']),
+                                       self.p['Fs']+twin.friction_force_tolerance,delta=1e-3)
+                self.assertGreater(direction*twin.state[1],0.)
+
+    def test_velocity_zero_event_resticks_and_then_holds_exactly(self):
+        for direction in (-1,1):
+            with self.subTest(direction=direction):
+                twin=self.constant_load_twin(0.,direction*.001)
+                self.assertFalse(twin.sticking)
+                twin.step_voltage(0.,.005)
+                self.assertTrue(twin.sticking)
+                self.assertEqual(twin.state[1],0.)
+                event=twin.friction_events[0]
+                self.assertEqual(event['kind'],'restick')
+                self.assertGreater(event['time_s'],0.)
+                self.assertLess(event['time_s'],.005)
+                self.assertLessEqual(abs(event['net_drive_n']),self.p['Fs'])
+                position=twin.state[0]
+                twin.step_voltage(0.,.002)
+                self.assertEqual(twin.state[0],position)
+                self.assertEqual(twin.state[1],0.)
+                self.assertEqual(twin.restick_count,1)
+
+    def test_zero_velocity_outside_static_cone_reverses_without_false_hold(self):
+        for direction in (-1,1):
+            with self.subTest(direction=direction):
+                twin=self.constant_load_twin(direction*2000.,direction*.001)
+                twin.step_voltage(0.,.001)
+                event=twin.friction_events[0]
+                self.assertEqual(event['kind'],'reverse_release')
+                self.assertEqual(event['direction'],-direction)
+                self.assertGreater(abs(event['net_drive_n']),self.p['Fs'])
+                self.assertEqual(twin.restick_count,0)
+                self.assertGreater(-direction*twin.state[1],0.)
+
+    def test_sampled_load_boundary_distinguishes_pending_from_released(self):
+        twin=ClosedLoopTwin(config=self.p,load_force=1000.,load_window=(.001,.003),
+                            valve_tau=.0025,rtol=1e-7)
+        twin.reset([.01,0.,self.p['Pr'],self.p['Pr']])
+        twin.step_voltage(0.,.001)
+        diagnostics=twin.friction_diagnostics()
+        self.assertTrue(diagnostics['sticking'])
+        self.assertTrue(diagnostics['release_pending'])
+        self.assertEqual(twin.release_count,0)
+        self.assertEqual(twin.state[1],0.)
+        self.assertEqual(diagnostics['net_drive_force_n'],-1000.)
+        self.assertEqual(diagnostics['friction_force_n'],-self.p['Fs'])
+        twin.step_voltage(0.,.001)
+        self.assertEqual(twin.friction_events[0]['time_s'],.001)
+        self.assertEqual(twin.friction_events[0]['kind'],'release')
+
+    def test_friction_parameters_are_validated_before_integration(self):
+        for changes in ({'Fs':400.},{'Fc':-1.},{'vs':0.},{'sigma':-1.},{'Fs':math.nan}):
+            with self.subTest(changes=changes),self.assertRaises(ValueError):
+                ClosedLoopTwin(config=dict(self.p,**changes),load_force=0.)
 
 
 class ReferenceTests(unittest.TestCase):

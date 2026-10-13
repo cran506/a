@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 from scipy.integrate import solve_ivp
 from media_model import AeratedHydraulicModel
+from friction_model import sliding_friction, validate_friction
 
 
 def physical_config():
@@ -35,14 +36,22 @@ class QuantizedSensor:
 class ClosedLoopTwin(AeratedHydraulicModel):
     """四阶液压状态 + 一阶阀芯；1ms 周期内控制和外载保持不变。
 
-    保留原 twin 的摩擦、有效模量、泄漏和端盖模型。节流使用有向压差，
-    低压腔通过油箱补油单向阀吸油；不裁剪积分后的压力或输出位移。
+    保留原 twin 的摩擦参数、有效模量、泄漏和端盖模型；将 tanh 摩擦
+    换为有真实静摩擦区间的混合粘滑模型。节流使用有向压差，低压腔
+    通过油箱补油单向阀吸油；不裁剪积分后的压力或输出位移。
+
+    释放阈值的 1e-6 N 容差仅用于避免浮点根反复触发；零速仅在事件
+    求根定位后置为精确零，不按采样周期截断速度或替换输出轨迹。
     """
+    friction_force_tolerance = 1e-6
+    max_friction_events_per_step = 64
+
     def __init__(self, config=None, load_force=180000., load_window=(.35, .70),
                  valve_tau=.0053, rtol=1e-5, load_ramp=0., makeup_area=.001,
                  ambient_pressure=1e5, unload_ramp=None):
         config = physical_config() if config is None else config.copy()
         config['x_work'] = config['L']+1.
+        validate_friction(config)
         super().__init__(config)
         unload_ramp = load_ramp if unload_ramp is None else unload_ramp
         values = (valve_tau, load_force, rtol, load_ramp, unload_ramp, makeup_area,
@@ -65,7 +74,59 @@ class ClosedLoopTwin(AeratedHydraulicModel):
         state = super().reset(x0)
         self.valve_state = self.active_force = 0.
         self.nfev = 0
+        self.sticking = bool(state[1] == 0.)
+        self.slip_direction = 0 if self.sticking else int(np.sign(state[1]))
+        self.friction_events = []
+        self.release_count = self.restick_count = 0
         return state
+
+    def _friction(self, velocity):
+        """任意非零速度的滑动摩擦；静止力平衡由显式 stick 分支处理。"""
+        return sliding_friction(velocity, self.p)
+
+    def net_drive_force(self, state=None, external_force=None):
+        """除摩擦外的轴向合力，包含绝对压力的大气修正和外载，单位 N。"""
+        xp, velocity, p1, p2 = self.state if state is None else state
+        force = self.active_force if external_force is None else external_force
+        p = self.p
+        return float(p1*p['A1']-p2*p['A2']
+                     -self.ambient_pressure*(p['A1']-p['A2'])
+                     -self._env_force(xp, velocity)-force)
+
+    @property
+    def friction_force(self):
+        """当前模式实际摩擦：stick 时平衡合力，slide 时用有向分支。"""
+        if self.sticking:
+            return self.net_drive_force()
+        return sliding_friction(self.state[1], self.p, self.slip_direction)
+
+    def friction_diagnostics(self, external_force=None):
+        """采样时刻诊断；默认使用此刻负载，ODE 内仍使用 interval-held 负载。
+
+        release_pending 标出新负载在采样边界已越过阈值、下一 step 即释放。
+        """
+        force = self.load_at(self.t) if external_force is None else external_force
+        net = self.net_drive_force(external_force=force)
+        pending = self.sticking and abs(net) > self.p['Fs']+self.friction_force_tolerance
+        friction = (float(np.clip(net, -self.p['Fs'], self.p['Fs'])) if self.sticking else
+                    sliding_friction(self.state[1], self.p, self.slip_direction))
+        return dict(mode='stick' if self.sticking else 'slip', sticking=self.sticking,
+                    direction=self.slip_direction, slip_direction=self.slip_direction,
+                    net_drive_n=net, net_drive_force_n=net,
+                    friction_n=friction, friction_force_n=friction,
+                    release_pending=pending, release_count=self.release_count,
+                    restick_count=self.restick_count, event_count=len(self.friction_events))
+
+    def _friction_event(self, time, state, kind, direction):
+        net = self.net_drive_force(state)
+        self.friction_events.append(dict(time_s=float(time), kind=kind,
+                                        direction=int(direction), net_drive_n=net,
+                                        friction_n=(net if kind == 'restick' else
+                                                    sliding_friction(0., self.p, direction))))
+        if kind == 'restick':
+            self.restick_count += 1
+        else:
+            self.release_count += 1
 
     def load_at(self, t):
         start, end = self.load_window
@@ -77,7 +138,21 @@ class ClosedLoopTwin(AeratedHydraulicModel):
         return self.load_force*.5*(1-np.cos(np.pi*fraction))
 
     def _dynamics(self, t, x, u):
+        """独立数学 RHS；按输入状态判定静止力平衡，不改写混合模式。
+
+        实际 step 的模式切换仍由终端事件处理，此接口可独立校验数学式。
+        """
+        if x[1] == 0.:
+            net = self.net_drive_force(x)
+            if abs(net) <= self.p['Fs']:
+                return self._state_derivative(t, x, u, True, 0)
+            return self._state_derivative(t, x, u, False, int(np.sign(net)))
+        return self._state_derivative(t, x, u, False, 0)
+
+    def _state_derivative(self, t, x, u, sticking, direction):
         xp, velocity, p1, p2 = x
+        if sticking:
+            velocity = 0.
         p = self.p
         v1, v2 = p['V0_1']+p['A1']*xp, p['V0_2']+p['A2']*(p['L']-xp)
         if min(v1, v2) <= 0:
@@ -94,10 +169,8 @@ class ClosedLoopTwin(AeratedHydraulicModel):
         leak = p['C_ip']*(p1-p2)
         dp1 = self._get_beta(p1)/v1*(q1-p['A1']*velocity-leak-p['C_ep']*p1)
         dp2 = self._get_beta(p2)/v2*(q2+p['A2']*velocity+leak-p['C_ep']*p2)
-        # P1/P2 是绝对压；活塞杆外端的大气力必须纳入力平衡。
-        drive = p1*p['A1']-p2*p['A2']-self.ambient_pressure*(p['A1']-p['A2'])
-        dv = (drive-self._friction(velocity)-self._env_force(xp, velocity)
-              -self.active_force)/p['mass']
+        drive = self.net_drive_force([xp, velocity, p1, p2])
+        dv = 0. if sticking else (drive-sliding_friction(velocity, p, direction))/p['mass']
         return np.array([velocity, dv, dp1, dp2])
 
     def step_voltage(self, voltage, dt):
@@ -107,22 +180,64 @@ class ClosedLoopTwin(AeratedHydraulicModel):
         self.active_force = self.load_at(self.t)
         if self.valve_tau == 0:
             self.valve_state = command
-            fun = lambda t, y: self._dynamics(t, y, command)
-            y0 = self.state
-            atol = [1e-9, 1e-8, .1, .1]
-        else:
-            def fun(t, y):
-                return np.r_[self._dynamics(t, y[:4], y[4]), (command-y[4])/self.valve_tau]
-            y0 = np.r_[self.state, self.valve_state]
-            atol = [1e-9, 1e-8, .1, .1, 1e-9]
-        sol = solve_ivp(fun, (self.t, self.t+dt), y0, method='Radau', rtol=self.rtol, atol=atol)
-        if not sol.success or not np.all(np.isfinite(sol.y[:, -1])):
-            raise RuntimeError(f'Radau 在 t={self.t:.6f}s 失败：{sol.message}')
-        self.nfev += sol.nfev
-        self.state = sol.y[:4, -1]
+        y = (np.r_[self.state, self.valve_state] if self.valve_tau else self.state.copy())
+        atol = [1e-9, 1e-10, .1, .1]+([1e-9] if self.valve_tau else [])
+        time, end_time = self.t, self.t+dt
+        switches = 0
+        while time < end_time:
+            net = self.net_drive_force(y[:4])
+            threshold = self.p['Fs']+self.friction_force_tolerance
+            # A sampled external load may release the piston exactly at a ZOH boundary.
+            if self.sticking and abs(net) > threshold:
+                self.sticking = False
+                self.slip_direction = int(np.sign(net))
+                self._friction_event(time, y[:4], 'release', self.slip_direction)
+                switches += 1
+            sticking, direction = self.sticking, self.slip_direction
+
+            def fun(t, state):
+                valve = state[4] if self.valve_tau else command
+                rhs = self._state_derivative(t, state[:4], valve, sticking, direction)
+                return np.r_[rhs, (command-valve)/self.valve_tau] if self.valve_tau else rhs
+
+            if sticking:
+                def event(t, state):
+                    return abs(self.net_drive_force(state[:4]))-threshold
+                event.direction = 1
+            else:
+                def event(t, state):
+                    return state[1]
+                event.direction = -direction
+            event.terminal = True
+            sol = solve_ivp(fun, (time, end_time), y, events=event, method='Radau',
+                            rtol=self.rtol, atol=atol)
+            if not sol.success or not np.all(np.isfinite(sol.y[:, -1])):
+                raise RuntimeError(f'Radau 在 t={time:.6f}s 失败：{sol.message}')
+            self.nfev += sol.nfev
+            y, time = sol.y[:, -1], float(sol.t[-1])
+            if not sol.t_events[0].size:
+                break
+            switches += 1
+            # Set velocity to zero only at the velocity/release root, never per sample.
+            y[1] = 0.
+            net = self.net_drive_force(y[:4])
+            if sticking:
+                self.sticking = False
+                self.slip_direction = int(np.sign(net))
+                self._friction_event(time, y[:4], 'release', self.slip_direction)
+            elif abs(net) <= self.p['Fs']:
+                self.sticking = True
+                self.slip_direction = 0
+                self._friction_event(time, y[:4], 'restick', 0)
+            else:
+                self.slip_direction = int(np.sign(net))
+                self._friction_event(time, y[:4], 'reverse_release', self.slip_direction)
+            if switches > self.max_friction_events_per_step:
+                raise RuntimeError(f'粘滑事件过密 t={time:.9f}s；请检查工况和积分精度')
+        self.state = y[:4].copy()
         if self.valve_tau:
-            self.valve_state = float(sol.y[4, -1])
-        self.t += dt
+            self.valve_state = float(y[4])
+        self.t = end_time
         if min(self.state[2:]) <= 0:
             raise RuntimeError(f'绝对压力非正 t={self.t:.6f}s，请检查负载或模型')
         return self.state.copy()

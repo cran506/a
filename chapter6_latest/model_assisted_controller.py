@@ -7,17 +7,18 @@ import math
 import numpy as np
 from controllers import DigitalPID
 from media_model import AeratedHydraulicModel
+from friction_model import sliding_friction, sliding_friction_slope
 
 
 class ModelAssistedController:
     def __init__(self, pid_params, phys_params, enable_ff=True,
                  enable_gain_sched=True, pressure_alpha=.2,
                  valve_tau=.0025, enable_valve_inverse=True, gain_prediction_s=0.,
-                 zero_flow_band_v=.01, deadzone_slew_v_s=40.,force_error_gain_s=80.,
-                 enable_startup_regularization=True):
-        if (not all(math.isfinite(v) for v in (pressure_alpha,valve_tau,gain_prediction_s,zero_flow_band_v,deadzone_slew_v_s,force_error_gain_s))
+                 zero_flow_band_v=.03, deadzone_slew_v_s=40.,force_error_gain_s=80.,
+                 enable_startup_regularization=True,velocity_error_gain_s=60.):
+        if (not all(math.isfinite(v) for v in (pressure_alpha,valve_tau,gain_prediction_s,zero_flow_band_v,deadzone_slew_v_s,force_error_gain_s,velocity_error_gain_s))
                 or not 0 <= pressure_alpha < 1 or valve_tau < 0 or gain_prediction_s < 0
-                or zero_flow_band_v<0 or deadzone_slew_v_s<=0 or force_error_gain_s<0):
+                or zero_flow_band_v<0 or deadzone_slew_v_s<=0 or force_error_gain_s<0 or velocity_error_gain_s<0):
             raise ValueError('压力滤波或阀响应参数无效')
         self.pid = DigitalPID(**pid_params)
         self.p = phys_params.copy()
@@ -27,13 +28,14 @@ class ModelAssistedController:
         self.gain_prediction_s = gain_prediction_s
         self.zero_flow_band_v,self.deadzone_slew_v_s=zero_flow_band_v,deadzone_slew_v_s
         self.force_error_gain_s=force_error_gain_s
+        self.velocity_error_gain_s=velocity_error_gain_s
         self.enable_startup_regularization = enable_startup_regularization
         self.valve_tau, self.enable_valve_inverse = valve_tau, enable_valve_inverse
         self.k_flow = self.p['Cd']*self.p['w']*(self.p['xv_max']/10)*math.sqrt(2/self.p['rho'])
         self.deadzone_v = 10*self.p['deadzone']
         # 两个阀口共用阀芯，按面积比与力平衡计算空载巡航标称压力。
         k = (self.p['A1']/self.p['A2'])**2
-        force = self.model._friction(.2)
+        force = sliding_friction(.2,self.p)
         atmosphere = self.p.get('ambient_pressure', 1e5)*(self.p['A1']-self.p['A2'])
         p2 = (self.p['A1']*(self.p['Ps']+k*self.p['Pr'])-atmosphere-force)/(k*self.p['A1']+self.p['A2'])
         self.nominal_pressures = np.array([self.p['Ps']-k*(p2-self.p['Pr']), p2])
@@ -77,7 +79,7 @@ class ModelAssistedController:
         """显著流量精确反演；近零流量时有限速度渡过死区。
 
         精确死区逆的两侧极限相差2δ，不可能既精确又跨零连续。
-        公开的0.01V线性流量带内允许短暂小流量失配，偏置限速40V/s。
+        公开的0.03V线性流量带内允许短暂小流量失配，偏置限速40V/s。
         首次非零预开不作从零幅值衰减，由 _valve_inverse 处理初值相容性。
         """
         desired=math.copysign(self.deadzone_v,linear_v) if abs(linear_v)>1e-6 else 0.
@@ -92,13 +94,8 @@ class ModelAssistedController:
         return linear_v+offset
 
     def _friction_rate(self, velocity, acceleration):
-        p = self.p
-        expo = math.exp(-(velocity/p['vs'])**2)
-        magnitude = p['Fc']+(p['Fs']-p['Fc'])*expo
-        slope = -2*velocity/p['vs']**2*(p['Fs']-p['Fc'])*expo
-        smooth_sign = math.tanh(p['gamma']*velocity)
-        derivative = slope*smooth_sign + magnitude*p['gamma']*(1-smooth_sign**2)+p['sigma']
-        return derivative*acceleration
+        # 滑动支路的单侧解析导数；零速静摩擦方向由运动计划决定。
+        return sliding_friction_slope(velocity,self.p)*acceleration
 
     def _inverse_force_rate(self, position, vd, desired_force_rate, known_force_rate=0.):
         p = self.p
@@ -162,16 +159,35 @@ class ModelAssistedController:
         moving = False
         if self.enable_ff:
             _, vd, ad = r_state
-            nominal_force = self.p['mass']*ad+self.model._friction(vd)
+            # 首个 S 轨迹采样可有 v=a=0，但非零跃度已给出起动方向。
+            # 静止持位时 v=a=j=0，不凭位置误差虚构800N前馈。
+            direction = next((math.copysign(1.,value) for value in
+                              (vd,ad,jerk_d or 0.) if abs(value)>1e-12),0.)
+            friction = sliding_friction(vd,self.p,direction=direction)
+            nominal_force = self.p['mass']*ad+friction
             force = nominal_force+known_force_n
             if jerk_d is None:
                 force_rate = (nominal_force-self.previous_nominal_force)/self.pid.ts+known_force_rate_n_s
             else:
                 force_rate = self.p['mass']*jerk_d+self._friction_rate(vd,ad)+known_force_rate_n_s
             self.previous_nominal_force = nominal_force
-            self.last['desired_force_n'] = force
+            self.last.update(planned_inverse_force_n=force,reference_friction_n=friction,
+                             reference_motion_direction=direction)
             p1,p2=self.pressure_filtered
             actual_force=p1*self.p['A1']-p2*self.p['A2']-self.p.get('ambient_pressure',1e5)*(self.p['A1']-self.p['A2'])
+            # 两个模型辅助组共享速度误差阻尼，替代原tanh近零斜率隐含的
+            # 大阻尼。只用当前速度，不对传感器速度/压力作强微分。
+            damping=self.p['mass']*self.velocity_error_gain_s*(vd-y_meas[1])
+            force+=damping
+            hold_adjustment=0.
+            if direction==0 and abs(y_meas[1])<=1e-12:
+                # 真正静止时摩擦可平衡[-Fs,Fs]内任意力；不强迫持位压力
+                # 从合法的静摩擦平衡降到零，以免再次释放或产生反向尖峰。
+                hold_goal=known_force_n+float(np.clip(actual_force-known_force_n,-self.p['Fs'],self.p['Fs']))
+                hold_adjustment=hold_goal-force
+                force=hold_goal
+            self.last.update(desired_force_n=force,velocity_damping_force_n=damping,
+                             static_hold_force_adjustment_n=hold_adjustment)
             correction=self.force_error_gain_s*(force-actual_force)
             self.last.update(actual_force_n=actual_force,planned_force_rate_n_s=force_rate,
                              force_error_correction_n_s=correction,force_error_gain_s=self.force_error_gain_s)

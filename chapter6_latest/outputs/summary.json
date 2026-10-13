@@ -18,6 +18,8 @@
         "pressure_alpha": 0.2,
         "gain_prediction_s": 0.001,
         "force_error_gain_s": 80.0,
+        "velocity_error_gain_s": 60.0,
+        "zero_flow_band_v": 0.03,
         "enable_startup_regularization": true,
         "load_force": 153000.0,
         "load_ramp": 0.025,
@@ -36,7 +38,7 @@
           2555555.5585564934,
           4711111.110360877
         ],
-        "radau_nfev": 46520,
+        "radau_nfev": 46757,
         "physical_parameters": {
           "A1": 0.01,
           "A2": 0.005,
@@ -66,50 +68,415 @@
           "ambient_pressure": 100000.0,
           "makeup_area": 0.001,
           "C_ep": 0.0
-        }
+        },
+        "friction_events": [
+          {
+            "time_s": 0.08838759018619236,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999992,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.1353201325203107,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -316.2616620248052,
+            "friction_n": -316.2616620248052
+          },
+          {
+            "time_s": 0.17571269706258644,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009998903,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.2125232775791055,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -2091.0932296163546,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.21767042210708368,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 3162.8819006964077,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.23477809129675342,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8950.601209647655,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.2401682873368605,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 48360.20964374032,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.25108865250272455,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -16712.60368316622,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.25520568236374375,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 69781.74614015063,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.265197722208042,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -18462.677280582408,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.2677967128494778,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 52881.00969201999,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9199894872960205,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -4291.105384282517,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9228626836773871,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 2673.0705594171886,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9327924019289419,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8037.048089238149,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9387890249111398,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 7800.217708631404,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9463304624085384,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8891.834498145548,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9525866367403744,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8116.524980794991,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9601260930744505,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -8314.130062316748,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9662515028747581,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8360.425667246676,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9742511215236375,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -9292.92989264914,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9802653061573581,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 10174.63998826118,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9882859685196587,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -12194.085960040964,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.9945125812459966,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 13434.316989675819,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0022166766679916,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -15542.581585859221,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0086448899620006,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 16334.986986590582,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0160040136690458,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -17479.28114823799,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0225294409702466,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 17406.272848948534,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0295005146608078,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -16692.191454750384,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0360430374524,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 16172.765280076881,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0426132555849195,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -13395.90055049222,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0491447059004062,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 12413.547763893472,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.055703723977683,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -10018.664791542265,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0622206141222474,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 8673.591261893736,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0687957752715171,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -6625.271981338847,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0752855122419873,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 5049.152653548794,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0819069406988149,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -3243.2107408672637,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.088295208991249,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1594.3576188555562,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0953375258117666,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 42.817206475861894,
+            "friction_n": 42.817206475861894
+          },
+          {
+            "time_s": 1.1115302476153237,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000009999931,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1216130473862336,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 487.4286855425271,
+            "friction_n": 487.4286855425271
+          },
+          {
+            "time_s": 1.1253557644039403,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999603,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1380957821424245,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 337.19787114353676,
+            "friction_n": 337.19787114353676
+          },
+          {
+            "time_s": 1.1397185077360772,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000877,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1512611398737267,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1279.2740247541515,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.152749795417436,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 319.20749500007514,
+            "friction_n": 319.20749500007514
+          },
+          {
+            "time_s": 1.1544216087654704,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.000001000044,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1650541191720352,
+            "kind": "reverse_release",
+            "direction": 1,
+            "net_drive_n": 1333.6002274728962,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.1679665865489148,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 297.29172565121553,
+            "friction_n": 297.29172565121553
+          },
+          {
+            "time_s": 1.1715591783496013,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000222,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.181177048647559,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 265.95620579013485,
+            "friction_n": 265.95620579013485
+          },
+          {
+            "time_s": 1.1887397524585879,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          }
+        ]
       },
       "metrics": {
-        "max_abs_error_mm": 1.3846749182985647,
-        "rms_error_mm": 0.4133136641055126,
-        "final_error_mm": 0.08291592938969305,
+        "max_abs_error_mm": 1.3826456445885231,
+        "rms_error_mm": 0.4248644668648923,
+        "final_error_mm": 0.09121121143720878,
         "startup_velocity_threshold_m_s": 0.0001,
-        "motion_start_ms": 81.0,
+        "motion_start_ms": 90.0,
         "reference_threshold_ms": 5.0,
         "first_feedforward_ms": null,
         "first_feedforward_voltage_v": null,
-        "startup_max_abs_error_mm": 0.4582986511596093,
+        "startup_max_abs_error_mm": 0.5818478550754252,
         "startup_max_voltage_step_v": 0.001820300032600794,
         "startup_max_voltage_drop_v": 0.0,
         "startup_peak_abs_voltage_v": 0.015293924815262181,
         "startup_initial_voltage_v": 0.0,
-        "startup_delay_from_reference_ms": 76.0,
-        "startup_velocity_rmse_m_s": 0.017327421086410888,
-        "startup_velocity_overshoot_m_s": 0.04454894966683107,
+        "startup_reference_friction_n": 0.0,
+        "startup_reference_force_n": 0.0,
+        "startup_delay_from_reference_ms": 84.99999999999999,
+        "startup_velocity_rmse_m_s": 0.020362083455793437,
+        "startup_velocity_overshoot_m_s": 0.055509683078999505,
         "startup_prominent_overshoot_peaks": 1,
-        "startup_first_peak_time_s": 0.10300000000000001,
-        "startup_first_peak_velocity_m_s": 0.059656641974523375,
+        "startup_first_peak_time_s": 0.10200000000000001,
+        "startup_first_peak_velocity_m_s": 0.07017865352037911,
         "reference_velocity_at_0p16_m_s": 0.032,
-        "contact_min_velocity_m_s": 0.13127937122785432,
-        "contact_speed_drop_percent": 34.360314386072844,
-        "contact_max_abs_error_mm": 1.3846749182985647,
-        "contact_added_error_mm": 1.386182870714209,
+        "contact_min_velocity_m_s": 0.13099375674023794,
+        "contact_speed_drop_percent": 34.503121629881036,
+        "contact_max_abs_error_mm": 1.3826456445885231,
+        "contact_added_error_mm": 1.3846583264519456,
         "contact_error_peak_time_s": 0.54,
-        "error_at_0p60_mm": -0.586926370432006,
-        "light_median_voltage_v": 2.353198363111105,
-        "heavy_median_voltage_v": 4.626801798587213,
-        "light_median_p1_mpa": 2.551252322938006,
-        "heavy_median_p1_mpa": 16.12220737734463,
-        "kq_decline_percent": 48.58045608089736,
-        "peak_abs_voltage_v": 5.122672239083582,
-        "stop_peak_abs_voltage_v": 0.7061866144302027,
-        "stop_max_voltage_step_v": 0.13357101261194332,
-        "stop_voltage_total_variation_v": 6.228050560608041,
-        "hold_max_abs_velocity_m_s": 0.08780453768829108,
+        "error_at_0p60_mm": -0.5857044593939043,
+        "light_median_voltage_v": 2.352124794912169,
+        "heavy_median_voltage_v": 4.6246027909189715,
+        "light_median_p1_mpa": 2.551436235072083,
+        "heavy_median_p1_mpa": 16.120568095195477,
+        "kq_decline_percent": 48.57156014923013,
+        "peak_abs_voltage_v": 5.12091064856535,
+        "stop_peak_abs_voltage_v": 0.6905933200600595,
+        "stop_max_voltage_step_v": 0.13064612725833025,
+        "stop_voltage_total_variation_v": 5.731821274314667,
+        "hold_max_abs_velocity_m_s": 0.08157261183437144,
         "saturation_time_s": 0.0,
-        "min_absolute_pressure_mpa": 0.09903708342080951,
-        "max_absolute_pressure_mpa": 16.53939220978481,
+        "min_absolute_pressure_mpa": 0.09903312764779937,
+        "max_absolute_pressure_mpa": 16.54429843006442,
         "meets_full_0p05mm": false,
-        "meets_full_0p1mm": false
+        "meets_full_0p1mm": false,
+        "first_breakaway_ms": 88.38759018619236,
+        "first_breakaway_net_force_n": 800.0000009999992,
+        "friction_release_events": 44,
+        "friction_restick_events": 7
       }
     },
     "nominal": {
@@ -127,6 +494,8 @@
         "pressure_alpha": 0.2,
         "gain_prediction_s": 0.001,
         "force_error_gain_s": 80.0,
+        "velocity_error_gain_s": 60.0,
+        "zero_flow_band_v": 0.03,
         "enable_startup_regularization": true,
         "load_force": 153000.0,
         "load_ramp": 0.025,
@@ -145,7 +514,7 @@
           2555555.5585564934,
           4711111.110360877
         ],
-        "radau_nfev": 27501,
+        "radau_nfev": 32339,
         "physical_parameters": {
           "A1": 0.01,
           "A2": 0.005,
@@ -175,50 +544,128 @@
           "ambient_pressure": 100000.0,
           "makeup_area": 0.001,
           "C_ep": 0.0
-        }
+        },
+        "friction_events": [
+          {
+            "time_s": 0.02046248706424632,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9456532261627822,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -58.03544777848947,
+            "friction_n": -58.03544777848947
+          },
+          {
+            "time_s": 0.9465734205327785,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000113,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9567992612374668,
+            "kind": "reverse_release",
+            "direction": -1,
+            "net_drive_n": -1205.0027421729465,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 0.961346631752646,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -531.8487037017003,
+            "friction_n": -531.8487037017003
+          },
+          {
+            "time_s": 0.975755252600256,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000000999953,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0030352281855162,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -699.5878338966868,
+            "friction_n": -699.5878338966868
+          },
+          {
+            "time_s": 1.0351154757409806,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000076,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.121216932322945,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 214.37353542810524,
+            "friction_n": 214.37353542810524
+          },
+          {
+            "time_s": 1.1348091467073502,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000001000004,
+            "friction_n": 800.0
+          }
+        ]
       },
       "metrics": {
-        "max_abs_error_mm": 1.3668887658793982,
-        "rms_error_mm": 0.3327390947855881,
-        "final_error_mm": -0.13304653972709413,
+        "max_abs_error_mm": 1.3651381839928507,
+        "rms_error_mm": 0.33269019626243956,
+        "final_error_mm": -0.1260308836653623,
         "startup_velocity_threshold_m_s": 0.0001,
-        "motion_start_ms": 11.0,
+        "motion_start_ms": 22.0,
         "reference_threshold_ms": 5.0,
         "first_feedforward_ms": 0.0,
-        "first_feedforward_voltage_v": 0.41229978706983494,
-        "startup_max_abs_error_mm": 0.007561350154852979,
-        "startup_max_voltage_step_v": 0.03471363405338962,
-        "startup_max_voltage_drop_v": 0.03471363405338962,
-        "startup_peak_abs_voltage_v": 0.4523436962251977,
-        "startup_initial_voltage_v": 0.41229978706983494,
-        "startup_delay_from_reference_ms": 5.999999999999999,
-        "startup_velocity_rmse_m_s": 0.0002498642798244834,
-        "startup_velocity_overshoot_m_s": 0.00042822315553469725,
-        "startup_prominent_overshoot_peaks": 0,
-        "startup_first_peak_time_s": null,
-        "startup_first_peak_velocity_m_s": null,
+        "first_feedforward_voltage_v": 0.5697370615637232,
+        "startup_max_abs_error_mm": 0.0339246373594487,
+        "startup_max_voltage_step_v": 0.03080896265297106,
+        "startup_max_voltage_drop_v": 0.03080896265297106,
+        "startup_peak_abs_voltage_v": 0.5769754231501081,
+        "startup_initial_voltage_v": 0.5697370615637232,
+        "startup_reference_friction_n": 800.0,
+        "startup_reference_force_n": 800.0,
+        "startup_delay_from_reference_ms": 16.999999999999996,
+        "startup_velocity_rmse_m_s": 0.0025421190206935127,
+        "startup_velocity_overshoot_m_s": 0.005548670006729192,
+        "startup_prominent_overshoot_peaks": 4,
+        "startup_first_peak_time_s": 0.147,
+        "startup_first_peak_velocity_m_s": 0.03426735577520407,
         "reference_velocity_at_0p16_m_s": 0.032,
-        "contact_min_velocity_m_s": 0.13363054164073132,
-        "contact_speed_drop_percent": 33.184729179634346,
-        "contact_max_abs_error_mm": 1.3668887658793982,
-        "contact_added_error_mm": 1.3685307590133173,
+        "contact_min_velocity_m_s": 0.13390253500270843,
+        "contact_speed_drop_percent": 33.04873249864579,
+        "contact_max_abs_error_mm": 1.3651381839928507,
+        "contact_added_error_mm": 1.365989571647741,
         "contact_error_peak_time_s": 0.545,
-        "error_at_0p60_mm": -0.44092310223632636,
-        "light_median_voltage_v": 2.356235188524357,
-        "heavy_median_voltage_v": 4.759014724662384,
-        "light_median_p1_mpa": 2.551475053808908,
-        "heavy_median_p1_mpa": 16.122705511932235,
-        "kq_decline_percent": 48.58277136656884,
-        "peak_abs_voltage_v": 5.114272418267744,
-        "stop_peak_abs_voltage_v": 0.5836257417711641,
-        "stop_max_voltage_step_v": 0.22075019871190937,
-        "stop_voltage_total_variation_v": 1.7521887937426601,
-        "hold_max_abs_velocity_m_s": 0.009276894367062867,
+        "error_at_0p60_mm": -0.4342209340028047,
+        "light_median_voltage_v": 2.356517635456877,
+        "heavy_median_voltage_v": 4.76272892341778,
+        "light_median_p1_mpa": 2.550939265163972,
+        "heavy_median_p1_mpa": 16.125125695706963,
+        "kq_decline_percent": 48.59627635753283,
+        "peak_abs_voltage_v": 5.110447667443278,
+        "stop_peak_abs_voltage_v": 0.5904371840588085,
+        "stop_max_voltage_step_v": 0.21723489428350914,
+        "stop_voltage_total_variation_v": 2.142838908794143,
+        "hold_max_abs_velocity_m_s": 0.01070709769376311,
         "saturation_time_s": 0.0,
         "min_absolute_pressure_mpa": 0.1,
-        "max_absolute_pressure_mpa": 16.505723760769513,
+        "max_absolute_pressure_mpa": 16.504853609176195,
         "meets_full_0p05mm": false,
-        "meets_full_0p1mm": false
+        "meets_full_0p1mm": false,
+        "first_breakaway_ms": 20.46248706424632,
+        "first_breakaway_net_force_n": 800.0000010000003,
+        "friction_release_events": 6,
+        "friction_restick_events": 4
       }
     },
     "full": {
@@ -236,6 +683,8 @@
         "pressure_alpha": 0.2,
         "gain_prediction_s": 0.001,
         "force_error_gain_s": 80.0,
+        "velocity_error_gain_s": 60.0,
+        "zero_flow_band_v": 0.03,
         "enable_startup_regularization": true,
         "load_force": 153000.0,
         "load_ramp": 0.025,
@@ -254,7 +703,7 @@
           2555555.5585564934,
           4711111.110360877
         ],
-        "radau_nfev": 22875,
+        "radau_nfev": 29732,
         "physical_parameters": {
           "A1": 0.01,
           "A2": 0.005,
@@ -284,50 +733,275 @@
           "ambient_pressure": 100000.0,
           "makeup_area": 0.001,
           "C_ep": 0.0
-        }
+        },
+        "friction_events": [
+          {
+            "time_s": 0.020930652775441313,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.000000999999,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 0.9848477531095539,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -172.10498702740006,
+            "friction_n": -172.10498702740006
+          },
+          {
+            "time_s": 0.9976787241419787,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000003,
+            "friction_n": 800.0
+          },
+          {
+            "time_s": 1.0169608796657783,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": 389.534768608115,
+            "friction_n": 389.534768608115
+          },
+          {
+            "time_s": 1.0213653690792464,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999094,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0271337281521986,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -538.1457245387028,
+            "friction_n": -538.1457245387028
+          },
+          {
+            "time_s": 1.0357619282259782,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999421,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0402570172783931,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -660.070922522078,
+            "friction_n": -660.070922522078
+          },
+          {
+            "time_s": 1.0468429452911727,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000185,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0513658160520913,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -656.0164493154989,
+            "friction_n": -656.0164493154989
+          },
+          {
+            "time_s": 1.0576977700923302,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000404,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0629789855233742,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -587.3715128368858,
+            "friction_n": -587.3715128368858
+          },
+          {
+            "time_s": 1.069005208037208,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000258,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0753533789666705,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -410.0490042918136,
+            "friction_n": -410.0490042918136
+          },
+          {
+            "time_s": 1.081858975666939,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999858,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.0858142364906374,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -685.3029641270223,
+            "friction_n": -685.3029641270223
+          },
+          {
+            "time_s": 1.0906921130935956,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000222,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.095389968257635,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -638.8610718227937,
+            "friction_n": -638.8610718227937
+          },
+          {
+            "time_s": 1.1022351412356324,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000113,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1079214762854188,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -538.2532973132329,
+            "friction_n": -538.2532973132329
+          },
+          {
+            "time_s": 1.115600581888958,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000009999858,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.119403594721165,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -693.8447303154462,
+            "friction_n": -693.8447303154462
+          },
+          {
+            "time_s": 1.1259310366426014,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.127524952992937,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -764.6610077720652,
+            "friction_n": -764.6610077720652
+          },
+          {
+            "time_s": 1.1309326926361047,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000149,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.132250596686869,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -771.4305061100094,
+            "friction_n": -771.4305061100094
+          },
+          {
+            "time_s": 1.1362734771283332,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.000001000004,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.1400011461828672,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -703.3273344060763,
+            "friction_n": -703.3273344060763
+          },
+          {
+            "time_s": 1.1516759907159728,
+            "kind": "release",
+            "direction": -1,
+            "net_drive_n": -800.0000010000003,
+            "friction_n": -800.0
+          },
+          {
+            "time_s": 1.152740228697729,
+            "kind": "restick",
+            "direction": 0,
+            "net_drive_n": -780.1982476495214,
+            "friction_n": -780.1982476495214
+          },
+          {
+            "time_s": 1.199896917742462,
+            "kind": "release",
+            "direction": 1,
+            "net_drive_n": 800.0000010000076,
+            "friction_n": 800.0
+          }
+        ]
       },
       "metrics": {
-        "max_abs_error_mm": 0.043206313944305075,
-        "rms_error_mm": 0.0074780608715395965,
-        "final_error_mm": 0.0035420453879109193,
+        "max_abs_error_mm": 0.04444994259329878,
+        "rms_error_mm": 0.012009773660729627,
+        "final_error_mm": 0.008353309897041195,
         "startup_velocity_threshold_m_s": 0.0001,
-        "motion_start_ms": 11.0,
+        "motion_start_ms": 23.0,
         "reference_threshold_ms": 5.0,
         "first_feedforward_ms": 0.0,
-        "first_feedforward_voltage_v": 0.41192743523274133,
-        "startup_max_abs_error_mm": 0.00635855320353113,
-        "startup_max_voltage_step_v": 0.03360516471346803,
-        "startup_max_voltage_drop_v": 0.03360516471346803,
-        "startup_peak_abs_voltage_v": 0.4512554571290363,
-        "startup_initial_voltage_v": 0.41192743523274133,
-        "startup_delay_from_reference_ms": 5.999999999999999,
-        "startup_velocity_rmse_m_s": 0.00024732933259017016,
-        "startup_velocity_overshoot_m_s": 0.000433947180878011,
-        "startup_prominent_overshoot_peaks": 0,
-        "startup_first_peak_time_s": null,
-        "startup_first_peak_velocity_m_s": null,
+        "first_feedforward_voltage_v": 0.5645986062118302,
+        "startup_max_abs_error_mm": 0.03383127137250867,
+        "startup_max_voltage_step_v": 0.030068231751999075,
+        "startup_max_voltage_drop_v": 0.030068231751999075,
+        "startup_peak_abs_voltage_v": 0.5716216587777343,
+        "startup_initial_voltage_v": 0.5645986062118302,
+        "startup_reference_friction_n": 800.0,
+        "startup_reference_force_n": 800.0,
+        "startup_delay_from_reference_ms": 18.0,
+        "startup_velocity_rmse_m_s": 0.0027160749940164583,
+        "startup_velocity_overshoot_m_s": 0.006056152884920694,
+        "startup_prominent_overshoot_peaks": 4,
+        "startup_first_peak_time_s": 0.147,
+        "startup_first_peak_velocity_m_s": 0.0348120553096753,
         "reference_velocity_at_0p16_m_s": 0.032,
-        "contact_min_velocity_m_s": 0.19716392659864934,
-        "contact_speed_drop_percent": 1.4180367006753347,
-        "contact_max_abs_error_mm": 0.012635025622251272,
-        "contact_added_error_mm": 0.013191239200405214,
+        "contact_min_velocity_m_s": 0.19700702082345406,
+        "contact_speed_drop_percent": 1.4964895882729756,
+        "contact_max_abs_error_mm": 0.01323060070772264,
+        "contact_added_error_mm": 0.013589873406077979,
         "contact_error_peak_time_s": 0.507,
-        "error_at_0p60_mm": 0.004376042396128654,
-        "light_median_voltage_v": 2.356160956471368,
-        "heavy_median_voltage_v": 4.253835261857478,
-        "light_median_p1_mpa": 2.5511272550247583,
-        "heavy_median_p1_mpa": 16.163581051252535,
-        "kq_decline_percent": 48.7991655007897,
-        "peak_abs_voltage_v": 4.487701204033119,
-        "stop_peak_abs_voltage_v": 0.6752391156421668,
-        "stop_max_voltage_step_v": 0.20837561793163834,
-        "stop_voltage_total_variation_v": 1.7534042317524419,
-        "hold_max_abs_velocity_m_s": 0.0027133907304694098,
+        "error_at_0p60_mm": 0.004429291734664442,
+        "light_median_voltage_v": 2.3561506121075793,
+        "heavy_median_voltage_v": 4.25391278427616,
+        "light_median_p1_mpa": 2.551212669430788,
+        "heavy_median_p1_mpa": 16.163852234467885,
+        "kq_decline_percent": 48.80048244261738,
+        "peak_abs_voltage_v": 4.477952386344932,
+        "stop_peak_abs_voltage_v": 0.6698094016674976,
+        "stop_max_voltage_step_v": 0.21780319869538578,
+        "stop_voltage_total_variation_v": 3.104754763500421,
+        "hold_max_abs_velocity_m_s": 0.0012734008383397742,
         "saturation_time_s": 0.0,
         "min_absolute_pressure_mpa": 0.1,
-        "max_absolute_pressure_mpa": 16.228170021316938,
+        "max_absolute_pressure_mpa": 16.23561498714089,
         "meets_full_0p05mm": true,
-        "meets_full_0p1mm": true
+        "meets_full_0p1mm": true,
+        "first_breakaway_ms": 20.930652775441313,
+        "first_breakaway_net_force_n": 800.000000999999,
+        "friction_release_events": 16,
+        "friction_restick_events": 15
       }
     }
   }

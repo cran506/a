@@ -14,28 +14,28 @@
       "unit": "ms",
       "target_approx": 80.0,
       "previous": 82.0,
-      "new": 81.0
+      "new": 90.0
     },
     {
       "metric": "PID first startup velocity peak",
       "unit": "m/s",
       "target_approx": 0.058,
       "previous": null,
-      "new": 0.059656641974523375
+      "new": 0.07017865352037911
     },
     {
       "metric": "PID first startup velocity peak time",
       "unit": "s",
       "target_approx": 0.105,
       "previous": null,
-      "new": 0.10300000000000001
+      "new": 0.10200000000000001
     },
     {
       "metric": "PID loaded positive position error peak",
       "unit": "mm",
       "target_approx": 1.48,
       "previous": 3.023397,
-      "new": 1.3846749182985647
+      "new": 1.3826456445885231
     },
     {
       "metric": "PID loaded peak time",
@@ -49,80 +49,80 @@
       "unit": "mm",
       "target_approx": -0.7,
       "previous": 2.344,
-      "new": -0.586926370432006
+      "new": -0.5857044593939043
     },
     {
       "metric": "PID minimum loaded velocity",
       "unit": "m/s",
       "target_approx": 0.14,
       "previous": 0.093441,
-      "new": 0.13127937122785432
+      "new": 0.13099375674023794
     },
     {
       "metric": "nominal minimum loaded velocity",
       "unit": "m/s",
       "target_approx": 0.14,
       "previous": 0.10206,
-      "new": 0.13363054164073132
+      "new": 0.13390253500270843
     },
     {
       "metric": "full minimum loaded velocity",
       "unit": "m/s",
       "target_approx": 0.194,
       "previous": 0.194327,
-      "new": 0.19716392659864934
+      "new": 0.19700702082345406
     },
     {
       "metric": "full light-load median voltage",
       "unit": "V",
       "target_approx": 2.5,
       "previous": 2.351534,
-      "new": 2.356160956471368
+      "new": 2.3561506121075793
     },
     {
       "metric": "full heavy-load median voltage",
       "unit": "V",
       "target_approx": 4.2,
       "previous": 4.630381,
-      "new": 4.253835261857478
+      "new": 4.25391278427616
     },
     {
       "metric": "full maximum absolute error",
       "unit": "mm",
       "target_upper_bound": 0.05,
       "previous": 0.042309,
-      "new": 0.043206313944305075
+      "new": 0.04444994259329878
     },
     {
       "metric": "full stop maximum voltage step",
       "unit": "V/sample",
       "target_shape": "continuous transition; no +/-2V impulses",
       "previous_shape": "hard deadzone inversion and holding bias transition",
-      "new": 0.20837561793163834
+      "new": 0.21780319869538578
     },
     {
       "metric": "PID startup valley after first peak",
       "unit": "m/s",
       "target_approx": 0.01,
       "previous": null,
-      "new": -0.0019174946571566486
+      "new": 0.0
     },
     {
       "metric": "PID startup valley time",
       "unit": "s",
       "target_approx": 0.145,
       "previous": null,
-      "new": 0.146
+      "new": 0.136
     },
     {
       "metric": "PID velocity at 0.16s",
       "unit": "m/s",
       "target_approx": 0.018,
       "previous": 0.09295,
-      "new": 0.02799540708574295
+      "new": 0.0
     }
   ],
-  "remaining_differences": "Peak time and valley are not identical to the reference. Both feedforward groups share the same force feedback and startup inverse boundary condition. The accuracy claim applies to a known model-matched process. The user chose to preserve existing physical parameters: initial voltage is approximately 0.412V rather than the illustrative 1.2V, and velocity threshold occurs at 11ms rather than the reference reaching it at 5ms.",
+  "remaining_differences": "All state curves are real hybrid ODE results with unchanged physical parameter values. True static friction changes startup and recapture: PID reaches the speed threshold at 90ms and its peak is about 0.0702m/s; model-assisted release requires actual pressure buildup (~20.9ms for full) rather than the illustrative 1ms. Initial full voltage is computed as ~0.5646V rather than forced to 1.2V. The reference comparison keeps these differences and failed historical time/peak bounds visible. Precision claims apply to the known model-matched process.",
   "startup_inverse_regularization": {
     "physical_parameters_preserved": true,
     "user_selected_scope": "Keep existing model parameters and compute nonzero startup voltage from its inverse.",
@@ -131,18 +131,157 @@
       0,
       0.02
     ],
-    "initial_voltage_v": 0.41192743523274133,
+    "initial_voltage_v": 0.5645986062118302,
     "initial_voltage_from_force_flow_and_deadzone_inverse": true,
     "hard_deadbeat_peak_v": 1.2494767433669074,
-    "current_peak_v": 0.4512554571290363,
+    "current_peak_v": 0.5716216587777343,
     "hard_deadbeat_max_drop_v": 0.8281583063062585,
-    "current_max_drop_v": 0.03360516471346803,
-    "current_max_step_v": 0.03360516471346803,
-    "motion_start_ms": 11.0,
+    "current_max_drop_v": 0.030068231751999075,
+    "current_max_step_v": 0.030068231751999075,
+    "motion_start_ms": 23.0,
     "reference_threshold_ms": 5.0,
-    "delay_from_reference_ms": 5.999999999999999,
+    "delay_from_reference_ms": 18.0,
     "previous_one_sample_delay_requirement_met": false,
     "valve_tau_ms": 2.5,
-    "notes": "Shared analytical valve-inverse boundary condition: initial target mismatch decays at the real valve pole. The actual FF valve memory starts at zero and follows applied limited voltage. No zero-amplitude ramp, preset 1.2V constant, fictitious valve initial state, or post-plot smoothing."
+    "notes": "Shared analytical valve-inverse boundary condition: initial target mismatch decays at the real valve pole. The actual FF valve memory starts at zero and follows applied limited voltage. No zero-amplitude ramp, preset 1.2V constant, fictitious valve initial state, or post-plot smoothing.",
+    "same_new_model_unregularized_initial_command_v": 1.7125657760582704
+  },
+  "friction_model_revision": {
+    "baseline_before_true_stiction_commit": "841a30406cca452d0ff85bf0f7235cfc9d38dcdc",
+    "physical_parameter_values_preserved": true,
+    "friction_law_changed": "Hybrid stick/slip with force balance at rest and hard-direction sliding Stribeck; original uploaded Twin kept byte for byte.",
+    "Fs_N": 800.0,
+    "Fc_N": 500.0,
+    "release_force_tolerance_N": 1e-06,
+    "controller_velocity_error_gain_s": 60.0,
+    "controller_zero_flow_band_V": 0.03,
+    "startup_static_friction_requested_N": 800.0,
+    "startup_planned_force_rate_N_s": 5000.0,
+    "startup_force_error_correction_N_s": 64000.0,
+    "strategies": {
+      "pid": {
+        "first_breakaway_ms": 88.38759018619236,
+        "first_breakaway_net_force_n": 800.0000009999992,
+        "motion_start_ms": 90.0,
+        "friction_release_events": 44,
+        "friction_restick_events": 7
+      },
+      "nominal": {
+        "first_breakaway_ms": 20.46248706424632,
+        "first_breakaway_net_force_n": 800.0000010000003,
+        "motion_start_ms": 22.0,
+        "friction_release_events": 6,
+        "friction_restick_events": 4
+      },
+      "full": {
+        "first_breakaway_ms": 20.930652775441313,
+        "first_breakaway_net_force_n": 800.000000999999,
+        "motion_start_ms": 23.0,
+        "friction_release_events": 16,
+        "friction_restick_events": 15
+      }
+    },
+    "validation": {
+      "mechanism_and_numerical_passed": true,
+      "unit_tests": 38,
+      "legacy_failed": [
+        "pid_startup_peak_0p045_to_0p07m_s",
+        "nominal_delay_within_five_valve_time_constants",
+        "nominal_previous_one_sample_delay_requirement",
+        "full_delay_within_five_valve_time_constants",
+        "full_previous_one_sample_delay_requirement"
+      ]
+    }
+  },
+  "legacy_reference_checks": {
+    "pid_start_in_70_to_90ms": {
+      "actual": 90.0,
+      "target": {
+        "minimum": 70,
+        "maximum": 90
+      },
+      "met": true,
+      "reason": null
+    },
+    "pid_has_startup_peak": {
+      "actual": true,
+      "target": {
+        "equals": true
+      },
+      "met": true,
+      "reason": null
+    },
+    "pid_startup_peak_0p045_to_0p07m_s": {
+      "actual": 0.07017864487887687,
+      "target": {
+        "minimum": 0.045,
+        "maximum": 0.07
+      },
+      "met": false,
+      "reason": "The measured value does not meet the retained reference target."
+    },
+    "pid_contact_error_1p1_to_1p7mm": {
+      "actual": 1.382646209182492,
+      "target": {
+        "minimum": 1.1,
+        "maximum": 1.7
+      },
+      "met": true,
+      "reason": null
+    },
+    "pid_contact_min_velocity_0p12_to_0p16": {
+      "actual": 0.13099376191014697,
+      "target": {
+        "minimum": 0.12,
+        "maximum": 0.16
+      },
+      "met": true,
+      "reason": null
+    },
+    "full_heavy_voltage_4_to_4p4v": {
+      "actual": 4.253912828862537,
+      "target": {
+        "minimum": 4,
+        "maximum": 4.4
+      },
+      "met": true,
+      "reason": null
+    },
+    "nominal_delay_within_five_valve_time_constants": {
+      "actual": 16.999999999999996,
+      "target": {
+        "minimum": 0,
+        "maximum": 12.5
+      },
+      "met": false,
+      "reason": "True static breakaway requires pressure to reach Fs. Five valve time constants bound actuator initial-error decay, not the complete pressure-building and breakaway time."
+    },
+    "nominal_previous_one_sample_delay_requirement": {
+      "actual": 16.999999999999996,
+      "target": {
+        "minimum": -1.0,
+        "maximum": 1.0
+      },
+      "met": false,
+      "reason": "True static breakaway requires pressure to reach Fs. Five valve time constants bound actuator initial-error decay, not the complete pressure-building and breakaway time."
+    },
+    "full_delay_within_five_valve_time_constants": {
+      "actual": 18.0,
+      "target": {
+        "minimum": 0,
+        "maximum": 12.5
+      },
+      "met": false,
+      "reason": "True static breakaway requires pressure to reach Fs. Five valve time constants bound actuator initial-error decay, not the complete pressure-building and breakaway time."
+    },
+    "full_previous_one_sample_delay_requirement": {
+      "actual": 18.0,
+      "target": {
+        "minimum": -1.0,
+        "maximum": 1.0
+      },
+      "met": false,
+      "reason": "True static breakaway requires pressure to reach Fs. Five valve time constants bound actuator initial-error decay, not the complete pressure-building and breakaway time."
+    }
   }
 }

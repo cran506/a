@@ -37,7 +37,7 @@ def _font_settings():
 
 def _validate(results):
     required = ("time_s", "reference_m", "reference_velocity_m_s", "error_m",
-                "velocity_m_s", "voltage_v")
+                "velocity_m_s", "voltage_v", "net_drive_force_n")
     for key, _, _, _ in STRATEGIES:
         if key not in results:
             raise ValueError(f"缺少 {key} 策略结果")
@@ -105,9 +105,9 @@ def _footer(results):
               f"{float(cfg['load_start']):g}–{float(cfg['load_end']):g} s，"
               f"加载/卸载过渡 {load_ramp_ms:g}/{float(cfg['unload_ramp'])*1000:g} ms；腔压、速度由真实 ODE 连续演化。")
     parameters=cfg['physical_parameters']
-    third=(f"含气油 α0={100*parameters.get('air_fraction_at_pr',0):g}% @ Pr；"
-           f"两类模型辅助共同使用液压力误差反馈 λ={cfg.get('force_error_gain_s',0):g} /s，"
-           f"σ={parameters['sigma']:g} N·s/m，γ={parameters['gamma']:g} / (m/s)；课堂参数，非设备辨识值。")
+    third=(f"真实粘滑：Fs={parameters['Fs']:g} N，Fc={parameters['Fc']:g} N，σ={parameters['sigma']:g} N·s/m；"
+           f"含气 α0={100*parameters.get('air_fraction_at_pr',0):g}% @ Pr；"
+           f"共同力/速度误差反馈 λ={cfg.get('force_error_gain_s',0):g} /s、Kv={cfg.get('velocity_error_gain_s',0):g} /s。")
     boundary = "逆模型从非零电压起动，阀初值误差按真实极点衰减" if cfg.get('enable_startup_regularization',False) else "采用逐周期精确阀逆补偿"
     fourth = (f"阀 τ={tau_ms:g} ms；{boundary}；"
               "图线未事后滤波，注释来自本次计算。")
@@ -188,16 +188,26 @@ def plot_comparison(results, output):
         full_metrics = metrics["full"]
         # 毫秒级预开在1.2s全程图中难以分辨，同一张图内放大原始采样。
         preopen_ax=voltage_ax.inset_axes([.07,.61,.28,.27])
-        preopen_mask=time<=.02
+        preopen_mask=time<=.035
         for key,label,color,dash in STRATEGIES:
             preopen_ax.plot(time[preopen_mask]*1000,results[key]['data']['voltage_v'][preopen_mask],
                             color=color,ls=dash,lw=1.2)
-        preopen_ax.set_title("起动电压放大",fontsize=8,pad=3)
+        preopen_ax.set_title("起动电压与建压（完整组）",fontsize=8,pad=3)
         preopen_ax.set_xlabel("时间 (ms)",fontsize=7,labelpad=1)
         preopen_ax.set_ylabel("u (V)",fontsize=7,labelpad=1)
         preopen_ax.tick_params(labelsize=7,pad=1)
         preopen_ax.grid(True,ls=':',alpha=.4)
-        preopen_ax.set_xlim(0.,20.)
+        preopen_ax.set_xlim(0.,35.)
+        # 同步真实净力，显示静止期建压以及Fs释放，不把起动电压指定为常数。
+        force_ax=preopen_ax.twinx()
+        force_ax.plot(time[preopen_mask]*1000,results['full']['data']['net_drive_force_n'][preopen_mask],
+                      color='#535353',ls=':',lw=1.)
+        force_ax.axhline(results['full']['config']['physical_parameters']['Fs'],color='#488463',ls='--',lw=.7)
+        force_ax.text(.98,results['full']['config']['physical_parameters']['Fs'],'Fs',
+                      transform=force_ax.get_yaxis_transform(),ha='right',va='bottom',fontsize=6,color='#488463')
+        force_ax.set_ylabel("净力 (N)",fontsize=6,labelpad=1)
+        force_ax.tick_params(labelsize=6,pad=1)
+        force_ax.set_ylim(bottom=0.)
         if full_metrics.get("first_feedforward_ms") is not None:
             data = results["full"]["data"]
             index=0
@@ -208,6 +218,7 @@ def plot_comparison(results, output):
         threshold = full_metrics["startup_velocity_threshold_m_s"]
         start_lines = [f"运动阈值 |v| > {threshold:g} m/s",
                        f"参考达阈值：{_number(full_metrics.get('reference_threshold_ms'), 1)} ms"]
+        start_lines.append(f"完整组静摩擦释放：{_number(full_metrics.get('first_breakaway_ms'),2)} ms")
         for key, label, _, _ in STRATEGIES:
             start_lines.append(f"{label}：{_number(metrics[key].get('motion_start_ms'), 1)} ms")
         start_ax.text(.035, .96, "\n".join(start_lines), transform=start_ax.transAxes,
