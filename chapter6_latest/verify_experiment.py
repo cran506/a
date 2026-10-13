@@ -110,8 +110,23 @@ def verify(output, independent_prefix=None):
     for name in ("position_m","velocity_m_s","p1_pa","p2_pa","voltage_v"):
         np.testing.assert_array_equal(unknown[name][before_load],tight_results["full"]["data"][name][before_load])
     metrics = tight_results["full"]["metrics"]
+    assisted=(tight_results[key] for key in ('nominal','full'))
+    report['startup_transition']={result['config']['name']:dict(
+        transition_ms=1000*result['config']['startup_transition_s'],
+        delay_budget_ms=1000*(result['config']['startup_transition_s']+result['config']['ts']),
+        measured_delay_ms=result['metrics']['startup_delay_from_reference_ms'],
+        previous_one_sample_delay_requirement_met=abs(result['metrics']['startup_delay_from_reference_ms'])<=1000*result['config']['ts']+1e-8)
+        for result in assisted}
     acceptance = dict(known_full_max_error_under_0p05mm=metrics["max_abs_error_mm"]<.05,
-                      full_start_within_one_sample_of_reference=abs(metrics["motion_start_ms"]-metrics["reference_threshold_ms"])<=1.01,
+                      full_start_delay_within_preopen_window=0<=metrics['startup_delay_from_reference_ms']<=1000*tight_results['full']['config']['startup_transition_s']+1.01,
+                      full_startup_from_zero_voltage=abs(metrics['startup_initial_voltage_v'])<1e-12,
+                      full_startup_voltage_step_below_0p2v=metrics['startup_max_voltage_step_v']<.2,
+                      full_startup_voltage_drop_below_0p1v=metrics['startup_max_voltage_drop_v']<.1,
+                      full_startup_peak_below_0p7v=metrics['startup_peak_abs_voltage_v']<.7,
+                      nominal_startup_from_zero_voltage=abs(tight_results['nominal']['metrics']['startup_initial_voltage_v'])<1e-12,
+                      nominal_startup_voltage_step_below_0p2v=tight_results['nominal']['metrics']['startup_max_voltage_step_v']<.2,
+                      nominal_startup_voltage_drop_below_0p1v=tight_results['nominal']['metrics']['startup_max_voltage_drop_v']<.1,
+                      assisted_startup_settings_identical=tight_results['nominal']['config']['startup_transition_s']==tight_results['full']['config']['startup_transition_s'],
                       full_load_speed_drop_under_3percent=metrics["contact_speed_drop_percent"]<3,
                       full_no_saturation=metrics["saturation_time_s"]==0,
                       unknown_has_no_planned_force=True,commands_identical_before_load=True,
@@ -132,7 +147,7 @@ def verify(output, independent_prefix=None):
     if not tested.wasSuccessful():
         raise AssertionError(stream.getvalue())
     report["unit_tests"] = dict(run=tested.testsRun,passed=tested.wasSuccessful())
-    report["scope"] = "Accuracy and smooth-stop thresholds apply to known model-matched process load only. Unknown load has force/rate=0; its actual error and stop metrics are reported without those claims. For quantized bare PID the pointwise convergence bound is one ADC LSB; assisted groups retain one-quarter LSB. Original quarter result and ADC-code disagreements remain recorded."
+    report["scope"] = "Accuracy and smooth-stop thresholds apply to known model-matched process load only. Unknown load has force/rate=0; its actual error and stop metrics are reported without those claims. Startup smoothing uses the disclosed preopening window plus one sample as its delay bound; the previous one-sample criterion remains reported separately and is no longer met. For quantized bare PID the pointwise convergence bound is one ADC LSB; assisted groups retain one-quarter LSB. Original quarter result and ADC-code disagreements remain recorded."
     (output/"validation.json").write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False)+"\n")
     print(f"验证通过：{tested.testsRun}项测试，三组收敛复核及未知外载因果对照；记录于 {output/'validation.json'}")
 

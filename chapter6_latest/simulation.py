@@ -22,6 +22,7 @@ class Experiment:
     pressure_alpha: float = .2
     gain_prediction_s: float = .001
     force_error_gain_s: float = 80.
+    startup_transition_s: float = .008
     load_force: float = 153000.
     load_ramp: float = .025
     unload_ramp: float = .03
@@ -61,7 +62,8 @@ def simulate(cfg):
     pid=dict(kp=cfg.kp,ki=cfg.ki,kd=cfg.kd,ts=cfg.ts,alpha=cfg.alpha,integral_separation=False)
     controller=ModelAssistedController(pid,p,cfg.enable_ff,cfg.enable_gain_sched,
                                       pressure_alpha=cfg.pressure_alpha,valve_tau=cfg.valve_tau,
-                                      gain_prediction_s=cfg.gain_prediction_s,force_error_gain_s=cfg.force_error_gain_s)
+                                      gain_prediction_s=cfg.gain_prediction_s,force_error_gain_s=cfg.force_error_gain_s,
+                                      startup_transition_s=cfg.startup_transition_s)
     t,r,rv,ra,jerk=generate_process_scurve(dist=.13,T_move=1.,T_total=cfg.duration,dt=cfg.ts)
     names=['position_m','velocity_m_s','p1_pa','p2_pa','measured_m','error_m',
            'voltage_v','feedforward_v','feedback_v','requested_voltage_v',
@@ -69,7 +71,8 @@ def simulate(cfg):
            'load_n','planned_force_n','kq_m2_s','pressure_filtered_1_pa',
            'pressure_filtered_2_pa','inverse_gain_n_s_v','force_rate_ref_n_s',
            'holding_deadzone_compensation_v','reference_force_n','measured_force_n',
-           'planned_force_rate_n_s','force_error_correction_n_s','deadzone_offset_v']
+           'planned_force_rate_n_s','force_error_correction_n_s','deadzone_offset_v',
+           'unshaped_valve_target_v','startup_weight']
     data={k:np.empty_like(t) for k in names}
     for i,ti in enumerate(t):
         x,v,p1,p2=twin.state
@@ -84,7 +87,8 @@ def simulate(cfg):
                 info.get('inverse_gain_n_s_v',0.),info.get('desired_force_rate_n_s',0.),
                 info['holding_deadzone_compensation_v'],info.get('desired_force_n',0.),
                 info.get('actual_force_n',0.),info.get('planned_force_rate_n_s',0.),
-                info.get('force_error_correction_n_s',0.),info.get('deadzone_offset_v',0.)]
+                info.get('force_error_correction_n_s',0.),info.get('deadzone_offset_v',0.),
+                info.get('unshaped_valve_target_v',0.),info.get('startup_weight',0.)]
         for key,value in zip(names,values):data[key][i]=value
         if i+1<len(t):twin.step_voltage(u,cfg.ts)
     if not np.isclose(twin.t,t[-1],rtol=0.,atol=1e-10):
@@ -113,6 +117,7 @@ def metrics(d,cfg):
     contact_error_index=int(contact_indices[np.argmax(e[contact])])
     stop=(t>=.95)&(t<=1.05)
     hold=t>=1.
+    preopen=t<=max(.02,cfg.startup_transition_s+cfg.valve_tau)
     light_kq=float(np.nanmedian(d['kq_m2_s'][light]));heavy_kq=float(np.nanmedian(d['kq_m2_s'][heavy]))
     return dict(max_abs_error_mm=float(np.max(abs(e))),rms_error_mm=float(np.sqrt(np.mean(e**2))),
                 final_error_mm=float(e[-1]),startup_velocity_threshold_m_s=threshold,
@@ -121,6 +126,11 @@ def metrics(d,cfg):
                 first_feedforward_ms=float(t[ff_started[0]]*1000) if len(ff_started) else None,
                 first_feedforward_voltage_v=float(d['feedforward_v'][ff_started[0]]) if len(ff_started) else None,
                 startup_max_abs_error_mm=float(np.max(abs(e[startup]))),
+                startup_max_voltage_step_v=float(np.max(abs(np.diff(u[preopen])))),
+                startup_max_voltage_drop_v=float(max(0.,np.max(-np.diff(u[preopen])))),
+                startup_peak_abs_voltage_v=float(np.max(abs(u[preopen]))),
+                startup_initial_voltage_v=float(u[0]),
+                startup_delay_from_reference_ms=float((t[started[0]]-t[reference_started[0]])*1000) if len(started) and len(reference_started) else None,
                 startup_velocity_rmse_m_s=float(np.sqrt(np.mean((v[startup]-vr[startup])**2))),
                 startup_velocity_overshoot_m_s=float(np.max(v[startup]-vr[startup])),
                 startup_prominent_overshoot_peaks=int(len(peaks)),

@@ -63,42 +63,42 @@
       "unit": "m/s",
       "target_approx": 0.14,
       "previous": 0.10206,
-      "new": 0.1336483075491939
+      "new": 0.1336305254129754
     },
     {
       "metric": "full minimum loaded velocity",
       "unit": "m/s",
       "target_approx": 0.194,
       "previous": 0.194327,
-      "new": 0.19709995633532107
+      "new": 0.19707253719895526
     },
     {
       "metric": "full light-load median voltage",
       "unit": "V",
       "target_approx": 2.5,
       "previous": 2.351534,
-      "new": 2.356129423506892
+      "new": 2.3560920348559806
     },
     {
       "metric": "full heavy-load median voltage",
       "unit": "V",
       "target_approx": 4.2,
       "previous": 4.630381,
-      "new": 4.253617467092366
+      "new": 4.25394050100928
     },
     {
       "metric": "full maximum absolute error",
       "unit": "mm",
       "target_upper_bound": 0.05,
       "previous": 0.042309,
-      "new": 0.043705096398422016
+      "new": 0.04401460718045369
     },
     {
       "metric": "full stop maximum voltage step",
       "unit": "V/sample",
       "target_shape": "continuous transition; no +/-2V impulses",
       "previous_shape": "hard deadzone inversion and holding bias transition",
-      "new": 0.20014894495004076
+      "new": 0.20015048868218488
     },
     {
       "metric": "PID startup valley after first peak",
@@ -122,5 +122,24 @@
       "new": 0.02799540708574295
     }
   ],
-  "remaining_differences": "Peak time and valley are not identical to the reference. Low-pressure compressibility and force feedback are explicitly configured classroom model assumptions. Both feedforward groups share the same force feedback; the accuracy claim applies to a known model-matched load plan."
+  "remaining_differences": "Peak time and valley are not identical to the reference. Low-pressure compressibility and force feedback are explicitly configured classroom model assumptions. Both feedforward groups share the same force feedback; the accuracy claim applies to a known model-matched load plan. Startup smoothing changes the former hard initial pulse and adds a reported delay; the old one-sample delay requirement is not met.",
+  "startup_smoothing": {
+    "hard_preopen_baseline_commit": "1b7dcaac17259f681bfcad7f16e66dc5b5fb3da3",
+    "voltage_observation_window_s": [
+      0,
+      0.02
+    ],
+    "transition_ms": 8.0,
+    "hard_preopen_full_peak_v": 1.2494767433669074,
+    "full_peak_v": 0.5481548321168792,
+    "hard_preopen_full_max_drop_v": 0.8281583063062585,
+    "full_max_drop_v": 0.05350128004612492,
+    "full_max_step_v": 0.14645794740372514,
+    "hard_preopen_motion_start_ms": 6.0,
+    "motion_start_ms": 11.0,
+    "reference_threshold_ms": 5.0,
+    "delay_from_reference_ms": 5.999999999999999,
+    "previous_one_sample_delay_requirement_met": false,
+    "notes": "One-time quintic target transition before the valve inverse, shared by both feedforward strategies. Idle does not consume the window; reset re-arms. The tradeoff is 5ms later motion than hard preopening; no post-plot filtering."
+  }
 }

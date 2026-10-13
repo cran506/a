@@ -108,7 +108,7 @@ def _footer(results):
     third=(f"含气油 α0={100*parameters.get('air_fraction_at_pr',0):g}% @ Pr；"
            f"两类模型辅助共同使用液压力误差反馈 λ={cfg.get('force_error_gain_s',0):g} /s，"
            f"σ={parameters['sigma']:g} N·s/m，γ={parameters['gamma']:g} / (m/s)；课堂参数，非设备辨识值。")
-    fourth = (f"阀 τ={tau_ms:g} ms；共同采用一阶阀 ZOH 逆模型与近零死区在线过渡；"
+    fourth = (f"阀 τ={tau_ms:g} ms；两类前馈起动预开 {cfg.get('startup_transition_s',0)*1000:g} ms 平滑接入，再作阀 ZOH 逆补偿；"
               "图线未事后滤波，注释来自本次计算。")
     prediction = float(cfg.get("gain_prediction_s", 0.)) * 1000
     if prediction:
@@ -185,13 +185,24 @@ def plot_comparison(results, output):
                       bbox={"boxstyle": "round,pad=.4", "fc": "white",
                             "ec": "#b4b8bd", "alpha": .93})
         full_metrics = metrics["full"]
-        first_ff = full_metrics.get("first_feedforward_ms")
-        first_ff_voltage = full_metrics.get("first_feedforward_voltage_v")
-        if first_ff is not None and first_ff_voltage is not None:
+        # 毫秒级预开在1.2s全程图中难以分辨，同一张图内放大原始采样。
+        preopen_ax=voltage_ax.inset_axes([.07,.61,.28,.27])
+        preopen_mask=time<=.02
+        for key,label,color,dash in STRATEGIES:
+            preopen_ax.plot(time[preopen_mask]*1000,results[key]['data']['voltage_v'][preopen_mask],
+                            color=color,ls=dash,lw=1.2)
+        preopen_ax.set_title("起动电压放大",fontsize=8,pad=3)
+        preopen_ax.set_xlabel("时间 (ms)",fontsize=7,labelpad=1)
+        preopen_ax.set_ylabel("u (V)",fontsize=7,labelpad=1)
+        preopen_ax.tick_params(labelsize=7,pad=1)
+        preopen_ax.grid(True,ls=':',alpha=.4)
+        preopen_ax.set_xlim(0.,20.)
+        if full_metrics.get("first_feedforward_ms") is not None:
             data = results["full"]["data"]
-            index = int(np.argmin(np.abs(time - first_ff / 1000)))
+            window=np.flatnonzero(time<=max(.02,results['full']['config']['startup_transition_s']+results['full']['config']['valve_tau']))
+            index=int(window[np.argmax(np.abs(data['voltage_v'][window]))])
             _arrow(voltage_ax,
-                   f"完整组首次前馈\n{_number(first_ff_voltage)} V @ {_number(first_ff, 1)} ms",
+                   f"完整组 {results['full']['config']['startup_transition_s']*1000:g} ms 平滑预开\n起动电压峰值 {_number(full_metrics['startup_peak_abs_voltage_v'])} V",
                    (float(time[index]), float(data["voltage_v"][index])),
                    (.48, .24), "#d42424")
         threshold = full_metrics["startup_velocity_threshold_m_s"]
