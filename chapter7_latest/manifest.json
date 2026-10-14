@@ -1,0 +1,157 @@
+{
+  "project": "chapter7_latest",
+  "files": {
+    "README.md": {
+      "bytes": 10698,
+      "sha256": "10d38e792e4a982eef12ffd8c39a5d6af96d56e5cb304d3640ad67e5fffac22b"
+    },
+    "baseline_controller.py": {
+      "bytes": 2293,
+      "sha256": "432fa34f80872f4cdb23d2be607b2621fe17c169ffd46278ee62aebf31967e52"
+    },
+    "classroom_config.json": {
+      "bytes": 126,
+      "sha256": "ba5036c654e9c0a2e2a534eb62247e929b5771c0eec374837ed3be9152dd7953"
+    },
+    "deliverables/第七章_MPC约束控制实验报告.docx": {
+      "bytes": 647156,
+      "sha256": "39309752e96b9b379ed4401d21d56479e6170553de1bb27f514398a338eec033"
+    },
+    "experiment_config.json": {
+      "bytes": 558,
+      "sha256": "095b5afcbcf192ef8e53ceb29e65eb1917631b1e44b6df40ae564604895335bf"
+    },
+    "friction_model.py": {
+      "bytes": 1941,
+      "sha256": "d9e6fb113aed1458d184c26b3d5ec71d276035fce02732ecc1f7860a898b3d00"
+    },
+    "hydraulic_digital_twin.py": {
+      "bytes": 16725,
+      "sha256": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f"
+    },
+    "hydraulic_plant.py": {
+      "bytes": 12375,
+      "sha256": "3a804404ca4cfcdd872720d839dbedb272b3887da1fd2c0a165ca6bda01c73b6"
+    },
+    "materials/chap07-ppt.pdf": {
+      "bytes": 628044,
+      "sha256": "54efaab3d90b72ec04b29b383064015a66c0239ee388d269161a2bd64edcf560"
+    },
+    "materials/chap07.txt": {
+      "bytes": 16556,
+      "sha256": "9c91611a851f2a652f9adfaf656deecd1c91b55b3eac682e13cd42393d8f21aa"
+    },
+    "materials/module2_reference_notes.txt": {
+      "bytes": 1723,
+      "sha256": "96635cab431a0d99171f19edc7bb9be9101cb510269f573554db88c190d4254b"
+    },
+    "media_model.py": {
+      "bytes": 1357,
+      "sha256": "860f31dffe6d796fa96f1a5ea54192754c31abba025a4fe8396422c854b51102"
+    },
+    "mpc_core.py": {
+      "bytes": 29070,
+      "sha256": "cb0820f88ca94ae9578cf0fbf63cfb3aec0d0e7a7948570c74b18a84303e9937"
+    },
+    "mpc_hydraulic_lab.py": {
+      "bytes": 1242,
+      "sha256": "45342fc2fabecbffeebd714293d7c52f4c9e70bca9c1d9928d33937d1969e27e"
+    },
+    "outputs/full_mpc.csv": {
+      "bytes": 34006,
+      "sha256": "e8f1f8c84a5d1c923e76bdb449d795c3f9dfb3a435faad76934c87029970e7b5"
+    },
+    "outputs/full_mpc_friction_events.json": {
+      "bytes": 1589,
+      "sha256": "d5428db804f9644d246ae8292ecef42cf521f8622f59f9d82eafcc24c6fd5162"
+    },
+    "outputs/full_mpc_pressure_trace.csv": {
+      "bytes": 318482,
+      "sha256": "3d6d8a083dc665721d08d76c6ea037e57753d198ff24c11805198253bfa31973"
+    },
+    "outputs/full_mpc_solver_logs.json": {
+      "bytes": 906685,
+      "sha256": "cfff41031de8bf19fea8ccf644e0f1d7ac5bdb9905c382484b3aa2664e1b6b76"
+    },
+    "outputs/input_mpc.csv": {
+      "bytes": 34177,
+      "sha256": "bd8e518b66697637ee05d70e348d9273dfbf4785ab6c963b717a679e3c538418"
+    },
+    "outputs/input_mpc_friction_events.json": {
+      "bytes": 1901,
+      "sha256": "c383bd93d015fb289f97e550ca133b7b3e4bb07e40fc78702925c71eb9ed6a43"
+    },
+    "outputs/input_mpc_pressure_trace.csv": {
+      "bytes": 322111,
+      "sha256": "bcad42fba60b8a5e264f748d3e2c792579c8d5ded6eb3cc09b3a21f2e93951bf"
+    },
+    "outputs/input_mpc_solver_logs.json": {
+      "bytes": 883492,
+      "sha256": "c1d5d10e9eb4ffb70d3e30993dfbdf222c222544210bfeba024a3d1efe9146d5"
+    },
+    "outputs/mpc_comparison.png": {
+      "bytes": 696146,
+      "sha256": "9d0d078883d89b83feda0ad76f086b8e4fdd9796e3b0845488a6a38156c95338"
+    },
+    "outputs/pid.csv": {
+      "bytes": 36688,
+      "sha256": "32ac7d21626b550c18d21a2ae9d69540e4d9606e3047141c2eff8a668fba152c"
+    },
+    "outputs/pid_friction_events.json": {
+      "bytes": 1893,
+      "sha256": "c4fba387340fd4c727257f4aafb62aafc58b0dd4ce8c262c8890305e1037e2d5"
+    },
+    "outputs/pid_pressure_trace.csv": {
+      "bytes": 329473,
+      "sha256": "6f389f2996ce039f92035aab326a13d597c9669a304016e1db31638ca2336222"
+    },
+    "outputs/pid_solver_logs.json": {
+      "bytes": 54680,
+      "sha256": "fab667ee9997308f6e93d0879f72c5be2ec940e37f5b3ac3c57526a31d41bbda"
+    },
+    "outputs/summary.json": {
+      "bytes": 12135,
+      "sha256": "5f1428abe7e68a363669b80fc3816c4c435cf6508bc6dd53ef8324c4325f32dd"
+    },
+    "outputs/validation.json": {
+      "bytes": 3280,
+      "sha256": "c962fe531013d72be3be9d3e6472635c51af6d17a4352e8b93c9b961a66c57a5"
+    },
+    "package_delivery.py": {
+      "bytes": 22420,
+      "sha256": "9bb4704c55e1fb4dda6e57824d3bcf69970b51746307211913dc167847f0b223"
+    },
+    "physical_config.json": {
+      "bytes": 400,
+      "sha256": "0a7ab224a3dc4e55dbf4968d4a30b4b0644b05dab90a475592504dfcb0dad4ed"
+    },
+    "pid_algorithms.py": {
+      "bytes": 3466,
+      "sha256": "02fe790fc0f9e36bee1d65395b79334cf1d080b94f0ba6883eed6dba7d34ab96"
+    },
+    "plotting.py": {
+      "bytes": 10221,
+      "sha256": "e940d21373ef99354186d9320d959f3023b3618b91a202a331b64ad1d6c0953a"
+    },
+    "requirements.txt": {
+      "bytes": 137,
+      "sha256": "3ff7d380302292caeca233c4fc20159a9b476e78fa0ccf0d6eaad9078ece02f6"
+    },
+    "simulation.py": {
+      "bytes": 13601,
+      "sha256": "36380810b974ce7727561f95b7d896833e152c52dce88f83a5752bdacce13890"
+    },
+    "test_chapter7.py": {
+      "bytes": 12004,
+      "sha256": "2655b75f25c53860011e3950fb2daee1a085c88e506564a6ca09ffa544a7bf03"
+    },
+    "twin_adapter.py": {
+      "bytes": 16930,
+      "sha256": "195fd630e76cfef7660fc3431bcece5b7f44565b4c3551f97b53ef099a316127"
+    },
+    "verify_experiment.py": {
+      "bytes": 6426,
+      "sha256": "238562d180e5d53573917f498deca116f371a8097e4269d2903eecc2c32c2a27"
+    }
+  }
+}

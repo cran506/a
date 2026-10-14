@@ -1,5 +1,23 @@
 # 智能流体传动与控制课堂编程
 
+## 第七章：MPC 约束控制与滚动优化
+
+50 mm 极限定位课堂实验，在共同液压孪生上比较传统前馈 + PID、仅输入约束 MPC 和输入及 P2 压力约束 MPC。代码补齐真实雅可比、仿射预测、阀动态及求解检查，输出一张位移、电压、压力和速度四联图。
+
+- [第七章完整项目与说明](chapter7_latest/README.md)
+- [模块二 MPC 核心](chapter7_latest/mpc_core.py)
+- [四联结果图](chapter7_latest/outputs/mpc_comparison.png)
+- [第七章完整 ZIP](chapter7_latest/deliverables/第七章_MPC约束控制完整交付.zip)
+- [Word 实验报告](chapter7_latest/deliverables/第七章_MPC约束控制实验报告.docx)
+
+```bash
+cd chapter7_latest
+python -m pip install -r requirements.txt
+python mpc_hydraulic_lab.py
+```
+
+压力峰值使用包含采样间极值的真实混合积分记录，未裁剪到 21 MPa；求解耗时及与 PPT 的数值差异单独披露。Ts=1 ms 是仿真采样周期，当前 Python 实现尚未达到 1 ms 硬实时要求。
+
 ## 第五章作业 5-1：PID 抗积分饱和对比
 
 新项目在相同液压对象、PID 增益和 ±10 V 限幅下，对比位置式的积分累积与增量式的截断输出记忆。独立目录包含 `work_5_1.py`、一张三联图、两种微分模式的 CSV、Word 报告、验证记录和完整 ZIP。

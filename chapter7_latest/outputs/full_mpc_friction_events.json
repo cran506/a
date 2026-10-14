@@ -1,0 +1,72 @@
+[
+  {
+    "time_s": 0.010409803346031886,
+    "kind": "release",
+    "direction": 1,
+    "net_drive_n": 800.0000009999912,
+    "friction_n": 800.0
+  },
+  {
+    "time_s": 0.05949105389918253,
+    "kind": "reverse_release",
+    "direction": -1,
+    "net_drive_n": -100600.71936504867,
+    "friction_n": -800.0
+  },
+  {
+    "time_s": 0.06428027115695577,
+    "kind": "reverse_release",
+    "direction": 1,
+    "net_drive_n": 37345.32373135653,
+    "friction_n": 800.0
+  },
+  {
+    "time_s": 0.06604716221615746,
+    "kind": "reverse_release",
+    "direction": -1,
+    "net_drive_n": -21067.76032854755,
+    "friction_n": -800.0
+  },
+  {
+    "time_s": 0.06985682414341406,
+    "kind": "reverse_release",
+    "direction": 1,
+    "net_drive_n": 18326.269934177646,
+    "friction_n": 800.0
+  },
+  {
+    "time_s": 0.07376826481672707,
+    "kind": "reverse_release",
+    "direction": -1,
+    "net_drive_n": -10625.482843870559,
+    "friction_n": -800.0
+  },
+  {
+    "time_s": 0.07750056008254344,
+    "kind": "reverse_release",
+    "direction": 1,
+    "net_drive_n": 5170.846598030403,
+    "friction_n": 800.0
+  },
+  {
+    "time_s": 0.08263263101301785,
+    "kind": "reverse_release",
+    "direction": -1,
+    "net_drive_n": -3546.737018328844,
+    "friction_n": -800.0
+  },
+  {
+    "time_s": 0.08718703992913762,
+    "kind": "reverse_release",
+    "direction": 1,
+    "net_drive_n": 1926.6832042788592,
+    "friction_n": 800.0
+  },
+  {
+    "time_s": 0.09265371488042645,
+    "kind": "restick",
+    "direction": 0,
+    "net_drive_n": -324.87822888730443,
+    "friction_n": -324.87822888730443
+  }
+]
