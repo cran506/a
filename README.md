@@ -1,5 +1,21 @@
 # 智能流体传动与控制课堂编程
 
+## 第六章作业 6-3：死区逆补偿鲁棒性与 tanh 光滑化
+
+独立作业比较真实 ±0.50 V 死区下的 0.40 V 欠补偿、0.60 V 硬过补偿与 tanh 补偿，给出全周期/换向窗口六联图、β=5/18/50 扫描和定量报告。使用公开的低频阀—速度等效模型，颤振来自采样反馈，有限 β 的残余平台据实保留。
+
+- [作业说明与参考代码](homework6_3/README.md)
+- [六联结果图](homework6_3/outputs/deadzone_comparison.png)
+- [模块三控制器](homework6_3/model_assisted_controller.py)
+- [完整 ZIP](homework6_3/deliverables/第六章作业6-3_完整交付.zip)
+- [Word 报告](homework6_3/deliverables/第六章作业6-3_死区补偿报告.docx)
+
+```bash
+cd homework6_3
+python -m pip install -r requirements.txt
+python work_6_3.py
+```
+
 ## 第七章：MPC 约束控制与滚动优化
 
 50 mm 极限定位课堂实验，在共同液压孪生上比较传统前馈 + PID、仅输入约束 MPC 和输入及 P2 压力约束 MPC。代码补齐真实雅可比、仿射预测、阀动态及求解检查，输出一张位移、电压、压力和速度四联图。
