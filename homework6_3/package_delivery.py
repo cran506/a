@@ -104,7 +104,7 @@ def _robustness_section(document):
             f"seed={noise.get('seed', '未记录')} 的共同加性测量噪声；"
             f"重建噪声序列一致性检查：{_number(noise.get('shared_additive_noise_verified'))}。"
             "这些结果独立保存，未改变无噪声主图或平滑实际速度。")
-        table = _table(document, ("β / V⁻¹", "最长关闭 / ms", "高通峰峰值 / V", "全程 RMSE / mm/s"))
+        table = _table(document, ("β / V⁻¹", "有效信号零平台 / ms", "高通峰峰值 / V", "全程 RMSE / mm/s"))
         for item in sorted(runs, key=lambda item: item["beta"]):
             metrics = item["metrics"]
             values = (item["beta"], metrics.get("longest_flow_closed_ms"),
@@ -112,15 +112,14 @@ def _robustness_section(document):
             for cell, value, places in zip(table.add_row().cells, values, (0, 3, 5, 5)):
                 cell.text = _number(value, places)
     hold = result.get("zero_reference_hold", {})
-    normal, counter = hold.get("nominal_feedback_runs", {}), hold.get("kp0_counterfactual_runs", {})
+    normal, counter = hold.get("nominal_feedback_runs", {}), hold.get("feedback_disabled_counterfactual_runs", {})
     if normal and counter:
-        disabled = hold.get("all_error_feedback_disabled_when_kp0", False)
-        counter_label = "关闭误差反馈" if disabled else "只关闭 P"
+        counter_label = "关闭全部反馈"
         document.add_paragraph(
             f"保持试验从各策略正式轨迹 {hold.get('start_s', '未记录')} s 的实际阀位与速度继续，"
             f"保持零速度参考 {hold.get('duration_s', '未记录')} s，统计末 "
             f"{float(hold.get('tail_s', .1))*1000:g} ms。"
-            "控制器历史由正式测量重建，不添加速度种子或测量噪声。"
+            "控制器的完整误差队列及两级低通记忆由正式测量重建，不添加速度种子或噪声。"
             f"同一策略的反事实沿用相同真实起点，{counter_label}，检验反复翻转是否由反馈维持。")
         table = _table(document, ("策略", "原反馈速度\n峰峰值 mm/s", "原反馈电压\n峰峰值 V",
                                   f"{counter_label}速度\n峰峰值 mm/s", "有效估计频率\n/ Hz"))
@@ -142,7 +141,7 @@ def _robustness_section(document):
                 document.add_paragraph(
                     f"硬过补偿前一等长窗口速度峰峰值为 {_small(hard['preceding_tail_velocity_pp_mm_s'])} mm/s，"
                     f"末段/前段幅值比为 {_number(hard.get('tail_to_preceding_pp_ratio'), 4)}。"
-                    "以相邻窗口幅值比较区分持续小幅运动与单次换向后逐渐衰减的振铃。")
+                "以相邻窗口幅值比较区分持续小幅运动与单次换向后逐渐衰减的振铃。")
             document.add_paragraph(
                 f"硬过补偿末段记录速度过零 {hard.get('tail_speed_zero_crossings', '未记录')} 次、"
                 f"完整同向上穿周期 {hard.get('tail_complete_upcrossing_cycles', '未记录')} 个。"
@@ -150,190 +149,81 @@ def _robustness_section(document):
                 "采用同向插值过零周期的中位数，而不是把单次脉冲频谱当振荡频率。"
                 "该保持试验与无反馈反事实共同检验本采样等效模型的小幅极限环，"
                 "不能推断任意液压对象的固有模态或全局稳定性。")
+    beta_hold = hold.get('beta_hold_runs', {})
+    if beta_hold:
+        table = _table(document, ('β', '零参考末段速度峰峰值 / mm/s', '末段振荡频率 / Hz'))
+        for key, run in beta_hold.items():
+            m = run['metrics']
+            for cell,value in zip(table.add_row().cells,(key,_small(m['tail_velocity_pp_mm_s']),
+                    _number(m['frequency_from_median_upcrossing_period_hz'],2) if m['frequency_estimate_meaningful'] else '不报告')):
+                cell.text = str(value)
     if any(key in result for key in ("passed", "all_passed", "all_checks_passed")):
         document.add_paragraph("补充试验检查状态：" + _status(result) + "；条件及原始记录见 outputs/robustness.json。")
 
 
 def write_report(summary, validation, figure):
-    config, strategies = summary["config"], summary["strategies"]
-    if not set(KINDS) <= set(strategies):
-        raise RuntimeError("summary.json 必须包含 under、hard_over、smooth 三策略")
-    required = ("sample_time_s", "duration_s", "amplitude_v", "frequency_hz", "physical_deadzone_v",
-                "under_estimate_v", "over_estimate_v", "beta_default", "gain_m_s_v", "tau_valve_s",
-                "tau_velocity_s", "kp", "ki", "kd", "zoom_start_s", "zoom_end_s",
-                "velocity_flat_threshold_mm_s", "chatter_cutoff_hz")
-    if not set(required) <= set(config):
-        raise RuntimeError(f"报告参数缺失：{sorted(set(required)-set(config))}")
-    c = config
+    c, strategies = summary['config'], summary['strategies']
     document = Document()
     for section in document.sections:
         section.top_margin = section.bottom_margin = Inches(.65)
         section.left_margin = section.right_margin = Inches(.65)
-    for name in ("Normal", "Title", "Heading 1", "Heading 2"):
-        style = document.styles[name]
-        style.font.name = "Noto Sans CJK SC"
-        style.element.get_or_add_rPr().get_or_add_rFonts().set(qn("w:eastAsia"), "Noto Sans CJK SC")
-    document.styles["Normal"].font.size = Pt(10)
-    document.add_heading("《智能流体传动与控制》作业 6-3", 0)
-    document.add_paragraph("死区逆补偿失配的鲁棒性边界与 tanh 光滑化")
-    document.add_heading("1. 任务与共同实验条件", 1)
-    document.add_paragraph(
-        "按第六章 PPT 课后习题 6-3，比较欠补偿、硬过补偿和连续 tanh 逆补偿，"
-        "提取全周期及第二次过零附近的控制电压、实际阀口有效信号和速度，"
-        "并用 β 扫描量化平台、颤振和跟踪误差之间的取舍。原材料保存在 materials/。")
-    parameters = _table(document, ("参数", "本次设置"))
-    rows = (("参考指令", f"u_ref={c['amplitude_v']:g} sin(2π·{c['frequency_hz']:g}t) V"),
-            ("控制采样 / 仿真时长", f"{c['sample_time_s']*1000:g} ms / {c['duration_s']:g} s"),
-            ("真实阀芯死区", f"±{c['physical_deadzone_v']:g} V"),
-            ("欠补偿 / 过补偿估计", f"{c['under_estimate_v']:g} / {c['over_estimate_v']:g} V"),
-            ("基准 β / 扫描", f"{c['beta_default']:g} V⁻¹ / {c.get('beta_values', [])}"),
-            ("等效速度增益 Kv", f"{c['gain_m_s_v']:g} m/(s·V)"),
-            ("阀 / 速度时间常数", f"τv={c['tau_valve_s']*1000:g} ms；τm={c['tau_velocity_s']*1000:g} ms"),
-            ("反馈参数", f"Kp={c['kp']:g}，Ki={c['ki']:g}，Kd={c['kd']:g}"),
-            ("测量噪声标准差", f"{c.get('measurement_noise_std_mm_s', 0.):g} mm/s"),
-            ("换向统计窗口", f"{c['zoom_start_s']:g}–{c['zoom_end_s']:g} s"))
-    for label, value in rows:
-        cells = parameters.add_row().cells
-        cells[0].text, cells[1].text = label, value
-    document.add_paragraph(
-        f"速度参考为 v_d=Kv·u_ref，幅值 {c['gain_m_s_v']*c['amplitude_v']*1000:g} mm/s。"
-        "Kv 用于参考图的速度标度，τm、τv 为参考所用的等效时间尺度；这些参数不是设备辨识结果。"
-        "三组从共同零阀位、零速度初态出发，共用参考、反馈和采样时钟，只改变死区估计或逆映射。"
-        "材料中的模块三原代码作为参考保留，本题实际入口使用局部等效模型接口。")
-    document.add_heading("2. 模型、控制结构与数学机理", 1)
-    document.add_paragraph(
-        "本题采用局部低频阀–速度等效通道，不是完整双腔液压数字孪生：\n"
-        "τv·du_v/dt=u−u_v；u_eff=sign(u_v)·max(|u_v|−δ,0)；\n"
-        "τm·dv/dt+v=Kv·u_eff。\n"
-        "其中 u_v 是实际阀芯的等效电压，u_eff 仍是电压信号，不是阀芯位移。"
-        "真实死区作用在阀动态之后，不能直接用 deadzone(u) 替代 deadzone(u_v)。"
-        "每个采样区间保持 u，求出阀芯穿越死区边界的精确时刻，按固定分支解析积分速度，"
-        "未用 Euler 制造振荡，也未注入纹波或裁剪模型输出。")
-    document.add_paragraph(
-        "共同控制器为等效线性逆前馈加速度残差反馈，再整体通过死区逆映射：\n"
-        "u_lin=(v_d+τm·a_d)/Kv+PID((v_d−v_meas)/Kv)；\n"
-        "硬补偿：u=u_lin+δ_hat·sign(u_lin)，零位保护区输出为零；\n"
-        "光滑补偿：u=u_lin+δ_hat·tanh(βu_lin)。\n"
-        "实际执行电压最终限制在 ±10 V。反馈先参与 u_lin 合成，再进入逆映射；"
-        "返回的补偿分量包含非线性映射作用，不能直接当作原始线性 PID 值。")
-    if c["ki"] == 0 and c["kd"] == 0:
-        document.add_paragraph(
-            "本次只启用比例反馈，以隔离死区失配，不混入积分累积或微分噪声；"
-            "代码保留数字 PID 接口。反馈误差以 Kv 归一化为等效电压。")
-    document.add_paragraph(
-        "忽略动态与零位保护时，欠补偿的复合静态通道留下 δ−δ_hat 的输入阈值。"
-        "硬过补偿在零点两侧形成反向跳变，但 sign 本身不自动产生持续颤振："
-        "只有反馈、采样及阀/速度动态使 u_lin 反复跨零，才形成闭环高频翻转。"
-        "因此本例颤振幅值与频率依赖采样、反馈增益及等效对象参数，不能解释为固有液压模态。")
-    document.add_paragraph(
-        "有限 β 的 tanh 映射连续，却仍可能小于真实硬死区阈值。正残余阈值 z0 满足 "
-        "z0+δ_hat·tanh(βz0)=δ；只要 z0>0，静态复合映射就仍有平台。"
-        "β 增大通常缩小该静态平台，同时把逆映射零点斜率提高到 1+δ_hat·β，趋近硬补偿。"
-        "离散闭环可能出现更多翻转、极限环甚至失稳风险；是否出现以及表现多大必须看本次数据，"
-        "不能预设 β=18 在所有指标上最好。")
-    document.add_heading("3. 指标口径与三策略实测结果", 1)
-    document.add_paragraph(
-        f"流量关闭平台按换向窗口内 |u_v|≤{c['physical_deadzone_v']:g} V 统计，"
-        "对相邻采样作分段线性阈值重建，报告最长连续时长及累计时长；不是连续时间精确事件长度。"
-        f"速度近零另用 |v|≤{c['velocity_flat_threshold_mm_s']:g} mm/s 判据。"
-        "阀口关闭时速度仍可因惯性衰减，所以两个平台指标不等价，也不能把近零速度称为严格静止。")
-    document.add_paragraph(
-        f"颤振峰峰值取完整控制电压经 4 阶 {c['chatter_cutoff_hz']:g} Hz Butterworth "
-        "高通的零相位 sosfiltfilt 分量，再在换向窗口内计算。该离线过滤只定义诊断指标，"
-        "不进入反馈或结果曲线；并列相邻采样最大跳变和 u_lin 符号翻转数，避免把低频正弦跨度误称颤振。"
-        "单次快速换向也包含高频频谱，不能只凭高通峰峰值断言持续极限环。"
-        "速度转折次数和超额总变差（总变差减首尾净变差）用于补充识别真实模型速度的反复变化。"
-        "速度 RMSE 相对线性标度参考计算，分别列全周期与换向窗口值。")
-    table = _table(document, ("指标", *[LABELS[k] for k in KINDS]))
-    metric_rows = (("longest_flow_closed_ms", "最长流量关闭平台 / ms", 3),
-                   ("total_flow_closed_ms", "累计流量关闭时长 / ms", 3),
-                   ("longest_velocity_near_zero_ms", "最长速度近零时长 / ms", 3),
-                   ("chatter_voltage_pp_v", "高通颤振峰峰值 / V", 5),
-                   ("chatter_voltage_rms_v", "高通颤振 RMS / V", 5),
-                   ("max_voltage_step_v", "窗口最大采样电压跳变 / V", 5),
-                   ("linear_sign_reversals", "窗口 u_lin 符号翻转次数", 0),
-                   ("velocity_turning_points", "窗口真实速度转折次数", 0),
-                   ("velocity_excess_variation_mm_s", "窗口速度超额总变差 / mm/s", 5),
-                   ("velocity_rmse_mm_s", "全周期速度 RMSE / mm/s", 5),
-                   ("zoom_velocity_rmse_mm_s", "窗口速度 RMSE / mm/s", 5),
-                   ("max_abs_voltage_v", "全周期最大 |u| / V", 4),
-                   ("sampled_saturation_count", "采样电压饱和点数", 0))
-    for key, label, places in metric_rows:
-        cells = table.add_row().cells
-        cells[0].text = label
-        for cell, kind in zip(cells[1:], KINDS):
-            cell.text = _number(strategies[kind]["metrics"].get(key), places)
-    section = document.sections[0]
-    document.add_picture(str(figure), width=section.page_width-section.left_margin-section.right_margin)
-    document.add_paragraph("图 1　原始采样记录的控制电压、实际阀芯死区后有效信号及真实速度；左列全周期，右列换向窗口。")
-    document.add_heading("4. β 扫描与残余平台", 1)
-    scan = sorted(summary.get("beta_scan", []), key=lambda item: item["beta"])
-    if not scan:
-        raise RuntimeError("summary.json 缺少 β 扫描结果")
-    table = _table(document, ("β / V⁻¹", "最长关闭\n/ms", "颤振峰峰值\n/V", "全程 RMSE\n/mm/s",
-                              "局部 RMSE\n/mm/s", "符号翻转\n/次"))
-    for item in scan:
-        m = item["metrics"]
-        values = (item["beta"], m.get("longest_flow_closed_ms"), m.get("chatter_voltage_pp_v"),
-                  m.get("velocity_rmse_mm_s"), m.get("zoom_velocity_rmse_mm_s"), m.get("linear_sign_reversals"))
-        for cell, value, places in zip(table.add_row().cells, values, (0, 3, 5, 5, 5, 0)):
-            cell.text = _number(value, places)
-    static = summary.get("static_reference", {})
-    if static:
-        document.add_paragraph(
-            f"无动态、无反馈的欠补偿静态平台参照为 {_number(static.get('under_static_plateau_ms'), 3)} ms。"
-            "下表把有限 β 的静态正阈值与闭环实测平台分开列示；"
-            "静态平台由参考正弦穿越 ±z0 的时长推得，不等于反馈、前馈相位与阀动态共同作用后的平台。")
-        table = _table(document, ("β / V⁻¹", "静态阈值 z0 / V", "静态平台 / ms", "逆映射零点斜率"))
-        for item in static.get("smooth", []):
-            values = (item["beta"], item["linear_threshold_v"], item["static_plateau_ms"], item["inverse_zero_slope"])
-            for cell, value, places in zip(table.add_row().cells, values, (0, 6, 3, 3)):
-                cell.text = _number(value, places)
-    comparisons = []
-    for key, label in (("velocity_rmse_mm_s", "全周期 RMSE"),
-                       ("longest_flow_closed_ms", "最长关闭平台"), ("chatter_voltage_pp_v", "颤振峰峰值")):
-        candidates = [item for item in scan if item["metrics"].get(key) is not None]
-        if candidates:
-            best = min(candidates, key=lambda item: item["metrics"][key])
-            comparisons.append(f"{label}最小对应 β={best['beta']:g}")
-    if comparisons:
-        document.add_paragraph("本次离散扫描：" + "；".join(comparisons)
-                               + "。这些仅是已计算候选点上的单项比较，不是全局最优或所有采样条件下的保证。"
-                               "符号频繁翻转可证明本次换向抖动，不能单凭该计数宣称状态发散。")
-    if all(item["metrics"].get("velocity_turning_points") == 0 for item in scan):
-        document.add_paragraph(
-            "本次所扫 β 在换向窗口内的速度转折数均为 0；"
-            "不能把较大 β 的高通峰峰值增加单独写成已发生持续机械极限环或状态发散。"
-            "这是指定采样、反馈和模型下的数值实验，不对任意硬过补偿作 Lyapunov 稳定性断言。")
-    document.add_heading("5. 验证、局限与复现", 1)
-    document.add_paragraph("验证状态：" + _status(validation) + "。实际检查条件、误差及测试记录见 outputs/validation.json。")
-    for key in ("test_count", "tests_run", "unit_test_count"):
-        value = validation.get(key)
-        if isinstance(value, (int, float)) and not isinstance(value, bool):
-            document.add_paragraph(f"记录的回归测试数量：{int(value)}。")
-            break
-    checks = validation.get("checks")
-    if isinstance(checks, dict):
-        document.add_paragraph(f"验证文件含 {len(checks)} 项具名检查，未执行项不视为通过。")
-        failed = [name for name, result in checks.items() if result is False or
-                  (isinstance(result, dict) and result.get("passed") is False)]
-        if failed:
-            document.add_paragraph("未通过项：" + "、".join(failed) + "。")
+    for name in ('Normal','Title','Heading 1','Heading 2'):
+        style=document.styles[name];style.font.name='Noto Sans CJK SC'
+        style.element.get_or_add_rPr().get_or_add_rFonts().set(qn('w:eastAsia'),'Noto Sans CJK SC')
+    document.styles['Normal'].font.size=Pt(10)
+    document.add_heading('第六章作业6-3：死区逆补偿鲁棒性边界（修订版）',0)
+    document.add_paragraph('三策略共同模型：欠补偿平台、硬过补偿颤振与tanh光滑换向。')
+    document.add_heading('1. 实验修正与共同参数',1)
+    document.add_paragraph('上一版强速度比例反馈会补回死区估计失配，压缩欠补偿平台；同时把阀动态后的信号当作题图静态死区输出，削弱红色组差异。本版取消DC比例修正，改用公开的二级动态残差支路；采用输入死区接动态阀及机械速度的课堂等效模型。不是只调整坐标或对结果添加振荡。')
+    table=_table(document,('参数','共同设置'))
+    rows=[('正弦参考',f"{c['amplitude_v']:g} V，{c['frequency_hz']:g} Hz"),
+          ('采样/时长',f"{c['sample_time_s']*1000:g} ms / {c['duration_s']:g} s"),
+          ('真实死区/估计',f"±{c['physical_deadzone_v']:g} V；欠{c['under_estimate_v']:g} / 过{c['over_estimate_v']:g} V"),
+          ('速度增益',f"{c['gain_m_s_v']:g} m/(s·V)，5 V对应50 mm/s标度"),
+          ('阀/速度时间常数',f"{c['tau_valve_s']*1000:g} / {c['tau_velocity_s']*1000:g} ms"),
+          ('普通PID',f"Kp={c['kp']:g}，Ki={c['ki']:g}，Kd={c['kd']:g}"),
+          ('动态残差增益/滤波',f"Kw={c['washout_gain']:g}，两级τw={c['washout_tau_s']*1000:g} ms"),
+          ('整个残差缓存延迟',f"{c['feedback_delay_samples']}采样，前馈不延迟"),
+          ('tanh beta',str(c['beta_values'])),('主图测量噪声',f"{c['measurement_noise_std_mm_s']:g} mm/s")]
+    for label,value in rows:
+        cells=table.add_row().cells;cells[0].text=label;cells[1].text=value
+    document.add_paragraph('Kv是图示速度标度；阀及速度时间常数沿用给定参考。动态残差滤波、增益和缓存延迟是明确新增的共同压力测试条件，不是PPT已经给定的辨识参数。三组只改变死区估计或补偿函数，均使用相同对象、反馈、初态及采样。')
+    document.add_heading('2. 对象和控制律',1)
+    document.add_paragraph('u_eff=Dδ(u)=sign(u)·max(|u|−δ,0)；τv·dz/dt=u_eff−z；τm·dv/dt=Kv·z−v。u_eff为题图静态死区输出，z为滤波后的有效阀口等效电压，二者不能混用；u_eff=0不代表动态阀口立即无流量。两级动态在每个ZOH输入区间解析积分，速度没有硬置零或后处理平滑。')
+    document.add_paragraph('e[k]=(vd[k]−v_meas[k])/Kv；ed=e[k−d]；a=exp(−Ts/τw)。按采样顺序：L1[k]=aL1[k−1]+(1−a)ed；h1=ed−L1[k]；L2[k]=aL2[k−1]+(1−a)h1；h2=h1−L2[k]。u_lin=(vd+τm·ad)/Kv+Kw·h2。两级washout的DC增益为零，因此不会像旧Kp=4那样补平慢变死区失配；它对动态残差和采样延迟敏感，用来测试硬逆函数的鲁棒性。')
+    document.add_paragraph('硬补偿u=u_lin+δhat·sign(u_lin)，|u_lin|≤1e−10 V时输出零；光滑补偿u=u_lin+δhat·tanh(βu_lin)。最终执行电压限于±10 V。该动态残差测试架构不是原通用模块三的完整双腔逆动力学PID；质量、压力、泄漏和Stribeck摩擦未在本降阶通道中计算。原模块三保存在materials供比较。')
+    document.add_heading('3. 六联图与定量结果',1)
+    document.add_paragraph(f"换向窗口{c['zoom_start_s']:g}–{c['zoom_end_s']:g}s。有效信号零平台通过|u|≤δ的采样阈值重建统计；近零速度另外按|v|≤{c['velocity_flat_threshold_mm_s']:g}mm/s统计。两者不等同，不能将示意图约110ms的近零速度外观强称为精确零流量时长。")
+    document.add_paragraph(f"电压和速度颤振采用4阶{c['chatter_cutoff_hz']:g}Hz零相位高通分量统计，滤波只定义指标，不进入控制环或所绘曲线。单次快速换向也含高频分量，持续极限环需用零参考保持和停反馈反事实检验。")
+    table=_table(document,('指标',*[LABELS[k] for k in KINDS]))
+    rows=[('longest_effective_zero_ms','有效信号最长零平台 / ms',3),
+          ('longest_velocity_near_zero_ms','近零速度最长平台 / ms',3),
+          ('chatter_voltage_pp_v','电压高频峰峰值 / V',4),
+          ('chatter_velocity_pp_mm_s','速度高频峰峰值 / mm/s',4),
+          ('velocity_excess_variation_mm_s','速度超额变差 / mm/s',4),
+          ('linear_sign_reversals','u_lin符号翻转次数',0),
+          ('velocity_rmse_mm_s','全周期速度RMSE / mm/s',5),
+          ('max_abs_voltage_v','最大执行电压绝对值 / V',4),
+          ('sampled_saturation_count','电压饱和采样数',0)]
+    for key,label,digits in rows:
+        cells=table.add_row().cells;cells[0].text=label
+        for cell,kind in zip(cells[1:],KINDS):cell.text=_number(strategies[kind]['metrics'][key],digits)
+    sec=document.sections[0]
+    document.add_picture(str(figure),width=sec.page_width-sec.left_margin-sec.right_margin)
+    document.add_paragraph('图1：只画原始闭环记录，左列全周期(a1–a3)，右列换向局部(b1–b3)。主图中有效信号是D(u)，动态阀口状态另存CSV。硬补偿本身有跳变，图示蓝线不能被描述为数学上连续的精确硬逆函数。')
+    document.add_heading('4. beta扫描和数学讨论',1)
+    table=_table(document,('beta / V^-1','有效信号零平台/ms','近零速度/ms','电压高频pp/V','速度高频pp/mm/s','RMSE/mm/s'))
+    for item in summary['beta_scan']:
+        m=item['metrics'];values=(item['beta'],m['longest_effective_zero_ms'],m['longest_velocity_near_zero_ms'],m['chatter_voltage_pp_v'],m['chatter_velocity_pp_mm_s'],m['velocity_rmse_mm_s'])
+        for cell,value,digits in zip(table.add_row().cells,values,(0,3,3,4,4,5)):cell.text=_number(value,digits)
+    document.add_paragraph('欠补偿静态残留0.10 V区间；5 V、0.1 Hz正弦的静态平台为2asin(0.10/5)/(2π·0.1)=63.67ms，机械近零速度平台可更宽。硬过补偿在零点两侧的命令极限为±0.60 V，死区输出极限为±0.10 V；反馈可维持反复换向。仅一次sign跳变不等于任意对象必然失稳。')
+    document.add_paragraph('任何有限beta下，g(q)=q+0.6tanh(beta*q)连续且g(0)=0，必有正阈值g(q0)=0.5。因此光滑补偿仍有残余平台；完整映射零点斜率为1+0.6beta。增大beta通常缩短平台，但增强动态残差敏感性。主换向窗口与零参考保持的结论须分别报告，不能把所有tanh参数都称为无振荡。')
     _robustness_section(document)
-    document.add_paragraph(
-        "本模型隔离研究死区和离散反馈，不包含双腔压力、真实摩擦、负载、压差流量增益变化或传感器全动态。"
-        "不能据本次速度改善推断完整液压装置的稳定性或安全性。有限 β 保留残余平台，"
-        "采样与增益也会改变颤振；参数不是设备辨识值。噪声若启用，各策略共用同一序列，"
-        "默认设置及 seed 均随配置保存。")
-    document.add_paragraph(
-        "解压后进入 homework6_3：python -m pip install -r requirements.txt；python work_6_3.py；"
-        "python -m unittest -v；其他独立复核命令见 README.md；python package_delivery.py。"
-        "CSV 保留 N+1 个采样时刻，状态记录在本周期指令施加前，电压在随后一个采样区间保持。"
-        "包内包含全部源码、配置、材料、三策略与 β 扫描 CSV、summary、validation、唯一六面板图和报告。"
-        "manifest.json 记录相对路径、字节数与 SHA256；ZIP 与 manifest 自身不参与循环哈希。")
-    path = ROOT / "deliverables" / REPORT_NAME
-    path.parent.mkdir(parents=True, exist_ok=True)
-    document.save(path)
+    document.add_heading('5. 验证与复现',1)
+    document.add_paragraph('本次数据与机制检查：'+_status(validation)+f"，共{len(validation['checks'])}项。"+f"已记录回归测试{validation.get('test_count','见测试文件')}项。输入死区对象的解析推进以独立高精度ODE和半步等价验证；误差缓存、滤波零DC增益、保持段记忆连续及完整停反馈均单独检查。")
+    document.add_paragraph('运行：python -m pip install -r requirements.txt；python work_6_3.py；python -m unittest -v test_work_6_3.py；python package_delivery.py。CSV状态记录在当前指令作用前，u及D(u)作用于下一个Ts区间。全部代码、配置、PPT、原始CSV、报告和唯一PNG均在ZIP内，manifest列SHA256。')
+    document.add_paragraph('本版定性趋势更接近题图，但不承诺示意图的全部数值或波纹周期。它仍是公开假设下的课堂等效模型，不是完整双腔数字孪生或设备辨识结论；没有把压力安全或全局稳定性作为已验证结果。')
+    path=ROOT/'deliverables'/REPORT_NAME;path.parent.mkdir(parents=True,exist_ok=True);document.save(path)
     return path
 
 
@@ -347,10 +237,10 @@ def included_files():
 
 def package(figure=None):
     required = {"README.md", "requirements.txt", "experiment_config.json", "work_6_3.py", "simulation.py",
-                "deadzone_model.py", "model_assisted_controller.py", "plotting.py", "package_delivery.py",
+                "deadzone_model.py", "input_deadzone_model.py", "model_assisted_controller.py", "plotting.py", "package_delivery.py",
                 "materials/chap06-ppt.pdf", "materials/module3_reference.py", "outputs/summary.json",
                 "outputs/validation.json", "outputs/under.csv", "outputs/hard_over.csv", "outputs/smooth.csv",
-                "outputs/beta_5.csv", "outputs/beta_18.csv", "outputs/beta_50.csv"}
+                "outputs/beta_5.csv", "outputs/beta_18.csv", "outputs/beta_50.csv", "outputs/robustness.json"}
     available = {path.relative_to(ROOT).as_posix() for path in included_files()}
     if not required <= available:
         raise RuntimeError(f"交付文件尚未齐全：{sorted(required-available)}")

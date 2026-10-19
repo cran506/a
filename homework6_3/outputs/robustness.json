@@ -17,10 +17,15 @@
     "gain_m_s_v": 0.01,
     "tau_valve_s": 0.0008,
     "tau_velocity_s": 0.012,
-    "kp": 4.0,
+    "kp": 0.0,
     "ki": 0.0,
     "kd": 0.0,
     "derivative_alpha": 0.85,
+    "washout_gain": 17.0,
+    "washout_tau_s": 0.002,
+    "washout_order": 2,
+    "feedback_delay_samples": 6,
+    "plant_structure": "input_deadzone_then_valve_then_velocity",
     "measurement_noise_std_mm_s": 0.0,
     "noise_seed": 63018,
     "zoom_start_s": 4.55,
@@ -42,132 +47,169 @@
       {
         "beta": 5.0,
         "metrics": {
-          "velocity_rmse_mm_s": 0.19610465898514223,
-          "zoom_velocity_rmse_mm_s": 0.17608397616478094,
-          "longest_flow_closed_ms": 25.526973290947552,
-          "total_flow_closed_ms": 29.455446246040573,
-          "longest_velocity_near_zero_ms": 45.633044559443725,
+          "velocity_rmse_mm_s": 0.9805198386994106,
+          "zoom_velocity_rmse_mm_s": 0.8847821351272953,
+          "longest_flow_closed_ms": 71.6066088801739,
+          "longest_effective_zero_ms": 71.6066088801739,
+          "total_flow_closed_ms": 88.95658713335041,
+          "longest_velocity_near_zero_ms": 85.67597707432917,
           "flow_closed_intervals_s": [
             [
-              4.973070735870113,
-              4.97628400907107
+              4.931146588395529,
+              4.935580624029321
             ],
             [
-              4.979671220455091,
-              4.980386420209228
+              4.943479508182597,
+              4.950988934553458
             ],
             [
-              4.981074126025692,
-              5.006601099316639
+              4.955223106995765,
+              5.026829715875939
+            ],
+            [
+              5.027132105821582,
+              5.028989945885385
+            ],
+            [
+              5.029016614520988,
+              5.0307235176038105
+            ],
+            [
+              5.032001166136339,
+              5.033842939238236
             ]
           ],
-          "chatter_voltage_pp_v": 0.2588481176105729,
-          "chatter_voltage_rms_v": 0.019694473866057986,
-          "max_voltage_step_v": 0.09626586103291446,
-          "linear_sign_reversals": 1,
-          "velocity_turning_points": 0,
-          "velocity_excess_variation_mm_s": 0.0,
-          "max_abs_voltage_v": 5.539751354221026,
-          "max_abs_effective_voltage_v": 5.0352713810527545,
-          "max_abs_velocity_mm_s": 50.2147046501084,
+          "chatter_voltage_pp_v": 0.7459241563360077,
+          "chatter_voltage_rms_v": 0.05791212406834668,
+          "chatter_velocity_pp_mm_s": 0.5072524605991211,
+          "chatter_velocity_rms_mm_s": 0.05752246020068723,
+          "max_voltage_step_v": 0.29203351023168067,
+          "linear_sign_reversals": 13,
+          "velocity_turning_points": 28,
+          "velocity_excess_variation_mm_s": 2.650911567154864,
+          "max_abs_voltage_v": 5.647768335243369,
+          "max_abs_effective_voltage_v": 5.147768335243369,
+          "max_abs_velocity_mm_s": 51.01695701807208,
           "sampled_saturation_count": 0,
-          "metric_notes": "窗口内阈值平台采用采样线性重建；颤振峰峰值为20Hz零相位高通分量，非原始峰峰值"
+          "metric_notes": "平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为20Hz高通诊断"
         },
         "raw_csv": "robustness_beta_5_noise.csv"
       },
       {
         "beta": 18.0,
         "metrics": {
-          "velocity_rmse_mm_s": 0.19819704710501787,
-          "zoom_velocity_rmse_mm_s": 0.1885533342227458,
-          "longest_flow_closed_ms": 17.54711376019724,
-          "total_flow_closed_ms": 22.79357969975848,
-          "longest_velocity_near_zero_ms": 32.76475063308215,
+          "velocity_rmse_mm_s": 0.9919251627223417,
+          "zoom_velocity_rmse_mm_s": 0.9564063171181558,
+          "longest_flow_closed_ms": 7.9463576279161785,
+          "longest_effective_zero_ms": 7.9463576279161785,
+          "total_flow_closed_ms": 23.058798675378966,
+          "longest_velocity_near_zero_ms": 26.910916701928578,
           "flow_closed_intervals_s": [
             [
-              4.9727401604769,
-              4.975189581523962
+              4.973027087866647,
+              4.979978483566645
             ],
             [
-              4.978554510159065,
-              4.980207352354297
+              4.982828322388017,
+              4.98850066243413
             ],
             [
-              4.981448510854556,
-              4.9989956246147536
+              4.991000390190359,
+              4.998946747818275
             ],
             [
-              5.002712909269959,
-              5.003527954961789
+              5.000749848426476,
+              5.001328903395993
             ],
             [
-              5.0098279199467175,
-              5.010157076952155
+              5.007034311128183,
+              5.008785489471488
+            ],
+            [
+              5.010890845949685,
+              5.011049317938215
             ]
           ],
-          "chatter_voltage_pp_v": 0.5072974652232226,
-          "chatter_voltage_rms_v": 0.03401180490522165,
-          "max_voltage_step_v": 0.20545582878362734,
-          "linear_sign_reversals": 1,
+          "chatter_voltage_pp_v": 1.1021773394587313,
+          "chatter_voltage_rms_v": 0.06631991272642793,
+          "chatter_velocity_pp_mm_s": 0.23034001965705236,
+          "chatter_velocity_rms_mm_s": 0.020962795688871938,
+          "max_voltage_step_v": 0.7382805793797802,
+          "linear_sign_reversals": 7,
           "velocity_turning_points": 4,
-          "velocity_excess_variation_mm_s": 0.046923051810352945,
-          "max_abs_voltage_v": 5.539751354221026,
-          "max_abs_effective_voltage_v": 5.0352713810527545,
-          "max_abs_velocity_mm_s": 50.2147046501084,
+          "velocity_excess_variation_mm_s": 0.07968652710544077,
+          "max_abs_voltage_v": 5.647768335243369,
+          "max_abs_effective_voltage_v": 5.147768335243369,
+          "max_abs_velocity_mm_s": 51.01695701807208,
           "sampled_saturation_count": 0,
-          "metric_notes": "窗口内阈值平台采用采样线性重建；颤振峰峰值为20Hz零相位高通分量，非原始峰峰值"
+          "metric_notes": "平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为20Hz高通诊断"
         },
         "raw_csv": "robustness_beta_18_noise.csv"
       },
       {
         "beta": 50.0,
         "metrics": {
-          "velocity_rmse_mm_s": 0.1990169526706158,
-          "zoom_velocity_rmse_mm_s": 0.19334916185393464,
-          "longest_flow_closed_ms": 9.11431905046367,
-          "total_flow_closed_ms": 20.63359227536221,
-          "longest_velocity_near_zero_ms": 29.184868343908654,
+          "velocity_rmse_mm_s": 0.9966205037615464,
+          "zoom_velocity_rmse_mm_s": 0.9799928821576872,
+          "longest_flow_closed_ms": 2.4566724050041344,
+          "longest_effective_zero_ms": 2.4566724050041344,
+          "total_flow_closed_ms": 16.053615593545345,
+          "longest_velocity_near_zero_ms": 14.677294679150243,
           "flow_closed_intervals_s": [
             [
-              4.972240525845974,
-              4.975475379553844
+              4.977557912115726,
+              4.979794644638532
             ],
             [
-              4.9783096271203755,
-              4.9801581004440285
+              4.982405937217903,
+              4.984497078079255
             ],
             [
-              4.981365953593111,
-              4.98434043581815
+              4.98619838589677,
+              4.987911302817312
             ],
             [
-              4.98505839577536,
-              4.994172714825823
+              4.990362649745964,
+              4.991912827106713
             ],
             [
-              4.996928716244608,
-              4.997280184441226
+              4.992079772461163,
+              4.992973518731701
             ],
             [
-              5.0022388768843635,
-              5.003976331113071
+              4.99428073232502,
+              4.995969366506402
             ],
             [
-              5.008718721288617,
-              5.010091262831629
+              4.997239198286956,
+              4.99876934004035
+            ],
+            [
+              5.000735702923809,
+              5.001419108360726
+            ],
+            [
+              5.006370029093262,
+              5.008826701498266
+            ],
+            [
+              5.010429098174149,
+              5.01163914605501
             ]
           ],
-          "chatter_voltage_pp_v": 0.813021517163453,
-          "chatter_voltage_rms_v": 0.048398732118117675,
-          "max_voltage_step_v": 0.49365139967202,
-          "linear_sign_reversals": 1,
-          "velocity_turning_points": 10,
-          "velocity_excess_variation_mm_s": 0.17601214975856294,
-          "max_abs_voltage_v": 5.539751354221026,
-          "max_abs_effective_voltage_v": 5.0352713810527545,
-          "max_abs_velocity_mm_s": 50.2147046501084,
+          "chatter_voltage_pp_v": 1.5428553279629802,
+          "chatter_voltage_rms_v": 0.08354929583097452,
+          "chatter_velocity_pp_mm_s": 0.29308630883329245,
+          "chatter_velocity_rms_mm_s": 0.02040580535496469,
+          "max_voltage_step_v": 1.1188857877956613,
+          "linear_sign_reversals": 9,
+          "velocity_turning_points": 6,
+          "velocity_excess_variation_mm_s": 0.09361313138699856,
+          "max_abs_voltage_v": 5.647768335243369,
+          "max_abs_effective_voltage_v": 5.147768335243369,
+          "max_abs_velocity_mm_s": 51.01695701807208,
           "sampled_saturation_count": 0,
-          "metric_notes": "窗口内阈值平台采用采样线性重建；颤振峰峰值为20Hz零相位高通分量，非原始峰峰值"
+          "metric_notes": "平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为20Hz高通诊断"
         },
         "raw_csv": "robustness_beta_50_noise.csv"
       }
@@ -176,29 +218,42 @@
   },
   "zero_reference_hold": {
     "start_s": 5.0,
-    "duration_s": 0.4,
+    "duration_s": 1.0,
     "tail_s": 0.1,
     "nominal_feedback_runs": {
       "under": {
         "strategy": "under",
-        "kp": 4.0,
+        "feedback_enabled": true,
+        "controller_initial_memory": {
+          "lowpass1_v": 0.024575428008607222,
+          "lowpass2_v": -0.004493307459218653,
+          "error_history_v": [
+            0.020035291934972093,
+            0.017050101526965622,
+            0.014052400543359166,
+            0.01104318991980523,
+            0.008023390660727315,
+            0.004993850230261193,
+            0.0019553484322263285
+          ]
+        },
         "source_time_s": 5.0,
-        "initial_valve_voltage_v": -0.4516964634759596,
-        "initial_velocity_mm_s": 0.08337126842800241,
-        "hold_duration_s": 0.4,
+        "initial_valve_voltage_v": 8.115350724378075e-27,
+        "initial_velocity_mm_s": 0.0109139718007196,
+        "hold_duration_s": 1.0,
         "measurement_noise_std_mm_s": 0.0,
         "reference_velocity_mm_s": 0.0,
         "metrics": {
-          "tail_start_s": 0.3,
-          "tail_end_s": 0.4,
-          "tail_duration_s": 0.10000000000000003,
-          "tail_velocity_pp_mm_s": 1.1575771827596468e-12,
-          "tail_velocity_rms_mm_s": 2.9404488074397213e-13,
-          "tail_velocity_mean_mm_s": 1.4334684057223698e-13,
-          "preceding_tail_velocity_pp_mm_s": 4.81582437172403e-09,
-          "tail_to_preceding_pp_ratio": 0.0002403694764195154,
+          "tail_start_s": 0.9,
+          "tail_end_s": 1.0,
+          "tail_duration_s": 0.09999999999999998,
+          "tail_velocity_pp_mm_s": 2.922754116767254e-35,
+          "tail_velocity_rms_mm_s": 7.424307411277185e-36,
+          "tail_velocity_mean_mm_s": 3.619348883581762e-36,
+          "preceding_tail_velocity_pp_mm_s": 1.2159422903040269e-31,
+          "tail_to_preceding_pp_ratio": 0.00024036947641951545,
           "tail_voltage_pp_v": 0.0,
-          "tail_valve_voltage_pp_v": 7.219405553331634e-36,
+          "tail_valve_voltage_pp_v": 0.0,
           "tail_effective_voltage_pp_v": 0.0,
           "tail_speed_zero_crossings": 0,
           "tail_complete_upcrossing_cycles": 0,
@@ -213,67 +268,60 @@
       },
       "hard_over": {
         "strategy": "hard_over",
-        "kp": 4.0,
+        "feedback_enabled": true,
+        "controller_initial_memory": {
+          "lowpass1_v": -0.07431121281368365,
+          "lowpass2_v": 0.011944628855470379,
+          "error_history_v": [
+            -0.057530835892700756,
+            -0.04532295197223195,
+            -0.034047645370429896,
+            -0.02366139574830413,
+            -0.02254886648001955,
+            -0.030985247781307002,
+            -0.042775709558667836
+          ]
+        },
         "source_time_s": 5.0,
-        "initial_valve_voltage_v": -0.5519178805847368,
-        "initial_velocity_mm_s": 0.002290444475905583,
-        "hold_duration_s": 0.4,
+        "initial_valve_voltage_v": 0.14998448079323543,
+        "initial_velocity_mm_s": 0.5442010975361142,
+        "hold_duration_s": 1.0,
         "measurement_noise_std_mm_s": 0.0,
         "reference_velocity_mm_s": 0.0,
         "metrics": {
-          "tail_start_s": 0.3,
-          "tail_end_s": 0.4,
-          "tail_duration_s": 0.10000000000000003,
-          "tail_velocity_pp_mm_s": 0.047070908976740766,
-          "tail_velocity_rms_mm_s": 0.02267727626377364,
-          "tail_velocity_mean_mm_s": -0.00023142600189834746,
-          "preceding_tail_velocity_pp_mm_s": 0.047070908976740766,
-          "tail_to_preceding_pp_ratio": 1.0,
-          "tail_voltage_pp_v": 1.2188283635906962,
-          "tail_valve_voltage_pp_v": 1.161410242893948,
-          "tail_effective_voltage_pp_v": 0.1614102428939479,
-          "tail_speed_zero_crossings": 34,
-          "tail_complete_upcrossing_cycles": 16,
+          "tail_start_s": 0.9,
+          "tail_end_s": 1.0,
+          "tail_duration_s": 0.09999999999999998,
+          "tail_velocity_pp_mm_s": 1.8859731537857785,
+          "tail_velocity_rms_mm_s": 0.6481225110648768,
+          "tail_velocity_mean_mm_s": 0.043660958392810895,
+          "preceding_tail_velocity_pp_mm_s": 1.8859731534790176,
+          "tail_to_preceding_pp_ratio": 1.000000000162654,
+          "tail_voltage_pp_v": 2.056582638473241,
+          "tail_valve_voltage_pp_v": 0.9960302662254829,
+          "tail_effective_voltage_pp_v": 1.0565826384732409,
+          "tail_speed_zero_crossings": 14,
+          "tail_complete_upcrossing_cycles": 6,
           "frequency_estimate_meaningful": true,
-          "frequency_from_median_upcrossing_period_hz": 166.66666666666652,
-          "frequency_from_crossing_count_hz": 169.99999999999994,
+          "frequency_from_median_upcrossing_period_hz": 73.3455996346154,
+          "frequency_from_crossing_count_hz": 70.00000000000001,
           "upward_crossing_times_s": [
-            0.30347222688613573,
-            0.30947222688613574,
-            0.31547222688613574,
-            0.32147222688613575,
-            0.32747222688613575,
-            0.33347222688613576,
-            0.33947222688613576,
-            0.34547222688613577,
-            0.3514722268861357,
-            0.3574722268861357,
-            0.36347222688613573,
-            0.36947222688613574,
-            0.37547222688613574,
-            0.38147222688613575,
-            0.38747222688613575,
-            0.39347222688613576,
-            0.39947222688613576
+            0.912587570374162,
+            0.9263821336504968,
+            0.9399326795556892,
+            0.9535735562885519,
+            0.9670116047018539,
+            0.9806388941570565,
+            0.9944154913071127
           ],
           "downward_crossing_times_s": [
-            0.30047222688613573,
-            0.30647222688613573,
-            0.31247222688613574,
-            0.31847222688613575,
-            0.32447222688613575,
-            0.33047222688613576,
-            0.33647222688613576,
-            0.34247222688613577,
-            0.34847222688613577,
-            0.3544722268861357,
-            0.3604722268861357,
-            0.36647222688613573,
-            0.37247222688613574,
-            0.37847222688613574,
-            0.38447222688613575,
-            0.39047222688613575,
-            0.39647222688613576
+            0.9058897053691024,
+            0.9195407200794183,
+            0.9329870185800138,
+            0.9466231591562321,
+            0.9604050562142818,
+            0.9739497279961213,
+            0.987585337739704
           ],
           "frequency_note": "Median same-direction interpolated velocity zero-crossing period; count/(2*tail duration) is also reported and has endpoint bias. No frequency claim when pp<=1e-9 mm/s or fewer than two upward crossings."
         },
@@ -281,24 +329,37 @@
       },
       "smooth": {
         "strategy": "smooth",
-        "kp": 4.0,
+        "feedback_enabled": true,
+        "controller_initial_memory": {
+          "lowpass1_v": -0.002466845473639008,
+          "lowpass2_v": -0.00031573104244949,
+          "error_history_v": [
+            -0.003384896790625195,
+            -0.004497512299625345,
+            -0.005772361206397042,
+            -0.007196471399418345,
+            -0.008757907860755806,
+            -0.010445689744656945,
+            -0.012249714086143344
+          ]
+        },
         "source_time_s": 5.0,
-        "initial_valve_voltage_v": -0.550925532869468,
-        "initial_velocity_mm_s": 0.08518653311960665,
-        "hold_duration_s": 0.4,
+        "initial_valve_voltage_v": 1.4192774574408827e-16,
+        "initial_velocity_mm_s": 0.1416068560955835,
+        "hold_duration_s": 1.0,
         "measurement_noise_std_mm_s": 0.0,
         "reference_velocity_mm_s": 0.0,
         "metrics": {
-          "tail_start_s": 0.3,
-          "tail_end_s": 0.4,
-          "tail_duration_s": 0.10000000000000003,
-          "tail_velocity_pp_mm_s": 1.112156883330073e-12,
-          "tail_velocity_rms_mm_s": 2.8250732909900547e-13,
-          "tail_velocity_mean_mm_s": 1.3772228566735141e-13,
-          "preceding_tail_velocity_pp_mm_s": 4.626864025734417e-09,
-          "tail_to_preceding_pp_ratio": 0.0002403694764195154,
-          "tail_voltage_pp_v": 5.2493804893179445e-12,
-          "tail_valve_voltage_pp_v": 5.91187621663294e-12,
+          "tail_start_s": 0.9,
+          "tail_end_s": 1.0,
+          "tail_duration_s": 0.09999999999999998,
+          "tail_velocity_pp_mm_s": 3.7922218342963402e-34,
+          "tail_velocity_rms_mm_s": 9.632907711276863e-35,
+          "tail_velocity_mean_mm_s": 4.6960412384726866e-35,
+          "preceding_tail_velocity_pp_mm_s": 1.577663641317669e-30,
+          "tail_to_preceding_pp_ratio": 0.00024036947641951526,
+          "tail_voltage_pp_v": 3.000971267812396e-34,
+          "tail_valve_voltage_pp_v": 0.0,
           "tail_effective_voltage_pp_v": 0.0,
           "tail_speed_zero_crossings": 0,
           "tail_complete_upcrossing_cycles": 0,
@@ -312,27 +373,40 @@
         "raw_csv": "robustness_zero_hold_smooth.csv"
       }
     },
-    "kp0_counterfactual_runs": {
+    "feedback_disabled_counterfactual_runs": {
       "under": {
         "strategy": "under",
-        "kp": 0.0,
+        "feedback_enabled": false,
+        "controller_initial_memory": {
+          "lowpass1_v": 0.024575428008607222,
+          "lowpass2_v": -0.004493307459218653,
+          "error_history_v": [
+            0.020035291934972093,
+            0.017050101526965622,
+            0.014052400543359166,
+            0.01104318991980523,
+            0.008023390660727315,
+            0.004993850230261193,
+            0.0019553484322263285
+          ]
+        },
         "source_time_s": 5.0,
-        "initial_valve_voltage_v": -0.4516964634759596,
-        "initial_velocity_mm_s": 0.08337126842800241,
-        "hold_duration_s": 0.4,
+        "initial_valve_voltage_v": 8.115350724378075e-27,
+        "initial_velocity_mm_s": 0.0109139718007196,
+        "hold_duration_s": 1.0,
         "measurement_noise_std_mm_s": 0.0,
         "reference_velocity_mm_s": 0.0,
         "metrics": {
-          "tail_start_s": 0.3,
-          "tail_end_s": 0.4,
-          "tail_duration_s": 0.10000000000000003,
-          "tail_velocity_pp_mm_s": 1.1575771827596468e-12,
-          "tail_velocity_rms_mm_s": 2.9404488074397213e-13,
-          "tail_velocity_mean_mm_s": 1.4334684057223698e-13,
-          "preceding_tail_velocity_pp_mm_s": 4.81582437172403e-09,
-          "tail_to_preceding_pp_ratio": 0.0002403694764195154,
+          "tail_start_s": 0.9,
+          "tail_end_s": 1.0,
+          "tail_duration_s": 0.09999999999999998,
+          "tail_velocity_pp_mm_s": 2.922754116767254e-35,
+          "tail_velocity_rms_mm_s": 7.424307411277185e-36,
+          "tail_velocity_mean_mm_s": 3.619348883581762e-36,
+          "preceding_tail_velocity_pp_mm_s": 1.2159422903040269e-31,
+          "tail_to_preceding_pp_ratio": 0.00024036947641951545,
           "tail_voltage_pp_v": 0.0,
-          "tail_valve_voltage_pp_v": 6.228966232898002e-164,
+          "tail_valve_voltage_pp_v": 0.0,
           "tail_effective_voltage_pp_v": 0.0,
           "tail_speed_zero_crossings": 0,
           "tail_complete_upcrossing_cycles": 0,
@@ -343,28 +417,41 @@
           "downward_crossing_times_s": [],
           "frequency_note": "Median same-direction interpolated velocity zero-crossing period; count/(2*tail duration) is also reported and has endpoint bias. No frequency claim when pp<=1e-9 mm/s or fewer than two upward crossings."
         },
-        "raw_csv": "robustness_zero_hold_under_kp0.csv"
+        "raw_csv": "robustness_zero_hold_under_feedback_disabled.csv"
       },
       "hard_over": {
         "strategy": "hard_over",
-        "kp": 0.0,
+        "feedback_enabled": false,
+        "controller_initial_memory": {
+          "lowpass1_v": -0.07431121281368365,
+          "lowpass2_v": 0.011944628855470379,
+          "error_history_v": [
+            -0.057530835892700756,
+            -0.04532295197223195,
+            -0.034047645370429896,
+            -0.02366139574830413,
+            -0.02254886648001955,
+            -0.030985247781307002,
+            -0.042775709558667836
+          ]
+        },
         "source_time_s": 5.0,
-        "initial_valve_voltage_v": -0.5519178805847368,
-        "initial_velocity_mm_s": 0.002290444475905583,
-        "hold_duration_s": 0.4,
+        "initial_valve_voltage_v": 0.14998448079323543,
+        "initial_velocity_mm_s": 0.5442010975361142,
+        "hold_duration_s": 1.0,
         "measurement_noise_std_mm_s": 0.0,
         "reference_velocity_mm_s": 0.0,
         "metrics": {
-          "tail_start_s": 0.3,
-          "tail_end_s": 0.4,
-          "tail_duration_s": 0.10000000000000003,
-          "tail_velocity_pp_mm_s": 8.403616135440336e-15,
-          "tail_velocity_rms_mm_s": 2.134665697601909e-15,
-          "tail_velocity_mean_mm_s": 1.0406492459754776e-15,
-          "preceding_tail_velocity_pp_mm_s": 3.4961244916029e-11,
+          "tail_start_s": 0.9,
+          "tail_end_s": 1.0,
+          "tail_duration_s": 0.09999999999999998,
+          "tail_velocity_pp_mm_s": 1.7442649299156752e-33,
+          "tail_velocity_rms_mm_s": 4.43073845046099e-34,
+          "tail_velocity_mean_mm_s": 2.1599844100959814e-34,
+          "preceding_tail_velocity_pp_mm_s": 7.256599115236329e-30,
           "tail_to_preceding_pp_ratio": 0.00024036947641951543,
           "tail_voltage_pp_v": 0.0,
-          "tail_valve_voltage_pp_v": 7.611035550376699e-164,
+          "tail_valve_voltage_pp_v": 0.0,
           "tail_effective_voltage_pp_v": 0.0,
           "tail_speed_zero_crossings": 0,
           "tail_complete_upcrossing_cycles": 0,
@@ -375,28 +462,41 @@
           "downward_crossing_times_s": [],
           "frequency_note": "Median same-direction interpolated velocity zero-crossing period; count/(2*tail duration) is also reported and has endpoint bias. No frequency claim when pp<=1e-9 mm/s or fewer than two upward crossings."
         },
-        "raw_csv": "robustness_zero_hold_hard_over_kp0.csv"
+        "raw_csv": "robustness_zero_hold_hard_over_feedback_disabled.csv"
       },
       "smooth": {
         "strategy": "smooth",
-        "kp": 0.0,
+        "feedback_enabled": false,
+        "controller_initial_memory": {
+          "lowpass1_v": -0.002466845473639008,
+          "lowpass2_v": -0.00031573104244949,
+          "error_history_v": [
+            -0.003384896790625195,
+            -0.004497512299625345,
+            -0.005772361206397042,
+            -0.007196471399418345,
+            -0.008757907860755806,
+            -0.010445689744656945,
+            -0.012249714086143344
+          ]
+        },
         "source_time_s": 5.0,
-        "initial_valve_voltage_v": -0.550925532869468,
-        "initial_velocity_mm_s": 0.08518653311960665,
-        "hold_duration_s": 0.4,
+        "initial_valve_voltage_v": 1.4192774574408827e-16,
+        "initial_velocity_mm_s": 0.1416068560955835,
+        "hold_duration_s": 1.0,
         "measurement_noise_std_mm_s": 0.0,
         "reference_velocity_mm_s": 0.0,
         "metrics": {
-          "tail_start_s": 0.3,
-          "tail_end_s": 0.4,
-          "tail_duration_s": 0.10000000000000003,
-          "tail_velocity_pp_mm_s": 1.1602424499256863e-12,
-          "tail_velocity_rms_mm_s": 2.947219052894289e-13,
-          "tail_velocity_mean_mm_s": 1.4367688994883392e-13,
-          "preceding_tail_velocity_pp_mm_s": 4.8269125814490796e-09,
-          "tail_to_preceding_pp_ratio": 0.00024036947641951532,
+          "tail_start_s": 0.9,
+          "tail_end_s": 1.0,
+          "tail_duration_s": 0.09999999999999998,
+          "tail_velocity_pp_mm_s": 3.7922218342963402e-34,
+          "tail_velocity_rms_mm_s": 9.632907711276863e-35,
+          "tail_velocity_mean_mm_s": 4.6960412384726866e-35,
+          "preceding_tail_velocity_pp_mm_s": 1.577663641317669e-30,
+          "tail_to_preceding_pp_ratio": 0.00024036947641951526,
           "tail_voltage_pp_v": 0.0,
-          "tail_valve_voltage_pp_v": 7.597350917200377e-164,
+          "tail_valve_voltage_pp_v": 0.0,
           "tail_effective_voltage_pp_v": 0.0,
           "tail_speed_zero_crossings": 0,
           "tail_complete_upcrossing_cycles": 0,
@@ -407,12 +507,169 @@
           "downward_crossing_times_s": [],
           "frequency_note": "Median same-direction interpolated velocity zero-crossing period; count/(2*tail duration) is also reported and has endpoint bias. No frequency claim when pp<=1e-9 mm/s or fewer than two upward crossings."
         },
-        "raw_csv": "robustness_zero_hold_smooth_kp0.csv"
+        "raw_csv": "robustness_zero_hold_smooth_feedback_disabled.csv"
       }
     },
-    "all_error_feedback_disabled_when_kp0": true,
-    "hard_over_tail_pp_reduction_factor": 5601268337118.581,
-    "note": "All runs begin at the actual valve and velocity recorded at 5s. Controller history is reconstructed from formal measurements; kp0 changes only P during the zero-reference hold. No new measurement noise."
+    "beta_hold_runs": {
+      "5": {
+        "strategy": "smooth",
+        "feedback_enabled": true,
+        "controller_initial_memory": {
+          "lowpass1_v": 0.024653574572333727,
+          "lowpass2_v": -0.00450539514171196,
+          "error_history_v": [
+            0.020102969841027822,
+            0.017112368206425997,
+            0.014109688654014203,
+            0.011095897526038062,
+            0.008071883999450314,
+            0.005038466255700018,
+            0.0019963971572342777
+          ]
+        },
+        "source_time_s": 5.0,
+        "initial_valve_voltage_v": 1.5030768449436441e-32,
+        "initial_velocity_mm_s": 0.01053630529900741,
+        "hold_duration_s": 1.0,
+        "measurement_noise_std_mm_s": 0.0,
+        "reference_velocity_mm_s": 0.0,
+        "metrics": {
+          "tail_start_s": 0.9,
+          "tail_end_s": 1.0,
+          "tail_duration_s": 0.09999999999999998,
+          "tail_velocity_pp_mm_s": 2.821615288227161e-35,
+          "tail_velocity_rms_mm_s": 7.167397071132447e-36,
+          "tail_velocity_mean_mm_s": 3.4941051266528575e-36,
+          "preceding_tail_velocity_pp_mm_s": 1.1738658877396793e-31,
+          "tail_to_preceding_pp_ratio": 0.00024036947641951516,
+          "tail_voltage_pp_v": 7.569093791420286e-36,
+          "tail_valve_voltage_pp_v": 0.0,
+          "tail_effective_voltage_pp_v": 0.0,
+          "tail_speed_zero_crossings": 0,
+          "tail_complete_upcrossing_cycles": 0,
+          "frequency_estimate_meaningful": false,
+          "frequency_from_median_upcrossing_period_hz": null,
+          "frequency_from_crossing_count_hz": null,
+          "upward_crossing_times_s": [],
+          "downward_crossing_times_s": [],
+          "frequency_note": "Median same-direction interpolated velocity zero-crossing period; count/(2*tail duration) is also reported and has endpoint bias. No frequency claim when pp<=1e-9 mm/s or fewer than two upward crossings."
+        },
+        "beta": 5.0,
+        "raw_csv": "robustness_zero_hold_beta_5.csv"
+      },
+      "18": {
+        "strategy": "smooth",
+        "feedback_enabled": true,
+        "controller_initial_memory": {
+          "lowpass1_v": -0.002466845473639008,
+          "lowpass2_v": -0.00031573104244949,
+          "error_history_v": [
+            -0.003384896790625195,
+            -0.004497512299625345,
+            -0.005772361206397042,
+            -0.007196471399418345,
+            -0.008757907860755806,
+            -0.010445689744656945,
+            -0.012249714086143344
+          ]
+        },
+        "source_time_s": 5.0,
+        "initial_valve_voltage_v": 1.4192774574408827e-16,
+        "initial_velocity_mm_s": 0.1416068560955835,
+        "hold_duration_s": 1.0,
+        "measurement_noise_std_mm_s": 0.0,
+        "reference_velocity_mm_s": 0.0,
+        "metrics": {
+          "tail_start_s": 0.9,
+          "tail_end_s": 1.0,
+          "tail_duration_s": 0.09999999999999998,
+          "tail_velocity_pp_mm_s": 3.7922218342963402e-34,
+          "tail_velocity_rms_mm_s": 9.632907711276863e-35,
+          "tail_velocity_mean_mm_s": 4.6960412384726866e-35,
+          "preceding_tail_velocity_pp_mm_s": 1.577663641317669e-30,
+          "tail_to_preceding_pp_ratio": 0.00024036947641951526,
+          "tail_voltage_pp_v": 3.000971267812396e-34,
+          "tail_valve_voltage_pp_v": 0.0,
+          "tail_effective_voltage_pp_v": 0.0,
+          "tail_speed_zero_crossings": 0,
+          "tail_complete_upcrossing_cycles": 0,
+          "frequency_estimate_meaningful": false,
+          "frequency_from_median_upcrossing_period_hz": null,
+          "frequency_from_crossing_count_hz": null,
+          "upward_crossing_times_s": [],
+          "downward_crossing_times_s": [],
+          "frequency_note": "Median same-direction interpolated velocity zero-crossing period; count/(2*tail duration) is also reported and has endpoint bias. No frequency claim when pp<=1e-9 mm/s or fewer than two upward crossings."
+        },
+        "beta": 18.0,
+        "raw_csv": "robustness_zero_hold_beta_18.csv"
+      },
+      "50": {
+        "strategy": "smooth",
+        "feedback_enabled": true,
+        "controller_initial_memory": {
+          "lowpass1_v": -0.04125374402861309,
+          "lowpass2_v": 0.005237534856853454,
+          "error_history_v": [
+            -0.03705892168493073,
+            -0.035479119697266956,
+            -0.03427681859172251,
+            -0.03135445763078659,
+            -0.025386990520623477,
+            -0.017366288770049972,
+            -0.00856652668964272
+          ]
+        },
+        "source_time_s": 5.0,
+        "initial_valve_voltage_v": -0.14192838510299888,
+        "initial_velocity_mm_s": -0.002675333661897791,
+        "hold_duration_s": 1.0,
+        "measurement_noise_std_mm_s": 0.0,
+        "reference_velocity_mm_s": 0.0,
+        "metrics": {
+          "tail_start_s": 0.9,
+          "tail_end_s": 1.0,
+          "tail_duration_s": 0.09999999999999998,
+          "tail_velocity_pp_mm_s": 1.8498296376238117,
+          "tail_velocity_rms_mm_s": 0.638244145946565,
+          "tail_velocity_mean_mm_s": -0.024399703316970552,
+          "preceding_tail_velocity_pp_mm_s": 1.8646553142551423,
+          "tail_to_preceding_pp_ratio": 0.9920491060637376,
+          "tail_voltage_pp_v": 2.0494321289392463,
+          "tail_valve_voltage_pp_v": 0.9940494409015359,
+          "tail_effective_voltage_pp_v": 1.0494321289392465,
+          "tail_speed_zero_crossings": 15,
+          "tail_complete_upcrossing_cycles": 7,
+          "frequency_estimate_meaningful": true,
+          "frequency_from_median_upcrossing_period_hz": 73.65342263941623,
+          "frequency_from_crossing_count_hz": 75.00000000000001,
+          "upward_crossing_times_s": [
+            0.9037738937224589,
+            0.9174610274684655,
+            0.9310102601961295,
+            0.94463713587216,
+            0.9582105288354101,
+            0.9717798849817795,
+            0.9854831537131334,
+            0.9990602552810495
+          ],
+          "downward_crossing_times_s": [
+            0.9106035153548202,
+            0.9242004539525794,
+            0.9377767046788248,
+            0.9514753657690805,
+            0.9650407757997719,
+            0.9786579699904243,
+            0.9922173543487443
+          ],
+          "frequency_note": "Median same-direction interpolated velocity zero-crossing period; count/(2*tail duration) is also reported and has endpoint bias. No frequency claim when pp<=1e-9 mm/s or fewer than two upward crossings."
+        },
+        "beta": 50.0,
+        "raw_csv": "robustness_zero_hold_beta_50.csv"
+      }
+    },
+    "all_error_feedback_disabled": true,
+    "hard_over_tail_pp_reduction_factor": 1.0812423740451825e+33,
+    "note": "All runs begin at the actual valve and velocity recorded at 5s. Controller history is reconstructed from formal measurements; The complete delayed-error queue and both lowpass states are preserved. The counterfactual disables every feedback contribution only during hold. No new noise."
   },
   "interpretation_limits": [
     "Finite beta leaves a residual zero-flow band; smooth does not mean zero tracking error.",
@@ -421,7 +678,7 @@
     "Observed noise sensitivity and oscillation apply to this sampled equivalent velocity model, not every hydraulic system."
   ],
   "check_criteria": {
-    "lc_min_velocity_pp_mm_s": 0.0001,
+    "lc_min_velocity_pp_mm_s": 0.5,
     "decay_velocity_pp_mm_s": 1e-06,
     "decay_velocity_rms_mm_s": 1e-06,
     "lc_min_complete_cycles": 3,
@@ -434,8 +691,8 @@
     "hard_hold_velocity_limit_cycle_observed": true,
     "under_hold_velocity_decayed": true,
     "smooth_hold_velocity_decayed": true,
-    "kp0_hard_hold_limit_cycle_absent": true,
-    "kp0_disables_all_default_error_feedback": true
+    "feedback_disabled_hard_hold_limit_cycle_absent": true,
+    "feedback_disabled_preserves_initial_memory": true
   },
   "passed": true,
   "check_scope": "Checks cover only the configured supplemental trials, not global stability."

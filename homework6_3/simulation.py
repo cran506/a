@@ -6,11 +6,17 @@ from pathlib import Path
 import numpy as np
 from scipy.optimize import brentq
 from scipy.signal import butter, sosfiltfilt
-from deadzone_model import DeadzoneVelocityPlant, deadzone
+from deadzone_model import deadzone
+from input_deadzone_model import InputDeadzoneVelocityPlant
 from model_assisted_controller import ModelAssistedController, inverse_deadzone
 
 ROOT = Path(__file__).resolve().parent
 STRATEGIES = ("under", "hard_over", "smooth")
+
+
+def build_plant(config):
+    return InputDeadzoneVelocityPlant(gain_m_s_v=config['gain_m_s_v'], tau_valve_s=config['tau_valve_s'],
+        tau_velocity_s=config['tau_velocity_s'], deadzone_v=config['physical_deadzone_v'])
 
 
 def load_config(path=None):
@@ -37,8 +43,7 @@ def simulate(strategy, config, beta=None):
     acceleration = config['gain_m_s_v']*config['amplitude_v']*omega*np.cos(omega*time)
     velocity_ref = config['gain_m_s_v']*nominal
     position_ref = config['gain_m_s_v']*config['amplitude_v']/omega*(1-np.cos(omega*time))
-    plant = DeadzoneVelocityPlant(gain_m_s_v=config['gain_m_s_v'], tau_valve_s=config['tau_valve_s'],
-                                 tau_velocity_s=config['tau_velocity_s'], deadzone_v=config['physical_deadzone_v'])
+    plant = build_plant(config)
     estimate = config['under_estimate_v'] if strategy == 'under' else config['over_estimate_v']
     actual_beta = config['beta_default'] if beta is None else beta
     controller = ModelAssistedController(
@@ -48,15 +53,21 @@ def simulate(strategy, config, beta=None):
     noise = np.random.default_rng(config['noise_seed']).normal(
         0., config['measurement_noise_std_mm_s']/1000., len(time))
     names = ('control_voltage_v', 'valve_voltage_v', 'effective_voltage_v', 'velocity_mm_s',
-             'linear_voltage_v', 'measured_velocity_mm_s', 'feedback_voltage_v', 'raw_voltage_v')
+             'linear_voltage_v', 'measured_velocity_mm_s', 'feedback_voltage_v', 'raw_voltage_v',
+             'valve_effective_voltage_v', 'delayed_error_equivalent_v', 'lowpass1_v', 'lowpass2_v',
+             'highpass1_v', 'highpass2_v', 'washout_feedback_voltage_v')
     data = {name: np.empty(len(time)) for name in names}
     for index in range(len(time)):
         measured = plant.velocity_m_s+noise[index]
         voltage, _, _ = controller.update(
             [position_ref[index], velocity_ref[index], acceleration[index]], [0., measured])
-        values = (voltage, plant.valve_voltage_v, deadzone(plant.valve_voltage_v, config['physical_deadzone_v']),
+        values = (voltage, plant.valve_voltage_v, deadzone(voltage, config['physical_deadzone_v']),
                   plant.velocity_m_s*1000., controller.last['linear_voltage_v'], measured*1000.,
-                  controller.last['feedback_linear_v'], controller.last['raw_voltage_v'])
+                  controller.last['feedback_linear_v'], controller.last['raw_voltage_v'],
+                  plant.valve_voltage_v, controller.last['delayed_error_equivalent_v'],
+                  controller.last['lowpass1_v'], controller.last['lowpass2_v'],
+                  controller.last['highpass1_v'], controller.last['highpass2_v'],
+                  controller.last['washout_feedback_voltage_v'])
         for name, value in zip(names, values):
             data[name][index] = value
         if index+1 < len(time):
@@ -93,10 +104,11 @@ def _intervals_within_band(t, values, threshold):
 def calculate_metrics(data, config):
     t, u = data['time_s'], data['control_voltage_v']
     zoom = (t >= config['zoom_start_s']-1e-12) & (t <= config['zoom_end_s']+1e-12)
-    flat = _intervals_within_band(t[zoom], data['valve_voltage_v'][zoom], config['physical_deadzone_v'])
+    flat = _intervals_within_band(t[zoom], data['control_voltage_v'][zoom], config['physical_deadzone_v'])
     near_zero = _intervals_within_band(t[zoom], data['velocity_mm_s'][zoom], config['velocity_flat_threshold_mm_s'])
     sos = butter(4, config['chatter_cutoff_hz'], btype='highpass', fs=1/config['sample_time_s'], output='sos')
     high = sosfiltfilt(sos, u)
+    velocity_high = sosfiltfilt(sos, data['velocity_mm_s'])
     error = data['velocity_mm_s']-data['reference_velocity_mm_s']
     signs = np.sign(data['linear_voltage_v'][zoom])
     signs = signs[signs != 0]
@@ -106,11 +118,14 @@ def calculate_metrics(data, config):
         velocity_rmse_mm_s=float(np.sqrt(np.mean(error**2))),
         zoom_velocity_rmse_mm_s=float(np.sqrt(np.mean(error[zoom]**2))),
         longest_flow_closed_ms=1000.*max((b-a for a,b in flat), default=0.),
+        longest_effective_zero_ms=1000.*max((b-a for a,b in flat), default=0.),
         total_flow_closed_ms=1000.*sum(b-a for a,b in flat),
         longest_velocity_near_zero_ms=1000.*max((b-a for a,b in near_zero), default=0.),
         flow_closed_intervals_s=flat,
         chatter_voltage_pp_v=float(np.ptp(high[zoom])),
         chatter_voltage_rms_v=float(np.sqrt(np.mean(high[zoom]**2))),
+        chatter_velocity_pp_mm_s=float(np.ptp(velocity_high[zoom])),
+        chatter_velocity_rms_mm_s=float(np.sqrt(np.mean(velocity_high[zoom]**2))),
         max_voltage_step_v=float(np.max(abs(np.diff(u[zoom])))),
         linear_sign_reversals=int(np.count_nonzero(np.diff(signs))),
         velocity_turning_points=int(np.count_nonzero(np.diff(nonzero_steps))),
@@ -120,7 +135,7 @@ def calculate_metrics(data, config):
         max_abs_effective_voltage_v=float(np.max(abs(data['effective_voltage_v']))),
         max_abs_velocity_mm_s=float(np.max(abs(data['velocity_mm_s']))),
         sampled_saturation_count=int(np.count_nonzero(abs(u) >= 10.-1e-9)),
-        metric_notes=f"窗口内阈值平台采用采样线性重建；颤振峰峰值为{config['chatter_cutoff_hz']:g}Hz零相位高通分量，非原始峰峰值")
+        metric_notes=f"平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为{config['chatter_cutoff_hz']:g}Hz高通诊断")
 
 
 def static_thresholds(config):
@@ -145,7 +160,7 @@ def save_outputs(results, beta_results, config, destination):
             writer = csv.writer(stream, lineterminator='\n')
             writer.writerow(result['data'])
             writer.writerows(zip(*result['data'].values()))
-    summary = dict(config=config, model='局部低频阀—速度等效模型；非全双腔压力模型',
+    summary = dict(config=config, model='输入死区D(u)→一阶有效阀口→一阶速度；二级动态残差反馈及6采样缓存延迟，非全双腔模型',
                    strategies={k:dict(metrics=v['metrics'], beta=v['beta']) for k,v in results.items()},
                    beta_scan=[dict(beta=beta, metrics=r['metrics']) for beta,r in beta_results.items()],
                    static_reference=static_thresholds(config))
@@ -158,12 +173,13 @@ def write_metrics_table(results, beta_results, destination):
     """将控制台同一份定量表保存为 TXT 和方便导入 Excel 的 CSV。"""
     destination = Path(destination)
     rows = [*results.items(), *((f'beta={b:g}', r) for b,r in beta_results.items())]
-    keys = ('longest_flow_closed_ms', 'chatter_voltage_pp_v', 'velocity_rmse_mm_s', 'linear_sign_reversals')
-    lines = ['策略 / beta       流量最长平台(ms)  高频电压pp(V)  全周期速度RMSE(mm/s)  符号翻转次数']
+    keys = ('longest_effective_zero_ms', 'longest_velocity_near_zero_ms', 'chatter_voltage_pp_v',
+            'chatter_velocity_pp_mm_s', 'velocity_rmse_mm_s', 'linear_sign_reversals')
+    lines = ['策略 / beta       有效信号零平台(ms)  近零速度平台(ms)  高频电压pp(V)  高频速度pp(mm/s)  速度RMSE(mm/s)  符号翻转']
     for name, result in rows:
         m = result['metrics']
-        lines.append(f'{name:<16} {m[keys[0]]:>10.3f} {m[keys[1]]:>15.4f} '
-                     f'{m[keys[2]]:>18.5f} {m[keys[3]]:>12d}')
+        lines.append(f'{name:<16} {m[keys[0]]:>10.3f} {m[keys[1]]:>17.3f} '
+                     f'{m[keys[2]]:>15.4f} {m[keys[3]]:>18.4f} {m[keys[4]]:>15.5f} {m[keys[5]]:>8d}')
     (destination/'metrics_table.txt').write_text('\n'.join(lines)+'\n', encoding='utf-8')
     with (destination/'metrics_table.csv').open('w', encoding='utf-8', newline='') as stream:
         writer = csv.writer(stream, lineterminator='\n')

@@ -8,9 +8,51 @@ from scipy.optimize import brentq
 
 from deadzone_model import DeadzoneVelocityPlant, deadzone
 from model_assisted_controller import ModelAssistedController, inverse_deadzone
+from input_deadzone_model import InputDeadzoneVelocityPlant
 
 
 class DeadzoneMechanismTests(unittest.TestCase):
+    def test_input_deadzone_cascade_matches_independent_ode_and_split_steps(self):
+        plant, split = InputDeadzoneVelocityPlant(), InputDeadzoneVelocityPlant()
+        initial = np.array([.21,.003])
+        plant.reset(*initial); split.reset(*initial)
+        for command, duration in ((1.4,.001),(-1.2,.003),(.3,.002)):
+            drive = command-.5 if command>.5 else command+.5 if command<-.5 else 0.
+            reference = solve_ivp(lambda t,s: [(drive-s[0])/.0008,(.01*s[0]-s[1])/.012],
+                (0.,duration), initial, method='DOP853',rtol=1e-12,atol=1e-14)
+            plant.step(command,duration)
+            split.step(command,duration/2);split.step(command,duration/2)
+            actual = [plant.valve_voltage_v,plant.velocity_m_s]
+            np.testing.assert_allclose(actual,reference.y[:,-1],atol=2e-12,rtol=1e-10)
+            np.testing.assert_allclose(actual,[split.valve_voltage_v,split.velocity_m_s],atol=1e-14,rtol=1e-12)
+            initial = reference.y[:,-1]
+
+    def test_dynamic_residual_is_causally_delayed_and_has_zero_dc_gain(self):
+        config = dict(gain_m_s_v=.01,tau_velocity_s=.012,washout_gain=17.,washout_tau_s=.002,
+                      washout_order=2,feedback_delay_samples=6)
+        c = ModelAssistedController(dict(kp=0.,ts=.001),config)
+        for k in range(7):
+            c.update([0.,.001,0.],[0.,0.])
+            self.assertAlmostEqual(c.last['delayed_error_equivalent_v'],0. if k<6 else .1)
+            if k<6:self.assertEqual(c.last['washout_feedback_voltage_v'],0.)
+        self.assertGreater(abs(c.last['washout_feedback_voltage_v']),0.)
+        for _ in range(300):c.update([0.,.001,0.],[0.,0.])
+        self.assertLess(abs(c.last['washout_feedback_voltage_v']),1e-12)
+
+    def test_feedback_counterfactual_preserves_memory_and_disables_all_contributions(self):
+        config = dict(gain_m_s_v=.01,tau_velocity_s=.012,washout_gain=17.,washout_tau_s=.002,
+                      washout_order=2,feedback_delay_samples=6)
+        c = ModelAssistedController(dict(kp=1.,ki=2.,ts=.001),config,mode='hard')
+        for _ in range(10):c.update([0.,.001,0.],[0.,0.])
+        self.assertGreater(c.lowpass1,0.)
+        c.feedback_enabled=False
+        voltage, ff, residual=c.update([0.,.001,0.],[0.,0.])
+        self.assertGreater(c.lowpass1,0.)
+        self.assertEqual(len(c.error_history),7)
+        self.assertEqual(c.last['feedback_linear_v'],0.)
+        self.assertAlmostEqual(voltage,ff)
+        self.assertAlmostEqual(residual,0.)
+
     def test_real_deadzone_handles_scalar_array_and_both_boundaries(self):
         values = np.array([-1., -.5, -.1, 0., .1, .5, 1.])
         expected = np.array([-.5, 0., 0., 0., 0., 0., .5])

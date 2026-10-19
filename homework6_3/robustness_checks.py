@@ -9,9 +9,9 @@ import json
 from pathlib import Path
 import numpy as np
 
-from deadzone_model import DeadzoneVelocityPlant, deadzone
+from deadzone_model import deadzone
 from model_assisted_controller import ModelAssistedController
-from simulation import STRATEGIES, load_config, simulate
+from simulation import STRATEGIES, load_config, simulate, build_plant
 
 
 def _write_csv(path, data):
@@ -84,7 +84,7 @@ def _hold_metrics(data, tail_s=.1):
                         'No frequency claim when pp<=1e-9 mm/s or fewer than two upward crossings.'))
 
 
-def _zero_hold(source, config, strategy, *, kp=None, hold_start_s=5., duration_s=.4):
+def _zero_hold(source, config, strategy, *, feedback_enabled=True, hold_start_s=5., duration_s=1.):
     """从正式轨迹的真实阀位/速度继续，改为零参考而非人为速度种子。"""
     data = source['data']
     time = np.asarray(data['time_s'])
@@ -95,34 +95,37 @@ def _zero_hold(source, config, strategy, *, kp=None, hold_start_s=5., duration_s
     count = round(duration_s/dt)
     if abs(count*dt-duration_s) > 1e-10:
         raise ValueError('保持试验时长必须是共同采样周期的整数倍')
-    plant = DeadzoneVelocityPlant(
-        gain_m_s_v=config['gain_m_s_v'], tau_valve_s=config['tau_valve_s'],
-        tau_velocity_s=config['tau_velocity_s'], deadzone_v=config['physical_deadzone_v'])
+    plant = build_plant(config)
     initial_valve = float(data['valve_voltage_v'][index])
     initial_velocity = float(data['velocity_mm_s'][index])/1000.
     plant.reset(valve_voltage_v=initial_valve, velocity_m_s=initial_velocity)
-    controller = _controller(config, strategy, source.get('beta'), kp)
-    # Reconstitute optional I/D memory from actual recorded measurements rather
-    # than resetting hidden controller state at 5s. Defaults are P-only.
+    controller = _controller(config, strategy, source.get('beta'))
+    # 逐样本回放正式测量，恢复整个误差队列及LP1/LP2，不能仅从(v,z)重置。
     measured = data.get('measured_velocity_mm_s', data['velocity_mm_s'])
     for j in range(index):
         controller.update(_reference_state(time[j], config), [0., float(measured[j])/1000.])
+    initial_memory = dict(lowpass1_v=controller.lowpass1, lowpass2_v=controller.lowpass2,
+                          error_history_v=list(controller.error_history))
+    controller.feedback_enabled = feedback_enabled
     relative = np.arange(count+1)*dt
     names = ('velocity_mm_s', 'control_voltage_v', 'valve_voltage_v',
-             'effective_voltage_v', 'linear_voltage_v', 'feedback_voltage_v')
+             'effective_voltage_v', 'linear_voltage_v', 'feedback_voltage_v',
+             'lowpass1_v', 'lowpass2_v', 'delayed_error_equivalent_v')
     records = {name: np.empty(count+1) for name in names}
     for j in range(count+1):
         voltage, _, _ = controller.update([0., 0., 0.], [0., plant.velocity_m_s])
         values = (plant.velocity_m_s*1000., voltage, plant.valve_voltage_v,
-                  deadzone(plant.valve_voltage_v, config['physical_deadzone_v']),
-                  controller.last['linear_voltage_v'], controller.last['feedback_linear_v'])
+                  deadzone(voltage, config['physical_deadzone_v']),
+                  controller.last['linear_voltage_v'], controller.last['feedback_linear_v'],
+                  controller.last['lowpass1_v'], controller.last['lowpass2_v'],
+                  controller.last['delayed_error_equivalent_v'])
         for name, value in zip(names, values):
             records[name][j] = value
         if j < count:
             plant.step(voltage, dt)
     records = dict(time_s=relative, source_clock_time_s=relative+time[index], **records)
     return dict(
-        strategy=strategy, kp=config['kp'] if kp is None else kp,
+        strategy=strategy, feedback_enabled=feedback_enabled, controller_initial_memory=initial_memory,
         source_time_s=float(time[index]), initial_valve_voltage_v=initial_valve,
         initial_velocity_mm_s=initial_velocity*1000., hold_duration_s=float(relative[-1]),
         measurement_noise_std_mm_s=0., reference_velocity_mm_s=0.,
@@ -134,8 +137,7 @@ def run_robustness(results=None, config=None, folder=None):
 
     results 为正式三组结果字典；省略时优先读取 folder 中正式 CSV，
     缺少文件则按给定 config 重算。传入的 config 和 results 不被修改。
-    kp=0 反事实仅在保持段关闭 P，沿用同一真实起点；I/D 仍按配置保留，
-    因此只有默认 ki=kd=0 时它才等价于“关闭全部误差反馈”。
+    反事实只在保持段停用全部反馈（含washout）；主实验Kp本就为0。
     """
     config = dict(load_config() if config is None else config)
     folder = Path(folder) if folder is not None else Path(__file__).with_name('outputs')
@@ -170,13 +172,21 @@ def run_robustness(results=None, config=None, folder=None):
         filename = f'robustness_zero_hold_{strategy}.csv'
         _write_csv(folder/filename, trial.pop('data'))
         hold[strategy] = dict(trial, raw_csv=filename)
-        trial0 = _zero_hold(results[strategy], config, strategy, kp=0.)
-        filename0 = f'robustness_zero_hold_{strategy}_kp0.csv'
+        trial0 = _zero_hold(results[strategy], config, strategy, feedback_enabled=False)
+        filename0 = f'robustness_zero_hold_{strategy}_feedback_disabled.csv'
         _write_csv(folder/filename0, trial0.pop('data'))
         no_p[strategy] = dict(trial0, raw_csv=filename0)
     hard_pp = hold['hard_over']['metrics']['tail_velocity_pp_mm_s']
-    kp0_pp = no_p['hard_over']['metrics']['tail_velocity_pp_mm_s']
-    criteria = dict(lc_min_velocity_pp_mm_s=1e-4, decay_velocity_pp_mm_s=1e-6,
+    disabled_pp = no_p['hard_over']['metrics']['tail_velocity_pp_mm_s']
+    beta_holds = {}
+    for beta in config['beta_values']:
+        path = folder/f'beta_{beta:g}.csv'
+        source = dict(data=_read_csv(path), beta=beta) if path.exists() else simulate('smooth',config,beta)
+        trial = _zero_hold(source, config, 'smooth')
+        filename = f'robustness_zero_hold_beta_{beta:g}.csv'
+        _write_csv(folder/filename, trial.pop('data'))
+        beta_holds[f'{beta:g}'] = dict(trial, beta=beta, raw_csv=filename)
+    criteria = dict(lc_min_velocity_pp_mm_s=.5, decay_velocity_pp_mm_s=1e-6,
                     decay_velocity_rms_mm_s=1e-6, lc_min_complete_cycles=3,
                     lc_stationary_pp_ratio_min=.8, lc_stationary_pp_ratio_max=1.2,
                     reconstructed_noise_equality_tolerance_mm_s=1e-11)
@@ -193,8 +203,9 @@ def run_robustness(results=None, config=None, folder=None):
             and ratio is not None and criteria['lc_stationary_pp_ratio_min'] <= ratio <= criteria['lc_stationary_pp_ratio_max']),
         under_hold_velocity_decayed=has_decayed(hold['under']),
         smooth_hold_velocity_decayed=has_decayed(hold['smooth']),
-        kp0_hard_hold_limit_cycle_absent=has_decayed(no_p['hard_over']),
-        kp0_disables_all_default_error_feedback=bool(config['ki'] == 0. and config['kd'] == 0.))
+        feedback_disabled_hard_hold_limit_cycle_absent=has_decayed(no_p['hard_over']),
+        feedback_disabled_preserves_initial_memory=all(
+            hold[k]['controller_initial_memory'] == no_p[k]['controller_initial_memory'] for k in STRATEGIES))
     report = dict(
         scope='Supplementary robustness experiments; default main figure remains unchanged and noiseless.',
         source_config=config, formal_state_sources=sources,
@@ -202,13 +213,15 @@ def run_robustness(results=None, config=None, folder=None):
             shared_additive_noise_verified=bool(noise_difference < 1e-11),
             maximum_reconstructed_noise_difference_mm_s=noise_difference, beta_runs=noisy,
             note='Same seed and additive measurement noise; actual velocities and valve signals remain unfiltered.'),
-        zero_reference_hold=dict(start_s=5., duration_s=.4, tail_s=.1,
-            nominal_feedback_runs=hold, kp0_counterfactual_runs=no_p,
-            all_error_feedback_disabled_when_kp0=bool(config['ki'] == 0. and config['kd'] == 0.),
-            hard_over_tail_pp_reduction_factor=(hard_pp/kp0_pp if kp0_pp > 0 else None),
+        zero_reference_hold=dict(start_s=5., duration_s=1., tail_s=.1,
+            nominal_feedback_runs=hold, feedback_disabled_counterfactual_runs=no_p,
+            beta_hold_runs=beta_holds,
+            all_error_feedback_disabled=True,
+            hard_over_tail_pp_reduction_factor=(hard_pp/disabled_pp if disabled_pp > 0 else None),
             note=('All runs begin at the actual valve and velocity recorded at 5s. '
                   'Controller history is reconstructed from formal measurements; '
-                  'kp0 changes only P during the zero-reference hold. No new measurement noise.')),
+                  'The complete delayed-error queue and both lowpass states are preserved. '
+                  'The counterfactual disables every feedback contribution only during hold. No new noise.')),
         interpretation_limits=[
             'Finite beta leaves a residual zero-flow band; smooth does not mean zero tracking error.',
             'The noiseless sine crossing is transient; persistence is assessed separately under constant zero reference.',

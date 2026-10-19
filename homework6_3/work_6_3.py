@@ -37,8 +37,8 @@ def main():
         if extra.get('passed') is False:
             print('补充现象检查未全部满足，已保存实际结果，见 robustness.json。')
     print((folder/'metrics_table.txt').read_text(encoding='utf-8'), end='')
-    print('平台为实际阀位的阈值重建；高频pp由20Hz高通量化，图中绘制原始数据。')
-    print('有限 beta 仍存在残余零流量区；所有结论针对已公开的采样速度环。')
+    print('平台为D(u)有效信号零区间的阈值重建；近零速度另按0.5mm/s统计。')
+    print('高频pp仅由20Hz高通诊断，图中绘制原始数据；有限beta仍有残余平台。')
     print(f'功能检查：{sum(validation["checks"].values())}/{len(validation["checks"])}')
     if not args.no_plot:
         from plotting import plot_comparison

@@ -16,10 +16,15 @@
     "gain_m_s_v": 0.01,
     "tau_valve_s": 0.0008,
     "tau_velocity_s": 0.012,
-    "kp": 4.0,
+    "kp": 0.0,
     "ki": 0.0,
     "kd": 0.0,
     "derivative_alpha": 0.85,
+    "washout_gain": 17.0,
+    "washout_tau_s": 0.002,
+    "washout_order": 2,
+    "feedback_delay_samples": 6,
+    "plant_structure": "input_deadzone_then_valve_then_velocity",
     "measurement_noise_std_mm_s": 0.0,
     "noise_seed": 63018,
     "zoom_start_s": 4.55,
@@ -27,126 +32,143 @@
     "velocity_flat_threshold_mm_s": 0.5,
     "chatter_cutoff_hz": 20.0
   },
-  "model": "局部低频阀—速度等效模型；非全双腔压力模型",
+  "model": "输入死区D(u)→一阶有效阀口→一阶速度；二级动态残差反馈及6采样缓存延迟，非全双腔模型",
   "strategies": {
     "under": {
       "metrics": {
-        "velocity_rmse_mm_s": 0.19977325162577173,
-        "zoom_velocity_rmse_mm_s": 0.19878026004428437,
-        "longest_flow_closed_ms": 21.60007684342702,
-        "total_flow_closed_ms": 21.60007684342702,
-        "longest_velocity_near_zero_ms": 44.56485314165892,
+        "velocity_rmse_mm_s": 0.9956201044196087,
+        "zoom_velocity_rmse_mm_s": 0.9741265511386296,
+        "longest_flow_closed_ms": 63.61972469824906,
+        "longest_effective_zero_ms": 63.61972469824906,
+        "total_flow_closed_ms": 63.61972469824906,
+        "longest_velocity_near_zero_ms": 95.4239135151429,
         "flow_closed_intervals_s": [
           [
-            4.981995604864605,
-            5.003595681708032
+            4.956168041096481,
+            5.01978776579473
           ]
         ],
-        "chatter_voltage_pp_v": 0.7694678613782565,
-        "chatter_voltage_rms_v": 0.0420514907278789,
-        "max_voltage_step_v": 0.8113118016187854,
+        "chatter_voltage_pp_v": 0.7671354224132945,
+        "chatter_voltage_rms_v": 0.040088822056719105,
+        "chatter_velocity_pp_mm_s": 0.04093798940867973,
+        "chatter_velocity_rms_mm_s": 0.004108164072811249,
+        "max_voltage_step_v": 0.8029692688835446,
         "linear_sign_reversals": 1,
         "velocity_turning_points": 0,
-        "velocity_excess_variation_mm_s": 3.552713678800501e-15,
-        "max_abs_voltage_v": 5.480147880151379,
-        "max_abs_effective_voltage_v": 4.980147197175814,
-        "max_abs_velocity_mm_s": 49.800049861373786,
+        "velocity_excess_variation_mm_s": 0.0,
+        "max_abs_voltage_v": 5.40014211934178,
+        "max_abs_effective_voltage_v": 4.90014211934178,
+        "max_abs_velocity_mm_s": 48.99999201709659,
         "sampled_saturation_count": 0,
-        "metric_notes": "窗口内阈值平台采用采样线性重建；颤振峰峰值为20Hz零相位高通分量，非原始峰峰值"
+        "metric_notes": "平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为20Hz高通诊断"
       },
       "beta": null
     },
     "hard_over": {
       "metrics": {
-        "velocity_rmse_mm_s": 0.1991926603713886,
-        "zoom_velocity_rmse_mm_s": 0.19488716846160234,
-        "longest_flow_closed_ms": 2.62864070497848,
-        "total_flow_closed_ms": 24.438884713029907,
-        "longest_velocity_near_zero_ms": 23.509683415190885,
+        "velocity_rmse_mm_s": 0.9961208226142654,
+        "zoom_velocity_rmse_mm_s": 0.9671387051132642,
+        "longest_flow_closed_ms": 0.8311573068855438,
+        "longest_effective_zero_ms": 0.8311573068855438,
+        "total_flow_closed_ms": 10.290008143795326,
+        "longest_velocity_near_zero_ms": 7.116565118311158,
         "flow_closed_intervals_s": [
           [
-            4.962119646123154,
-            4.964636559029391
+            4.988083116378588,
+            4.988914273685474
           ],
           [
-            4.969125731838059,
-            4.971754372543037
+            4.995098358818759,
+            4.995904638631614
           ],
           [
-            4.974136663481302,
-            4.976735570547144
+            5.000098164047426,
+            5.00091327211536
           ],
           [
-            4.979124712516709,
-            4.980958604388808
+            5.008138550992355,
+            5.008917953022622
           ],
           [
-            4.982088168030585,
-            4.983903314610275
+            5.014081197337533,
+            5.014869188773085
           ],
           [
-            4.986113051240396,
-            4.987884583680772
+            5.022143664678259,
+            5.02290165132902
           ],
           [
-            4.99012005187763,
-            4.991934495121685
+            5.027098227351095,
+            5.027876715277802
           ],
           [
-            4.9930935852923515,
-            4.994886344298425
+            5.036107509378567,
+            5.036881066464096
           ],
           [
-            4.997135659568343,
-            4.9997231610324615
+            5.0401257798338746,
+            5.040901220027859
           ],
           [
-            5.0031266322886765,
-            5.005710813824382
+            5.050097683771166,
+            5.0508839661214235
           ],
           [
-            5.01112103747593,
-            5.013616005369785
+            5.053128425073133,
+            5.053916600297394
+          ],
+          [
+            5.064110685578454,
+            5.064911055567503
+          ],
+          [
+            5.066099518733716,
+            5.066909288803468
           ]
         ],
-        "chatter_voltage_pp_v": 2.2578180563952044,
-        "chatter_voltage_rms_v": 0.12702106253460899,
-        "max_voltage_step_v": 1.2316596100517907,
-        "linear_sign_reversals": 17,
-        "velocity_turning_points": 14,
-        "velocity_excess_variation_mm_s": 0.6433013059775448,
-        "max_abs_voltage_v": 5.520147880151378,
-        "max_abs_effective_voltage_v": 5.020147197175815,
-        "max_abs_velocity_mm_s": 50.200049861373785,
+        "chatter_voltage_pp_v": 2.0906394814543448,
+        "chatter_voltage_rms_v": 0.2114423228015924,
+        "chatter_velocity_pp_mm_s": 1.289785989211778,
+        "chatter_velocity_rms_mm_s": 0.13013889746845736,
+        "max_voltage_step_v": 1.319284447812699,
+        "linear_sign_reversals": 13,
+        "velocity_turning_points": 22,
+        "velocity_excess_variation_mm_s": 12.017799049844996,
+        "max_abs_voltage_v": 5.600142119341774,
+        "max_abs_effective_voltage_v": 5.100142119341774,
+        "max_abs_velocity_mm_s": 50.99999201709659,
         "sampled_saturation_count": 0,
-        "metric_notes": "窗口内阈值平台采用采样线性重建；颤振峰峰值为20Hz零相位高通分量，非原始峰峰值"
+        "metric_notes": "平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为20Hz高通诊断"
       },
       "beta": null
     },
     "smooth": {
       "metrics": {
-        "velocity_rmse_mm_s": 0.19804704657975422,
-        "zoom_velocity_rmse_mm_s": 0.1884563415667244,
-        "longest_flow_closed_ms": 16.308980207530688,
-        "total_flow_closed_ms": 16.308980207530688,
-        "longest_velocity_near_zero_ms": 33.63761166038515,
+        "velocity_rmse_mm_s": 0.9915656887890576,
+        "zoom_velocity_rmse_mm_s": 0.9549792311282619,
+        "longest_flow_closed_ms": 28.62079908592552,
+        "longest_effective_zero_ms": 28.62079908592552,
+        "total_flow_closed_ms": 28.62079908592552,
+        "longest_velocity_near_zero_ms": 35.40225276833375,
         "flow_closed_intervals_s": [
           [
-            4.982848174446962,
-            4.999157154654493
+            4.973924924246992,
+            5.002545723332918
           ]
         ],
-        "chatter_voltage_pp_v": 0.49178420597100503,
-        "chatter_voltage_rms_v": 0.030576913782436547,
-        "max_voltage_step_v": 0.1096175636851465,
+        "chatter_voltage_pp_v": 0.3124303863995741,
+        "chatter_voltage_rms_v": 0.023599826755547032,
+        "chatter_velocity_pp_mm_s": 0.2849990313042422,
+        "chatter_velocity_rms_mm_s": 0.028228432413405283,
+        "max_voltage_step_v": 0.10960892151829787,
         "linear_sign_reversals": 1,
-        "velocity_turning_points": 0,
-        "velocity_excess_variation_mm_s": 0.0,
-        "max_abs_voltage_v": 5.520147880151378,
-        "max_abs_effective_voltage_v": 5.020147197175815,
-        "max_abs_velocity_mm_s": 50.200049861373785,
+        "velocity_turning_points": 6,
+        "velocity_excess_variation_mm_s": 0.05976998806563927,
+        "max_abs_voltage_v": 5.600142119341774,
+        "max_abs_effective_voltage_v": 5.100142119341774,
+        "max_abs_velocity_mm_s": 50.99999201709659,
         "sampled_saturation_count": 0,
-        "metric_notes": "窗口内阈值平台采用采样线性重建；颤振峰峰值为20Hz零相位高通分量，非原始峰峰值"
+        "metric_notes": "平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为20Hz高通诊断"
       },
       "beta": 18.0
     }
@@ -155,86 +177,99 @@
     {
       "beta": 5.0,
       "metrics": {
-        "velocity_rmse_mm_s": 0.1959657275904147,
-        "zoom_velocity_rmse_mm_s": 0.17611560059548295,
-        "longest_flow_closed_ms": 28.865106786670758,
-        "total_flow_closed_ms": 28.865106786670758,
-        "longest_velocity_near_zero_ms": 45.51359742741212,
+        "velocity_rmse_mm_s": 0.9824108419151732,
+        "zoom_velocity_rmse_mm_s": 0.8967879672300625,
+        "longest_flow_closed_ms": 87.4535580964384,
+        "longest_effective_zero_ms": 87.4535580964384,
+        "total_flow_closed_ms": 87.4535580964384,
+        "longest_velocity_near_zero_ms": 96.96455904938261,
         "flow_closed_intervals_s": [
           [
-            4.977896253224018,
-            5.006761360010689
+            4.9448140566306575,
+            5.032267614727096
           ]
         ],
-        "chatter_voltage_pp_v": 0.21349507352615943,
-        "chatter_voltage_rms_v": 0.015379006513912186,
-        "max_voltage_step_v": 0.05063720756162368,
+        "chatter_voltage_pp_v": 0.19353797592888666,
+        "chatter_voltage_rms_v": 0.019793262475501762,
+        "chatter_velocity_pp_mm_s": 0.32123967403706,
+        "chatter_velocity_rms_mm_s": 0.03360947338713693,
+        "max_voltage_step_v": 0.04794506287273825,
         "linear_sign_reversals": 1,
-        "velocity_turning_points": 0,
-        "velocity_excess_variation_mm_s": -3.552713678800501e-15,
-        "max_abs_voltage_v": 5.520147880151378,
-        "max_abs_effective_voltage_v": 5.020147197175815,
-        "max_abs_velocity_mm_s": 50.200049861373785,
+        "velocity_turning_points": 12,
+        "velocity_excess_variation_mm_s": 0.4888131229375894,
+        "max_abs_voltage_v": 5.600142119341774,
+        "max_abs_effective_voltage_v": 5.100142119341774,
+        "max_abs_velocity_mm_s": 50.99999201709659,
         "sampled_saturation_count": 0,
-        "metric_notes": "窗口内阈值平台采用采样线性重建；颤振峰峰值为20Hz零相位高通分量，非原始峰峰值"
+        "metric_notes": "平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为20Hz高通诊断"
       }
     },
     {
       "beta": 18.0,
       "metrics": {
-        "velocity_rmse_mm_s": 0.19804704657975422,
-        "zoom_velocity_rmse_mm_s": 0.1884563415667244,
-        "longest_flow_closed_ms": 16.308980207530688,
-        "total_flow_closed_ms": 16.308980207530688,
-        "longest_velocity_near_zero_ms": 33.63761166038515,
+        "velocity_rmse_mm_s": 0.9915656887890576,
+        "zoom_velocity_rmse_mm_s": 0.9549792311282619,
+        "longest_flow_closed_ms": 28.62079908592552,
+        "longest_effective_zero_ms": 28.62079908592552,
+        "total_flow_closed_ms": 28.62079908592552,
+        "longest_velocity_near_zero_ms": 35.40225276833375,
         "flow_closed_intervals_s": [
           [
-            4.982848174446962,
-            4.999157154654493
+            4.973924924246992,
+            5.002545723332918
           ]
         ],
-        "chatter_voltage_pp_v": 0.49178420597100503,
-        "chatter_voltage_rms_v": 0.030576913782436547,
-        "max_voltage_step_v": 0.1096175636851465,
+        "chatter_voltage_pp_v": 0.3124303863995741,
+        "chatter_voltage_rms_v": 0.023599826755547032,
+        "chatter_velocity_pp_mm_s": 0.2849990313042422,
+        "chatter_velocity_rms_mm_s": 0.028228432413405283,
+        "max_voltage_step_v": 0.10960892151829787,
         "linear_sign_reversals": 1,
-        "velocity_turning_points": 0,
-        "velocity_excess_variation_mm_s": 0.0,
-        "max_abs_voltage_v": 5.520147880151378,
-        "max_abs_effective_voltage_v": 5.020147197175815,
-        "max_abs_velocity_mm_s": 50.200049861373785,
+        "velocity_turning_points": 6,
+        "velocity_excess_variation_mm_s": 0.05976998806563927,
+        "max_abs_voltage_v": 5.600142119341774,
+        "max_abs_effective_voltage_v": 5.100142119341774,
+        "max_abs_velocity_mm_s": 50.99999201709659,
         "sampled_saturation_count": 0,
-        "metric_notes": "窗口内阈值平台采用采样线性重建；颤振峰峰值为20Hz零相位高通分量，非原始峰峰值"
+        "metric_notes": "平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为20Hz高通诊断"
       }
     },
     {
       "beta": 50.0,
       "metrics": {
-        "velocity_rmse_mm_s": 0.1988811546180278,
-        "zoom_velocity_rmse_mm_s": 0.19328511565107404,
-        "longest_flow_closed_ms": 10.371646275356028,
-        "total_flow_closed_ms": 11.192887030864185,
-        "longest_velocity_near_zero_ms": 29.1967876380248,
+        "velocity_rmse_mm_s": 0.9964591456025816,
+        "zoom_velocity_rmse_mm_s": 0.9780010753912777,
+        "longest_flow_closed_ms": 10.769665654817295,
+        "longest_effective_zero_ms": 10.769665654817295,
+        "total_flow_closed_ms": 14.865689903566626,
+        "longest_velocity_near_zero_ms": 15.506393040445765,
         "flow_closed_intervals_s": [
           [
-            4.9845811495257655,
-            4.9949527958011215
+            4.98371505666455,
+            4.994484722319367
           ],
           [
-            4.997771654670036,
-            4.998592895425544
+            5.00319475780207,
+            5.006545334749692
+          ],
+          [
+            5.0184089304316695,
+            5.0191543777327965
           ]
         ],
-        "chatter_voltage_pp_v": 0.6860317997271901,
-        "chatter_voltage_rms_v": 0.03944252857096571,
-        "max_voltage_step_v": 0.1962644732704777,
+        "chatter_voltage_pp_v": 0.7926033482129855,
+        "chatter_voltage_rms_v": 0.05061567661746046,
+        "chatter_velocity_pp_mm_s": 0.4308120011680796,
+        "chatter_velocity_rms_mm_s": 0.033632795609548696,
+        "max_voltage_step_v": 0.35403420824049603,
         "linear_sign_reversals": 1,
-        "velocity_turning_points": 0,
-        "velocity_excess_variation_mm_s": 0.0,
-        "max_abs_voltage_v": 5.520147880151378,
-        "max_abs_effective_voltage_v": 5.020147197175815,
-        "max_abs_velocity_mm_s": 50.200049861373785,
+        "velocity_turning_points": 10,
+        "velocity_excess_variation_mm_s": 0.6722805817985176,
+        "max_abs_voltage_v": 5.600142119341774,
+        "max_abs_effective_voltage_v": 5.100142119341774,
+        "max_abs_velocity_mm_s": 50.99999201709659,
         "sampled_saturation_count": 0,
-        "metric_notes": "窗口内阈值平台采用采样线性重建；颤振峰峰值为20Hz零相位高通分量，非原始峰峰值"
+        "metric_notes": "平台为D(u)输出零区间采样重建，不等于动态阀口零流量；legacy flow_closed字段为兼容别名；颤振为20Hz高通诊断"
       }
     }
   ],

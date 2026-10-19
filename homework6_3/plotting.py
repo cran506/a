@@ -44,11 +44,10 @@ def _metric(metrics, keys):
 def metric_caption(results):
     """只输出已计算的指标；实际字段由实验程序提供。"""
     lines = []
-    fields = (("最长流量关闭平台", ("longest_flow_closed_ms", "zero_plateau_ms", "plateau_duration_ms", "deadzone_flat_duration_ms",
+    fields = (("有效信号零平台", ("longest_effective_zero_ms", "longest_flow_closed_ms", "plateau_duration_ms", "deadzone_flat_duration_ms",
                            "flat_duration_ms", "plateau_ms"), ".2f", " ms"),
-              ("控制颤振峰峰值", ("chatter_voltage_pp_v", "chatter_peak_to_peak_v", "voltage_chatter_pp_v", "chatter_pp_v",
-                                   "control_chatter_p2p_v"), ".4f", " V"),
-              ("速度 RMSE", ("velocity_rmse_mm_s", "rmse_velocity_mm_s", "speed_rmse_mm_s"), ".4f", " mm/s"))
+              ("近零速度平台", ("longest_velocity_near_zero_ms",), ".2f", " ms"),
+              ("速度高频峰峰值", ("chatter_velocity_pp_mm_s",), ".3f", " mm/s"))
     for kind in KINDS:
         metrics = results[kind].get("metrics", {})
         entries = []
@@ -94,7 +93,7 @@ def _limits(ax, arrays, window, time, *, include=()):
     lower = min(float(np.min(values)) for values in visible)
     upper = max(float(np.max(values)) for values in visible)
     span = max(upper-lower, max(abs(lower), abs(upper), .1)*.1)
-    ax.set_ylim(lower-.12*span, upper+.22*span)
+    ax.set_ylim(lower-.08*span, upper+.08*span)
 
 
 def plot_comparison(results, config, destination):
@@ -120,7 +119,7 @@ def plot_comparison(results, config, destination):
                      fontsize=22, y=.978)
         windows = ((0., 10.), (4.55, 5.45))
         fields = ("control_voltage_v", "effective_voltage_v", "velocity_mm_s")
-        labels = ("控制电压 $u$ (V)", "阀芯死区后有效信号 $u_{eff}$ (V)", "真实速度 $v$ (mm/s)")
+        labels = ("控制电压 $u$ (V)", "死区输出 $u_{eff}=D(u)$ (V)", "模型速度 $v$ (mm/s)")
         for column, window in enumerate(windows):
             for row, field in enumerate(fields):
                 ax = axes[row, column]
@@ -128,13 +127,10 @@ def plot_comparison(results, config, destination):
                 if column == 0:
                     ax.axvspan(*windows[1], color="#efce69", alpha=.15, zorder=0)
                 if row == 0:
-                    ax.plot(time, base["reference_voltage_v"], color="#222222", ls=":", lw=1.7,
-                            label="线性电压参考 $u_{ref}$")
                     ax.axhspan(-deadzone, deadzone, color="#aab2bb", alpha=.12, zorder=0)
                     for boundary in (-deadzone, deadzone):
                         ax.axhline(boundary, color="#888888", ls=":", lw=1.,
-                                   label=f"真实阀芯死区 ±{deadzone:g} V（阀动态后）" if boundary > 0 else None)
-                    values.append(base["reference_voltage_v"])
+                                   label=f"物理输入死区 ±{deadzone:g} V" if boundary > 0 else None)
                 elif row == 1:
                     ax.plot(time, base["reference_voltage_v"], color="#222222", ls=":", lw=1.7,
                             label="线性有效信号参考 $u_{ref}$")
@@ -155,9 +151,9 @@ def plot_comparison(results, config, destination):
                 ax.set_ylabel(labels[row])
                 ax.grid(True, ls=":", lw=.75, color="#b4bac1", alpha=.55)
                 ax.set_axisbelow(True)
-                title = ("控制电压", "阀芯死区后的有效信号", "真实速度")[row]
+                title = ("控制电压", "死区输出有效信号", "活塞速度")[row]
                 scope = "全周期 0–10 s" if column == 0 else "换向 4.55–5.45 s"
-                ax.set_title(f"({chr(97+row)}{column+1}) {title} · {scope}",
+                ax.set_title(f"({chr(97+column)}{row+1}) {title} · {scope}",
                              loc="left", fontsize=13, pad=10)
                 if row == 2:
                     ax.set_xlabel("仿真时间 $t$ (s)")
@@ -169,8 +165,8 @@ def plot_comparison(results, config, destination):
             duration = results["under"]["metrics"].get("longest_flow_closed_ms")
             if duration is not None:
                 axes[1, 1].annotate(
-                    f"欠补偿：最长关闭平台 {duration:.2f} ms", xy=(mid, 0.),
-                    xytext=(.025, .94), textcoords="axes fraction", va="top",
+                    f"欠补偿：有效信号零平台 {duration:.2f} ms", xy=(mid, 0.),
+                    xytext=(.025, .13), textcoords="axes fraction", va="bottom",
                     color=COLORS["under"], fontsize=10,
                     bbox={"boxstyle": "round,pad=.3", "fc": "white", "ec": COLORS["under"], "alpha": .95},
                     arrowprops={"arrowstyle": "->", "color": COLORS["under"], "lw": 1.2})
@@ -181,26 +177,38 @@ def plot_comparison(results, config, destination):
             differences = np.diff(velocity[indices])
             turns = np.flatnonzero(differences[:-1]*differences[1:] < 0.) + 1
             point = indices[turns[len(turns)//2]] if len(turns) else indices[len(indices)//2]
-            text = f"硬过补偿：速度转折 {hm['velocity_turning_points']} 次"
-            if hm.get("velocity_excess_variation_mm_s") is not None:
-                text += f"\n超额总变差 {hm['velocity_excess_variation_mm_s']:.3f} mm/s"
+            text = f"硬过补偿：速度高频峰峰值 {hm['chatter_velocity_pp_mm_s']:.3f} mm/s"
+            text += f"\n欠补偿近零速度平台 {results['under']['metrics']['longest_velocity_near_zero_ms']:.1f} ms"
             axes[2, 1].annotate(
-                text, xy=(time[point], velocity[point]), xytext=(.025, .94),
-                textcoords="axes fraction", va="top", color=COLORS["hard_over"], fontsize=10,
+                text, xy=(time[point], velocity[point]), xytext=(.025, .13),
+                textcoords="axes fraction", va="bottom", color=COLORS["hard_over"], fontsize=10,
                 bbox={"boxstyle": "round,pad=.3", "fc": "white", "ec": COLORS["hard_over"], "alpha": .95},
                 arrowprops={"arrowstyle": "->", "color": COLORS["hard_over"], "lw": 1.2})
+        detail = axes[2, 1].inset_axes([.34, .64, .24, .29])
+        detail.plot(time, base['reference_velocity_mm_s'], color='#222222',ls=':',lw=1.)
+        for kind in KINDS:
+            detail.plot(time, results[kind]['data']['velocity_mm_s'],color=COLORS[kind],
+                        ls=STYLES[kind],lw=.9)
+        detail.set_xlim(4.94,5.16)
+        mask=(time>=4.94)&(time<=5.16)
+        low=min(float(np.min(results[k]['data']['velocity_mm_s'][mask])) for k in KINDS)
+        high=max(float(np.max(results[k]['data']['velocity_mm_s'][mask])) for k in KINDS)
+        detail.set_ylim(low-.3,high+.3)
+        detail.set_title('过零速度细节 (mm/s)',fontsize=7.5,pad=3)
+        detail.tick_params(labelsize=7,length=2,pad=1)
+        detail.set_xticks([4.95,5.05,5.15])
+        detail.grid(True,ls=':',alpha=.4)
         caption = metric_caption(results)
         fig.subplots_adjust(left=.07, right=.984, top=.918, bottom=.225,
                             hspace=.18, wspace=.15)
         fig.text(.07, .162,
-                 "死区作用于实际阀芯电压 u_v：u_eff=sign(u_v)·max(|u_v|−δ,0)，不是对控制指令 u 直接截断。"
-                 "曲线为原始闭环采样数据，未绘图平滑或注入纹波。",
+                 "共同对象：输入死区 D(u) → 阀有效开口一阶 → 速度一阶；曲线来自闭环计算，未加入预设振荡。",
                  fontsize=10.5, color="#444444", va="top")
         if caption:
             fig.text(.07, .131, caption, fontsize=10.5, color="#333333", va="top", linespacing=1.7)
         fig.text(.07, .035,
-                 f"平台按实际阀芯 |u_v|≤{deadzone:g} V 统计；颤振值为 {config.get('chatter_cutoff_hz', 20.):g} Hz "
-                 "高通诊断峰峰值，滤波仅用于指标。局部阀–速度等效模型，有限 β 仍有残余平台；详见报告。",
+                 f"反馈压力测试：二级washout，K_w={config['washout_gain']:g}，τ_w={config['washout_tau_s']*1000:g} ms，误差缓存延迟 {config['feedback_delay_samples']} 个采样；"
+                 "有限 β 仍有残余平台。高通仅用于指标，图中保留原始数据。",
                  fontsize=10.5, color="#555555", va="top")
         try:
             fig.savefig(destination, facecolor="white")
