@@ -1,0 +1,19 @@
+{
+  "selection_metric": "calibration normalized-action MAE against fixed pruned FP32 actor",
+  "calibration_count": 12701,
+  "selected_alpha": 0.5,
+  "candidates": [
+    {
+      "alpha": 0.25,
+      "calibration_action_mae": 0.017177479341626167
+    },
+    {
+      "alpha": 0.5,
+      "calibration_action_mae": 0.016791274771094322
+    },
+    {
+      "alpha": 0.75,
+      "calibration_action_mae": 0.01752568408846855
+    }
+  ]
+}

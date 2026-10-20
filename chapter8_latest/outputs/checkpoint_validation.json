@@ -1,0 +1,62 @@
+[
+  {
+    "timesteps": 220000,
+    "metrics": {
+      "minimum_velocity_error_mms": -39.98317134404403,
+      "maximum_velocity_error_mms": 22.266581296501677,
+      "velocity_error_rms_mms": 6.153478574571738,
+      "final_100ms_velocity_bias_mms": 0.13369604135728755,
+      "recovery_1mms_s": 0.07200000000000006,
+      "peak_voltage_v": 9.999969005584717,
+      "final_voltage_v": 6.695608868457303,
+      "max_abs_voltage_v": 9.999969005584717,
+      "max_voltage_step_v": 6.406583786010742,
+      "final_position_error_mm": -0.37995005210812727
+    }
+  },
+  {
+    "timesteps": 340000,
+    "metrics": {
+      "minimum_velocity_error_mms": -18.14010552391894,
+      "maximum_velocity_error_mms": 15.695034304646068,
+      "velocity_error_rms_mms": 3.341029896592172,
+      "final_100ms_velocity_bias_mms": -0.19732302832447604,
+      "recovery_1mms_s": 0.06400000000000006,
+      "peak_voltage_v": 9.999122619628906,
+      "final_voltage_v": 6.645151388527143,
+      "max_abs_voltage_v": 9.999122619628906,
+      "max_voltage_step_v": 5.371352434158325,
+      "final_position_error_mm": -0.2748005797893263
+    }
+  },
+  {
+    "timesteps": 580000,
+    "metrics": {
+      "minimum_velocity_error_mms": -25.17499763819517,
+      "maximum_velocity_error_mms": 3.32525213073212,
+      "velocity_error_rms_mms": 3.4937607792814243,
+      "final_100ms_velocity_bias_mms": 0.10942665309249268,
+      "recovery_1mms_s": 0.381,
+      "peak_voltage_v": 9.4761061668396,
+      "final_voltage_v": 6.687573147292184,
+      "max_abs_voltage_v": 9.4761061668396,
+      "max_voltage_step_v": 5.905759334564209,
+      "final_position_error_mm": -0.3585083358628588
+    }
+  },
+  {
+    "timesteps": 820000,
+    "metrics": {
+      "minimum_velocity_error_mms": -21.165825036273606,
+      "maximum_velocity_error_mms": 0.3807383568417977,
+      "velocity_error_rms_mms": 2.175398292523574,
+      "final_100ms_velocity_bias_mms": 0.19151231688607498,
+      "recovery_1mms_s": 0.014000000000000012,
+      "peak_voltage_v": 9.950214624404907,
+      "final_voltage_v": 6.7026761380752715,
+      "max_abs_voltage_v": 9.950214624404907,
+      "max_voltage_step_v": 6.417185068130493,
+      "final_position_error_mm": 0.0476955969458126
+    }
+  }
+]

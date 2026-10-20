@@ -1,0 +1,35 @@
+{
+  "controller": "Nominal fixed position PID with filtered derivative and conditional-integration anti-windup",
+  "gains": {
+    "Kp_V_per_mm": 1.0,
+    "Ki_V_per_mm_s": 4.0,
+    "Kd_V_per_mm_per_s": 0.01,
+    "derivative_alpha": 0.85,
+    "dt_s": 0.001
+  },
+  "selection_method": "Nominal steady velocity gain is identified from equilibrium v=50±0.1 mm/s. For the reduced position plant K/s, choose repeated poles at -8/s: Kp=16/K, Ki=64/K; round to 1 and 4, add Kd=.01 and alpha=.85. The gains are frozen before the fault test; no fault waveform is fitted.",
+  "nominal_dc_velocity_gain_mm_s_per_V": 16.435478577572617,
+  "unrounded_repeated_pole_gains": {
+    "Kp": 0.9735037482774089,
+    "Ki": 3.8940149931096357
+  },
+  "nominal_test": "1 mm position offset at elapsed .03s, otherwise 50mm/s cruise; no external load and beta=1 GPa; identical actual nonlinear pressure ODE",
+  "nominal_position_step": {
+    "overshoot_percent": 14.794936945625517,
+    "position_rms_mm": 0.19285994061479012,
+    "settling_time_2percent_s": 0.705,
+    "last_100ms_position_rms_mm": 0.004213956361012087,
+    "maximum_voltage_V": 4.51386395051498,
+    "all_finite": true
+  },
+  "fault_validation": "Start global t=.4s in steady 50mm/s cruise at x=1mm. At global t=.5s add 5000N and reduce beta to .5GPa. Validation does not change gains.",
+  "fault_result": {
+    "minimum_velocity_error_mms": -51.08531629044738,
+    "maximum_velocity_error_mms": 5.283334682106296,
+    "maximum_voltage_V": 7.35806497597075,
+    "last_100ms_velocity_error_rms_mms": 0.6236560633948167,
+    "last_100ms_position_error_mm": -0.08830118986433265,
+    "all_finite": true
+  },
+  "interpretation": "The approximately -51mm/s initial valley and subsequent modest ringing are computed results of this compact hydraulic configuration, not the illustrative textbook -48mm/s or its prescribed oscillation envelope. No curve or voltage is spliced."
+}

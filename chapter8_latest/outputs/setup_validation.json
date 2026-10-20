@@ -1,0 +1,13 @@
+{
+  "python": "3.12.14",
+  "interpreter": "/workspace/.venvs/chapter8/bin/python",
+  "compiler": "/usr/bin/g++",
+  "pip_check": "passed",
+  "environment_tests": 4,
+  "physics_tests": 5,
+  "edge_tests": 12,
+  "gymnasium_check_env": "passed",
+  "setup_repeat_install": "requirements already satisfied; pip check passed",
+  "environment_draft": "install_script and start_skill saved; snapshot publication not performed",
+  "total_tests": 21
+}

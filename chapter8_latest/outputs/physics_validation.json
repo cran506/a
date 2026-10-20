@@ -1,0 +1,140 @@
+{
+  "experiment": "independent_Radau_and_RK4_comparison",
+  "dt_s": 0.001,
+  "fault_load_n": 5000.0,
+  "fault_beta_multiplier": 0.5,
+  "equilibria": [
+    {
+      "velocity_m_s": 0.035,
+      "load_n": 0.0,
+      "voltage_v": 2.6003204948775096,
+      "state_si": [
+        0.001,
+        0.035,
+        6059970.65249067,
+        4670423.085459314
+      ],
+      "mechanical_residual_m_s2": 0.0,
+      "pressure_residual_pa_s": 6.570404464505334e-06
+    },
+    {
+      "velocity_m_s": 0.05,
+      "load_n": 0.0,
+      "voltage_v": 3.5098639505149896,
+      "state_si": [
+        0.001,
+        0.05,
+        6160423.123500337,
+        4637908.509191085
+      ],
+      "mechanical_residual_m_s2": 9.094947017729283e-16,
+      "pressure_residual_pa_s": 2.8416072910191035e-06
+    },
+    {
+      "velocity_m_s": 0.065,
+      "load_n": 5000.0,
+      "voltage_v": 8.629515931905335,
+      "state_si": [
+        0.001,
+        0.065,
+        17522180.59960502,
+        1173469.65642813
+      ],
+      "mechanical_residual_m_s2": 0.0,
+      "pressure_residual_pa_s": 8.488084668242917e-06
+    },
+    {
+      "velocity_m_s": -0.05,
+      "load_n": 0.0,
+      "voltage_v": -4.96010255463184,
+      "state_si": [
+        0.001,
+        -0.05,
+        6932506.654243769,
+        18892154.89815539
+      ],
+      "mechanical_residual_m_s2": 0.0,
+      "pressure_residual_pa_s": 5.408427954623641e-06
+    },
+    {
+      "velocity_m_s": 0.0,
+      "load_n": 0.0,
+      "voltage_v": 0.0,
+      "state_si": [
+        0.001,
+        0.0,
+        100000.0,
+        100000.0
+      ],
+      "mechanical_residual_m_s2": 0.0,
+      "pressure_residual_pa_s": 0.0
+    },
+    {
+      "velocity_m_s": 0.0,
+      "load_n": 5000.0,
+      "voltage_v": 0.5298377785590531,
+      "state_si": [
+        0.001,
+        0.0,
+        16013559.322033899,
+        5086440.677966102
+      ],
+      "mechanical_residual_m_s2": 0.0,
+      "pressure_residual_pa_s": 2.407812452999118e-07
+    },
+    {
+      "velocity_m_s": 0.0,
+      "load_n": -1000.0,
+      "voltage_v": -0.523945396818119,
+      "state_si": [
+        0.001,
+        0.0,
+        5844067.79661017,
+        15255932.20338983
+      ],
+      "mechanical_residual_m_s2": 0.0,
+      "pressure_residual_pa_s": 1.0507494911239497e-07
+    }
+  ],
+  "comparison_duration_s": 0.15,
+  "max_absolute_state_error_si_by_substeps": {
+    "8": [
+      9.030710901303252e-10,
+      2.021425468332061e-07,
+      70.74423604388721,
+      2.7612790251150727
+    ],
+    "16": [
+      3.3173620968274253e-10,
+      7.541021232460032e-08,
+      22.667981246951967,
+      1.1717505236156285
+    ],
+    "32": [
+      1.6114171629000307e-10,
+      3.234460089346358e-08,
+      8.06541369180195,
+      0.5674729500897229
+    ]
+  },
+  "fixed_voltage_fault_final_state_si": [
+    0.017953708459462422,
+    0.02470277251643854,
+    17259375.90367391,
+    1273592.3216947922
+  ],
+  "benchmark_600_native_steps_seconds": 0.007273007999174297,
+  "mean_internal_substeps": 8.0,
+  "checks": {
+    "all_equilibrium_force_balances": true,
+    "all_equilibrium_flow_balances": true,
+    "rk4_radau_position_agreement_better_than_1um": true,
+    "rk4_radau_speed_agreement_better_than_0_01mm_s": true,
+    "rk4_radau_pressure_agreement_better_than_0_001MPa": true,
+    "subdivision_improves_all_state_errors": true,
+    "all_tested_pressures_positive": true,
+    "fault_run_remains_finite": true,
+    "fault_reduces_speed_at_fixed_voltage": true
+  },
+  "passed": true
+}

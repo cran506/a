@@ -1,0 +1,42 @@
+{
+  "pid": {
+    "minimum_velocity_error_mms": -53.82432428668152,
+    "maximum_abs_velocity_error_mms": 53.82432428668152,
+    "post_fault_rms_mms": 10.517246804911284,
+    "tail_mean_error_mms": 4.997409968125888,
+    "recovery_s_band_1mms_hold_50ms": null,
+    "maximum_abs_voltage_v": 7.3581105028328695,
+    "final_time_s": 1.0,
+    "sample_count": 701
+  },
+  "nominal_ff": {
+    "minimum_velocity_error_mms": -54.104709741777086,
+    "maximum_abs_velocity_error_mms": 54.104709741777086,
+    "post_fault_rms_mms": 26.457031178909183,
+    "tail_mean_error_mms": -25.297282255873093,
+    "recovery_s_band_1mms_hold_50ms": null,
+    "maximum_abs_voltage_v": 3.5098639505149896,
+    "final_time_s": 1.0,
+    "sample_count": 701
+  },
+  "sac_fp32": {
+    "minimum_velocity_error_mms": -32.455360035710456,
+    "maximum_abs_velocity_error_mms": 32.455360035710456,
+    "post_fault_rms_mms": 4.109528625631109,
+    "tail_mean_error_mms": -0.02832296567900895,
+    "recovery_s_band_1mms_hold_50ms": 0.06800000000000006,
+    "maximum_abs_voltage_v": 9.957422018051147,
+    "final_time_s": 1.0,
+    "sample_count": 701
+  },
+  "edge_int8": {
+    "minimum_velocity_error_mms": -32.97089593772137,
+    "maximum_abs_velocity_error_mms": 32.97089593772137,
+    "post_fault_rms_mms": 4.256216037279404,
+    "tail_mean_error_mms": -0.13686519728891502,
+    "recovery_s_band_1mms_hold_50ms": 0.44999999999999996,
+    "maximum_abs_voltage_v": 9.980620741844177,
+    "final_time_s": 1.0,
+    "sample_count": 701
+  }
+}

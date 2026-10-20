@@ -1,0 +1,80 @@
+{
+  "experiment": "sampled_two_state_hocbf_safety_demo",
+  "model_scope": "x_dot=v; v_dot=1850*u-14*v; x in mm, v in mm/s. This is an explicit second-order surrogate, not the four-state hydraulic pressure ODE.",
+  "relative_order_warning": "Position has relative degree 3 in the four-state pressure model, or 4 when a first-order valve state is added. This second-order certificate does not transfer to either plant.",
+  "physical_limit_mm": [
+    0.0,
+    100.0
+  ],
+  "guard_limit_mm": [
+    1.2,
+    98.8
+  ],
+  "k_gain_mm_s2_per_v": 1850.0,
+  "damping_per_s": 14.0,
+  "sample_time_s": 0.001,
+  "kappa1_per_s": 24.0,
+  "kappa2_per_s": 24.0,
+  "alpha_sum_per_s": 48.0,
+  "alpha_product_per_s2": 576.0,
+  "reference_coefficient_note": "The supplied alpha_product=580 gives discriminant 48^2-4*580=-16; use the factorable kappa1=kappa2=24 product 576 for the stated recursive HOCBF proof.",
+  "duration_s": 1.0,
+  "initial_x_mm": 20.0,
+  "initial_v_mm_s": 0.0,
+  "proposed_action_v": 8.5,
+  "first_intervention_s": 0.052000000000000005,
+  "minimum_safe_voltage_v": -0.30107445960624557,
+  "minimum_safe_voltage_time_s": 0.168,
+  "safe_final_position_mm": 98.79999984341002,
+  "safe_final_velocity_mm_s": 3.5119222613814524e-06,
+  "safe_maximum_position_mm": 98.79999984341002,
+  "safe_position_at_0_25_s_mm": 96.69381492765967,
+  "unsafe_collision_time_s": 0.13128596368704312,
+  "unsafe_collision_x_mm": 100.0,
+  "unsafe_trajectory_convention": "Terminate at the exact first x=100 mm event; subsequent states are NaN. The inserted event row does not change the sampled safe control.",
+  "interval_minima": {
+    "h_mechanical_min": 0.011856001528318196,
+    "h_upper_mm_min": 1.565899765409995e-07,
+    "h_lower_mm_min": 18.8,
+    "psi1_upper_mm_s_min": 2.462373651878865e-07,
+    "psi1_lower_mm_s_min": 451.19999999999993,
+    "psi2_upper_mm_s2_min": -2.2737367544323206e-12,
+    "psi2_lower_mm_s2_min": 26553.800000000003
+  },
+  "independent_random_validation": {
+    "seed": 8103,
+    "requested_cases": 128,
+    "feasible_cases_checked": 128,
+    "random_state_attempts": 130,
+    "max_flow_error_mm_or_mm_s": 4.547473508864641e-13,
+    "max_qp_violation_v": 0.0,
+    "min_dense_physical_barrier": 0.013733664713032338,
+    "min_dense_psi1_mm_s": 12.289587072716017,
+    "min_dense_psi2_mm_s2": -1.8189894035458565e-11,
+    "max_analytic_minimum_overestimate": 1.8189894035458565e-11,
+    "checks": {
+      "all_requested_random_cases_checked": true,
+      "independent_flow_matches_exact_zoh": true,
+      "all_qp_projections_feasible": true,
+      "dense_mechanical_barriers_nonnegative": true,
+      "dense_initial_set_conditions_preserved": true,
+      "dense_hocbf_inequalities_preserved": true,
+      "analytic_minima_do_not_overestimate_dense_minima": true,
+      "invalid_inner_set_is_rejected": true,
+      "invalid_high_order_initial_state_is_rejected": true,
+      "infeasible_actuator_intersection_is_rejected": true
+    },
+    "passed": true
+  },
+  "checks": {
+    "all_safe_commands_inside_voltage_limits": true,
+    "entire_zoh_intervals_inside_physical_limits": true,
+    "entire_zoh_intervals_inside_guard_limits": true,
+    "entire_zoh_intervals_preserve_psi1": true,
+    "entire_zoh_intervals_satisfy_hocbf": true,
+    "unprotected_collision_recorded": true,
+    "independent_random_flow_checks_passed": true
+  },
+  "passed": true,
+  "reference_numeric_difference": "Computed minimum control is approximately -0.30 V, not the illustrative -3.1 V; the plant approaches 98.8 mm asymptotically. No signal is spliced to the reference figure."
+}

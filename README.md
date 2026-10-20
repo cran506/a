@@ -1,5 +1,22 @@
 # 智能流体传动与控制课堂编程
 
+## 第八章：SAC、HOCBF 与剪枝 INT8
+
+第八章独立项目提供真实 SAC 训练、液压四状态故障对比、二阶约化模型 HOCBF 安全实验和独立整数网络推理。原始日志、策略文件与实测指标随代码一起保存。
+
+- [完整项目与运行说明](chapter8_latest/README.md)
+- [第八章运行入口](chapter8_latest/drl_hydraulic_lab.py)
+- [四联结果图](chapter8_latest/outputs/chapter8_comparison.png)
+- [Word 实验报告](chapter8_latest/outputs/第八章实验报告.docx)
+- [完整 ZIP](chapter8_latest/deliverables/第八章_SAC安全控制完整交付.zip)
+
+```bash
+cd chapter8_latest
+python drl_hydraulic_lab.py --mode all --reuse-model
+```
+
+需要先按项目说明安装 CPU PyTorch、Gymnasium 和 Stable-Baselines3。`--reuse-model` 使用随交付保存的真实训练策略；省略该选项会重新训练。
+
 ## 第六章作业 6-3：死区逆补偿鲁棒性与 tanh 光滑化
 
 独立作业比较真实 ±0.50 V 死区下的 0.40 V 欠补偿、0.60 V 硬过补偿与 tanh 补偿，给出全周期/换向窗口六联图、β=5/18/50 扫描和定量报告。修订版采用输入死区、阀及速度串联模型和明确公开的二级动态残差压力测试，恢复明显的欠补偿近零平台与硬过补偿速度颤振；有限 β 的残余平台据实保留。

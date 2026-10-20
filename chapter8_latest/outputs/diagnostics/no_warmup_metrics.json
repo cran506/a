@@ -1,0 +1,626 @@
+{
+  "training": {
+    "algorithm": "stable-baselines3 SAC",
+    "actual_timesteps": 1000000,
+    "gradient_updates": 247500,
+    "seed": 2026,
+    "wall_seconds": 1378.4465917490015,
+    "torch_version": "2.14.1+cpu",
+    "target_entropy_normalized": -1.9525850929940458,
+    "target_entropy_voltage": 0.35,
+    "policy_architecture": [
+      10,
+      64,
+      64,
+      1
+    ],
+    "deterministic_evaluation": true,
+    "observation_names": [
+      "position_error_mm",
+      "velocity_error_mm_s",
+      "acceleration_error_mm_s2",
+      "P1_MPa",
+      "P2_MPa",
+      "position_mm",
+      "reference_velocity_mm_s",
+      "reference_acceleration_mm_s2",
+      "previous_u_V",
+      "Ps_MPa"
+    ],
+    "optimizer_reward_multiplier": 0.01,
+    "obs_mean": [
+      0.0,
+      0.0,
+      0.0,
+      8.0,
+      6.0,
+      20.0,
+      50.0,
+      0.0,
+      3.5,
+      21.0
+    ],
+    "obs_std": [
+      1.0,
+      50.0,
+      20000.0,
+      8.0,
+      8.0,
+      40.0,
+      25.0,
+      500.0,
+      5.0,
+      2.0
+    ],
+    "reward": "-100*e_mm^2-0.1*u_V^2-(u_V-u_prev_V)^2+2*I(|e_mm|<0.2); failure -500",
+    "fault_augmentation": "80% episodes: event U(.04,.8)s; load U(1000,5500)N; bulk multiplier U(.5,1)",
+    "domain_randomization": "mass ±20%; base bulk .6–1.4GPa; Coulomb friction ±30%",
+    "learning_starts": 10000,
+    "train_frequency_steps": 4,
+    "gradient_steps_per_update": 1,
+    "batch_size": 256,
+    "gamma": 0.995,
+    "learning_rate": 0.0003,
+    "physical_config_sha256": "a9a7f6b2f9ace465bc2aea60175726c23492c52e1c0280fb8cb33e30bcb0b4e6"
+  },
+  "policies": {
+    "pid": {
+      "minimum_velocity_error_mms": -51.08531623567176,
+      "maximum_velocity_error_mms": 5.2833345983027415,
+      "velocity_error_rms_mms": 10.120851930800697,
+      "final_100ms_velocity_bias_mms": 5.0102491098816815,
+      "recovery_1mms_s": null,
+      "peak_voltage_v": 7.35806497458844,
+      "final_voltage_v": 7.31805888162085,
+      "max_abs_voltage_v": 7.35806497458844,
+      "max_voltage_step_v": 0.10795774030029115,
+      "final_position_error_mm": 0.754396465231101
+    },
+    "nominal_ff": {
+      "minimum_velocity_error_mms": -51.24591921417209,
+      "maximum_velocity_error_mms": -6.156831156012288e-07,
+      "velocity_error_rms_mms": 26.28000217527568,
+      "final_100ms_velocity_bias_mms": -25.29730796203242,
+      "recovery_1mms_s": null,
+      "peak_voltage_v": 3.5098639505149896,
+      "final_voltage_v": 3.509863950514991,
+      "max_abs_voltage_v": 3.5098639505149896,
+      "max_voltage_step_v": 0.0,
+      "final_position_error_mm": 13.046291753504136
+    },
+    "sac_fp32": {
+      "minimum_velocity_error_mms": -17.791620075482204,
+      "maximum_velocity_error_mms": 5.966815549312942,
+      "velocity_error_rms_mms": 2.064334163163037,
+      "final_100ms_velocity_bias_mms": -0.23079091421597564,
+      "recovery_1mms_s": 0.051000000000000045,
+      "peak_voltage_v": 9.977731704711914,
+      "final_voltage_v": 6.648100260460731,
+      "max_abs_voltage_v": 9.977731704711914,
+      "max_voltage_step_v": 6.569373607635498,
+      "final_position_error_mm": 0.10337275494090928
+    },
+    "edge_int8": {
+      "minimum_velocity_error_mms": -23.954687829264948,
+      "maximum_velocity_error_mms": 3.6292259640933744,
+      "velocity_error_rms_mms": 2.914596383667999,
+      "final_100ms_velocity_bias_mms": -0.3290756006904773,
+      "recovery_1mms_s": null,
+      "peak_voltage_v": 9.938212037086487,
+      "final_voltage_v": 6.653852321133755,
+      "max_abs_voltage_v": 9.938212037086487,
+      "max_voltage_step_v": 6.690489053726196,
+      "final_position_error_mm": 0.08652416408621785
+    }
+  },
+  "edge": {
+    "validation": {
+      "calibration_count": 12601,
+      "evaluation_count": 4000,
+      "target_prune_ratio": 0.7,
+      "actual_weight_sparsity": 0.6997916666666667,
+      "weight_count": 4800,
+      "zero_weight_count": 3359,
+      "pruned_action_mae": 0.04458767548203468,
+      "pruned_action_max_abs_error": 0.40806764364242554,
+      "int8_vs_pruned_action_mae": 0.049345001578330994,
+      "int8_vs_fp32_action_mae": 0.06444549560546875,
+      "int8_vs_fp32_action_max_abs_error": 0.38427895307540894,
+      "input_saturation_fraction": 0.0,
+      "input_balancing": "calibration_mean_std_affine_folded_into_first_layer",
+      "input_balancing_center": [
+        -0.15057162940502167,
+        -0.002582910005003214,
+        0.00026069770683534443,
+        0.36609798669815063,
+        -0.34998151659965515,
+        0.904717206954956,
+        0.09759759902954102,
+        0.0,
+        0.24414663016796112,
+        0.0
+      ],
+      "input_balancing_channel_scale": [
+        0.14397919178009033,
+        0.05217110738158226,
+        0.060243088752031326,
+        0.5359207391738892,
+        0.15953832864761353,
+        0.8105481266975403,
+        0.3028247058391571,
+        1.0,
+        0.28997930884361267,
+        1.0
+      ],
+      "constant_channel_scale_rule": "standard deviation <=1e-5 uses scale 1; channel is retained",
+      "kernel": "INT8 weights/activations, INT32 accumulation, INT64 fixed-point requantization; float affine input prefix, input quantization and final tanh",
+      "speed_scope": "Python/NumPy CPU reference, not a DSP/MCU deployment measurement"
+    },
+    "distillation": {
+      "method": "fixed-magnitude-mask action distillation from trained FP32 actor",
+      "steps": 8000,
+      "batch_size": 256,
+      "seed": 2026,
+      "initial_action_mse": 0.8344292044639587,
+      "final_action_mse": 0.002996615832671523,
+      "history": [
+        {
+          "step": 1,
+          "batch_action_mse": 0.8310641646385193
+        },
+        {
+          "step": 100,
+          "batch_action_mse": 0.025772318243980408
+        },
+        {
+          "step": 200,
+          "batch_action_mse": 0.01702655479311943
+        },
+        {
+          "step": 300,
+          "batch_action_mse": 0.01671142689883709
+        },
+        {
+          "step": 400,
+          "batch_action_mse": 0.013645756058394909
+        },
+        {
+          "step": 500,
+          "batch_action_mse": 0.00896444357931614
+        },
+        {
+          "step": 600,
+          "batch_action_mse": 0.00906896498054266
+        },
+        {
+          "step": 700,
+          "batch_action_mse": 0.010473091155290604
+        },
+        {
+          "step": 800,
+          "batch_action_mse": 0.008476953022181988
+        },
+        {
+          "step": 900,
+          "batch_action_mse": 0.006970398593693972
+        },
+        {
+          "step": 1000,
+          "batch_action_mse": 0.007767359726130962
+        },
+        {
+          "step": 1100,
+          "batch_action_mse": 0.007027349900454283
+        },
+        {
+          "step": 1200,
+          "batch_action_mse": 0.007206978276371956
+        },
+        {
+          "step": 1300,
+          "batch_action_mse": 0.00640221918001771
+        },
+        {
+          "step": 1400,
+          "batch_action_mse": 0.0071446881629526615
+        },
+        {
+          "step": 1500,
+          "batch_action_mse": 0.005262705031782389
+        },
+        {
+          "step": 1600,
+          "batch_action_mse": 0.00417057191953063
+        },
+        {
+          "step": 1700,
+          "batch_action_mse": 0.006720124743878841
+        },
+        {
+          "step": 1800,
+          "batch_action_mse": 0.005977966822683811
+        },
+        {
+          "step": 1900,
+          "batch_action_mse": 0.005422052927315235
+        },
+        {
+          "step": 2000,
+          "batch_action_mse": 0.006209405139088631
+        },
+        {
+          "step": 2100,
+          "batch_action_mse": 0.005449802149087191
+        },
+        {
+          "step": 2200,
+          "batch_action_mse": 0.004427528008818626
+        },
+        {
+          "step": 2300,
+          "batch_action_mse": 0.004702763631939888
+        },
+        {
+          "step": 2400,
+          "batch_action_mse": 0.005219763610512018
+        },
+        {
+          "step": 2500,
+          "batch_action_mse": 0.005791176576167345
+        },
+        {
+          "step": 2600,
+          "batch_action_mse": 0.005838668905198574
+        },
+        {
+          "step": 2700,
+          "batch_action_mse": 0.004626743029803038
+        },
+        {
+          "step": 2800,
+          "batch_action_mse": 0.00478521641343832
+        },
+        {
+          "step": 2900,
+          "batch_action_mse": 0.004129068460315466
+        },
+        {
+          "step": 3000,
+          "batch_action_mse": 0.00488937646150589
+        },
+        {
+          "step": 3100,
+          "batch_action_mse": 0.0038356708828359842
+        },
+        {
+          "step": 3200,
+          "batch_action_mse": 0.005056108348071575
+        },
+        {
+          "step": 3300,
+          "batch_action_mse": 0.0048449537716805935
+        },
+        {
+          "step": 3400,
+          "batch_action_mse": 0.004802566487342119
+        },
+        {
+          "step": 3500,
+          "batch_action_mse": 0.004495724570006132
+        },
+        {
+          "step": 3600,
+          "batch_action_mse": 0.0038660354912281036
+        },
+        {
+          "step": 3700,
+          "batch_action_mse": 0.004050061572343111
+        },
+        {
+          "step": 3800,
+          "batch_action_mse": 0.004147889092564583
+        },
+        {
+          "step": 3900,
+          "batch_action_mse": 0.004247575998306274
+        },
+        {
+          "step": 4000,
+          "batch_action_mse": 0.004117297008633614
+        },
+        {
+          "step": 4100,
+          "batch_action_mse": 0.0044558909721672535
+        },
+        {
+          "step": 4200,
+          "batch_action_mse": 0.004298210144042969
+        },
+        {
+          "step": 4300,
+          "batch_action_mse": 0.003828519955277443
+        },
+        {
+          "step": 4400,
+          "batch_action_mse": 0.00462719239294529
+        },
+        {
+          "step": 4500,
+          "batch_action_mse": 0.004657972604036331
+        },
+        {
+          "step": 4600,
+          "batch_action_mse": 0.0037156781181693077
+        },
+        {
+          "step": 4700,
+          "batch_action_mse": 0.004735647235065699
+        },
+        {
+          "step": 4800,
+          "batch_action_mse": 0.00438645388931036
+        },
+        {
+          "step": 4900,
+          "batch_action_mse": 0.005263099912554026
+        },
+        {
+          "step": 5000,
+          "batch_action_mse": 0.004594255704432726
+        },
+        {
+          "step": 5100,
+          "batch_action_mse": 0.003961486741900444
+        },
+        {
+          "step": 5200,
+          "batch_action_mse": 0.0037079001776874065
+        },
+        {
+          "step": 5300,
+          "batch_action_mse": 0.0037099821493029594
+        },
+        {
+          "step": 5400,
+          "batch_action_mse": 0.0034474690910428762
+        },
+        {
+          "step": 5500,
+          "batch_action_mse": 0.0034183869138360023
+        },
+        {
+          "step": 5600,
+          "batch_action_mse": 0.0037648924626410007
+        },
+        {
+          "step": 5700,
+          "batch_action_mse": 0.003341080155223608
+        },
+        {
+          "step": 5800,
+          "batch_action_mse": 0.0036484908778220415
+        },
+        {
+          "step": 5900,
+          "batch_action_mse": 0.003454758320003748
+        },
+        {
+          "step": 6000,
+          "batch_action_mse": 0.0031002850737422705
+        },
+        {
+          "step": 6100,
+          "batch_action_mse": 0.004126489162445068
+        },
+        {
+          "step": 6200,
+          "batch_action_mse": 0.0033542560413479805
+        },
+        {
+          "step": 6300,
+          "batch_action_mse": 0.0034100795164704323
+        },
+        {
+          "step": 6400,
+          "batch_action_mse": 0.002854943973943591
+        },
+        {
+          "step": 6500,
+          "batch_action_mse": 0.0031068488024175167
+        },
+        {
+          "step": 6600,
+          "batch_action_mse": 0.0035747182555496693
+        },
+        {
+          "step": 6700,
+          "batch_action_mse": 0.0031853141263127327
+        },
+        {
+          "step": 6800,
+          "batch_action_mse": 0.0033191381953656673
+        },
+        {
+          "step": 6900,
+          "batch_action_mse": 0.00284215877763927
+        },
+        {
+          "step": 7000,
+          "batch_action_mse": 0.003209159942343831
+        },
+        {
+          "step": 7100,
+          "batch_action_mse": 0.0029649545904248953
+        },
+        {
+          "step": 7200,
+          "batch_action_mse": 0.0037465011700987816
+        },
+        {
+          "step": 7300,
+          "batch_action_mse": 0.003235479351133108
+        },
+        {
+          "step": 7400,
+          "batch_action_mse": 0.0031546703539788723
+        },
+        {
+          "step": 7500,
+          "batch_action_mse": 0.003127155127003789
+        },
+        {
+          "step": 7600,
+          "batch_action_mse": 0.0030832067131996155
+        },
+        {
+          "step": 7700,
+          "batch_action_mse": 0.0033703071530908346
+        },
+        {
+          "step": 7800,
+          "batch_action_mse": 0.003399261273443699
+        },
+        {
+          "step": 7900,
+          "batch_action_mse": 0.003406626870855689
+        },
+        {
+          "step": 8000,
+          "batch_action_mse": 0.0028528054244816303
+        }
+      ]
+    },
+    "artifact_bytes": {
+      "actor_fp32.npz": 19696,
+      "actor_pruned_fp32.npz": 9390,
+      "actor_int8.npz": 4854
+    },
+    "benchmark": {
+      "fp32": {
+        "median_ms": 0.011787,
+        "p95_ms": 0.012569499999999999,
+        "min_ms": 0.011527,
+        "repeats": 2000,
+        "batch_size": 1
+      },
+      "pruned_fp32": {
+        "median_ms": 0.011828,
+        "p95_ms": 0.012228499999999998,
+        "min_ms": 0.011617,
+        "repeats": 2000,
+        "batch_size": 1
+      },
+      "int8": {
+        "median_ms": 0.049323,
+        "p95_ms": 0.11809399999999999,
+        "min_ms": 0.04759,
+        "repeats": 2000,
+        "batch_size": 1
+      }
+    },
+    "commissioning_calibration_count": 601,
+    "benchmark_scope": "Single-observation NumPy actor kernels only; excludes hydraulic integration, sensing, SB3 Python API and HOCBF. Input affine preprocessing and final tanh included.",
+    "calibration_not_held_out": true,
+    "closed_loop_velocity_rms_difference_mms": 1.8854314164443462
+  },
+  "safety": {
+    "experiment": "sampled_two_state_hocbf_safety_demo",
+    "model_scope": "x_dot=v; v_dot=1850*u-14*v; x in mm, v in mm/s. This is an explicit second-order surrogate, not the four-state hydraulic pressure ODE.",
+    "relative_order_warning": "Position has relative degree 3 in the four-state pressure model, or 4 when a first-order valve state is added. This second-order certificate does not transfer to either plant.",
+    "physical_limit_mm": [
+      0.0,
+      100.0
+    ],
+    "guard_limit_mm": [
+      1.2,
+      98.8
+    ],
+    "k_gain_mm_s2_per_v": 1850.0,
+    "damping_per_s": 14.0,
+    "sample_time_s": 0.001,
+    "kappa1_per_s": 24.0,
+    "kappa2_per_s": 24.0,
+    "alpha_sum_per_s": 48.0,
+    "alpha_product_per_s2": 576.0,
+    "reference_coefficient_note": "The supplied alpha_product=580 gives discriminant 48^2-4*580=-16; use the factorable kappa1=kappa2=24 product 576 for the stated recursive HOCBF proof.",
+    "duration_s": 1.0,
+    "initial_x_mm": 20.0,
+    "initial_v_mm_s": 0.0,
+    "proposed_action_v": 8.5,
+    "first_intervention_s": 0.052000000000000005,
+    "minimum_safe_voltage_v": -0.30107445960624557,
+    "minimum_safe_voltage_time_s": 0.168,
+    "safe_final_position_mm": 98.79999984341002,
+    "safe_final_velocity_mm_s": 3.5119222613814524e-06,
+    "safe_maximum_position_mm": 98.79999984341002,
+    "safe_position_at_0_25_s_mm": 96.69381492765967,
+    "unsafe_collision_time_s": 0.13128596368704312,
+    "unsafe_collision_x_mm": 100.0,
+    "unsafe_trajectory_convention": "Terminate at the exact first x=100 mm event; subsequent states are NaN. The inserted event row does not change the sampled safe control.",
+    "interval_minima": {
+      "h_mechanical_min": 0.011856001528318196,
+      "h_upper_mm_min": 1.565899765409995e-07,
+      "h_lower_mm_min": 18.8,
+      "psi1_upper_mm_s_min": 2.462373651878865e-07,
+      "psi1_lower_mm_s_min": 451.19999999999993,
+      "psi2_upper_mm_s2_min": -2.2737367544323206e-12,
+      "psi2_lower_mm_s2_min": 26553.800000000003
+    },
+    "independent_random_validation": {
+      "seed": 8103,
+      "requested_cases": 128,
+      "feasible_cases_checked": 128,
+      "random_state_attempts": 130,
+      "max_flow_error_mm_or_mm_s": 4.547473508864641e-13,
+      "max_qp_violation_v": 0.0,
+      "min_dense_physical_barrier": 0.013733664713032338,
+      "min_dense_psi1_mm_s": 12.289587072716017,
+      "min_dense_psi2_mm_s2": -1.8189894035458565e-11,
+      "max_analytic_minimum_overestimate": 1.8189894035458565e-11,
+      "checks": {
+        "all_requested_random_cases_checked": true,
+        "independent_flow_matches_exact_zoh": true,
+        "all_qp_projections_feasible": true,
+        "dense_mechanical_barriers_nonnegative": true,
+        "dense_initial_set_conditions_preserved": true,
+        "dense_hocbf_inequalities_preserved": true,
+        "analytic_minima_do_not_overestimate_dense_minima": true,
+        "invalid_inner_set_is_rejected": true,
+        "invalid_high_order_initial_state_is_rejected": true,
+        "infeasible_actuator_intersection_is_rejected": true
+      },
+      "passed": true
+    },
+    "checks": {
+      "all_safe_commands_inside_voltage_limits": true,
+      "entire_zoh_intervals_inside_physical_limits": true,
+      "entire_zoh_intervals_inside_guard_limits": true,
+      "entire_zoh_intervals_preserve_psi1": true,
+      "entire_zoh_intervals_satisfy_hocbf": true,
+      "unprotected_collision_recorded": true,
+      "independent_random_flow_checks_passed": true
+    },
+    "passed": true,
+    "reference_numeric_difference": "Computed minimum control is approximately -0.30 V, not the illustrative -3.1 V; the plant approaches 98.8 mm asymptotically. No signal is spliced to the reference figure."
+  },
+  "evaluation": {
+    "start_time_s": 0.4,
+    "end_time_s": 1.0,
+    "initial_position_m": 0.001,
+    "initial_velocity_m_s": 0.05,
+    "initial_voltage_v": 3.5098639505149896,
+    "fault_time_s": 0.5,
+    "load_step_n": 5000.0,
+    "bulk_multiplier": 0.5,
+    "pid_gains": {
+      "kp_v_per_mm": 1.0,
+      "ki_v_per_mm_s": 4.0,
+      "kd_v_per_mms": 0.01,
+      "derivative_alpha": 0.85
+    },
+    "observations": "Ideal sampled position, velocity, acceleration and both chamber pressures; no noise/delay. The acceleration channel senses the force change immediately.",
+    "nominal_ff": "Unloaded equilibrium inverse of the actual nominal orifice/force equations; no load adaptation or integral correction.",
+    "physical_model": "Declared compact-cylinder classroom scaling, not the prior .01 m² identified apparatus.",
+    "reference_comparison": "Reproduces mechanism trends; schematic target peaks/timings are not fitted or injected. No physical hardware/Sim2Real few-shot data."
+  }
+}

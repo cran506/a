@@ -1,0 +1,25 @@
+{
+  "checks": {
+    "real_million_steps": true,
+    "quantization_exponent_selected_by_calibration": true,
+    "no_synthetic_entropy": true,
+    "finite_training_reward": true,
+    "all_four_policies_present": true,
+    "complete_shared_time_grid": true,
+    "identical_initial_physical_states": true,
+    "finite_physical_records": true,
+    "all_actual_inputs_within_limits": true,
+    "identical_fault_inputs": true,
+    "reported_metrics_recomputed_from_raw_csv": true,
+    "exported_fp32_matches_sb3": true,
+    "pruning_at_least_69_percent": true,
+    "independent_sampled_safety_passed": true,
+    "independent_physics_validation_present": true,
+    "all_checks_passed": true
+  },
+  "expected_timesteps": 1000000,
+  "fp32_export_max_normalized_action_error": 5.662441253662109e-07,
+  "model_sha256": "3ef93cbf18624830bc828840e28833f9b90fa97d98f854dc373893a6e432a1b4",
+  "int8_sha256": "a35dbf55ee2c3b0853dce7a52464f9ab7a02047c3c29b3f7dd49ef118dd5fb25",
+  "scope": "Software/numerical consistency, not hardware certification. Performance values are measured, not thresholded to match a reference image."
+}
