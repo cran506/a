@@ -1,0 +1,20 @@
+{
+  "pid_finite": true,
+  "pid_same_reference": true,
+  "pid_voltage_within_10v": true,
+  "pid_positive_pressure": true,
+  "pid_error_is_reference_minus_state": true,
+  "nominal_finite": true,
+  "nominal_same_reference": true,
+  "nominal_voltage_within_10v": true,
+  "nominal_positive_pressure": true,
+  "nominal_error_is_reference_minus_state": true,
+  "full_finite": true,
+  "full_same_reference": true,
+  "full_voltage_within_10v": true,
+  "full_positive_pressure": true,
+  "full_error_is_reference_minus_state": true,
+  "full_max_error_below_0p05mm": true,
+  "full_better_than_nominal_at_load": true,
+  "passed": true
+}

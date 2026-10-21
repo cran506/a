@@ -1,0 +1,967 @@
+{
+  "pid": {
+    "config": {
+      "name": "pid",
+      "enable_ff": false,
+      "enable_gain_sched": false,
+      "kp": 4.0,
+      "ki": 450.0,
+      "kd": 0.1,
+      "alpha": 0.85,
+      "ts": 0.001,
+      "duration": 1.2,
+      "valve_tau": 0.0025,
+      "pressure_alpha": 0.0,
+      "gain_prediction_s": 0.001,
+      "force_error_gain_s": 80.0,
+      "startup_force_gain_s": 385.0,
+      "velocity_error_gain_s": 60.0,
+      "zero_flow_band_v": 0.03,
+      "enable_startup_regularization": true,
+      "load_force": 142000.0,
+      "load_ramp": 0.025,
+      "unload_ramp": 0.03,
+      "load_start": 0.5,
+      "load_end": 0.92,
+      "known_load": true,
+      "load_preview_s": 0.0,
+      "adc_bits": 16,
+      "sensor_span": 0.3,
+      "rtol": 1e-06,
+      "origin_m": 0.01000213623046875,
+      "sensor_lsb_mm": 0.00457763671875,
+      "k_flow_m3_s_v_sqrt_pa": 2.2176136620301985e-07,
+      "nominal_pressures_pa": [
+        2555555.5585564934,
+        4711111.110360877
+      ],
+      "radau_nfev": 48200,
+      "physical_parameters": {
+        "A1": 0.01,
+        "A2": 0.005,
+        "L": 0.3,
+        "V0_1": 0.0001,
+        "V0_2": 0.0001,
+        "mass": 500.0,
+        "Ps": 21000000.0,
+        "Pr": 100000.0,
+        "beta_e": 1800000000.0,
+        "rho": 870.0,
+        "Cd": 0.62,
+        "w": 0.02,
+        "xv_max": 0.00373,
+        "deadzone": 0.04,
+        "C_ip": 1e-12,
+        "Fs": 800.0,
+        "Fc": 500.0,
+        "vs": 0.05,
+        "sigma": 5000.0,
+        "gamma": 100.0,
+        "x_work": 1.3,
+        "K_env": 50000000.0,
+        "B_env": 100000.0,
+        "air_fraction_at_pr": 0.018,
+        "gas_polytropic_exponent": 1.4,
+        "ambient_pressure": 100000.0,
+        "makeup_area": 0.001,
+        "C_ep": 0.0
+      },
+      "friction_events": [
+        {
+          "time_s": 0.08795063817338644,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999994,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.13387663613679934,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -279.00937748794524,
+          "friction_n": -279.00937748794524
+        },
+        {
+          "time_s": 0.16480020593119174,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999899,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.20348460566169932,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -1193.4665451363448,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.20671757376679553,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -152.5110224788159,
+          "friction_n": -152.5110224788159
+        },
+        {
+          "time_s": 0.20771941652763487,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000010000099,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.2289449103860248,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -7077.486283637601,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.23513890614982025,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 43351.383936234895,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.2464534992203535,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -16893.628575707626,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.2512124292940844,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 78665.74600395717,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.2609198180356858,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -21033.797034817468,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.26454966086285364,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 77198.05610723674,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.27435405370017474,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -19185.388378561827,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.27645458640558207,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 46707.23619456015,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9325469973622434,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -10591.70602552851,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.9381205376741817,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 11244.481634807664,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9460161587558192,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -14826.93250121101,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.9523712937789943,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 15526.153481788726,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9597192080280046,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -17142.436788511153,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.9661656134709845,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 17484.565053346658,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.97334742000543,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -18073.69035649839,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.9798342444255435,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 18298.467105594624,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9869442853820317,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -18322.310155423576,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.9934576985566788,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 18461.2680612015,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0005123012181008,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -18145.968377794037,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.007046676160683,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 18127.14205966013,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0140593435234773,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -17477.0905114106,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0206095693221289,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 17176.66813193794,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0275148247694024,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -15971.17498948286,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.034070692663736,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 15361.6123596941,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0407821115261011,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -13268.192613252373,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0473319418759577,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 12285.50428554654,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0539084867860773,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -9894.487372206422,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0604436133353154,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 8546.561653826753,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0670366092769445,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -6503.466583367648,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0735439644584572,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 4924.840922214145,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.080184860381261,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -3124.465777125257,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0865843983488783,
+          "kind": "reverse_release",
+          "direction": 1,
+          "net_drive_n": 1476.466803229181,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0937264695966025,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": 155.89868291342646,
+          "friction_n": 155.89868291342646
+        },
+        {
+          "time_s": 1.107756430004078,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999967,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.1946268060890377,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": 507.5572911091658,
+          "friction_n": 507.5572911091658
+        },
+        {
+          "time_s": 1.1990323948654702,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000009999603,
+          "friction_n": -800.0
+        }
+      ],
+      "model": "four_state_hydraulic_twin"
+    },
+    "metrics": {
+      "max_abs_error_mm": 1.1701256033567753,
+      "rms_error_mm": 0.38189264395238265,
+      "final_error_mm": -0.1269276350306936,
+      "startup_velocity_threshold_m_s": 0.0001,
+      "motion_start_ms": 89.0,
+      "reference_threshold_ms": 5.0,
+      "first_feedforward_ms": null,
+      "first_feedforward_voltage_v": null,
+      "startup_max_abs_error_mm": 0.48155093232812873,
+      "startup_max_voltage_step_v": 0.0019991250407509938,
+      "startup_max_voltage_drop_v": 0.0,
+      "startup_peak_abs_voltage_v": 0.017180583102411058,
+      "startup_initial_voltage_v": 0.0,
+      "startup_reference_friction_n": 0.0,
+      "startup_reference_force_n": 0.0,
+      "startup_delay_from_reference_ms": 83.99999999999999,
+      "startup_velocity_rmse_m_s": 0.01943388081217798,
+      "startup_velocity_overshoot_m_s": 0.05167178919614844,
+      "startup_prominent_overshoot_peaks": 1,
+      "startup_first_peak_time_s": 0.101,
+      "startup_first_peak_velocity_m_s": 0.06611794304230229,
+      "reference_velocity_at_0p16_m_s": 0.032,
+      "contact_min_velocity_m_s": 0.13817676260432254,
+      "contact_speed_drop_percent": 30.911618697838733,
+      "contact_max_abs_error_mm": 1.169461056592311,
+      "contact_added_error_mm": 1.17510087508578,
+      "contact_error_peak_time_s": 0.54,
+      "error_at_0p60_mm": -0.4382884922305291,
+      "light_median_voltage_v": 2.497319861572201,
+      "heavy_median_voltage_v": 4.504323130631638,
+      "light_median_p1_mpa": 2.5530807859216567,
+      "heavy_median_p1_mpa": 15.1541339163662,
+      "kq_decline_percent": 43.705948217627586,
+      "peak_abs_voltage_v": 4.852946882456914,
+      "stop_peak_abs_voltage_v": 0.7201811004206098,
+      "stop_max_voltage_step_v": 0.15407560867689463,
+      "stop_voltage_total_variation_v": 8.81653241362623,
+      "hold_max_abs_velocity_m_s": 0.08023725145812868,
+      "saturation_time_s": 0.0,
+      "min_absolute_pressure_mpa": 0.09883125411596272,
+      "max_absolute_pressure_mpa": 15.490120636547596,
+      "meets_full_0p05mm": false,
+      "meets_full_0p1mm": false,
+      "first_breakaway_ms": 87.95063817338644,
+      "first_breakaway_net_force_n": 800.0000009999994,
+      "friction_release_events": 38,
+      "friction_restick_events": 4
+    }
+  },
+  "nominal": {
+    "config": {
+      "name": "nominal",
+      "enable_ff": true,
+      "enable_gain_sched": false,
+      "kp": 4.0,
+      "ki": 450.0,
+      "kd": 0.1,
+      "alpha": 0.85,
+      "ts": 0.001,
+      "duration": 1.2,
+      "valve_tau": 0.0025,
+      "pressure_alpha": 0.0,
+      "gain_prediction_s": 0.001,
+      "force_error_gain_s": 80.0,
+      "startup_force_gain_s": 385.0,
+      "velocity_error_gain_s": 60.0,
+      "zero_flow_band_v": 0.03,
+      "enable_startup_regularization": true,
+      "load_force": 142000.0,
+      "load_ramp": 0.025,
+      "unload_ramp": 0.03,
+      "load_start": 0.5,
+      "load_end": 0.92,
+      "known_load": true,
+      "load_preview_s": 0.0,
+      "adc_bits": 16,
+      "sensor_span": 0.3,
+      "rtol": 1e-06,
+      "origin_m": 0.01000213623046875,
+      "sensor_lsb_mm": 0.00457763671875,
+      "k_flow_m3_s_v_sqrt_pa": 2.2176136620301985e-07,
+      "nominal_pressures_pa": [
+        2555555.5585564934,
+        4711111.110360877
+      ],
+      "radau_nfev": 30563,
+      "physical_parameters": {
+        "A1": 0.01,
+        "A2": 0.005,
+        "L": 0.3,
+        "V0_1": 0.0001,
+        "V0_2": 0.0001,
+        "mass": 500.0,
+        "Ps": 21000000.0,
+        "Pr": 100000.0,
+        "beta_e": 1800000000.0,
+        "rho": 870.0,
+        "Cd": 0.62,
+        "w": 0.02,
+        "xv_max": 0.00373,
+        "deadzone": 0.04,
+        "C_ip": 1e-12,
+        "Fs": 800.0,
+        "Fc": 500.0,
+        "vs": 0.05,
+        "sigma": 5000.0,
+        "gamma": 100.0,
+        "x_work": 1.3,
+        "K_env": 50000000.0,
+        "B_env": 100000.0,
+        "air_fraction_at_pr": 0.018,
+        "gas_polytropic_exponent": 1.4,
+        "ambient_pressure": 100000.0,
+        "makeup_area": 0.001,
+        "C_ep": 0.0
+      },
+      "friction_events": [
+        {
+          "time_s": 0.010571018955692454,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000010000001,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9578890879687877,
+          "kind": "reverse_release",
+          "direction": -1,
+          "net_drive_n": -1575.3432136319861,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 0.9617872035591596,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -179.21899697707704,
+          "friction_n": -179.21899697707704
+        },
+        {
+          "time_s": 0.9762094890879967,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.000001000004,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9999085323190442,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": 320.9450765106485,
+          "friction_n": 320.9450765106485
+        },
+        {
+          "time_s": 1.0107217293757917,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999967,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.1266586809644656,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -40.132763539830194,
+          "friction_n": -40.132763539830194
+        },
+        {
+          "time_s": 1.1364753150248343,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.000001000004,
+          "friction_n": 800.0
+        }
+      ],
+      "model": "four_state_hydraulic_twin"
+    },
+    "metrics": {
+      "max_abs_error_mm": 1.1509795672803858,
+      "rms_error_mm": 0.28555230072378884,
+      "final_error_mm": -0.13076394183414441,
+      "startup_velocity_threshold_m_s": 0.0001,
+      "motion_start_ms": 13.000000000000002,
+      "reference_threshold_ms": 5.0,
+      "first_feedforward_ms": 0.0,
+      "first_feedforward_voltage_v": 1.2257015234012565,
+      "startup_max_abs_error_mm": 0.014565274404244573,
+      "startup_max_voltage_step_v": 0.46862500765629994,
+      "startup_max_voltage_drop_v": 0.46862500765629994,
+      "startup_peak_abs_voltage_v": 1.242138099295372,
+      "startup_initial_voltage_v": 1.2257015234012565,
+      "startup_reference_friction_n": 800.0,
+      "startup_reference_force_n": 800.0,
+      "startup_delay_from_reference_ms": 8.0,
+      "startup_velocity_rmse_m_s": 0.0010036630564203366,
+      "startup_velocity_overshoot_m_s": 0.0021142871969110737,
+      "startup_prominent_overshoot_peaks": 2,
+      "startup_first_peak_time_s": null,
+      "startup_first_peak_velocity_m_s": null,
+      "reference_velocity_at_0p16_m_s": 0.032,
+      "contact_min_velocity_m_s": 0.14450676470951462,
+      "contact_speed_drop_percent": 27.746617645242694,
+      "contact_max_abs_error_mm": 1.1509795672803858,
+      "contact_added_error_mm": 1.1529190776161935,
+      "contact_error_peak_time_s": 0.546,
+      "error_at_0p60_mm": -0.30051759573300474,
+      "light_median_voltage_v": 2.497912232331408,
+      "heavy_median_voltage_v": 4.606134927334283,
+      "light_median_p1_mpa": 2.551121137746889,
+      "heavy_median_p1_mpa": 15.159225021541278,
+      "kq_decline_percent": 43.73345517223386,
+      "peak_abs_voltage_v": 4.845314081123729,
+      "stop_peak_abs_voltage_v": 0.4963225233756363,
+      "stop_max_voltage_step_v": 0.20695168336366554,
+      "stop_voltage_total_variation_v": 1.739671804049881,
+      "hold_max_abs_velocity_m_s": 0.011523014800109857,
+      "saturation_time_s": 0.0,
+      "min_absolute_pressure_mpa": 0.1,
+      "max_absolute_pressure_mpa": 15.488957835707085,
+      "meets_full_0p05mm": false,
+      "meets_full_0p1mm": false,
+      "first_breakaway_ms": 10.571018955692454,
+      "first_breakaway_net_force_n": 800.0000010000001,
+      "friction_release_events": 5,
+      "friction_restick_events": 3
+    }
+  },
+  "full": {
+    "config": {
+      "name": "full",
+      "enable_ff": true,
+      "enable_gain_sched": true,
+      "kp": 4.0,
+      "ki": 450.0,
+      "kd": 0.1,
+      "alpha": 0.85,
+      "ts": 0.001,
+      "duration": 1.2,
+      "valve_tau": 0.0025,
+      "pressure_alpha": 0.0,
+      "gain_prediction_s": 0.001,
+      "force_error_gain_s": 80.0,
+      "startup_force_gain_s": 385.0,
+      "velocity_error_gain_s": 60.0,
+      "zero_flow_band_v": 0.03,
+      "enable_startup_regularization": true,
+      "load_force": 142000.0,
+      "load_ramp": 0.025,
+      "unload_ramp": 0.03,
+      "load_start": 0.5,
+      "load_end": 0.92,
+      "known_load": true,
+      "load_preview_s": 0.0,
+      "adc_bits": 16,
+      "sensor_span": 0.3,
+      "rtol": 1e-06,
+      "origin_m": 0.01000213623046875,
+      "sensor_lsb_mm": 0.00457763671875,
+      "k_flow_m3_s_v_sqrt_pa": 2.2176136620301985e-07,
+      "nominal_pressures_pa": [
+        2555555.5585564934,
+        4711111.110360877
+      ],
+      "radau_nfev": 30013,
+      "physical_parameters": {
+        "A1": 0.01,
+        "A2": 0.005,
+        "L": 0.3,
+        "V0_1": 0.0001,
+        "V0_2": 0.0001,
+        "mass": 500.0,
+        "Ps": 21000000.0,
+        "Pr": 100000.0,
+        "beta_e": 1800000000.0,
+        "rho": 870.0,
+        "Cd": 0.62,
+        "w": 0.02,
+        "xv_max": 0.00373,
+        "deadzone": 0.04,
+        "C_ip": 1e-12,
+        "Fs": 800.0,
+        "Fc": 500.0,
+        "vs": 0.05,
+        "sigma": 5000.0,
+        "gamma": 100.0,
+        "x_work": 1.3,
+        "K_env": 50000000.0,
+        "B_env": 100000.0,
+        "air_fraction_at_pr": 0.018,
+        "gas_polytropic_exponent": 1.4,
+        "ambient_pressure": 100000.0,
+        "makeup_area": 0.001,
+        "C_ep": 0.0
+      },
+      "friction_events": [
+        {
+          "time_s": 0.010766935216133694,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.0000009999972,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 0.9860728167647885,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -302.77070446896323,
+          "friction_n": -302.77070446896323
+        },
+        {
+          "time_s": 1.0060492867303024,
+          "kind": "release",
+          "direction": 1,
+          "net_drive_n": 800.000001000004,
+          "friction_n": 800.0
+        },
+        {
+          "time_s": 1.0188021748679073,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": 680.4919502275516,
+          "friction_n": 680.4919502275516
+        },
+        {
+          "time_s": 1.0249303155947964,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000010000258,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.028487888671374,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -709.76434767908,
+          "friction_n": -709.76434767908
+        },
+        {
+          "time_s": 1.0335474150480215,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000009999821,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0389668413085245,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -584.5932358791433,
+          "friction_n": -584.5932358791433
+        },
+        {
+          "time_s": 1.0448244718330904,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000010000476,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.049778857140568,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -625.486703885148,
+          "friction_n": -625.486703885148
+        },
+        {
+          "time_s": 1.0555119938900865,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000010000149,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0615262197089643,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -473.0175146631773,
+          "friction_n": -473.0175146631773
+        },
+        {
+          "time_s": 1.066902360047655,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000009999894,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0718693470758576,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -619.3113974618173,
+          "friction_n": -619.3113974618173
+        },
+        {
+          "time_s": 1.0776408938981128,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000009999094,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0832257967385508,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -545.2288790140992,
+          "friction_n": -545.2288790140992
+        },
+        {
+          "time_s": 1.090895911757614,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000010000404,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.0959548729842647,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -605.7645904274359,
+          "friction_n": -605.7645904274359
+        },
+        {
+          "time_s": 1.1017839690660236,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000009999749,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.1067477911820318,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -614.8264716019476,
+          "friction_n": -614.8264716019476
+        },
+        {
+          "time_s": 1.1127529906164295,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000009999712,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.1178397790421801,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -600.7304793149633,
+          "friction_n": -600.7304793149633
+        },
+        {
+          "time_s": 1.123865823443295,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.000001000004,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.1283725207500799,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -649.2323227568013,
+          "friction_n": -649.2323227568013
+        },
+        {
+          "time_s": 1.1348957091048455,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000010000003,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.1390193362773888,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -672.944220135385,
+          "friction_n": -672.944220135385
+        },
+        {
+          "time_s": 1.1465007296601726,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000010000222,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.151252198770919,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -635.2310761888693,
+          "friction_n": -635.2310761888693
+        },
+        {
+          "time_s": 1.1589513627550687,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000010000185,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.1611136288427213,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -749.108518358571,
+          "friction_n": -749.108518358571
+        },
+        {
+          "time_s": 1.1661132846223359,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000010000585,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.171169528030635,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -620.2953337820545,
+          "friction_n": -620.2953337820545
+        },
+        {
+          "time_s": 1.1810009209846122,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000009999967,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.1854112159609724,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -673.0418839069825,
+          "friction_n": -673.0418839069825
+        },
+        {
+          "time_s": 1.1968258847112547,
+          "kind": "release",
+          "direction": -1,
+          "net_drive_n": -800.0000009999967,
+          "friction_n": -800.0
+        },
+        {
+          "time_s": 1.197516054817146,
+          "kind": "restick",
+          "direction": 0,
+          "net_drive_n": -787.029416419995,
+          "friction_n": -787.029416419995
+        }
+      ],
+      "model": "four_state_hydraulic_twin"
+    },
+    "metrics": {
+      "max_abs_error_mm": 0.0366216346372461,
+      "rms_error_mm": 0.009075483160143253,
+      "final_error_mm": 0.010144456697447346,
+      "startup_velocity_threshold_m_s": 0.0001,
+      "motion_start_ms": 13.000000000000002,
+      "reference_threshold_ms": 5.0,
+      "first_feedforward_ms": 0.0,
+      "first_feedforward_voltage_v": 1.2007050354633853,
+      "startup_max_abs_error_mm": 0.014473559633773657,
+      "startup_max_voltage_step_v": 0.45834855406728,
+      "startup_max_voltage_drop_v": 0.45834855406728,
+      "startup_peak_abs_voltage_v": 1.2167104764729562,
+      "startup_initial_voltage_v": 1.2007050354633853,
+      "startup_reference_friction_n": 800.0,
+      "startup_reference_force_n": 800.0,
+      "startup_delay_from_reference_ms": 8.0,
+      "startup_velocity_rmse_m_s": 0.0010712917621154003,
+      "startup_velocity_overshoot_m_s": 0.002251762252308557,
+      "startup_prominent_overshoot_peaks": 2,
+      "startup_first_peak_time_s": null,
+      "startup_first_peak_velocity_m_s": null,
+      "reference_velocity_at_0p16_m_s": 0.032,
+      "contact_min_velocity_m_s": 0.1968401098067904,
+      "contact_speed_drop_percent": 1.5799450966048068,
+      "contact_max_abs_error_mm": 0.028740582041532348,
+      "contact_added_error_mm": 0.01612577408713345,
+      "contact_error_peak_time_s": 0.587,
+      "error_at_0p60_mm": 0.012412515525347945,
+      "light_median_voltage_v": 2.4981260092471382,
+      "heavy_median_voltage_v": 4.1700775207300165,
+      "light_median_p1_mpa": 2.5517230731068694,
+      "heavy_median_p1_mpa": 15.187182235634987,
+      "kq_decline_percent": 43.86736244517119,
+      "peak_abs_voltage_v": 4.397824054074676,
+      "stop_peak_abs_voltage_v": 0.6928895241010142,
+      "stop_max_voltage_step_v": 0.22023633491501238,
+      "stop_voltage_total_variation_v": 3.218833396552037,
+      "hold_max_abs_velocity_m_s": 0.0010570565528035787,
+      "saturation_time_s": 0.0,
+      "min_absolute_pressure_mpa": 0.1,
+      "max_absolute_pressure_mpa": 15.260121771801883,
+      "meets_full_0p05mm": true,
+      "meets_full_0p1mm": true,
+      "first_breakaway_ms": 10.766935216133694,
+      "first_breakaway_net_force_n": 800.0000009999972,
+      "friction_release_events": 18,
+      "friction_restick_events": 18
+    }
+  }
+}

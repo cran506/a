@@ -1,0 +1,12 @@
+{
+  "L": 0.3,
+  "V0_1": 0.0001,
+  "V0_2": 0.0001,
+  "beta_e": 1800000000.0,
+  "deadzone": 0.04,
+  "xv_max": 0.00373,
+  "air_fraction_at_pr": 0.018,
+  "gas_polytropic_exponent": 1.4,
+  "sigma": 5000.0,
+  "gamma": 100.0
+}

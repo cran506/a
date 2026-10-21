@@ -1,0 +1,12 @@
+test_deadzone_inverse_restores_signed_linear_signal (test_models.PhysicalModelTests.test_deadzone_inverse_restores_signed_linear_signal) ... ok
+test_inverse_dynamics_counts_viscous_friction_once (test_models.PhysicalModelTests.test_inverse_dynamics_counts_viscous_friction_once) ... ok
+test_negative_force_rate_inverse_has_correct_valve_topology (test_models.PhysicalModelTests.test_negative_force_rate_inverse_has_correct_valve_topology) ... ok
+test_positive_force_rate_inverse_has_correct_voltage_units (test_models.PhysicalModelTests.test_positive_force_rate_inverse_has_correct_voltage_units) ... ok
+test_startup_gain_uses_current_velocity_and_latches_until_reset (test_models.PhysicalModelTests.test_startup_gain_uses_current_velocity_and_latches_until_reset) ... ok
+test_stribeck_is_odd_and_has_correct_static_limits (test_models.PhysicalModelTests.test_stribeck_is_odd_and_has_correct_static_limits) ... ok
+test_subthreshold_force_has_true_static_equilibrium (test_models.PhysicalModelTests.test_subthreshold_force_has_true_static_equilibrium) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.002s
+
+OK
