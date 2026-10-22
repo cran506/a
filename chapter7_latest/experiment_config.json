@@ -19,7 +19,7 @@
   "ff_accel_time": 0.01,
   "mpc_outer_iterations": 3,
   "q_position": 100.0,
-  "q_velocity": 50.0,
+  "q_velocity": 20.0,
   "move_weight": 0.01,
   "settling_move_weight": 0.1,
   "settling_error_mm": 0.5,

@@ -1,0 +1,15 @@
+test_absolute_pressure_constraint_and_fresh_feedback_with_warm_start (test_chapter7.ChapterSevenTests.test_absolute_pressure_constraint_and_fresh_feedback_with_warm_start) ... ok
+test_affine_zoh_preserves_independent_exact_valve_transition (test_chapter7.ChapterSevenTests.test_affine_zoh_preserves_independent_exact_valve_transition) ... ok
+test_education_units_and_exact_valve_zoh_without_false_motion (test_chapter7.ChapterSevenTests.test_education_units_and_exact_valve_zoh_without_false_motion) ... ok
+test_infeasible_pressure_problem_reports_failure_without_held_command (test_chapter7.ChapterSevenTests.test_infeasible_pressure_problem_reports_failure_without_held_command) ... ok
+test_intersample_water_hammer_extremum_is_recorded_without_pressure_clipping (test_chapter7.ChapterSevenTests.test_intersample_water_hammer_extremum_is_recorded_without_pressure_clipping) ... ok
+test_jacobian_is_the_actual_rhs_and_contains_physical_flow_gain (test_chapter7.ChapterSevenTests.test_jacobian_is_the_actual_rhs_and_contains_physical_flow_gain) ... ok
+test_precharged_pressure_can_change_while_static_friction_holds (test_chapter7.ChapterSevenTests.test_precharged_pressure_can_change_while_static_friction_holds) ... ok
+test_short_real_startup_has_bounded_incremental_commands (test_chapter7.ChapterSevenTests.test_short_real_startup_has_bounded_incremental_commands) ... ok
+test_time_varying_affine_condensation_matches_physical_recursion (test_chapter7.ChapterSevenTests.test_time_varying_affine_condensation_matches_physical_recursion) ... ok
+test_wrong_pressure_jacobian_is_rejected_by_nonlinear_validation (test_chapter7.ChapterSevenTests.test_wrong_pressure_jacobian_is_rejected_by_nonlinear_validation) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 1.009s
+
+OK

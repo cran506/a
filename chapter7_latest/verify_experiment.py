@@ -71,6 +71,9 @@ def verify(folder, strict=False):
         all(config[key] == configs[0][key] for key in shared) for config in configs[1:])
     checks['input_mpc_reduces_overshoot'] = bool(summary['input_mpc']['metrics']['overshoot_percent']
                                                < summary['pid']['metrics']['overshoot_percent'])
+    checks['full_mpc_reduces_overshoot_vs_input_only'] = bool(
+        summary['full_mpc']['metrics']['overshoot_percent']
+        < summary['input_mpc']['metrics']['overshoot_percent'])
     checks['pid_braking_overpressure_observed'] = bool(summary['pid']['metrics']['peak_p2_mpa'] > configs[0]['p_safe'])
     checks['input_only_braking_overpressure_observed'] = bool(summary['input_mpc']['metrics']['peak_p2_mpa'] > configs[0]['p_safe'])
     checks['input_only_peak_more_severe_than_pid'] = bool(summary['input_mpc']['metrics']['peak_p2_mpa']

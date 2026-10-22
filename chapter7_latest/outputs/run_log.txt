@@ -1,0 +1,39 @@
+Simulating pid ...
+{'peak_position_mm': 57.6228202487201, 'peak_position_time_s': 0.065, 'overshoot_percent': 15.245640497440204, 'first_target_crossing_s': 0.05506183511702161, 'final_error_mm': -1.0970075561244528, 'first_positive_saturation_exit_s': 0.053, 'saturation_tolerance_v': 0.0001, 'saturation_delay_after_crossing_ms': 0.0, 'last_20ms_max_abs_error_mm': 1.1255935415247222, 'peak_p2_mpa': 23.82958610177827, 'peak_p2_time_s': 0.06377337390345142, 'peak_p1_mpa': 15.57543936233223, 'min_absolute_pressure_mpa': 0.08857553538111519, 'sampled_peak_p2_mpa': 23.753008844683972, 'constraint_violation_p2_mpa': 2.8295861017782684, 'max_abs_voltage_v': 10.0, 'min_voltage_v': -7.64602596432661, 'max_internal_voltage_v': 50.18327528429782, 'max_abs_control_increment_v': 10.0, 'peak_velocity_m_s': 1.2124554990811685, 'min_velocity_m_s': -0.6009791872273298, 'qp_runtime_median_ms': 0.0, 'qp_runtime_max_ms': 0.0, 'total_controller_median_ms': 0.010154999472433701, 'total_controller_max_ms': 4.024535002827179, 'controller_within_1ms_fraction': 0.9929078014184397, 'validated_shifted_plan_count': 0, 'solved_inaccurate_count': 0, 'pressure_trace_points': 5836, 'qp_attempt_count': 0, 'fallback_solver_attempt_count': 0, 'solver_failure_retained_plan_count': 0}
+Simulating input_mpc ...
+input_mpc t=0.000 x=0.00mm P2=2.00MPa u=+0.00V controller=0.0ms
+input_mpc t=0.010 x=0.00mm P2=1.99MPa u=+4.50V controller=66.9ms
+input_mpc t=0.020 x=6.84mm P2=4.57MPa u=+10.00V controller=40.5ms
+input_mpc t=0.030 x=18.85mm P2=4.70MPa u=+10.00V controller=32.8ms
+input_mpc t=0.040 x=30.97mm P2=4.70MPa u=+10.00V controller=132.3ms
+input_mpc t=0.050 x=43.10mm P2=4.70MPa u=+10.00V controller=163.4ms
+input_mpc t=0.060 x=50.33mm P2=18.58MPa u=-2.91V controller=112.1ms
+input_mpc t=0.070 x=49.99mm P2=17.57MPa u=+2.34V controller=92.8ms
+input_mpc t=0.080 x=50.02mm P2=17.29MPa u=+0.27V controller=64.8ms
+input_mpc t=0.090 x=50.01mm P2=17.11MPa u=-0.38V controller=46.8ms
+input_mpc t=0.100 x=50.01mm P2=16.96MPa u=-0.52V controller=54.4ms
+input_mpc t=0.110 x=50.02mm P2=16.96MPa u=-0.51V controller=52.7ms
+input_mpc t=0.120 x=50.02mm P2=16.93MPa u=-0.51V controller=53.5ms
+input_mpc t=0.130 x=50.02mm P2=16.90MPa u=-0.51V controller=53.5ms
+input_mpc t=0.140 x=50.02mm P2=16.87MPa u=-0.51V controller=53.6ms
+input_mpc t=0.150 x=50.02mm P2=16.84MPa u=-0.51V controller=53.7ms
+{'peak_position_mm': 50.481340491336724, 'peak_position_time_s': 0.059000000000000004, 'overshoot_percent': 0.9626809826734473, 'first_target_crossing_s': 0.056701633327806825, 'final_error_mm': -0.015267323289691603, 'first_positive_saturation_exit_s': 0.051000000000000004, 'saturation_tolerance_v': 0.0001, 'saturation_delay_after_crossing_ms': 0.0, 'last_20ms_max_abs_error_mm': 0.015267323289691603, 'peak_p2_mpa': 29.79574875629476, 'peak_p2_time_s': 0.05778504694946876, 'peak_p1_mpa': 14.953708398222215, 'min_absolute_pressure_mpa': 0.0734277078551049, 'sampled_peak_p2_mpa': 29.62934212121058, 'constraint_violation_p2_mpa': 8.79574875629476, 'max_abs_voltage_v': 10.0, 'min_voltage_v': -7.731058407998917, 'max_internal_voltage_v': 10.000001301320433, 'max_abs_control_increment_v': 4.5, 'peak_velocity_m_s': 1.2124554440523672, 'min_velocity_m_s': -0.1758180955293132, 'qp_runtime_median_ms': 0.15861799999999998, 'qp_runtime_max_ms': 9.856681, 'total_controller_median_ms': 53.61504100073944, 'total_controller_max_ms': 172.7562360028969, 'controller_within_1ms_fraction': 0.0, 'validated_shifted_plan_count': 0, 'solved_inaccurate_count': 0, 'pressure_trace_points': 5733, 'qp_attempt_count': 282, 'fallback_solver_attempt_count': 0, 'solver_failure_retained_plan_count': 0}
+Simulating full_mpc ...
+full_mpc t=0.000 x=0.00mm P2=2.00MPa u=+0.00V controller=0.0ms
+full_mpc t=0.010 x=0.00mm P2=1.99MPa u=+4.50V controller=62.1ms
+full_mpc t=0.020 x=6.84mm P2=4.57MPa u=+10.00V controller=41.4ms
+full_mpc t=0.030 x=18.85mm P2=4.70MPa u=+10.00V controller=32.6ms
+full_mpc t=0.040 x=30.97mm P2=4.70MPa u=+10.00V controller=203.1ms
+full_mpc t=0.050 x=43.10mm P2=4.70MPa u=+8.12V controller=374.6ms
+full_mpc t=0.060 x=50.28mm P2=17.82MPa u=+1.62V controller=106.7ms
+full_mpc t=0.070 x=49.92mm P2=14.64MPa u=+0.13V controller=88.0ms
+full_mpc t=0.080 x=50.02mm P2=14.85MPa u=+0.48V controller=173.2ms
+full_mpc t=0.090 x=50.02mm P2=14.69MPa u=-0.47V controller=55.0ms
+full_mpc t=0.100 x=50.02mm P2=14.65MPa u=-0.51V controller=54.5ms
+full_mpc t=0.110 x=50.02mm P2=14.64MPa u=-0.51V controller=54.2ms
+full_mpc t=0.120 x=50.02mm P2=14.64MPa u=-0.51V controller=53.8ms
+full_mpc t=0.130 x=50.02mm P2=14.63MPa u=-0.51V controller=58.0ms
+full_mpc t=0.140 x=50.02mm P2=14.63MPa u=-0.51V controller=55.8ms
+full_mpc t=0.150 x=50.02mm P2=14.62MPa u=-0.51V controller=55.4ms
+{'peak_position_mm': 50.345821920170714, 'peak_position_time_s': 0.059000000000000004, 'overshoot_percent': 0.6916438403414276, 'first_target_crossing_s': 0.057342236622730844, 'final_error_mm': -0.01717415876104411, 'first_positive_saturation_exit_s': 0.05, 'saturation_tolerance_v': 0.0001, 'saturation_delay_after_crossing_ms': 0.0, 'last_20ms_max_abs_error_mm': 0.01717415876104411, 'peak_p2_mpa': 20.638435332100126, 'peak_p2_time_s': 0.056512750131841545, 'peak_p1_mpa': 14.953708388510059, 'min_absolute_pressure_mpa': 0.08202780251491558, 'sampled_peak_p2_mpa': 20.498795270477405, 'constraint_violation_p2_mpa': 0.0, 'max_abs_voltage_v': 10.0, 'min_voltage_v': -7.0848073004871, 'max_internal_voltage_v': 10.000000016334399, 'max_abs_control_increment_v': 4.5, 'peak_velocity_m_s': 1.2124554730325616, 'min_velocity_m_s': -0.18766626652459917, 'qp_runtime_median_ms': 0.22746300000000003, 'qp_runtime_max_ms': 93.481852, 'total_controller_median_ms': 56.309166000573896, 'total_controller_max_ms': 374.60133000058704, 'controller_within_1ms_fraction': 0.0, 'validated_shifted_plan_count': 16, 'solved_inaccurate_count': 0, 'pressure_trace_points': 5736, 'qp_attempt_count': 302, 'fallback_solver_attempt_count': 1, 'solver_failure_retained_plan_count': 1}
+Saved: /workspace/work/chapter7_latest/outputs

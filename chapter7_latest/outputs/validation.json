@@ -48,6 +48,7 @@
     "full_strict_actual_pressure_constraint": true,
     "common_plant_initial_condition_reference": true,
     "input_mpc_reduces_overshoot": true,
+    "full_mpc_reduces_overshoot_vs_input_only": true,
     "pid_braking_overpressure_observed": true,
     "input_only_braking_overpressure_observed": true,
     "input_only_peak_more_severe_than_pid": true
@@ -65,21 +66,20 @@
       "mode": "recorded-input replay, not a new MPC optimization run",
       "baseline_rtol": 1e-06,
       "strict_rtol": 1e-08,
-      "max_position_difference_mm": 4.345067793565249e-06,
-      "strict_peak_p2_mpa": 29.771876453258745,
-      "peak_pressure_difference_mpa": 7.009382134270936e-06
+      "max_position_difference_mm": 0.00012549432361197432,
+      "strict_peak_p2_mpa": 29.7957516765024,
+      "peak_pressure_difference_mpa": 2.9202076419210243e-06
     },
     "full_mpc": {
       "mode": "recorded-input replay, not a new MPC optimization run",
       "baseline_rtol": 1e-06,
       "strict_rtol": 1e-08,
-      "max_position_difference_mm": 1.9673162725553084e-06,
-      "strict_peak_p2_mpa": 20.59176942299129,
-      "peak_pressure_difference_mpa": 6.274065000866358e-08
+      "max_position_difference_mm": 2.242705228638897e-06,
+      "strict_peak_p2_mpa": 20.638435250957226,
+      "peak_pressure_difference_mpa": 8.114290039884509e-08
     }
   },
   "pressure_safety_scope": "P2 upper bound in this nominal classroom experiment",
   "realtime_requirement_passed": false,
-  "reference_numbers_are_comparison_targets": true,
-  "test_count": 10
+  "reference_numbers_are_comparison_targets": true
 }
