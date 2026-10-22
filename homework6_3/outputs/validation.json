@@ -54,14 +54,5 @@
     "all_requested_betas_run": true
   },
   "scope": "默认参数下功能及现象检查；不证明任意beta、噪声及反馈增益下稳定",
-  "noise_std_mm_s": 0.0,
-  "test_count": 13,
-  "unit_test_record": {
-    "command": "python -m unittest -v test_work_6_3.py",
-    "passed": true,
-    "tests_run": 13,
-    "failures": 0,
-    "errors": 0,
-    "test_source_sha256": "03b42f28eb2bd9eeab24d9193b4340d383a213f6d019e56d26763fd9b5e99507"
-  }
+  "noise_std_mm_s": 0.0
 }

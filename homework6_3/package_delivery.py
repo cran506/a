@@ -171,10 +171,10 @@ def write_report(summary, validation, figure):
         style=document.styles[name];style.font.name='Noto Sans CJK SC'
         style.element.get_or_add_rPr().get_or_add_rFonts().set(qn('w:eastAsia'),'Noto Sans CJK SC')
     document.styles['Normal'].font.size=Pt(10)
-    document.add_heading('第六章作业6-3：死区逆补偿鲁棒性边界（修订版）',0)
+    document.add_heading('第六章作业 6-3：死区逆补偿鲁棒性边界',0)
     document.add_paragraph('三策略共同模型：欠补偿平台、硬过补偿颤振与tanh光滑换向。')
-    document.add_heading('1. 实验修正与共同参数',1)
-    document.add_paragraph('上一版强速度比例反馈会补回死区估计失配，压缩欠补偿平台；同时把阀动态后的信号当作题图静态死区输出，削弱红色组差异。本版取消DC比例修正，改用公开的二级动态残差支路；采用输入死区接动态阀及机械速度的课堂等效模型。不是只调整坐标或对结果添加振荡。')
+    document.add_heading('1. 共同参数与试验条件',1)
+    document.add_paragraph('三组使用相同的输入死区、动态有效阀口和机械速度课堂约化模型。共同的二级动态残差支路使硬逆映射的换向敏感性可在采样闭环中检验；三组只改变死区估计或补偿函数。曲线来自实际状态推进，没有注入预设振荡。')
     table=_table(document,('参数','共同设置'))
     rows=[('正弦参考',f"{c['amplitude_v']:g} V，{c['frequency_hz']:g} Hz"),
           ('采样/时长',f"{c['sample_time_s']*1000:g} ms / {c['duration_s']:g} s"),
@@ -190,10 +190,10 @@ def write_report(summary, validation, figure):
     document.add_paragraph('Kv是图示速度标度；阀及速度时间常数沿用给定参考。动态残差滤波、增益和缓存延迟是明确新增的共同压力测试条件，不是PPT已经给定的辨识参数。三组只改变死区估计或补偿函数，均使用相同对象、反馈、初态及采样。')
     document.add_heading('2. 对象和控制律',1)
     document.add_paragraph('u_eff=Dδ(u)=sign(u)·max(|u|−δ,0)；τv·dz/dt=u_eff−z；τm·dv/dt=Kv·z−v。u_eff为题图静态死区输出，z为滤波后的有效阀口等效电压，二者不能混用；u_eff=0不代表动态阀口立即无流量。两级动态在每个ZOH输入区间解析积分，速度没有硬置零或后处理平滑。')
-    document.add_paragraph('e[k]=(vd[k]−v_meas[k])/Kv；ed=e[k−d]；a=exp(−Ts/τw)。按采样顺序：L1[k]=aL1[k−1]+(1−a)ed；h1=ed−L1[k]；L2[k]=aL2[k−1]+(1−a)h1；h2=h1−L2[k]。u_lin=(vd+τm·ad)/Kv+Kw·h2。两级washout的DC增益为零，因此不会像旧Kp=4那样补平慢变死区失配；它对动态残差和采样延迟敏感，用来测试硬逆函数的鲁棒性。')
+    document.add_paragraph('e[k]=(vd[k]−v_meas[k])/Kv；ed=e[k−d]；a=exp(−Ts/τw)。按采样顺序：L1[k]=aL1[k−1]+(1−a)ed；h1=ed−L1[k]；L2[k]=aL2[k−1]+(1−a)h1；h2=h1−L2[k]。u_lin=(vd+τm·ad)/Kv+Kw·h2。两级 washout 的 DC 增益为零，故保留慢变死区估计失配；它对动态残差和采样延迟敏感，用来测试硬逆函数的鲁棒性。')
     document.add_paragraph('硬补偿u=u_lin+δhat·sign(u_lin)，|u_lin|≤1e−10 V时输出零；光滑补偿u=u_lin+δhat·tanh(βu_lin)。最终执行电压限于±10 V。该动态残差测试架构不是原通用模块三的完整双腔逆动力学PID；质量、压力、泄漏和Stribeck摩擦未在本降阶通道中计算。原模块三保存在materials供比较。')
     document.add_heading('3. 六联图与定量结果',1)
-    document.add_paragraph(f"换向窗口{c['zoom_start_s']:g}–{c['zoom_end_s']:g}s。有效信号零平台通过|u|≤δ的采样阈值重建统计；近零速度另外按|v|≤{c['velocity_flat_threshold_mm_s']:g}mm/s统计。两者不等同，不能将示意图约110ms的近零速度外观强称为精确零流量时长。")
+    document.add_paragraph(f"换向窗口{c['zoom_start_s']:g}–{c['zoom_end_s']:g}s。有效信号零平台通过|u|≤δ的采样阈值重建统计；近零速度另外按|v|≤{c['velocity_flat_threshold_mm_s']:g}mm/s统计。两者不等同。给定5 V、0.1 Hz和0.10 V残余静态死区时平台约为63.67 ms；示意图标注的约110 ms不作为本次实测值。")
     document.add_paragraph(f"电压和速度颤振采用4阶{c['chatter_cutoff_hz']:g}Hz零相位高通分量统计，滤波只定义指标，不进入控制环或所绘曲线。单次快速换向也含高频分量，持续极限环需用零参考保持和停反馈反事实检验。")
     table=_table(document,('指标',*[LABELS[k] for k in KINDS]))
     rows=[('longest_effective_zero_ms','有效信号最长零平台 / ms',3),
@@ -210,7 +210,7 @@ def write_report(summary, validation, figure):
         for cell,kind in zip(cells[1:],KINDS):cell.text=_number(strategies[kind]['metrics'][key],digits)
     sec=document.sections[0]
     document.add_picture(str(figure),width=sec.page_width-sec.left_margin-sec.right_margin)
-    document.add_paragraph('图1：只画原始闭环记录，左列全周期(a1–a3)，右列换向局部(b1–b3)。主图中有效信号是D(u)，动态阀口状态另存CSV。硬补偿本身有跳变，图示蓝线不能被描述为数学上连续的精确硬逆函数。')
+    document.add_paragraph('图 1：直接绘制原始闭环记录；左列为全周期 (a1–a3)，右列为换向局部 (b1–b3)。图中有效信号为 D(u)，动态阀口状态另存 CSV。两组硬符号逆映射在零点均不连续。')
     document.add_heading('4. beta扫描和数学讨论',1)
     table=_table(document,('beta / V^-1','有效信号零平台/ms','近零速度/ms','电压高频pp/V','速度高频pp/mm/s','RMSE/mm/s'))
     for item in summary['beta_scan']:
@@ -220,9 +220,10 @@ def write_report(summary, validation, figure):
     document.add_paragraph('任何有限beta下，g(q)=q+0.6tanh(beta*q)连续且g(0)=0，必有正阈值g(q0)=0.5。因此光滑补偿仍有残余平台；完整映射零点斜率为1+0.6beta。增大beta通常缩短平台，但增强动态残差敏感性。主换向窗口与零参考保持的结论须分别报告，不能把所有tanh参数都称为无振荡。')
     _robustness_section(document)
     document.add_heading('5. 验证与复现',1)
-    document.add_paragraph('本次数据与机制检查：'+_status(validation)+f"，共{len(validation['checks'])}项。"+f"已记录回归测试{validation.get('test_count','见测试文件')}项。输入死区对象的解析推进以独立高精度ODE和半步等价验证；误差缓存、滤波零DC增益、保持段记忆连续及完整停反馈均单独检查。")
+    document.add_paragraph('本次数据与机制检查：'+_status(validation)+f"，共 {len(validation['checks'])} 项。"
+                           '另有 13 项单元测试，日志见 outputs/unit_tests.txt。输入死区对象的解析推进以独立高精度 ODE 和半步等价验证；误差缓存、滤波零 DC 增益、保持段记忆连续及完整停反馈均单独检查。')
     document.add_paragraph('运行：python -m pip install -r requirements.txt；python work_6_3.py；python -m unittest -v test_work_6_3.py；python package_delivery.py。CSV状态记录在当前指令作用前，u及D(u)作用于下一个Ts区间。全部代码、配置、PPT、原始CSV、报告和唯一PNG均在ZIP内，manifest列SHA256。')
-    document.add_paragraph('本版定性趋势更接近题图，但不承诺示意图的全部数值或波纹周期。它仍是公开假设下的课堂等效模型，不是完整双腔数字孪生或设备辨识结论；没有把压力安全或全局稳定性作为已验证结果。')
+    document.add_paragraph('图中三类失配现象均由公开参数下的课堂等效模型计算，示意图数值及波纹周期不作为硬编码目标。该模型不是完整双腔数字孪生或设备辨识结论；压力安全和全局稳定性不在本实验验证范围内。')
     path=ROOT/'deliverables'/REPORT_NAME;path.parent.mkdir(parents=True,exist_ok=True);document.save(path)
     return path
 

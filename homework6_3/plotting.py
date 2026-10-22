@@ -111,25 +111,27 @@ def plot_comparison(results, config, destination):
              "hard_over": f"硬过补偿（估计 {over_estimate:g} V）",
              "smooth": f"tanh 光滑补偿（估计 {over_estimate:g} V，β={beta:g} /V）"}
     settings = {"font.family": "sans-serif", "font.sans-serif": _fonts(),
-                "font.size": 12, "axes.unicode_minus": False,
-                "figure.dpi": 120, "savefig.dpi": 170}
+                "font.size": 10.5, "axes.unicode_minus": False,
+                "axes.titlesize": 11.5, "axes.labelsize": 10.5,
+                "legend.fontsize": 8.8, "figure.dpi": 120, "savefig.dpi": 170}
     with plt.rc_context(settings):
-        fig, axes = plt.subplots(3, 2, figsize=(22, 13), sharex="col")
-        fig.suptitle("作业 6-3：死区失配与光滑逆补偿——全周期响应及过零换向细节",
-                     fontsize=22, y=.978)
-        windows = ((0., 10.), (4.55, 5.45))
+        fig, axes = plt.subplots(3, 2, figsize=(21, 11), sharex="col")
+        fig.suptitle("作业 6-3：伺服阀死区逆补偿的鲁棒性边界与 tanh 光滑化",
+                     fontsize=17, y=.976)
+        windows = ((0., float(config["duration_s"])),
+                   (float(config["zoom_start_s"]), float(config["zoom_end_s"])))
         fields = ("control_voltage_v", "effective_voltage_v", "velocity_mm_s")
-        labels = ("控制电压 $u$ (V)", "死区输出 $u_{eff}=D(u)$ (V)", "模型速度 $v$ (mm/s)")
+        labels = ("控制电压 $u$ (V)", "物理死区输出 $u_{eff}=D(u)$ (V)", "活塞速度 $v_p$ (mm/s)")
         for column, window in enumerate(windows):
             for row, field in enumerate(fields):
                 ax = axes[row, column]
                 values = []
                 if column == 0:
-                    ax.axvspan(*windows[1], color="#efce69", alpha=.15, zorder=0)
+                    ax.axvspan(*windows[1], color="#ffe07a", alpha=.35, zorder=0)
                 if row == 0:
                     ax.axhspan(-deadzone, deadzone, color="#aab2bb", alpha=.12, zorder=0)
                     for boundary in (-deadzone, deadzone):
-                        ax.axhline(boundary, color="#888888", ls=":", lw=1.,
+                        ax.axhline(boundary, color="#888888", ls="--", lw=.9,
                                    label=f"物理输入死区 ±{deadzone:g} V" if boundary > 0 else None)
                 elif row == 1:
                     ax.plot(time, base["reference_voltage_v"], color="#222222", ls=":", lw=1.7,
@@ -149,67 +151,60 @@ def plot_comparison(results, config, destination):
                 _limits(ax, values, window, time,
                         include=(-deadzone, deadzone) if row == 0 else (0.,))
                 ax.set_ylabel(labels[row])
-                ax.grid(True, ls=":", lw=.75, color="#b4bac1", alpha=.55)
+                ax.grid(True, ls=":", lw=.7, color="#b4bac1", alpha=.60)
                 ax.set_axisbelow(True)
-                title = ("控制电压", "死区输出有效信号", "活塞速度")[row]
-                scope = "全周期 0–10 s" if column == 0 else "换向 4.55–5.45 s"
-                ax.set_title(f"({chr(97+column)}{row+1}) {title} · {scope}",
-                             loc="left", fontsize=13, pad=10)
+                title = ("控制电压 $u(t)$", "阀口有效信号 $u_{eff}(t)$", "活塞速度 $v_p(t)$")[row]
+                scope = (f"全周期宏观响应（0–{windows[0][1]:g} s）" if column == 0
+                         else f"过零换向局部放大（{window[0]:g}–{window[1]:g} s）")
+                ax.set_title(f"({chr(97+column)}{row+1}) {title}  {scope}", pad=9)
                 if row == 2:
                     ax.set_xlabel("仿真时间 $t$ (s)")
-                ax.legend(loc="upper right", fontsize=9.8, framealpha=.94)
+                ax.legend(loc="upper right", framealpha=.94)
         intervals = results["under"].get("metrics", {}).get("flow_closed_intervals_s", [])
         if intervals:
             longest = max(intervals, key=lambda interval: interval[1]-interval[0])
             mid = .5 * (longest[0]+longest[1])
-            duration = results["under"]["metrics"].get("longest_flow_closed_ms")
+            duration = _metric(results["under"]["metrics"],
+                               ("longest_effective_zero_ms", "longest_flow_closed_ms"))
             if duration is not None:
                 axes[1, 1].annotate(
                     f"欠补偿：有效信号零平台 {duration:.2f} ms", xy=(mid, 0.),
-                    xytext=(.025, .13), textcoords="axes fraction", va="bottom",
-                    color=COLORS["under"], fontsize=10,
+                    xytext=(.025, .10), textcoords="axes fraction", va="bottom",
+                    color=COLORS["under"], fontsize=9.2,
                     bbox={"boxstyle": "round,pad=.3", "fc": "white", "ec": COLORS["under"], "alpha": .95},
                     arrowprops={"arrowstyle": "->", "color": COLORS["under"], "lw": 1.2})
         hm = results["hard_over"].get("metrics", {})
-        if hm.get("velocity_turning_points") is not None:
-            velocity = np.asarray(results["hard_over"]["data"]["velocity_mm_s"])
+        if "linear_sign_reversals" in hm:
+            linear = np.asarray(results["hard_over"]["data"]["linear_voltage_v"])
+            control = np.asarray(results["hard_over"]["data"]["control_voltage_v"])
             indices = np.flatnonzero((time >= windows[1][0]) & (time <= windows[1][1]))
-            differences = np.diff(velocity[indices])
-            turns = np.flatnonzero(differences[:-1]*differences[1:] < 0.) + 1
-            point = indices[turns[len(turns)//2]] if len(turns) else indices[len(indices)//2]
-            text = f"硬过补偿：速度高频峰峰值 {hm['chatter_velocity_pp_mm_s']:.3f} mm/s"
-            text += f"\n欠补偿近零速度平台 {results['under']['metrics']['longest_velocity_near_zero_ms']:.1f} ms"
-            axes[2, 1].annotate(
-                text, xy=(time[point], velocity[point]), xytext=(.025, .13),
-                textcoords="axes fraction", va="bottom", color=COLORS["hard_over"], fontsize=10,
+            crossings = np.flatnonzero(np.sign(linear[indices[:-1]]) !=
+                                       np.sign(linear[indices[1:]]))
+            point = indices[crossings[len(crossings)//2]] if len(crossings) else indices[len(indices)//2]
+            axes[0, 1].annotate(
+                f"硬过补偿：{hm['linear_sign_reversals']} 次符号切换\n"
+                f"最大采样电压跳变 {hm['max_voltage_step_v']:.2f} V",
+                xy=(time[point], control[point]), xytext=(.025, .08),
+                textcoords="axes fraction", va="bottom", color=COLORS["hard_over"], fontsize=9.2,
                 bbox={"boxstyle": "round,pad=.3", "fc": "white", "ec": COLORS["hard_over"], "alpha": .95},
                 arrowprops={"arrowstyle": "->", "color": COLORS["hard_over"], "lw": 1.2})
-        detail = axes[2, 1].inset_axes([.34, .64, .24, .29])
-        detail.plot(time, base['reference_velocity_mm_s'], color='#222222',ls=':',lw=1.)
-        for kind in KINDS:
-            detail.plot(time, results[kind]['data']['velocity_mm_s'],color=COLORS[kind],
-                        ls=STYLES[kind],lw=.9)
-        detail.set_xlim(4.94,5.16)
-        mask=(time>=4.94)&(time<=5.16)
-        low=min(float(np.min(results[k]['data']['velocity_mm_s'][mask])) for k in KINDS)
-        high=max(float(np.max(results[k]['data']['velocity_mm_s'][mask])) for k in KINDS)
-        detail.set_ylim(low-.3,high+.3)
-        detail.set_title('过零速度细节 (mm/s)',fontsize=7.5,pad=3)
-        detail.tick_params(labelsize=7,length=2,pad=1)
-        detail.set_xticks([4.95,5.05,5.15])
-        detail.grid(True,ls=':',alpha=.4)
+        if "chatter_velocity_pp_mm_s" in hm:
+            axes[2, 1].text(.025, .08,
+                f"欠补偿近零速度平台 {results['under']['metrics']['longest_velocity_near_zero_ms']:.1f} ms\n"
+                f"硬过补偿速度高频峰峰值 {hm['chatter_velocity_pp_mm_s']:.3f} mm/s\n"
+                f"tanh 速度高频峰峰值 {results['smooth']['metrics']['chatter_velocity_pp_mm_s']:.3f} mm/s",
+                transform=axes[2, 1].transAxes, va="bottom", color="#184b3a", fontsize=9.2,
+                bbox={"boxstyle": "round,pad=.3", "fc": "white", "ec": COLORS["smooth"], "alpha": .95})
         caption = metric_caption(results)
-        fig.subplots_adjust(left=.07, right=.984, top=.918, bottom=.225,
-                            hspace=.18, wspace=.15)
-        fig.text(.07, .162,
-                 "共同对象：输入死区 D(u) → 阀有效开口一阶 → 速度一阶；曲线来自闭环计算，未加入预设振荡。",
-                 fontsize=10.5, color="#444444", va="top")
+        fig.subplots_adjust(left=.068, right=.986, top=.905, bottom=.205,
+                            hspace=.32, wspace=.15)
         if caption:
-            fig.text(.07, .131, caption, fontsize=10.5, color="#333333", va="top", linespacing=1.7)
-        fig.text(.07, .035,
-                 f"反馈压力测试：二级washout，K_w={config['washout_gain']:g}，τ_w={config['washout_tau_s']*1000:g} ms，误差缓存延迟 {config['feedback_delay_samples']} 个采样；"
-                 "有限 β 仍有残余平台。高通仅用于指标，图中保留原始数据。",
-                 fontsize=10.5, color="#555555", va="top")
+            fig.text(.068, .14, caption, fontsize=9.2, color="#263548", va="top", linespacing=1.45,
+                     bbox={"boxstyle": "round,pad=.4", "fc": "#f2f6fc", "ec": "#d4dce8", "lw": .7})
+        fig.text(.986, .025,
+                 f"共同对象：输入死区 → 阀动态 → 速度动态；二级 washout K={config['washout_gain']:g}、"
+                 f"反馈延迟 {config['feedback_delay_samples']} 采样。有限 β 仍有残余零平台；高通仅用于指标。",
+                 fontsize=8.2, color="#576372", ha="right", va="bottom")
         try:
             fig.savefig(destination, facecolor="white")
         finally:

@@ -1,0 +1,18 @@
+test_acceleration_feedforward_and_nonlinear_residual_decompose_applied_output (test_work_6_3.DeadzoneMechanismTests.test_acceleration_feedforward_and_nonlinear_residual_decompose_applied_output) ... ok
+test_dynamic_residual_is_causally_delayed_and_has_zero_dc_gain (test_work_6_3.DeadzoneMechanismTests.test_dynamic_residual_is_causally_delayed_and_has_zero_dc_gain) ... ok
+test_exact_zoh_has_half_step_equivalence_across_both_deadzone_edges (test_work_6_3.DeadzoneMechanismTests.test_exact_zoh_has_half_step_equivalence_across_both_deadzone_edges) ... ok
+test_feedback_corrected_signal_enters_the_inverse_map_before_sign_choice (test_work_6_3.DeadzoneMechanismTests.test_feedback_corrected_signal_enters_the_inverse_map_before_sign_choice) ... ok
+test_feedback_counterfactual_preserves_memory_and_disables_all_contributions (test_work_6_3.DeadzoneMechanismTests.test_feedback_counterfactual_preserves_memory_and_disables_all_contributions) ... ok
+test_finite_tanh_slope_remains_continuous_but_leaves_a_residual_deadzone (test_work_6_3.DeadzoneMechanismTests.test_finite_tanh_slope_remains_continuous_but_leaves_a_residual_deadzone) ... ok
+test_hard_overcompensation_creates_opposite_nonzero_effective_limits (test_work_6_3.DeadzoneMechanismTests.test_hard_overcompensation_creates_opposite_nonzero_effective_limits) ... ok
+test_hard_undercompensation_leaves_a_real_point_one_volt_gap (test_work_6_3.DeadzoneMechanismTests.test_hard_undercompensation_leaves_a_real_point_one_volt_gap) ... ok
+test_input_deadzone_cascade_matches_independent_ode_and_split_steps (test_work_6_3.DeadzoneMechanismTests.test_input_deadzone_cascade_matches_independent_ode_and_split_steps) ... ok
+test_plant_is_left_right_symmetric_without_injected_velocity (test_work_6_3.DeadzoneMechanismTests.test_plant_is_left_right_symmetric_without_injected_velocity) ... ok
+test_real_deadzone_handles_scalar_array_and_both_boundaries (test_work_6_3.DeadzoneMechanismTests.test_real_deadzone_handles_scalar_array_and_both_boundaries) ... ok
+test_segmented_solution_matches_independent_high_accuracy_ode (test_work_6_3.DeadzoneMechanismTests.test_segmented_solution_matches_independent_high_accuracy_ode) ... ok
+test_zero_time_constant_valve_and_blocked_valve_have_expected_velocity (test_work_6_3.DeadzoneMechanismTests.test_zero_time_constant_valve_and_blocked_valve_have_expected_velocity) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.087s
+
+OK
