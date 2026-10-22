@@ -1,19 +1,19 @@
 {
-  "generated_at_utc": "2026-10-21T13:58:18.119533+00:00",
-  "model": "classroom_quasi_static_pressure_reduction",
+  "generated_at_utc": "2026-10-22T00:58:54.878823+00:00",
+  "model": "classroom_pressure_impedance_reduction",
   "scope": "只验证明确公开的约化模型；不证明上传四阶液压Twin具有同样动态性能。",
   "inputs": {
-    "summary_sha256": "72a095f83b9cca4b4f345257de5c770641bf15dc2c14b591dd5ccc963ed0e229",
-    "full_csv_sha256": "82f3c93bffcf89d9c5ea0f3171e19174ae581e70149ffb92a9f5ded5b033cf92",
-    "classroom_model_sha256": "1c319438e5492a5619f47c6242370eff33df9d7ccda15e3af8d86efb7911cbef"
+    "summary_sha256": "38a2cecf11f5c70119fdd0eb83cfcfc77bc622935e65176a1df7f8d78d87b1bc",
+    "full_csv_sha256": "aa28bea4fc364064b3619ceec626561bbf9639be5cd1aed2becf65f65d238f1f",
+    "classroom_model_sha256": "00f32130a25acda55cb15b0771e0307686f080a611201814ec16b9ccfcf8deef"
   },
   "all_passed": true,
   "checks": [
     {
       "name": "saved_csv_matches_summary",
       "passed": true,
-      "csv_max_abs_error_mm": 0.0024249988491431562,
-      "summary_max_abs_error_mm": 0.0024249988491431562
+      "csv_max_abs_error_mm": 0.04320018613208909,
+      "summary_max_abs_error_mm": 0.04320018613208909
     },
     {
       "name": "saved_error_is_reference_minus_position",
@@ -27,26 +27,26 @@
       "strict_rtol": 1e-10,
       "strategies": {
         "pid": {
-          "baseline_max_abs_error_mm": 0.6909893470550612,
-          "strict_max_abs_error_mm": 0.6909893506456682,
-          "max_error_metric_difference_mm": 3.5906070339208895e-09,
-          "contact_min_velocity_difference_m_s": 4.893173088937885e-10
+          "baseline_max_abs_error_mm": 1.4824324972460694,
+          "strict_max_abs_error_mm": 1.4824324972732699,
+          "max_error_metric_difference_mm": 2.7200464103316335e-11,
+          "contact_min_velocity_difference_m_s": 7.581515970578323e-11
         },
         "nominal": {
-          "baseline_max_abs_error_mm": 0.5797471412663652,
-          "strict_max_abs_error_mm": 0.5797471448503455,
-          "max_error_metric_difference_mm": 3.583980334731507e-09,
-          "contact_min_velocity_difference_m_s": 4.875959358496829e-10
+          "baseline_max_abs_error_mm": 1.4828737809256114,
+          "strict_max_abs_error_mm": 1.4828737810387225,
+          "max_error_metric_difference_mm": 1.1311107606104542e-10,
+          "contact_min_velocity_difference_m_s": 9.317308036216332e-11
         },
         "full": {
-          "baseline_max_abs_error_mm": 0.0024249988491431562,
-          "strict_max_abs_error_mm": 0.002424998961969571,
-          "max_error_metric_difference_mm": 1.1282641487753153e-10,
-          "contact_min_velocity_difference_m_s": 1.3489209749195652e-14
+          "baseline_max_abs_error_mm": 0.04320018613208909,
+          "strict_max_abs_error_mm": 0.043200184653577334,
+          "max_error_metric_difference_mm": 1.4785117574689366e-09,
+          "contact_min_velocity_difference_m_s": 5.3460819104955704e-11
         }
       },
-      "full_max_error_trace_difference_mm": 3.2693292517649297e-10,
-      "full_max_velocity_trace_difference_m_s": 1.3308197599481986e-10,
+      "full_max_error_trace_difference_mm": 4.70419536657829e-09,
+      "full_max_velocity_trace_difference_m_s": 2.433794832334968e-10,
       "note": "仅收紧ODE容差；控制周期和所有物理参数保持相同。"
     },
     {
@@ -56,56 +56,35 @@
       "half_period_s": 0.0005,
       "strategies": {
         "pid": {
-          "max_abs_error_mm": 0.6790247042445032,
-          "contact_min_velocity_m_s": 0.1478075471656288,
-          "first_breakaway_ms": 80.50000000000006
+          "max_abs_error_mm": 1.4774732247721731,
+          "contact_min_velocity_m_s": 0.13674836765376724,
+          "first_breakaway_ms": 86.66506014358085
         },
         "nominal": {
-          "max_abs_error_mm": 0.5680822097850896,
-          "contact_min_velocity_m_s": 0.14726060303604313,
-          "first_breakaway_ms": 0.5
+          "max_abs_error_mm": 1.4786739716717567,
+          "contact_min_velocity_m_s": 0.13671856676656688,
+          "first_breakaway_ms": 2.959577917696662
         },
         "full": {
-          "max_abs_error_mm": 0.0012334879255226916,
-          "contact_min_velocity_m_s": 0.19999919506765781,
-          "first_breakaway_ms": 0.5
+          "max_abs_error_mm": 0.04397732079469696,
+          "contact_min_velocity_m_s": 0.1910602794674219,
+          "first_breakaway_ms": 2.9587650175392284
         }
       },
-      "note": "改变数字控制周期的敏感性试验；不要求PID负载峰值与1ms完全相同。"
+      "note": "改变数字控制周期的敏感性试验；要求完整控制仍达到0.05mm，不预设缩短周期必然单调改善。"
     },
     {
       "name": "no_load_counterfactual",
       "passed": true,
-      "no_load_target_heavy_voltage_v": 2.5,
-      "all_nominal_full_fields_bitwise_equal": true,
-      "compared_fields": [
-        "equivalent_velocity_gain_m_s_v",
-        "error_m",
-        "feedback_v",
-        "feedforward_v",
-        "friction_force_n",
-        "kq_ratio",
-        "linear_voltage_v",
-        "load_n",
-        "measured_m",
-        "net_drive_force_n",
-        "p1_pa",
-        "p2_pa",
-        "planned_inverse_force_n",
-        "position_m",
-        "reference_acceleration_m_s2",
-        "reference_jerk_m_s3",
-        "reference_m",
-        "reference_velocity_m_s",
-        "sticking",
-        "time_s",
-        "velocity_m_s",
-        "voltage_v"
-      ],
-      "max_position_difference_m": 0.0,
+      "no_load_heavy_drive_pressure_pa": 5000000.0,
       "all_load_samples_zero": true,
-      "pid_contact_min_velocity_m_s": 0.20035025527850706,
-      "note": "压差未变化时，开启增益调度应与标称前馈逐点一致。"
+      "voltage_jump_at_0p50s_v": {
+        "nominal": 2.386577690582925e-06,
+        "full": 2.2513489859044e-06
+      },
+      "pressure_jump_at_0p50s_pa": 0.6396401533856988,
+      "max_nominal_full_position_difference_m": 2.5411555498178195e-06,
+      "note": "移除工艺负载后，两种前馈均不得在原加载时刻出现人工电压阶跃；完整组仍按实测运动压力微调。"
     },
     {
       "name": "shifted_load_counterfactual",
@@ -116,23 +95,23 @@
         "pid": {
           "first_loaded_sample_s": 0.55,
           "first_unloaded_sample_s": 0.97,
-          "max_abs_error_mm": 0.6629589810297071,
-          "contact_min_velocity_m_s": 0.14616348479444938
+          "max_abs_error_mm": 1.482879973258161,
+          "contact_min_velocity_m_s": 0.13415526280703713
         },
         "nominal": {
           "first_loaded_sample_s": 0.55,
           "first_unloaded_sample_s": 0.97,
-          "max_abs_error_mm": 0.5798110013405661,
-          "contact_min_velocity_m_s": 0.14575833924460999
+          "max_abs_error_mm": 1.4828803605589913,
+          "contact_min_velocity_m_s": 0.13416450350969092
         },
         "full": {
           "first_loaded_sample_s": 0.55,
           "first_unloaded_sample_s": 0.97,
-          "max_abs_error_mm": 0.005409975521813992,
-          "contact_min_velocity_m_s": 0.19999880027716338
+          "max_abs_error_mm": 0.043221905068904776,
+          "contact_min_velocity_m_s": 0.19145779466607754
         }
       },
-      "full_position_difference_before_original_load_m": 8.568493137239841e-14,
+      "full_position_difference_before_original_load_m": 3.6846220519137773e-13,
       "no_load_at_original_0p50s": true,
       "note": "负载时刻由参数移动；控制器及ODE自动响应，未固定响应曲线时刻。"
     }

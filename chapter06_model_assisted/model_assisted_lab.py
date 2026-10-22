@@ -1,7 +1,7 @@
 """《智能流体传动与控制》第六章：三策略闭环仿真、数据与四联图。
 
-python model_assisted_lab.py                  # 四阶孪生（默认）
-python model_assisted_lab.py --model classroom # 课堂等效模型
+python model_assisted_lab.py                  # 教材六步控制律与修正后的课堂四联图（默认）
+python model_assisted_lab.py --model twin     # 四阶液压孪生物理复核
 python model_assisted_lab.py --model all       # 两种模型
 """
 from __future__ import annotations
@@ -74,7 +74,7 @@ def run_twin(*, known_load=True, rtol=1e-6):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--model", choices=("twin", "classroom", "all"), default="twin")
+    parser.add_argument("--model", choices=("twin", "classroom", "all"), default="classroom")
     parser.add_argument("--unknown-load", action="store_true", help="四阶模型：不向控制器提供已知负载计划")
     parser.add_argument("--rtol", type=float, default=1e-6, help="四阶模型 Radau 容差")
     parser.add_argument("--output", type=Path, default=ROOT / "outputs")

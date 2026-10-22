@@ -6,28 +6,28 @@
       "sha256": "e1d94d494516799e04c1bfd4fe12684c2c0076ed2fb9cdd311971b8f9d943a81"
     },
     "README.md": {
-      "bytes": 8140,
-      "sha256": "450782bdcb8a5bbb9e2006394feaf4213b07be89586c42031557e05aa4a9ce47"
+      "bytes": 9983,
+      "sha256": "de19e9b92697d1d4576627b1867ca6051a7502ee75dc69a0a61c58436740f1af"
     },
     "build_report.py": {
-      "bytes": 4566,
-      "sha256": "24a8bf0e37aeb7cdac01cb3472eb45fdb9d11a9638677274f9770a117bdcf4ad"
+      "bytes": 6781,
+      "sha256": "a4f6ed722732c5a220370de2e979a2ad7dcfc1994554ba321faa4dbdec464881"
     },
     "classroom_config.json": {
       "bytes": 220,
       "sha256": "9542bdb8bc16bf666b0395ad2f71bcd0d0647d0b39188ab6c5fefa754655945f"
     },
     "classroom_model.py": {
-      "bytes": 13240,
-      "sha256": "1c319438e5492a5619f47c6242370eff33df9d7ccda15e3af8d86efb7911cbef"
+      "bytes": 12350,
+      "sha256": "00f32130a25acda55cb15b0771e0307686f080a611201814ec16b9ccfcf8deef"
     },
     "controllers.py": {
       "bytes": 2480,
       "sha256": "d4d697d930ef25e3980ea4c317e3ebdb4cb5f7414538fce9ed7ee392dee96e26"
     },
     "docs/course_notes.md": {
-      "bytes": 10166,
-      "sha256": "2c7a4dfc499326996f25479b7a3e5fd6ee203dcf78c8612f60653216ad9bf143"
+      "bytes": 8707,
+      "sha256": "4b812b51f5a3855d025487edfd66b51d4c4e606468b1401b10564ec711822ee2"
     },
     "friction_model.py": {
       "bytes": 1942,
@@ -54,44 +54,44 @@
       "sha256": "8def8ae0e6ab8719cc9ce13195c03f1e0a0760dcac62fac520f6d5e5912a8760"
     },
     "model_assisted_lab.py": {
-      "bytes": 5142,
-      "sha256": "904f3621f4fc066fd56aaf234754bc59ee4d808a956c1c89356460f0505b3300"
+      "bytes": 5197,
+      "sha256": "543e9940a122acb1948f3f67d72c876f7fa4bb709c378d6dac5e06319b7b4997"
     },
     "outputs/classroom/full.csv": {
-      "bytes": 367623,
-      "sha256": "82f3c93bffcf89d9c5ea0f3171e19174ae581e70149ffb92a9f5ded5b033cf92"
+      "bytes": 424341,
+      "sha256": "aa28bea4fc364064b3619ceec626561bbf9639be5cd1aed2becf65f65d238f1f"
     },
     "outputs/classroom/model_assisted_comparison.pdf": {
-      "bytes": 77150,
-      "sha256": "4e364d37091385b4acf20622472e025cb8bc8d4b78c83ba40ec83fe6a4c26505"
+      "bytes": 77316,
+      "sha256": "9d48727e65f5d697ba726abbf9a11c026c32c091712dab6f94f50b3d3a55d83c"
     },
     "outputs/classroom/model_assisted_comparison.png": {
-      "bytes": 1051947,
-      "sha256": "e8f1098950eb56e0540ad2b1512f725244f2aa693e8ff67d84e2249c95e51e27"
+      "bytes": 1024630,
+      "sha256": "48664eabc537eb0304a60ac22d1450d64ccfa016b7bdfc923a4fe366dd5fd248"
     },
     "outputs/classroom/nominal.csv": {
-      "bytes": 365838,
-      "sha256": "97e387e59870cacb7f7d7c5c2453603a0482cfe4c3a53e34fcc900da4f0ada4b"
+      "bytes": 430967,
+      "sha256": "e14873782233696bc25625d52c29731db4b37bb5e53d1aae14370d5a624907cc"
     },
     "outputs/classroom/numerical_checks.json": {
-      "bytes": 5008,
-      "sha256": "3875a8da3d8a7c6c67a7873a39163ecfdb1cfdb74c018f08c4c4d29ec0a72811"
+      "bytes": 4632,
+      "sha256": "1a0af3aa8d9e57ac7bcabd4d09331cef7e465b67c970c33f8e944551b3706f88"
     },
     "outputs/classroom/pid.csv": {
-      "bytes": 327736,
-      "sha256": "4dc167d8da82cce13fcafdee168772590a514fe360caf1ea2063ef777aaedd3e"
+      "bytes": 355449,
+      "sha256": "702299a093bc0dff60d73a316492aff9207c90a046bc4560228db68304b8b5d3"
     },
     "outputs/classroom/summary.json": {
-      "bytes": 11787,
-      "sha256": "72a095f83b9cca4b4f345257de5c770641bf15dc2c14b591dd5ccc963ed0e229"
+      "bytes": 11553,
+      "sha256": "38a2cecf11f5c70119fdd0eb83cfcfc77bc622935e65176a1df7f8d78d87b1bc"
     },
     "outputs/classroom/validation.json": {
       "bytes": 624,
       "sha256": "93f3985e69ad0b8ba8cd93e88d70daeaa63d97cfec1f346f900e6577aa4fea1d"
     },
     "outputs/experiment_report.md": {
-      "bytes": 3621,
-      "sha256": "a531d9f81c9f31e4c0cc35b2c521545c094335f385078ba9b70d567ee77fb1cc"
+      "bytes": 4578,
+      "sha256": "e30837e4383189a444fa7242e7bd769419bacd20f870d4885168a1a02736069d"
     },
     "outputs/numerical_checks.json": {
       "bytes": 3749,
@@ -126,8 +126,8 @@
       "sha256": "93f3985e69ad0b8ba8cd93e88d70daeaa63d97cfec1f346f900e6577aa4fea1d"
     },
     "outputs/unit_tests.txt": {
-      "bytes": 1156,
-      "sha256": "822dae02dd6a5a4cbfebacf82d623c96ed2e0db7f27e72cf1536c07d9e4b6882"
+      "bytes": 1775,
+      "sha256": "5351e8ac02b4a385e7f2afa01916fd0ed1b5419910425a568c2a4d83744a3998"
     },
     "package_delivery.py": {
       "bytes": 1426,
@@ -153,9 +153,25 @@
       "bytes": 5104,
       "sha256": "bf8566a4c13b24c02dc15c94fbbf4bee89722b97951e07c72975bf62fbdecc84"
     },
+    "test_textbook_reference.py": {
+      "bytes": 3194,
+      "sha256": "e02d6a9aad14f90431fc0180d9d16df7f76a2e46beef4f2059352812b1085f95"
+    },
     "tested_environment.json": {
       "bytes": 114,
       "sha256": "8172605bb79613a57a5586d77ffcd0388a83650dc92617f0051f98459d1ce904"
+    },
+    "textbook_config.json": {
+      "bytes": 338,
+      "sha256": "5cf5c2fff56b92ebfca97eb57cc66bb5d8eb60086b5c43250974bc450ab96d81"
+    },
+    "textbook_controller.py": {
+      "bytes": 6346,
+      "sha256": "a10ce407ca1b93c922f45a87f2afda79f6b527347b3dfcff2b92296ef7d51e9e"
+    },
+    "textbook_trajectory.py": {
+      "bytes": 2110,
+      "sha256": "6df88e985ebe2bbd71fc5f457be9e8fd764e7d0a026957a7ca09dc31f15f6697"
     },
     "trajectory.py": {
       "bytes": 4682,
@@ -166,8 +182,8 @@
       "sha256": "fa72f9cdcae92a900a74fe051177b5d3181df49368ae7c734ebf36bb1c043298"
     },
     "verify_classroom.py": {
-      "bytes": 8477,
-      "sha256": "c9d6c3921a37929c37304e821276488ce7d321a07932f670d11c1daecb1fb8a7"
+      "bytes": 8698,
+      "sha256": "013dbada3a9dd292d3033a2d14c928e4fe81fec9a254838ea62f733aa68b9e98"
     },
     "verify_numerics.py": {
       "bytes": 8018,

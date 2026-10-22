@@ -75,24 +75,25 @@ def verify(directory):
                      for name,result in half.items()}
     record('half_control_period',
            half['full']['metrics']['max_abs_error_mm']<.05 and
-           half['full']['metrics']['max_abs_error_mm']<baseline_error_mm,
+           abs(half['full']['metrics']['max_abs_error_mm']-baseline_error_mm)<.03,
            baseline_period_s=ts, half_period_s=ts/2, strategies=half_evidence,
-           note='改变数字控制周期的敏感性试验；不要求PID负载峰值与1ms完全相同。')
+           note='改变数字控制周期的敏感性试验；要求完整控制仍达到0.05mm，不预设缩短周期必然单调改善。')
 
-    no_load_parameters = replace(parameters,target_heavy_voltage_v=parameters.nominal_cruise_voltage_v)
+    no_load_parameters = replace(parameters,heavy_drive_pressure_pa=parameters.P1_0)
     no_load = run_classroom(ts=ts,parameters=no_load_parameters,rtol=1e-10)
     no_load_nominal, no_load_full = no_load['nominal']['data'],no_load['full']['data']
-    matching_fields = sorted(set(no_load_nominal)&set(no_load_full))
-    exact_equal = all(np.array_equal(no_load_nominal[field],no_load_full[field]) for field in matching_fields)
-    no_load_position_diff = float(np.max(abs(no_load_nominal['position_m']-no_load_full['position_m'])))
     no_load_is_zero = all(np.all(result['data']['load_n']==0.) for result in no_load.values())
-    record('no_load_counterfactual',exact_equal and no_load_is_zero,
-           no_load_target_heavy_voltage_v=no_load_parameters.target_heavy_voltage_v,
-           all_nominal_full_fields_bitwise_equal=exact_equal,
-           compared_fields=matching_fields,max_position_difference_m=no_load_position_diff,
-           all_load_samples_zero=no_load_is_zero,
-           pid_contact_min_velocity_m_s=no_load['pid']['metrics']['contact_min_velocity_m_s'],
-           note='压差未变化时，开启增益调度应与标称前馈逐点一致。')
+    step_index = int(np.flatnonzero(np.isclose(no_load_full['time_s'], parameters.load_start))[0])
+    voltage_jumps = {name:float(abs(data['voltage_v'][step_index]-data['voltage_v'][step_index-1]))
+                     for name,data in (('nominal',no_load_nominal),('full',no_load_full))}
+    pressure_jump_pa = float(abs(no_load_full['p1_pa'][step_index]-no_load_full['p1_pa'][step_index-1]))
+    record('no_load_counterfactual',
+           no_load_is_zero and max(voltage_jumps.values())<.05 and pressure_jump_pa<5e4,
+           no_load_heavy_drive_pressure_pa=no_load_parameters.heavy_drive_pressure_pa,
+           all_load_samples_zero=no_load_is_zero,voltage_jump_at_0p50s_v=voltage_jumps,
+           pressure_jump_at_0p50s_pa=pressure_jump_pa,
+           max_nominal_full_position_difference_m=float(np.max(abs(no_load_nominal['position_m']-no_load_full['position_m']))),
+           note='移除工艺负载后，两种前馈均不得在原加载时刻出现人工电压阶跃；完整组仍按实测运动压力微调。')
 
     shifted_parameters = replace(parameters,load_start=.55,load_end=.97)
     shifted = run_classroom(ts=ts,parameters=shifted_parameters,rtol=1e-10)
@@ -121,7 +122,7 @@ def verify(directory):
 
     report=dict(
         generated_at_utc=datetime.now(timezone.utc).isoformat(),
-        model='classroom_quasi_static_pressure_reduction',
+        model='classroom_pressure_impedance_reduction',
         scope='只验证明确公开的约化模型；不证明上传四阶液压Twin具有同样动态性能。',
         inputs=dict(summary_sha256=_hash(summary_path),full_csv_sha256=_hash(csv_path),
                     classroom_model_sha256=_hash(ROOT/'classroom_model.py')),
