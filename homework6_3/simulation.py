@@ -101,6 +101,29 @@ def _intervals_within_band(t, values, threshold):
     return pieces
 
 
+def _linear_switching_metrics(time, linear_voltage, zoom):
+    """Measure hard-inverse sign switches from the nonzero linear demand.
+
+    Interpolate each zero crossing between adjacent nonzero samples.  At least
+    five switches (two complete cycles) are required for a frequency estimate;
+    a single reversal is not evidence of sustained chatter.
+    """
+    time = np.asarray(time)[zoom]
+    linear_voltage = np.asarray(linear_voltage)[zoom]
+    nonzero = linear_voltage != 0.
+    time, linear_voltage = time[nonzero], linear_voltage[nonzero]
+    switches = np.flatnonzero(np.sign(linear_voltage[:-1]) != np.sign(linear_voltage[1:]))
+    crossings = time[switches] - linear_voltage[switches] * (
+        time[switches+1] - time[switches]) / (
+        linear_voltage[switches+1] - linear_voltage[switches])
+    frequency = (float(1. / (2. * np.median(np.diff(crossings))))
+                 if len(crossings) >= 5 else None)
+    return dict(linear_sign_reversals=int(len(crossings)),
+                chatter_first_switch_s=float(crossings[0]) if len(crossings) else None,
+                chatter_last_switch_s=float(crossings[-1]) if len(crossings) else None,
+                chatter_frequency_hz=frequency)
+
+
 def calculate_metrics(data, config):
     t, u = data['time_s'], data['control_voltage_v']
     zoom = (t >= config['zoom_start_s']-1e-12) & (t <= config['zoom_end_s']+1e-12)
@@ -110,8 +133,7 @@ def calculate_metrics(data, config):
     high = sosfiltfilt(sos, u)
     velocity_high = sosfiltfilt(sos, data['velocity_mm_s'])
     error = data['velocity_mm_s']-data['reference_velocity_mm_s']
-    signs = np.sign(data['linear_voltage_v'][zoom])
-    signs = signs[signs != 0]
+    switching = _linear_switching_metrics(t, data['linear_voltage_v'], zoom)
     velocity_steps = np.diff(data['velocity_mm_s'][zoom])
     nonzero_steps = np.sign(velocity_steps[abs(velocity_steps) > 1e-10])
     return dict(
@@ -127,7 +149,7 @@ def calculate_metrics(data, config):
         chatter_velocity_pp_mm_s=float(np.ptp(velocity_high[zoom])),
         chatter_velocity_rms_mm_s=float(np.sqrt(np.mean(velocity_high[zoom]**2))),
         max_voltage_step_v=float(np.max(abs(np.diff(u[zoom])))),
-        linear_sign_reversals=int(np.count_nonzero(np.diff(signs))),
+        **switching,
         velocity_turning_points=int(np.count_nonzero(np.diff(nonzero_steps))),
         velocity_excess_variation_mm_s=float(np.sum(abs(velocity_steps))-
             abs(data['velocity_mm_s'][zoom][-1]-data['velocity_mm_s'][zoom][0])),
@@ -160,7 +182,8 @@ def save_outputs(results, beta_results, config, destination):
             writer = csv.writer(stream, lineterminator='\n')
             writer.writerow(result['data'])
             writer.writerows(zip(*result['data'].values()))
-    summary = dict(config=config, model='输入死区D(u)→一阶有效阀口→一阶速度；二级动态残差反馈及6采样缓存延迟，非全双腔模型',
+    summary = dict(config=config, model='输入死区D(u)→一阶有效阀口→一阶速度；二级动态残差反馈及'
+                   f"{config['feedback_delay_samples']}采样缓存延迟，非全双腔模型",
                    strategies={k:dict(metrics=v['metrics'], beta=v['beta']) for k,v in results.items()},
                    beta_scan=[dict(beta=beta, metrics=r['metrics']) for beta,r in beta_results.items()],
                    static_reference=static_thresholds(config))

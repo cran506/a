@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -88,6 +89,22 @@ def _small(value):
         return "未记录"
     value = float(value)
     return f"{value:.3e}" if 0 < abs(value) < 1e-4 else f"{value:.6f}"
+
+
+def _unit_test_status():
+    """只根据随包保存的测试日志报告本次测试数和运行状态。"""
+    path = ROOT / "outputs/unit_tests.txt"
+    if not path.is_file():
+        return "单元测试结果见测试文件；本次交付未保存测试日志。"
+    log = path.read_text(encoding="utf-8")
+    matches = re.findall(r"^Ran (\d+) tests? in ", log, flags=re.MULTILINE)
+    count = int(matches[-1]) if matches else None
+    last_line = next((line.strip() for line in reversed(log.splitlines()) if line.strip()), "")
+    if count is None:
+        return "单元测试日志见 outputs/unit_tests.txt；未解析到测试数。"
+    if last_line == "OK":
+        return f"另有 {count} 项单元测试通过，日志见 outputs/unit_tests.txt。"
+    return f"单元测试日志记录 {count} 项，未确认全部通过；详情见 outputs/unit_tests.txt。"
 
 
 def _robustness_section(document):
@@ -208,6 +225,16 @@ def write_report(summary, validation, figure):
     for key,label,digits in rows:
         cells=table.add_row().cells;cells[0].text=label
         for cell,kind in zip(cells[1:],KINDS):cell.text=_number(strategies[kind]['metrics'][key],digits)
+    hard_metrics = strategies['hard_over']['metrics']
+    first = hard_metrics.get('chatter_first_switch_s')
+    last = hard_metrics.get('chatter_last_switch_s')
+    frequency = hard_metrics.get('chatter_frequency_hz')
+    if first is not None and last is not None and frequency is not None:
+        document.add_paragraph(
+            f"硬过补偿在放大窗口中的线性指令共发生 {hard_metrics['linear_sign_reversals']} 次符号切换，"
+            f"首末切换分别位于 {first:.3f} s 与 {last:.3f} s。"
+            f"相邻切换间隔中位数换算的完整往复频率约为 {frequency:.1f} Hz；"
+            "这是该采样闭环的观测切换频率，不代表液压对象的固有频率。")
     sec=document.sections[0]
     document.add_picture(str(figure),width=sec.page_width-sec.left_margin-sec.right_margin)
     document.add_paragraph('图 1：直接绘制原始闭环记录；左列为全周期 (a1–a3)，右列为换向局部 (b1–b3)。图中有效信号为 D(u)，动态阀口状态另存 CSV。两组硬符号逆映射在零点均不连续。')
@@ -221,7 +248,8 @@ def write_report(summary, validation, figure):
     _robustness_section(document)
     document.add_heading('5. 验证与复现',1)
     document.add_paragraph('本次数据与机制检查：'+_status(validation)+f"，共 {len(validation['checks'])} 项。"
-                           '另有 13 项单元测试，日志见 outputs/unit_tests.txt。输入死区对象的解析推进以独立高精度 ODE 和半步等价验证；误差缓存、滤波零 DC 增益、保持段记忆连续及完整停反馈均单独检查。')
+                           +_unit_test_status()
+                           +'输入死区对象的解析推进以独立高精度 ODE 和半步等价验证；误差缓存、滤波零 DC 增益、保持段记忆连续及完整停反馈均单独检查。')
     document.add_paragraph('运行：python -m pip install -r requirements.txt；python work_6_3.py；python -m unittest -v test_work_6_3.py；python package_delivery.py。CSV状态记录在当前指令作用前，u及D(u)作用于下一个Ts区间。全部代码、配置、PPT、原始CSV、报告和唯一PNG均在ZIP内，manifest列SHA256。')
     document.add_paragraph('图中三类失配现象均由公开参数下的课堂等效模型计算，示意图数值及波纹周期不作为硬编码目标。该模型不是完整双腔数字孪生或设备辨识结论；压力安全和全局稳定性不在本实验验证范围内。')
     path=ROOT/'deliverables'/REPORT_NAME;path.parent.mkdir(parents=True,exist_ok=True);document.save(path)

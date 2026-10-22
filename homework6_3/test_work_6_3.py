@@ -9,9 +9,25 @@ from scipy.optimize import brentq
 from deadzone_model import DeadzoneVelocityPlant, deadzone
 from model_assisted_controller import ModelAssistedController, inverse_deadzone
 from input_deadzone_model import InputDeadzoneVelocityPlant
+from simulation import _linear_switching_metrics
 
 
 class DeadzoneMechanismTests(unittest.TestCase):
+    def test_chatter_frequency_uses_measured_nonzero_sign_switches(self):
+        time = np.arange(51) * .001
+        linear = np.where((np.arange(51) // 5) % 2 == 0, 1., -1.)
+        zoom = np.ones(len(time), dtype=bool)
+        metrics = _linear_switching_metrics(time, linear, zoom)
+        self.assertEqual(metrics['linear_sign_reversals'], 10)
+        self.assertAlmostEqual(metrics['chatter_first_switch_s'], .0045)
+        self.assertAlmostEqual(metrics['chatter_last_switch_s'], .0495)
+        self.assertAlmostEqual(metrics['chatter_frequency_hz'], 100.)
+
+        one_switch = np.where(time < .025, 1., -1.)
+        isolated = _linear_switching_metrics(time, one_switch, zoom)
+        self.assertEqual(isolated['linear_sign_reversals'], 1)
+        self.assertIsNone(isolated['chatter_frequency_hz'])
+
     def test_input_deadzone_cascade_matches_independent_ode_and_split_steps(self):
         plant, split = InputDeadzoneVelocityPlant(), InputDeadzoneVelocityPlant()
         initial = np.array([.21,.003])

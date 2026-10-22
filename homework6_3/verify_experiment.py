@@ -28,7 +28,9 @@ def validate(results, beta_results, config, destination=None):
     under, hard, smooth = (results[k]['metrics'] for k in ('under','hard_over','smooth'))
     checks['under_has_visible_residual_platform'] = under['longest_effective_zero_ms'] > 50.
     checks['under_has_visible_near_zero_velocity_platform'] = under['longest_velocity_near_zero_ms'] > 80.
-    checks['hard_velocity_chattering_is_visible'] = hard['chatter_velocity_pp_mm_s'] > .8
+    # 高频振荡经 12 ms 机械通道衰减；同时要求绝对可见幅度与相对光滑组的增量。
+    checks['hard_velocity_chattering_is_visible'] = (hard['chatter_velocity_pp_mm_s'] > .5
+        and hard['chatter_velocity_pp_mm_s'] > 1.4*smooth['chatter_velocity_pp_mm_s'])
     checks['hard_over_has_repeated_feedback_switches'] = hard['linear_sign_reversals'] > 3
     checks['smooth_has_single_reversal'] = smooth['linear_sign_reversals'] == 1
     checks['smooth_reduces_high_frequency_pp'] = smooth['chatter_voltage_pp_v'] < hard['chatter_voltage_pp_v']

@@ -175,14 +175,18 @@ def plot_comparison(results, config, destination):
                     arrowprops={"arrowstyle": "->", "color": COLORS["under"], "lw": 1.2})
         hm = results["hard_over"].get("metrics", {})
         if "linear_sign_reversals" in hm:
-            linear = np.asarray(results["hard_over"]["data"]["linear_voltage_v"])
             control = np.asarray(results["hard_over"]["data"]["control_voltage_v"])
             indices = np.flatnonzero((time >= windows[1][0]) & (time <= windows[1][1]))
-            crossings = np.flatnonzero(np.sign(linear[indices[:-1]]) !=
-                                       np.sign(linear[indices[1:]]))
-            point = indices[crossings[len(crossings)//2]] if len(crossings) else indices[len(indices)//2]
+            first, last = hm.get("chatter_first_switch_s"), hm.get("chatter_last_switch_s")
+            midpoint = .5 * (first + last) if first is not None and last is not None else .5 * sum(windows[1])
+            point = indices[np.argmin(abs(time[indices] - midpoint))]
+            frequency = hm.get("chatter_frequency_hz")
+            timing = (f"换向振荡 {first:.3f}–{last:.3f} s\n"
+                      if first is not None and last is not None else "")
+            frequency_label = f"，约 {frequency:.1f} Hz" if frequency is not None else ""
             axes[0, 1].annotate(
-                f"硬过补偿：{hm['linear_sign_reversals']} 次符号切换\n"
+                f"硬过补偿：{hm['linear_sign_reversals']} 次符号切换{frequency_label}\n"
+                f"{timing}"
                 f"最大采样电压跳变 {hm['max_voltage_step_v']:.2f} V",
                 xy=(time[point], control[point]), xytext=(.025, .08),
                 textcoords="axes fraction", va="bottom", color=COLORS["hard_over"], fontsize=9.2,

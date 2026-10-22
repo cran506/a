@@ -1,4 +1,5 @@
 test_acceleration_feedforward_and_nonlinear_residual_decompose_applied_output (test_work_6_3.DeadzoneMechanismTests.test_acceleration_feedforward_and_nonlinear_residual_decompose_applied_output) ... ok
+test_chatter_frequency_uses_measured_nonzero_sign_switches (test_work_6_3.DeadzoneMechanismTests.test_chatter_frequency_uses_measured_nonzero_sign_switches) ... ok
 test_dynamic_residual_is_causally_delayed_and_has_zero_dc_gain (test_work_6_3.DeadzoneMechanismTests.test_dynamic_residual_is_causally_delayed_and_has_zero_dc_gain) ... ok
 test_exact_zoh_has_half_step_equivalence_across_both_deadzone_edges (test_work_6_3.DeadzoneMechanismTests.test_exact_zoh_has_half_step_equivalence_across_both_deadzone_edges) ... ok
 test_feedback_corrected_signal_enters_the_inverse_map_before_sign_choice (test_work_6_3.DeadzoneMechanismTests.test_feedback_corrected_signal_enters_the_inverse_map_before_sign_choice) ... ok
@@ -13,6 +14,6 @@ test_segmented_solution_matches_independent_high_accuracy_ode (test_work_6_3.Dea
 test_zero_time_constant_valve_and_blocked_valve_have_expected_velocity (test_work_6_3.DeadzoneMechanismTests.test_zero_time_constant_valve_and_blocked_valve_have_expected_velocity) ... ok
 
 ----------------------------------------------------------------------
-Ran 13 tests in 0.087s
+Ran 14 tests in 0.088s
 
 OK
