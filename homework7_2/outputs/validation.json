@@ -1,0 +1,3147 @@
+{
+  "created_utc": "2026-10-22T08:02:22.250025+00:00",
+  "strict_replay": true,
+  "passed": true,
+  "checks": [
+    {
+      "check": "seven requested prediction horizons",
+      "passed": true,
+      "detail": [
+        5,
+        10,
+        15,
+        20,
+        30,
+        40,
+        50
+      ]
+    },
+    {
+      "check": "shared configuration: ts",
+      "passed": true,
+      "detail": {
+        "saved": 0.001,
+        "current": 0.001
+      }
+    },
+    {
+      "check": "shared configuration: duration",
+      "passed": true,
+      "detail": {
+        "saved": 0.15,
+        "current": 0.15
+      }
+    },
+    {
+      "check": "shared configuration: step_time",
+      "passed": true,
+      "detail": {
+        "saved": 0.01,
+        "current": 0.01
+      }
+    },
+    {
+      "check": "shared configuration: target_mm",
+      "passed": true,
+      "detail": {
+        "saved": 50.0,
+        "current": 50.0
+      }
+    },
+    {
+      "check": "shared configuration: horizons",
+      "passed": true,
+      "detail": {
+        "saved": [
+          5,
+          10,
+          15,
+          20,
+          30,
+          40,
+          50
+        ],
+        "current": [
+          5,
+          10,
+          15,
+          20,
+          30,
+          40,
+          50
+        ]
+      }
+    },
+    {
+      "check": "shared configuration: highlight_horizons",
+      "passed": true,
+      "detail": {
+        "saved": [
+          5,
+          20,
+          50
+        ],
+        "current": [
+          5,
+          20,
+          50
+        ]
+      }
+    },
+    {
+      "check": "shared configuration: origin_m",
+      "passed": true,
+      "detail": {
+        "saved": 0.05,
+        "current": 0.05
+      }
+    },
+    {
+      "check": "shared configuration: valve_tau",
+      "passed": true,
+      "detail": {
+        "saved": 0.0025,
+        "current": 0.0025
+      }
+    },
+    {
+      "check": "shared configuration: makeup_area",
+      "passed": true,
+      "detail": {
+        "saved": 0.002,
+        "current": 0.002
+      }
+    },
+    {
+      "check": "shared configuration: rtol",
+      "passed": true,
+      "detail": {
+        "saved": 1e-06,
+        "current": 1e-06
+      }
+    },
+    {
+      "check": "shared configuration: max_du_step",
+      "passed": true,
+      "detail": {
+        "saved": 4.5,
+        "current": 4.5
+      }
+    },
+    {
+      "check": "shared configuration: p_safe",
+      "passed": true,
+      "detail": {
+        "saved": 21.0,
+        "current": 21.0
+      }
+    },
+    {
+      "check": "shared configuration: pressure_margin",
+      "passed": true,
+      "detail": {
+        "saved": 0.5,
+        "current": 0.5
+      }
+    },
+    {
+      "check": "shared configuration: mpc_outer_iterations",
+      "passed": true,
+      "detail": {
+        "saved": 3,
+        "current": 3
+      }
+    },
+    {
+      "check": "shared configuration: q_position",
+      "passed": true,
+      "detail": {
+        "saved": 100.0,
+        "current": 100.0
+      }
+    },
+    {
+      "check": "shared configuration: q_velocity",
+      "passed": true,
+      "detail": {
+        "saved": 20.0,
+        "current": 20.0
+      }
+    },
+    {
+      "check": "shared configuration: move_weight",
+      "passed": true,
+      "detail": {
+        "saved": 0.01,
+        "current": 0.01
+      }
+    },
+    {
+      "check": "shared configuration: settling_move_weight",
+      "passed": true,
+      "detail": {
+        "saved": 0.1,
+        "current": 0.1
+      }
+    },
+    {
+      "check": "shared configuration: settling_error_mm",
+      "passed": true,
+      "detail": {
+        "saved": 0.5,
+        "current": 0.5
+      }
+    },
+    {
+      "check": "shared configuration: settling_velocity_m_s",
+      "passed": true,
+      "detail": {
+        "saved": 0.1,
+        "current": 0.1
+      }
+    },
+    {
+      "check": "same physical RHS source hash",
+      "passed": true,
+      "detail": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f"
+    },
+    {
+      "check": "shared physical parameters match current model",
+      "passed": true
+    },
+    {
+      "check": "6D augmented state convention",
+      "passed": true
+    },
+    {
+      "check": "summary contains all seven runs",
+      "passed": true,
+      "detail": [
+        "10",
+        "15",
+        "20",
+        "30",
+        "40",
+        "5",
+        "50"
+      ]
+    }
+  ],
+  "cases": {
+    "5": {
+      "checks": [
+        {
+          "check": "CSV, dense pressure, and solver logs exist",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "check": "required CSV columns present",
+          "passed": true
+        },
+        {
+          "check": "full closed-loop simulation completed",
+          "passed": true,
+          "detail": {
+            "status": "completed",
+            "samples": 151,
+            "expected_samples": 151,
+            "last_t_s": 0.15
+          }
+        },
+        {
+          "check": "uniform 1 ms control clock",
+          "passed": true
+        },
+        {
+          "check": "all sampled fields finite",
+          "passed": true
+        },
+        {
+          "check": "dense pressure finite and positive",
+          "passed": true
+        },
+        {
+          "check": "dense trace covers complete control interval",
+          "passed": true,
+          "detail": {
+            "dense_points": 6566,
+            "control_points": 151
+          }
+        },
+        {
+          "check": "sampled P2 agrees with dense trace",
+          "passed": true,
+          "detail": {
+            "max_error_mpa": 0.0
+          }
+        },
+        {
+          "check": "identical prescribed step reference",
+          "passed": true
+        },
+        {
+          "check": "shared initial physical state",
+          "passed": true
+        },
+        {
+          "check": "applied valve voltage within ±10 V",
+          "passed": true,
+          "detail": {
+            "max_abs_v": 10.0
+          }
+        },
+        {
+          "check": "applied voltage slew within configured limit",
+          "passed": true,
+          "detail": {
+            "max_abs_delta_v": 4.5,
+            "limit_v_per_sample": 4.5
+          }
+        },
+        {
+          "check": "recorded voltage increments match applied input",
+          "passed": true,
+          "detail": {
+            "max_error_v": 0.0
+          }
+        },
+        {
+          "check": "true dense P2 <= 21 MPa",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 20.653223528245885,
+            "limit_mpa": 21.0
+          }
+        },
+        {
+          "check": "sampled P2 does not exceed dense peak",
+          "passed": true
+        },
+        {
+          "check": "one solver log per attempted control step",
+          "passed": true,
+          "detail": {
+            "logs": 140,
+            "steps": 140
+          }
+        },
+        {
+          "check": "all applied commands have nonlinear validation or declared policy",
+          "passed": true
+        },
+        {
+          "check": "restoration count matches logs",
+          "passed": true
+        },
+        {
+          "check": "finite-grid refinement count matches logs",
+          "passed": true
+        },
+        {
+          "check": "summary.prediction_ms",
+          "passed": true,
+          "detail": {
+            "reported": 5.0,
+            "derived": 5.0
+          }
+        },
+        {
+          "check": "summary.final_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.15,
+            "derived": 0.15
+          }
+        },
+        {
+          "check": "summary.samples",
+          "passed": true,
+          "detail": {
+            "reported": 151,
+            "derived": 151
+          }
+        },
+        {
+          "check": "summary.peak_position_mm",
+          "passed": true,
+          "detail": {
+            "reported": 52.64742041550005,
+            "derived": 52.64742041550005
+          }
+        },
+        {
+          "check": "summary.peak_position_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.061,
+            "derived": 0.061
+          }
+        },
+        {
+          "check": "summary.overshoot_pct",
+          "passed": true,
+          "detail": {
+            "reported": 5.294840831000101,
+            "derived": 5.294840831000101
+          }
+        },
+        {
+          "check": "summary.first_target_sample_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.056,
+            "derived": 0.056
+          }
+        },
+        {
+          "check": "summary.final_error_mm",
+          "passed": true,
+          "detail": {
+            "reported": 0.014588559032191029,
+            "derived": 0.014588559032191029
+          }
+        },
+        {
+          "check": "summary.peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.653223528245885,
+            "derived": 20.653223528245885
+          }
+        },
+        {
+          "check": "summary.peak_pressure_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.09060496869181867,
+            "derived": 0.09060496869181867
+          }
+        },
+        {
+          "check": "summary.sampled_peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.488256291185532,
+            "derived": 20.488256291185532
+          }
+        },
+        {
+          "check": "summary.pressure_violation_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 0.0,
+            "derived": 0.0
+          }
+        },
+        {
+          "check": "summary.max_abs_voltage_v",
+          "passed": true,
+          "detail": {
+            "reported": 10.0,
+            "derived": 10.0
+          }
+        },
+        {
+          "check": "summary.max_abs_increment_v",
+          "passed": true,
+          "detail": {
+            "reported": 4.5,
+            "derived": 4.5
+          }
+        },
+        {
+          "check": "summary.restoration_count",
+          "passed": true,
+          "detail": {
+            "reported": 6,
+            "derived": 6
+          }
+        },
+        {
+          "check": "summary.shifted_count",
+          "passed": true,
+          "detail": {
+            "reported": 8,
+            "derived": 8
+          }
+        },
+        {
+          "check": "summary.refinement_count",
+          "passed": true,
+          "detail": {
+            "reported": 2,
+            "derived": 2
+          }
+        },
+        {
+          "check": "summary.solver.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 0.5076890984848484,
+            "derived": 0.5076890984848484
+          }
+        },
+        {
+          "check": "summary.solver.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 0.1460845,
+            "derived": 0.1460845
+          }
+        },
+        {
+          "check": "summary.solver.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 1.3034436499999917,
+            "derived": 1.3034436499999917
+          }
+        },
+        {
+          "check": "summary.solver.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 13.826763000000001,
+            "derived": 13.826763000000001
+          }
+        },
+        {
+          "check": "summary.solver.samples",
+          "passed": true,
+          "detail": {
+            "reported": 132,
+            "derived": 132
+          }
+        },
+        {
+          "check": "summary.solver.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 0.05303030303030303,
+            "derived": 0.05303030303030303
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 2.90412446241989,
+            "derived": 2.90412446241989
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 2.300390500749927,
+            "derived": 2.300390500749927
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 4.764706450623629,
+            "derived": 4.764706450623629
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 15.548384999419795,
+            "derived": 15.548384999419795
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.samples",
+          "passed": true,
+          "detail": {
+            "reported": 132,
+            "derived": 132
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.whole_controller.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 65.59050656427904,
+            "derived": 65.59050656427904
+          }
+        },
+        {
+          "check": "summary.whole_controller.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 30.77300399854721,
+            "derived": 30.77300399854721
+          }
+        },
+        {
+          "check": "summary.whole_controller.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 328.0599758487366,
+            "derived": 328.0599758487366
+          }
+        },
+        {
+          "check": "summary.whole_controller.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 611.8597970016708,
+            "derived": 611.8597970016708
+          }
+        },
+        {
+          "check": "summary.whole_controller.samples",
+          "passed": true,
+          "detail": {
+            "reported": 140,
+            "derived": 140
+          }
+        },
+        {
+          "check": "summary.whole_controller.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "tight-tolerance replay agrees with recorded states",
+          "passed": true,
+          "detail": {
+            "max_abs": [
+              7.737657405471055e-06,
+              2.152082201778427e-06,
+              6.73902133851989e-05,
+              4.2809781042763007e-05,
+              3.0242925164181145e-08
+            ],
+            "tolerance": [
+              0.05,
+              0.02,
+              0.05,
+              0.05,
+              0.01
+            ]
+          }
+        },
+        {
+          "check": "tight-tolerance replay dense P2 <= safety limit",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 20.65322567850128,
+            "limit_mpa": 21.0
+          }
+        }
+      ],
+      "observed_dense_peak_p2_mpa": 20.653223528245885,
+      "max_logged_predicted_p2_mpa": 20.48825329153466,
+      "strict_replay": {
+        "relative_tolerance": 1e-08,
+        "pressure_subdivisions": 64,
+        "max_abs_state_deviation": {
+          "x_mm": 7.737657405471055e-06,
+          "velocity_m_s": 2.152082201778427e-06,
+          "p1_mpa": 6.73902133851989e-05,
+          "p2_mpa": 4.2809781042763007e-05,
+          "valve_v": 3.0242925164181145e-08
+        },
+        "dense_peak_p2_mpa": 20.65322567850128,
+        "end_time_s": 0.1500000000000001
+      }
+    },
+    "10": {
+      "checks": [
+        {
+          "check": "CSV, dense pressure, and solver logs exist",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "check": "required CSV columns present",
+          "passed": true
+        },
+        {
+          "check": "full closed-loop simulation completed",
+          "passed": true,
+          "detail": {
+            "status": "completed",
+            "samples": 151,
+            "expected_samples": 151,
+            "last_t_s": 0.15
+          }
+        },
+        {
+          "check": "uniform 1 ms control clock",
+          "passed": true
+        },
+        {
+          "check": "all sampled fields finite",
+          "passed": true
+        },
+        {
+          "check": "dense pressure finite and positive",
+          "passed": true
+        },
+        {
+          "check": "dense trace covers complete control interval",
+          "passed": true,
+          "detail": {
+            "dense_points": 5709,
+            "control_points": 151
+          }
+        },
+        {
+          "check": "sampled P2 agrees with dense trace",
+          "passed": true,
+          "detail": {
+            "max_error_mpa": 0.0
+          }
+        },
+        {
+          "check": "identical prescribed step reference",
+          "passed": true
+        },
+        {
+          "check": "shared initial physical state",
+          "passed": true
+        },
+        {
+          "check": "shared unforced initial trajectory",
+          "passed": true
+        },
+        {
+          "check": "applied valve voltage within ±10 V",
+          "passed": true,
+          "detail": {
+            "max_abs_v": 10.0
+          }
+        },
+        {
+          "check": "applied voltage slew within configured limit",
+          "passed": true,
+          "detail": {
+            "max_abs_delta_v": 4.5,
+            "limit_v_per_sample": 4.5
+          }
+        },
+        {
+          "check": "recorded voltage increments match applied input",
+          "passed": true,
+          "detail": {
+            "max_error_v": 0.0
+          }
+        },
+        {
+          "check": "true dense P2 <= 21 MPa",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 19.901984014080448,
+            "limit_mpa": 21.0
+          }
+        },
+        {
+          "check": "sampled P2 does not exceed dense peak",
+          "passed": true
+        },
+        {
+          "check": "one solver log per attempted control step",
+          "passed": true,
+          "detail": {
+            "logs": 140,
+            "steps": 140
+          }
+        },
+        {
+          "check": "all applied commands have nonlinear validation or declared policy",
+          "passed": true
+        },
+        {
+          "check": "restoration count matches logs",
+          "passed": true
+        },
+        {
+          "check": "finite-grid refinement count matches logs",
+          "passed": true
+        },
+        {
+          "check": "summary.prediction_ms",
+          "passed": true,
+          "detail": {
+            "reported": 10.0,
+            "derived": 10.0
+          }
+        },
+        {
+          "check": "summary.final_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.15,
+            "derived": 0.15
+          }
+        },
+        {
+          "check": "summary.samples",
+          "passed": true,
+          "detail": {
+            "reported": 151,
+            "derived": 151
+          }
+        },
+        {
+          "check": "summary.peak_position_mm",
+          "passed": true,
+          "detail": {
+            "reported": 50.23291205451899,
+            "derived": 50.23291205451899
+          }
+        },
+        {
+          "check": "summary.peak_position_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.059000000000000004,
+            "derived": 0.059000000000000004
+          }
+        },
+        {
+          "check": "summary.overshoot_pct",
+          "passed": true,
+          "detail": {
+            "reported": 0.46582410903798177,
+            "derived": 0.46582410903798177
+          }
+        },
+        {
+          "check": "summary.first_target_sample_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.058,
+            "derived": 0.058
+          }
+        },
+        {
+          "check": "summary.final_error_mm",
+          "passed": true,
+          "detail": {
+            "reported": -0.015110701707264695,
+            "derived": -0.015110701707264695
+          }
+        },
+        {
+          "check": "summary.peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 19.901984014080448,
+            "derived": 19.901984014080448
+          }
+        },
+        {
+          "check": "summary.peak_pressure_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.057965835837918575,
+            "derived": 0.057965835837918575
+          }
+        },
+        {
+          "check": "summary.sampled_peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 19.901264550103942,
+            "derived": 19.901264550103942
+          }
+        },
+        {
+          "check": "summary.pressure_violation_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 0.0,
+            "derived": 0.0
+          }
+        },
+        {
+          "check": "summary.max_abs_voltage_v",
+          "passed": true,
+          "detail": {
+            "reported": 10.0,
+            "derived": 10.0
+          }
+        },
+        {
+          "check": "summary.max_abs_increment_v",
+          "passed": true,
+          "detail": {
+            "reported": 4.5,
+            "derived": 4.5
+          }
+        },
+        {
+          "check": "summary.restoration_count",
+          "passed": true,
+          "detail": {
+            "reported": 0,
+            "derived": 0
+          }
+        },
+        {
+          "check": "summary.shifted_count",
+          "passed": true,
+          "detail": {
+            "reported": 9,
+            "derived": 9
+          }
+        },
+        {
+          "check": "summary.refinement_count",
+          "passed": true,
+          "detail": {
+            "reported": 1,
+            "derived": 1
+          }
+        },
+        {
+          "check": "summary.solver.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 0.4857407769784172,
+            "derived": 0.4857407769784172
+          }
+        },
+        {
+          "check": "summary.solver.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 0.22610999999999998,
+            "derived": 0.22610999999999998
+          }
+        },
+        {
+          "check": "summary.solver.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 1.522278599999999,
+            "derived": 1.522278599999999
+          }
+        },
+        {
+          "check": "summary.solver.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 8.765070000000001,
+            "derived": 8.765070000000001
+          }
+        },
+        {
+          "check": "summary.solver.samples",
+          "passed": true,
+          "detail": {
+            "reported": 139,
+            "derived": 139
+          }
+        },
+        {
+          "check": "summary.solver.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 0.09352517985611511,
+            "derived": 0.09352517985611511
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 2.9509570000732146,
+            "derived": 2.9509570000732146
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 2.527393000491429,
+            "derived": 2.527393000491429
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 5.665576400861026,
+            "derived": 5.665576400861026
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 14.033545998245245,
+            "derived": 14.033545998245245
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.samples",
+          "passed": true,
+          "detail": {
+            "reported": 139,
+            "derived": 139
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.whole_controller.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 70.15116034290259,
+            "derived": 70.15116034290259
+          }
+        },
+        {
+          "check": "summary.whole_controller.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 34.081086500009405,
+            "derived": 34.081086500009405
+          }
+        },
+        {
+          "check": "summary.whole_controller.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 462.70318759943564,
+            "derived": 462.70318759943564
+          }
+        },
+        {
+          "check": "summary.whole_controller.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 632.6283709968266,
+            "derived": 632.6283709968266
+          }
+        },
+        {
+          "check": "summary.whole_controller.samples",
+          "passed": true,
+          "detail": {
+            "reported": 140,
+            "derived": 140
+          }
+        },
+        {
+          "check": "summary.whole_controller.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        }
+      ],
+      "observed_dense_peak_p2_mpa": 19.901984014080448,
+      "max_logged_predicted_p2_mpa": 19.901225224547566
+    },
+    "15": {
+      "checks": [
+        {
+          "check": "CSV, dense pressure, and solver logs exist",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "check": "required CSV columns present",
+          "passed": true
+        },
+        {
+          "check": "full closed-loop simulation completed",
+          "passed": true,
+          "detail": {
+            "status": "completed",
+            "samples": 151,
+            "expected_samples": 151,
+            "last_t_s": 0.15
+          }
+        },
+        {
+          "check": "uniform 1 ms control clock",
+          "passed": true
+        },
+        {
+          "check": "all sampled fields finite",
+          "passed": true
+        },
+        {
+          "check": "dense pressure finite and positive",
+          "passed": true
+        },
+        {
+          "check": "dense trace covers complete control interval",
+          "passed": true,
+          "detail": {
+            "dense_points": 5717,
+            "control_points": 151
+          }
+        },
+        {
+          "check": "sampled P2 agrees with dense trace",
+          "passed": true,
+          "detail": {
+            "max_error_mpa": 0.0
+          }
+        },
+        {
+          "check": "identical prescribed step reference",
+          "passed": true
+        },
+        {
+          "check": "shared initial physical state",
+          "passed": true
+        },
+        {
+          "check": "shared unforced initial trajectory",
+          "passed": true
+        },
+        {
+          "check": "applied valve voltage within ±10 V",
+          "passed": true,
+          "detail": {
+            "max_abs_v": 10.0
+          }
+        },
+        {
+          "check": "applied voltage slew within configured limit",
+          "passed": true,
+          "detail": {
+            "max_abs_delta_v": 4.5,
+            "limit_v_per_sample": 4.5
+          }
+        },
+        {
+          "check": "recorded voltage increments match applied input",
+          "passed": true,
+          "detail": {
+            "max_error_v": 0.0
+          }
+        },
+        {
+          "check": "true dense P2 <= 21 MPa",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 20.50411249758791,
+            "limit_mpa": 21.0
+          }
+        },
+        {
+          "check": "sampled P2 does not exceed dense peak",
+          "passed": true
+        },
+        {
+          "check": "one solver log per attempted control step",
+          "passed": true,
+          "detail": {
+            "logs": 140,
+            "steps": 140
+          }
+        },
+        {
+          "check": "all applied commands have nonlinear validation or declared policy",
+          "passed": true
+        },
+        {
+          "check": "restoration count matches logs",
+          "passed": true
+        },
+        {
+          "check": "finite-grid refinement count matches logs",
+          "passed": true
+        },
+        {
+          "check": "summary.prediction_ms",
+          "passed": true,
+          "detail": {
+            "reported": 15.0,
+            "derived": 15.0
+          }
+        },
+        {
+          "check": "summary.final_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.15,
+            "derived": 0.15
+          }
+        },
+        {
+          "check": "summary.samples",
+          "passed": true,
+          "detail": {
+            "reported": 151,
+            "derived": 151
+          }
+        },
+        {
+          "check": "summary.peak_position_mm",
+          "passed": true,
+          "detail": {
+            "reported": 50.56121645946997,
+            "derived": 50.56121645946997
+          }
+        },
+        {
+          "check": "summary.peak_position_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.06,
+            "derived": 0.06
+          }
+        },
+        {
+          "check": "summary.overshoot_pct",
+          "passed": true,
+          "detail": {
+            "reported": 1.1224329189399356,
+            "derived": 1.1224329189399356
+          }
+        },
+        {
+          "check": "summary.first_target_sample_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.058,
+            "derived": 0.058
+          }
+        },
+        {
+          "check": "summary.final_error_mm",
+          "passed": true,
+          "detail": {
+            "reported": -0.014930514442539788,
+            "derived": -0.014930514442539788
+          }
+        },
+        {
+          "check": "summary.peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.50411249758791,
+            "derived": 20.50411249758791
+          }
+        },
+        {
+          "check": "summary.peak_pressure_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.060045206357600384,
+            "derived": 0.060045206357600384
+          }
+        },
+        {
+          "check": "summary.sampled_peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.500036180164948,
+            "derived": 20.500036180164948
+          }
+        },
+        {
+          "check": "summary.pressure_violation_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 0.0,
+            "derived": 0.0
+          }
+        },
+        {
+          "check": "summary.max_abs_voltage_v",
+          "passed": true,
+          "detail": {
+            "reported": 10.0,
+            "derived": 10.0
+          }
+        },
+        {
+          "check": "summary.max_abs_increment_v",
+          "passed": true,
+          "detail": {
+            "reported": 4.5,
+            "derived": 4.5
+          }
+        },
+        {
+          "check": "summary.restoration_count",
+          "passed": true,
+          "detail": {
+            "reported": 0,
+            "derived": 0
+          }
+        },
+        {
+          "check": "summary.shifted_count",
+          "passed": true,
+          "detail": {
+            "reported": 10,
+            "derived": 10
+          }
+        },
+        {
+          "check": "summary.refinement_count",
+          "passed": true,
+          "detail": {
+            "reported": 1,
+            "derived": 1
+          }
+        },
+        {
+          "check": "summary.solver.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 1.9932934532374096,
+            "derived": 1.9932934532374096
+          }
+        },
+        {
+          "check": "summary.solver.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 0.431367,
+            "derived": 0.431367
+          }
+        },
+        {
+          "check": "summary.solver.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 9.338457699999989,
+            "derived": 9.338457699999989
+          }
+        },
+        {
+          "check": "summary.solver.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 34.74284,
+            "derived": 34.74284
+          }
+        },
+        {
+          "check": "summary.solver.samples",
+          "passed": true,
+          "detail": {
+            "reported": 139,
+            "derived": 139
+          }
+        },
+        {
+          "check": "summary.solver.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 0.19424460431654678,
+            "derived": 0.19424460431654678
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 4.763792964466303,
+            "derived": 4.763792964466303
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 2.9307589975360315,
+            "derived": 2.9307589975360315
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 15.587351897193003,
+            "derived": 15.587351897193003
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 39.72457400232088,
+            "derived": 39.72457400232088
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.samples",
+          "passed": true,
+          "detail": {
+            "reported": 139,
+            "derived": 139
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.whole_controller.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 104.6139228001526,
+            "derived": 104.6139228001526
+          }
+        },
+        {
+          "check": "summary.whole_controller.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 47.45813400222687,
+            "derived": 47.45813400222687
+          }
+        },
+        {
+          "check": "summary.whole_controller.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 698.3353016026739,
+            "derived": 698.3353016026739
+          }
+        },
+        {
+          "check": "summary.whole_controller.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 814.3679540007724,
+            "derived": 814.3679540007724
+          }
+        },
+        {
+          "check": "summary.whole_controller.samples",
+          "passed": true,
+          "detail": {
+            "reported": 140,
+            "derived": 140
+          }
+        },
+        {
+          "check": "summary.whole_controller.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        }
+      ],
+      "observed_dense_peak_p2_mpa": 20.50411249758791,
+      "max_logged_predicted_p2_mpa": 20.48301175071387
+    },
+    "20": {
+      "checks": [
+        {
+          "check": "CSV, dense pressure, and solver logs exist",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "check": "required CSV columns present",
+          "passed": true
+        },
+        {
+          "check": "full closed-loop simulation completed",
+          "passed": true,
+          "detail": {
+            "status": "completed",
+            "samples": 151,
+            "expected_samples": 151,
+            "last_t_s": 0.15
+          }
+        },
+        {
+          "check": "uniform 1 ms control clock",
+          "passed": true
+        },
+        {
+          "check": "all sampled fields finite",
+          "passed": true
+        },
+        {
+          "check": "dense pressure finite and positive",
+          "passed": true
+        },
+        {
+          "check": "dense trace covers complete control interval",
+          "passed": true,
+          "detail": {
+            "dense_points": 5714,
+            "control_points": 151
+          }
+        },
+        {
+          "check": "sampled P2 agrees with dense trace",
+          "passed": true,
+          "detail": {
+            "max_error_mpa": 0.0
+          }
+        },
+        {
+          "check": "identical prescribed step reference",
+          "passed": true
+        },
+        {
+          "check": "shared initial physical state",
+          "passed": true
+        },
+        {
+          "check": "shared unforced initial trajectory",
+          "passed": true
+        },
+        {
+          "check": "applied valve voltage within ±10 V",
+          "passed": true,
+          "detail": {
+            "max_abs_v": 10.0
+          }
+        },
+        {
+          "check": "applied voltage slew within configured limit",
+          "passed": true,
+          "detail": {
+            "max_abs_delta_v": 4.5,
+            "limit_v_per_sample": 4.5
+          }
+        },
+        {
+          "check": "recorded voltage increments match applied input",
+          "passed": true,
+          "detail": {
+            "max_error_v": 0.0
+          }
+        },
+        {
+          "check": "true dense P2 <= 21 MPa",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 19.901983825380128,
+            "limit_mpa": 21.0
+          }
+        },
+        {
+          "check": "sampled P2 does not exceed dense peak",
+          "passed": true
+        },
+        {
+          "check": "one solver log per attempted control step",
+          "passed": true,
+          "detail": {
+            "logs": 140,
+            "steps": 140
+          }
+        },
+        {
+          "check": "all applied commands have nonlinear validation or declared policy",
+          "passed": true
+        },
+        {
+          "check": "restoration count matches logs",
+          "passed": true
+        },
+        {
+          "check": "finite-grid refinement count matches logs",
+          "passed": true
+        },
+        {
+          "check": "summary.prediction_ms",
+          "passed": true,
+          "detail": {
+            "reported": 20.0,
+            "derived": 20.0
+          }
+        },
+        {
+          "check": "summary.final_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.15,
+            "derived": 0.15
+          }
+        },
+        {
+          "check": "summary.samples",
+          "passed": true,
+          "detail": {
+            "reported": 151,
+            "derived": 151
+          }
+        },
+        {
+          "check": "summary.peak_position_mm",
+          "passed": true,
+          "detail": {
+            "reported": 50.23296186790599,
+            "derived": 50.23296186790599
+          }
+        },
+        {
+          "check": "summary.peak_position_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.059000000000000004,
+            "derived": 0.059000000000000004
+          }
+        },
+        {
+          "check": "summary.overshoot_pct",
+          "passed": true,
+          "detail": {
+            "reported": 0.4659237358119839,
+            "derived": 0.4659237358119839
+          }
+        },
+        {
+          "check": "summary.first_target_sample_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.058,
+            "derived": 0.058
+          }
+        },
+        {
+          "check": "summary.final_error_mm",
+          "passed": true,
+          "detail": {
+            "reported": -0.014419652198924382,
+            "derived": -0.014419652198924382
+          }
+        },
+        {
+          "check": "summary.peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 19.901983825380128,
+            "derived": 19.901983825380128
+          }
+        },
+        {
+          "check": "summary.peak_pressure_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.057965835803763244,
+            "derived": 0.057965835803763244
+          }
+        },
+        {
+          "check": "summary.sampled_peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 19.90126435997201,
+            "derived": 19.90126435997201
+          }
+        },
+        {
+          "check": "summary.pressure_violation_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 0.0,
+            "derived": 0.0
+          }
+        },
+        {
+          "check": "summary.max_abs_voltage_v",
+          "passed": true,
+          "detail": {
+            "reported": 10.0,
+            "derived": 10.0
+          }
+        },
+        {
+          "check": "summary.max_abs_increment_v",
+          "passed": true,
+          "detail": {
+            "reported": 4.5,
+            "derived": 4.5
+          }
+        },
+        {
+          "check": "summary.restoration_count",
+          "passed": true,
+          "detail": {
+            "reported": 0,
+            "derived": 0
+          }
+        },
+        {
+          "check": "summary.shifted_count",
+          "passed": true,
+          "detail": {
+            "reported": 18,
+            "derived": 18
+          }
+        },
+        {
+          "check": "summary.refinement_count",
+          "passed": true,
+          "detail": {
+            "reported": 1,
+            "derived": 1
+          }
+        },
+        {
+          "check": "summary.solver.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 5.25446,
+            "derived": 5.25446
+          }
+        },
+        {
+          "check": "summary.solver.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 0.692351,
+            "derived": 0.692351
+          }
+        },
+        {
+          "check": "summary.solver.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 24.462716200000003,
+            "derived": 24.462716200000003
+          }
+        },
+        {
+          "check": "summary.solver.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 146.72996,
+            "derived": 146.72996
+          }
+        },
+        {
+          "check": "summary.solver.samples",
+          "passed": true,
+          "detail": {
+            "reported": 139,
+            "derived": 139
+          }
+        },
+        {
+          "check": "summary.solver.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 0.34532374100719426,
+            "derived": 0.34532374100719426
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 8.126746597161715,
+            "derived": 8.126746597161715
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 3.316450005513616,
+            "derived": 3.316450005513616
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 28.13459190037974,
+            "derived": 28.13459190037974
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 151.3522249988455,
+            "derived": 151.3522249988455
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.samples",
+          "passed": true,
+          "detail": {
+            "reported": 139,
+            "derived": 139
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.whole_controller.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 164.2692721570711,
+            "derived": 164.2692721570711
+          }
+        },
+        {
+          "check": "summary.whole_controller.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 57.17347000063455,
+            "derived": 57.17347000063455
+          }
+        },
+        {
+          "check": "summary.whole_controller.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 848.1249294474762,
+            "derived": 848.1249294474762
+          }
+        },
+        {
+          "check": "summary.whole_controller.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 973.9895230013644,
+            "derived": 973.9895230013644
+          }
+        },
+        {
+          "check": "summary.whole_controller.samples",
+          "passed": true,
+          "detail": {
+            "reported": 140,
+            "derived": 140
+          }
+        },
+        {
+          "check": "summary.whole_controller.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "tight-tolerance replay agrees with recorded states",
+          "passed": true,
+          "detail": {
+            "max_abs": [
+              8.817716405928877e-07,
+              4.4755382414864153e-07,
+              1.2152963538625272e-05,
+              8.457984959520104e-06,
+              8.584936372901808e-08
+            ],
+            "tolerance": [
+              0.05,
+              0.02,
+              0.05,
+              0.05,
+              0.01
+            ]
+          }
+        },
+        {
+          "check": "tight-tolerance replay dense P2 <= safety limit",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 19.901983843249983,
+            "limit_mpa": 21.0
+          }
+        }
+      ],
+      "observed_dense_peak_p2_mpa": 19.901983825380128,
+      "max_logged_predicted_p2_mpa": 20.16160321838032,
+      "strict_replay": {
+        "relative_tolerance": 1e-08,
+        "pressure_subdivisions": 64,
+        "max_abs_state_deviation": {
+          "x_mm": 8.817716405928877e-07,
+          "velocity_m_s": 4.4755382414864153e-07,
+          "p1_mpa": 1.2152963538625272e-05,
+          "p2_mpa": 8.457984959520104e-06,
+          "valve_v": 8.584936372901808e-08
+        },
+        "dense_peak_p2_mpa": 19.901983843249983,
+        "end_time_s": 0.1500000000000001
+      }
+    },
+    "30": {
+      "checks": [
+        {
+          "check": "CSV, dense pressure, and solver logs exist",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "check": "required CSV columns present",
+          "passed": true
+        },
+        {
+          "check": "full closed-loop simulation completed",
+          "passed": true,
+          "detail": {
+            "status": "completed",
+            "samples": 151,
+            "expected_samples": 151,
+            "last_t_s": 0.15
+          }
+        },
+        {
+          "check": "uniform 1 ms control clock",
+          "passed": true
+        },
+        {
+          "check": "all sampled fields finite",
+          "passed": true
+        },
+        {
+          "check": "dense pressure finite and positive",
+          "passed": true
+        },
+        {
+          "check": "dense trace covers complete control interval",
+          "passed": true,
+          "detail": {
+            "dense_points": 5661,
+            "control_points": 151
+          }
+        },
+        {
+          "check": "sampled P2 agrees with dense trace",
+          "passed": true,
+          "detail": {
+            "max_error_mpa": 0.0
+          }
+        },
+        {
+          "check": "identical prescribed step reference",
+          "passed": true
+        },
+        {
+          "check": "shared initial physical state",
+          "passed": true
+        },
+        {
+          "check": "shared unforced initial trajectory",
+          "passed": true
+        },
+        {
+          "check": "applied valve voltage within ±10 V",
+          "passed": true,
+          "detail": {
+            "max_abs_v": 10.0
+          }
+        },
+        {
+          "check": "applied voltage slew within configured limit",
+          "passed": true,
+          "detail": {
+            "max_abs_delta_v": 4.5,
+            "limit_v_per_sample": 4.5
+          }
+        },
+        {
+          "check": "recorded voltage increments match applied input",
+          "passed": true,
+          "detail": {
+            "max_error_v": 0.0
+          }
+        },
+        {
+          "check": "true dense P2 <= 21 MPa",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 20.716837726147386,
+            "limit_mpa": 21.0
+          }
+        },
+        {
+          "check": "sampled P2 does not exceed dense peak",
+          "passed": true
+        },
+        {
+          "check": "one solver log per attempted control step",
+          "passed": true,
+          "detail": {
+            "logs": 140,
+            "steps": 140
+          }
+        },
+        {
+          "check": "all applied commands have nonlinear validation or declared policy",
+          "passed": true
+        },
+        {
+          "check": "restoration count matches logs",
+          "passed": true
+        },
+        {
+          "check": "finite-grid refinement count matches logs",
+          "passed": true
+        },
+        {
+          "check": "summary.prediction_ms",
+          "passed": true,
+          "detail": {
+            "reported": 30.0,
+            "derived": 30.0
+          }
+        },
+        {
+          "check": "summary.final_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.15,
+            "derived": 0.15
+          }
+        },
+        {
+          "check": "summary.samples",
+          "passed": true,
+          "detail": {
+            "reported": 151,
+            "derived": 151
+          }
+        },
+        {
+          "check": "summary.peak_position_mm",
+          "passed": true,
+          "detail": {
+            "reported": 50.39768831060322,
+            "derived": 50.39768831060322
+          }
+        },
+        {
+          "check": "summary.peak_position_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.06,
+            "derived": 0.06
+          }
+        },
+        {
+          "check": "summary.overshoot_pct",
+          "passed": true,
+          "detail": {
+            "reported": 0.7953766212064437,
+            "derived": 0.7953766212064437
+          }
+        },
+        {
+          "check": "summary.first_target_sample_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.058,
+            "derived": 0.058
+          }
+        },
+        {
+          "check": "summary.final_error_mm",
+          "passed": true,
+          "detail": {
+            "reported": -0.013308513486606444,
+            "derived": -0.013308513486606444
+          }
+        },
+        {
+          "check": "summary.peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.716837726147386,
+            "derived": 20.716837726147386
+          }
+        },
+        {
+          "check": "summary.peak_pressure_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.057516203682835894,
+            "derived": 0.057516203682835894
+          }
+        },
+        {
+          "check": "summary.sampled_peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.497232420883634,
+            "derived": 20.497232420883634
+          }
+        },
+        {
+          "check": "summary.pressure_violation_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 0.0,
+            "derived": 0.0
+          }
+        },
+        {
+          "check": "summary.max_abs_voltage_v",
+          "passed": true,
+          "detail": {
+            "reported": 10.0,
+            "derived": 10.0
+          }
+        },
+        {
+          "check": "summary.max_abs_increment_v",
+          "passed": true,
+          "detail": {
+            "reported": 4.5,
+            "derived": 4.5
+          }
+        },
+        {
+          "check": "summary.restoration_count",
+          "passed": true,
+          "detail": {
+            "reported": 0,
+            "derived": 0
+          }
+        },
+        {
+          "check": "summary.shifted_count",
+          "passed": true,
+          "detail": {
+            "reported": 26,
+            "derived": 26
+          }
+        },
+        {
+          "check": "summary.refinement_count",
+          "passed": true,
+          "detail": {
+            "reported": 1,
+            "derived": 1
+          }
+        },
+        {
+          "check": "summary.solver.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 17.14010804316547,
+            "derived": 17.14010804316547
+          }
+        },
+        {
+          "check": "summary.solver.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 1.450333,
+            "derived": 1.450333
+          }
+        },
+        {
+          "check": "summary.solver.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 80.61981719999997,
+            "derived": 80.61981719999997
+          }
+        },
+        {
+          "check": "summary.solver.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 326.88169300000004,
+            "derived": 326.88169300000004
+          }
+        },
+        {
+          "check": "summary.solver.samples",
+          "passed": true,
+          "detail": {
+            "reported": 139,
+            "derived": 139
+          }
+        },
+        {
+          "check": "summary.solver.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 20.44742896424991,
+            "derived": 20.44742896424991
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 4.285508002794813,
+            "derived": 4.285508002794813
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 85.43434489620266,
+            "derived": 85.43434489620266
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 331.99621999665396,
+            "derived": 331.99621999665396
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.samples",
+          "passed": true,
+          "detail": {
+            "reported": 139,
+            "derived": 139
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.whole_controller.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 278.12585135707195,
+            "derived": 278.12585135707195
+          }
+        },
+        {
+          "check": "summary.whole_controller.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 75.75174449993938,
+            "derived": 75.75174449993938
+          }
+        },
+        {
+          "check": "summary.whole_controller.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 1152.337834701029,
+            "derived": 1152.337834701029
+          }
+        },
+        {
+          "check": "summary.whole_controller.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 1391.8411490012659,
+            "derived": 1391.8411490012659
+          }
+        },
+        {
+          "check": "summary.whole_controller.samples",
+          "passed": true,
+          "detail": {
+            "reported": 140,
+            "derived": 140
+          }
+        },
+        {
+          "check": "summary.whole_controller.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        }
+      ],
+      "observed_dense_peak_p2_mpa": 20.716837726147386,
+      "max_logged_predicted_p2_mpa": 20.497219448917463
+    },
+    "40": {
+      "checks": [
+        {
+          "check": "CSV, dense pressure, and solver logs exist",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "check": "required CSV columns present",
+          "passed": true
+        },
+        {
+          "check": "full closed-loop simulation completed",
+          "passed": true,
+          "detail": {
+            "status": "completed",
+            "samples": 151,
+            "expected_samples": 151,
+            "last_t_s": 0.15
+          }
+        },
+        {
+          "check": "uniform 1 ms control clock",
+          "passed": true
+        },
+        {
+          "check": "all sampled fields finite",
+          "passed": true
+        },
+        {
+          "check": "dense pressure finite and positive",
+          "passed": true
+        },
+        {
+          "check": "dense trace covers complete control interval",
+          "passed": true,
+          "detail": {
+            "dense_points": 5753,
+            "control_points": 151
+          }
+        },
+        {
+          "check": "sampled P2 agrees with dense trace",
+          "passed": true,
+          "detail": {
+            "max_error_mpa": 0.0
+          }
+        },
+        {
+          "check": "identical prescribed step reference",
+          "passed": true
+        },
+        {
+          "check": "shared initial physical state",
+          "passed": true
+        },
+        {
+          "check": "shared unforced initial trajectory",
+          "passed": true
+        },
+        {
+          "check": "applied valve voltage within ±10 V",
+          "passed": true,
+          "detail": {
+            "max_abs_v": 10.0
+          }
+        },
+        {
+          "check": "applied voltage slew within configured limit",
+          "passed": true,
+          "detail": {
+            "max_abs_delta_v": 4.5,
+            "limit_v_per_sample": 4.5
+          }
+        },
+        {
+          "check": "recorded voltage increments match applied input",
+          "passed": true,
+          "detail": {
+            "max_error_v": 0.0
+          }
+        },
+        {
+          "check": "true dense P2 <= 21 MPa",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 20.59111183633131,
+            "limit_mpa": 21.0
+          }
+        },
+        {
+          "check": "sampled P2 does not exceed dense peak",
+          "passed": true
+        },
+        {
+          "check": "one solver log per attempted control step",
+          "passed": true,
+          "detail": {
+            "logs": 140,
+            "steps": 140
+          }
+        },
+        {
+          "check": "all applied commands have nonlinear validation or declared policy",
+          "passed": true
+        },
+        {
+          "check": "restoration count matches logs",
+          "passed": true
+        },
+        {
+          "check": "finite-grid refinement count matches logs",
+          "passed": true
+        },
+        {
+          "check": "summary.prediction_ms",
+          "passed": true,
+          "detail": {
+            "reported": 40.0,
+            "derived": 40.0
+          }
+        },
+        {
+          "check": "summary.final_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.15,
+            "derived": 0.15
+          }
+        },
+        {
+          "check": "summary.samples",
+          "passed": true,
+          "detail": {
+            "reported": 151,
+            "derived": 151
+          }
+        },
+        {
+          "check": "summary.peak_position_mm",
+          "passed": true,
+          "detail": {
+            "reported": 50.38517859809273,
+            "derived": 50.38517859809273
+          }
+        },
+        {
+          "check": "summary.peak_position_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.061,
+            "derived": 0.061
+          }
+        },
+        {
+          "check": "summary.overshoot_pct",
+          "passed": true,
+          "detail": {
+            "reported": 0.7703571961854578,
+            "derived": 0.7703571961854578
+          }
+        },
+        {
+          "check": "summary.first_target_sample_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.059000000000000004,
+            "derived": 0.059000000000000004
+          }
+        },
+        {
+          "check": "summary.final_error_mm",
+          "passed": true,
+          "detail": {
+            "reported": -0.015569524647887079,
+            "derived": -0.015569524647887079
+          }
+        },
+        {
+          "check": "summary.peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.59111183633131,
+            "derived": 20.59111183633131
+          }
+        },
+        {
+          "check": "summary.peak_pressure_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.05872781185201776,
+            "derived": 0.05872781185201776
+          }
+        },
+        {
+          "check": "summary.sampled_peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.483873462438574,
+            "derived": 20.483873462438574
+          }
+        },
+        {
+          "check": "summary.pressure_violation_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 0.0,
+            "derived": 0.0
+          }
+        },
+        {
+          "check": "summary.max_abs_voltage_v",
+          "passed": true,
+          "detail": {
+            "reported": 10.0,
+            "derived": 10.0
+          }
+        },
+        {
+          "check": "summary.max_abs_increment_v",
+          "passed": true,
+          "detail": {
+            "reported": 4.5,
+            "derived": 4.5
+          }
+        },
+        {
+          "check": "summary.restoration_count",
+          "passed": true,
+          "detail": {
+            "reported": 0,
+            "derived": 0
+          }
+        },
+        {
+          "check": "summary.shifted_count",
+          "passed": true,
+          "detail": {
+            "reported": 30,
+            "derived": 30
+          }
+        },
+        {
+          "check": "summary.refinement_count",
+          "passed": true,
+          "detail": {
+            "reported": 3,
+            "derived": 3
+          }
+        },
+        {
+          "check": "summary.solver.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 41.96785935766423,
+            "derived": 41.96785935766423
+          }
+        },
+        {
+          "check": "summary.solver.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 2.621975,
+            "derived": 2.621975
+          }
+        },
+        {
+          "check": "summary.solver.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 172.41031819999995,
+            "derived": 172.41031819999995
+          }
+        },
+        {
+          "check": "summary.solver.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 628.330955,
+            "derived": 628.330955
+          }
+        },
+        {
+          "check": "summary.solver.samples",
+          "passed": true,
+          "detail": {
+            "reported": 137,
+            "derived": 137
+          }
+        },
+        {
+          "check": "summary.solver.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 46.140840328379234,
+            "derived": 46.140840328379234
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 6.622655000683153,
+            "derived": 6.622655000683153
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 178.12933439927286,
+            "derived": 178.12933439927286
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 635.7797620003112,
+            "derived": 635.7797620003112
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.samples",
+          "passed": true,
+          "detail": {
+            "reported": 137,
+            "derived": 137
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.whole_controller.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 396.02263782864094,
+            "derived": 396.02263782864094
+          }
+        },
+        {
+          "check": "summary.whole_controller.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 95.81212850207521,
+            "derived": 95.81212850207521
+          }
+        },
+        {
+          "check": "summary.whole_controller.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 1438.4004547013317,
+            "derived": 1438.4004547013317
+          }
+        },
+        {
+          "check": "summary.whole_controller.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 1843.1018299997959,
+            "derived": 1843.1018299997959
+          }
+        },
+        {
+          "check": "summary.whole_controller.samples",
+          "passed": true,
+          "detail": {
+            "reported": 140,
+            "derived": 140
+          }
+        },
+        {
+          "check": "summary.whole_controller.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        }
+      ],
+      "observed_dense_peak_p2_mpa": 20.59111183633131,
+      "max_logged_predicted_p2_mpa": 20.483867079949043
+    },
+    "50": {
+      "checks": [
+        {
+          "check": "CSV, dense pressure, and solver logs exist",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "check": "required CSV columns present",
+          "passed": true
+        },
+        {
+          "check": "full closed-loop simulation completed",
+          "passed": true,
+          "detail": {
+            "status": "completed",
+            "samples": 151,
+            "expected_samples": 151,
+            "last_t_s": 0.15
+          }
+        },
+        {
+          "check": "uniform 1 ms control clock",
+          "passed": true
+        },
+        {
+          "check": "all sampled fields finite",
+          "passed": true
+        },
+        {
+          "check": "dense pressure finite and positive",
+          "passed": true
+        },
+        {
+          "check": "dense trace covers complete control interval",
+          "passed": true,
+          "detail": {
+            "dense_points": 5811,
+            "control_points": 151
+          }
+        },
+        {
+          "check": "sampled P2 agrees with dense trace",
+          "passed": true,
+          "detail": {
+            "max_error_mpa": 0.0
+          }
+        },
+        {
+          "check": "identical prescribed step reference",
+          "passed": true
+        },
+        {
+          "check": "shared initial physical state",
+          "passed": true
+        },
+        {
+          "check": "shared unforced initial trajectory",
+          "passed": true
+        },
+        {
+          "check": "applied valve voltage within ±10 V",
+          "passed": true,
+          "detail": {
+            "max_abs_v": 9.999999994731251
+          }
+        },
+        {
+          "check": "applied voltage slew within configured limit",
+          "passed": true,
+          "detail": {
+            "max_abs_delta_v": 4.5,
+            "limit_v_per_sample": 4.5
+          }
+        },
+        {
+          "check": "recorded voltage increments match applied input",
+          "passed": true,
+          "detail": {
+            "max_error_v": 0.0
+          }
+        },
+        {
+          "check": "true dense P2 <= 21 MPa",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 20.56292252141306,
+            "limit_mpa": 21.0
+          }
+        },
+        {
+          "check": "sampled P2 does not exceed dense peak",
+          "passed": true
+        },
+        {
+          "check": "one solver log per attempted control step",
+          "passed": true,
+          "detail": {
+            "logs": 140,
+            "steps": 140
+          }
+        },
+        {
+          "check": "all applied commands have nonlinear validation or declared policy",
+          "passed": true
+        },
+        {
+          "check": "restoration count matches logs",
+          "passed": true
+        },
+        {
+          "check": "finite-grid refinement count matches logs",
+          "passed": true
+        },
+        {
+          "check": "summary.prediction_ms",
+          "passed": true,
+          "detail": {
+            "reported": 50.0,
+            "derived": 50.0
+          }
+        },
+        {
+          "check": "summary.final_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.15,
+            "derived": 0.15
+          }
+        },
+        {
+          "check": "summary.samples",
+          "passed": true,
+          "detail": {
+            "reported": 151,
+            "derived": 151
+          }
+        },
+        {
+          "check": "summary.peak_position_mm",
+          "passed": true,
+          "detail": {
+            "reported": 50.180178016338935,
+            "derived": 50.180178016338935
+          }
+        },
+        {
+          "check": "summary.peak_position_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.06,
+            "derived": 0.06
+          }
+        },
+        {
+          "check": "summary.overshoot_pct",
+          "passed": true,
+          "detail": {
+            "reported": 0.36035603267787053,
+            "derived": 0.36035603267787053
+          }
+        },
+        {
+          "check": "summary.first_target_sample_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.059000000000000004,
+            "derived": 0.059000000000000004
+          }
+        },
+        {
+          "check": "summary.final_error_mm",
+          "passed": true,
+          "detail": {
+            "reported": -0.016481381378177673,
+            "derived": -0.016481381378177673
+          }
+        },
+        {
+          "check": "summary.peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.56292252141306,
+            "derived": 20.56292252141306
+          }
+        },
+        {
+          "check": "summary.peak_pressure_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.059294709278268125,
+            "derived": 0.059294709278268125
+          }
+        },
+        {
+          "check": "summary.sampled_peak_pressure_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 20.326718419592357,
+            "derived": 20.326718419592357
+          }
+        },
+        {
+          "check": "summary.pressure_violation_mpa",
+          "passed": true,
+          "detail": {
+            "reported": 0.0,
+            "derived": 0.0
+          }
+        },
+        {
+          "check": "summary.max_abs_voltage_v",
+          "passed": true,
+          "detail": {
+            "reported": 9.999999994731251,
+            "derived": 9.999999994731251
+          }
+        },
+        {
+          "check": "summary.max_abs_increment_v",
+          "passed": true,
+          "detail": {
+            "reported": 4.5,
+            "derived": 4.5
+          }
+        },
+        {
+          "check": "summary.restoration_count",
+          "passed": true,
+          "detail": {
+            "reported": 1,
+            "derived": 1
+          }
+        },
+        {
+          "check": "summary.shifted_count",
+          "passed": true,
+          "detail": {
+            "reported": 37,
+            "derived": 37
+          }
+        },
+        {
+          "check": "summary.refinement_count",
+          "passed": true,
+          "detail": {
+            "reported": 2,
+            "derived": 2
+          }
+        },
+        {
+          "check": "summary.solver.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 110.47523872992701,
+            "derived": 110.47523872992701
+          }
+        },
+        {
+          "check": "summary.solver.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 3.9806280000000003,
+            "derived": 3.9806280000000003
+          }
+        },
+        {
+          "check": "summary.solver.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 513.2391485999997,
+            "derived": 513.2391485999997
+          }
+        },
+        {
+          "check": "summary.solver.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 670.11501,
+            "derived": 670.11501
+          }
+        },
+        {
+          "check": "summary.solver.samples",
+          "passed": true,
+          "detail": {
+            "reported": 137,
+            "derived": 137
+          }
+        },
+        {
+          "check": "summary.solver.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 114.76273927739358,
+            "derived": 114.76273927739358
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 7.556728000054136,
+            "derived": 7.556728000054136
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 519.3291028008385,
+            "derived": 519.3291028008385
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 676.591177998489,
+            "derived": 676.591177998489
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.samples",
+          "passed": true,
+          "detail": {
+            "reported": 137,
+            "derived": 137
+          }
+        },
+        {
+          "check": "summary.cvxpy_call.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "summary.whole_controller.mean_ms",
+          "passed": true,
+          "detail": {
+            "reported": 579.8310983641776,
+            "derived": 579.8310983641776
+          }
+        },
+        {
+          "check": "summary.whole_controller.median_ms",
+          "passed": true,
+          "detail": {
+            "reported": 110.0813590001053,
+            "derived": 110.0813590001053
+          }
+        },
+        {
+          "check": "summary.whole_controller.p95_ms",
+          "passed": true,
+          "detail": {
+            "reported": 1895.472539847651,
+            "derived": 1895.472539847651
+          }
+        },
+        {
+          "check": "summary.whole_controller.max_ms",
+          "passed": true,
+          "detail": {
+            "reported": 2115.5808020012046,
+            "derived": 2115.5808020012046
+          }
+        },
+        {
+          "check": "summary.whole_controller.samples",
+          "passed": true,
+          "detail": {
+            "reported": 140,
+            "derived": 140
+          }
+        },
+        {
+          "check": "summary.whole_controller.over_1ms_fraction",
+          "passed": true,
+          "detail": {
+            "reported": 1.0,
+            "derived": 1.0
+          }
+        },
+        {
+          "check": "tight-tolerance replay agrees with recorded states",
+          "passed": true,
+          "detail": {
+            "max_abs": [
+              3.153490716556462e-06,
+              8.774983224421606e-07,
+              2.6193371451377345e-05,
+              2.0489923327815518e-05,
+              2.5640379042179973e-08
+            ],
+            "tolerance": [
+              0.05,
+              0.02,
+              0.05,
+              0.05,
+              0.01
+            ]
+          }
+        },
+        {
+          "check": "tight-tolerance replay dense P2 <= safety limit",
+          "passed": true,
+          "detail": {
+            "peak_mpa": 20.56292254930318,
+            "limit_mpa": 21.0
+          }
+        }
+      ],
+      "observed_dense_peak_p2_mpa": 20.56292252141306,
+      "max_logged_predicted_p2_mpa": 20.271742462774426,
+      "strict_replay": {
+        "relative_tolerance": 1e-08,
+        "pressure_subdivisions": 64,
+        "max_abs_state_deviation": {
+          "x_mm": 3.153490716556462e-06,
+          "velocity_m_s": 8.774983224421606e-07,
+          "p1_mpa": 2.6193371451377345e-05,
+          "p2_mpa": 2.0489923327815518e-05,
+          "valve_v": 2.5640379042179973e-08
+        },
+        "dense_peak_p2_mpa": 20.56292254930318,
+        "end_time_s": 0.1500000000000001
+      }
+    }
+  },
+  "errors": [],
+  "checked_horizons": [
+    5,
+    10,
+    15,
+    20,
+    30,
+    40,
+    50
+  ]
+}

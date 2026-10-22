@@ -1,0 +1,507 @@
+{
+  "config": {
+    "ts": 0.001,
+    "duration": 0.15,
+    "step_time": 0.01,
+    "target_mm": 50.0,
+    "horizons": [
+      5,
+      10,
+      15,
+      20,
+      30,
+      40,
+      50
+    ],
+    "highlight_horizons": [
+      5,
+      20,
+      50
+    ],
+    "origin_m": 0.05,
+    "valve_tau": 0.0025,
+    "makeup_area": 0.002,
+    "rtol": 1e-06,
+    "max_du_step": 4.5,
+    "p_safe": 21.0,
+    "pressure_margin": 0.5,
+    "mpc_outer_iterations": 3,
+    "q_position": 100.0,
+    "q_velocity": 20.0,
+    "move_weight": 0.01,
+    "settling_move_weight": 0.1,
+    "settling_error_mm": 0.5,
+    "settling_velocity_m_s": 0.1,
+    "horizon": 5,
+    "physical_parameters": {
+      "A1": 0.01,
+      "A2": 0.005,
+      "L": 0.3,
+      "V0_1": 0.0001,
+      "V0_2": 0.0001,
+      "mass": 500.0,
+      "Ps": 21000000.0,
+      "Pr": 100000.0,
+      "beta_e": 1800000000.0,
+      "rho": 870.0,
+      "Cd": 0.62,
+      "w": 0.02,
+      "xv_max": 0.005,
+      "deadzone": 0.05,
+      "C_ip": 1e-12,
+      "Fs": 800.0,
+      "Fc": 500.0,
+      "vs": 0.05,
+      "sigma": 1000.0,
+      "gamma": 500.0,
+      "x_work": 1.3,
+      "K_env": 50000000.0,
+      "B_env": 100000.0,
+      "initial_p2_pa": 2000000.0,
+      "C_ep": 0.0,
+      "ambient_pressure": 100000.0,
+      "makeup_area": 0.002,
+      "valve_tau": 0.0025
+    },
+    "initial_state": [
+      0.0,
+      0.0,
+      1.05,
+      2.0,
+      0.0
+    ],
+    "n_physical_states": 5,
+    "n_augmented_states": 6,
+    "state_units": [
+      "mm",
+      "m/s",
+      "MPa",
+      "MPa",
+      "V"
+    ],
+    "optimizer": "CVXPY with OSQP",
+    "pressure_constraint_scope": "predicted P2 upper bound only",
+    "prediction_p2_limit_mpa": 20.5,
+    "physical_integrator": "Radau with hybrid friction events and dense pressure trace",
+    "physical_rhs_sha256": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f",
+    "physical_function_evaluations": 18703,
+    "simulation_wall_s": 10.23525684299966,
+    "blas_threads": 1
+  },
+  "results": {
+    "5": {
+      "horizon": 5,
+      "prediction_ms": 5.0,
+      "status": "completed",
+      "failure": null,
+      "final_time_s": 0.15,
+      "samples": 151,
+      "peak_position_mm": 52.64742041550005,
+      "peak_position_time_s": 0.061,
+      "overshoot_pct": 5.294840831000101,
+      "first_target_sample_s": 0.056,
+      "final_error_mm": 0.014588559032191029,
+      "peak_pressure_mpa": 20.653223528245885,
+      "peak_pressure_time_s": 0.09060496869181867,
+      "sampled_peak_pressure_mpa": 20.488256291185532,
+      "pressure_violation_mpa": 0.0,
+      "max_abs_voltage_v": 10.0,
+      "max_abs_increment_v": 4.5,
+      "restoration_count": 6,
+      "refinement_count": 2,
+      "shifted_count": 8,
+      "solver": {
+        "mean_ms": 0.5076890984848484,
+        "median_ms": 0.1460845,
+        "p95_ms": 1.3034436499999917,
+        "max_ms": 13.826763000000001,
+        "samples": 132,
+        "over_1ms_fraction": 0.05303030303030303
+      },
+      "cvxpy_call": {
+        "mean_ms": 2.90412446241989,
+        "median_ms": 2.300390500749927,
+        "p95_ms": 4.764706450623629,
+        "max_ms": 15.548384999419795,
+        "samples": 132,
+        "over_1ms_fraction": 1.0
+      },
+      "whole_controller": {
+        "mean_ms": 65.59050656427904,
+        "median_ms": 30.77300399854721,
+        "p95_ms": 328.0599758487366,
+        "max_ms": 611.8597970016708,
+        "samples": 140,
+        "over_1ms_fraction": 1.0
+      }
+    },
+    "10": {
+      "horizon": 10,
+      "prediction_ms": 10.0,
+      "status": "completed",
+      "failure": null,
+      "final_time_s": 0.15,
+      "samples": 151,
+      "peak_position_mm": 50.23291205451899,
+      "peak_position_time_s": 0.059000000000000004,
+      "overshoot_pct": 0.46582410903798177,
+      "first_target_sample_s": 0.058,
+      "final_error_mm": -0.015110701707264695,
+      "peak_pressure_mpa": 19.901984014080448,
+      "peak_pressure_time_s": 0.057965835837918575,
+      "sampled_peak_pressure_mpa": 19.901264550103942,
+      "pressure_violation_mpa": 0.0,
+      "max_abs_voltage_v": 10.0,
+      "max_abs_increment_v": 4.5,
+      "restoration_count": 0,
+      "refinement_count": 1,
+      "shifted_count": 9,
+      "solver": {
+        "mean_ms": 0.4857407769784172,
+        "median_ms": 0.22610999999999998,
+        "p95_ms": 1.522278599999999,
+        "max_ms": 8.765070000000001,
+        "samples": 139,
+        "over_1ms_fraction": 0.09352517985611511
+      },
+      "cvxpy_call": {
+        "mean_ms": 2.9509570000732146,
+        "median_ms": 2.527393000491429,
+        "p95_ms": 5.665576400861026,
+        "max_ms": 14.033545998245245,
+        "samples": 139,
+        "over_1ms_fraction": 1.0
+      },
+      "whole_controller": {
+        "mean_ms": 70.15116034290259,
+        "median_ms": 34.081086500009405,
+        "p95_ms": 462.70318759943564,
+        "max_ms": 632.6283709968266,
+        "samples": 140,
+        "over_1ms_fraction": 1.0
+      }
+    },
+    "15": {
+      "horizon": 15,
+      "prediction_ms": 15.0,
+      "status": "completed",
+      "failure": null,
+      "final_time_s": 0.15,
+      "samples": 151,
+      "peak_position_mm": 50.56121645946997,
+      "peak_position_time_s": 0.06,
+      "overshoot_pct": 1.1224329189399356,
+      "first_target_sample_s": 0.058,
+      "final_error_mm": -0.014930514442539788,
+      "peak_pressure_mpa": 20.50411249758791,
+      "peak_pressure_time_s": 0.060045206357600384,
+      "sampled_peak_pressure_mpa": 20.500036180164948,
+      "pressure_violation_mpa": 0.0,
+      "max_abs_voltage_v": 10.0,
+      "max_abs_increment_v": 4.5,
+      "restoration_count": 0,
+      "refinement_count": 1,
+      "shifted_count": 10,
+      "solver": {
+        "mean_ms": 1.9932934532374096,
+        "median_ms": 0.431367,
+        "p95_ms": 9.338457699999989,
+        "max_ms": 34.74284,
+        "samples": 139,
+        "over_1ms_fraction": 0.19424460431654678
+      },
+      "cvxpy_call": {
+        "mean_ms": 4.763792964466303,
+        "median_ms": 2.9307589975360315,
+        "p95_ms": 15.587351897193003,
+        "max_ms": 39.72457400232088,
+        "samples": 139,
+        "over_1ms_fraction": 1.0
+      },
+      "whole_controller": {
+        "mean_ms": 104.6139228001526,
+        "median_ms": 47.45813400222687,
+        "p95_ms": 698.3353016026739,
+        "max_ms": 814.3679540007724,
+        "samples": 140,
+        "over_1ms_fraction": 1.0
+      }
+    },
+    "20": {
+      "horizon": 20,
+      "prediction_ms": 20.0,
+      "status": "completed",
+      "failure": null,
+      "final_time_s": 0.15,
+      "samples": 151,
+      "peak_position_mm": 50.23296186790599,
+      "peak_position_time_s": 0.059000000000000004,
+      "overshoot_pct": 0.4659237358119839,
+      "first_target_sample_s": 0.058,
+      "final_error_mm": -0.014419652198924382,
+      "peak_pressure_mpa": 19.901983825380128,
+      "peak_pressure_time_s": 0.057965835803763244,
+      "sampled_peak_pressure_mpa": 19.90126435997201,
+      "pressure_violation_mpa": 0.0,
+      "max_abs_voltage_v": 10.0,
+      "max_abs_increment_v": 4.5,
+      "restoration_count": 0,
+      "refinement_count": 1,
+      "shifted_count": 18,
+      "solver": {
+        "mean_ms": 5.25446,
+        "median_ms": 0.692351,
+        "p95_ms": 24.462716200000003,
+        "max_ms": 146.72996,
+        "samples": 139,
+        "over_1ms_fraction": 0.34532374100719426
+      },
+      "cvxpy_call": {
+        "mean_ms": 8.126746597161715,
+        "median_ms": 3.316450005513616,
+        "p95_ms": 28.13459190037974,
+        "max_ms": 151.3522249988455,
+        "samples": 139,
+        "over_1ms_fraction": 1.0
+      },
+      "whole_controller": {
+        "mean_ms": 164.2692721570711,
+        "median_ms": 57.17347000063455,
+        "p95_ms": 848.1249294474762,
+        "max_ms": 973.9895230013644,
+        "samples": 140,
+        "over_1ms_fraction": 1.0
+      }
+    },
+    "30": {
+      "horizon": 30,
+      "prediction_ms": 30.0,
+      "status": "completed",
+      "failure": null,
+      "final_time_s": 0.15,
+      "samples": 151,
+      "peak_position_mm": 50.39768831060322,
+      "peak_position_time_s": 0.06,
+      "overshoot_pct": 0.7953766212064437,
+      "first_target_sample_s": 0.058,
+      "final_error_mm": -0.013308513486606444,
+      "peak_pressure_mpa": 20.716837726147386,
+      "peak_pressure_time_s": 0.057516203682835894,
+      "sampled_peak_pressure_mpa": 20.497232420883634,
+      "pressure_violation_mpa": 0.0,
+      "max_abs_voltage_v": 10.0,
+      "max_abs_increment_v": 4.5,
+      "restoration_count": 0,
+      "refinement_count": 1,
+      "shifted_count": 26,
+      "solver": {
+        "mean_ms": 17.14010804316547,
+        "median_ms": 1.450333,
+        "p95_ms": 80.61981719999997,
+        "max_ms": 326.88169300000004,
+        "samples": 139,
+        "over_1ms_fraction": 1.0
+      },
+      "cvxpy_call": {
+        "mean_ms": 20.44742896424991,
+        "median_ms": 4.285508002794813,
+        "p95_ms": 85.43434489620266,
+        "max_ms": 331.99621999665396,
+        "samples": 139,
+        "over_1ms_fraction": 1.0
+      },
+      "whole_controller": {
+        "mean_ms": 278.12585135707195,
+        "median_ms": 75.75174449993938,
+        "p95_ms": 1152.337834701029,
+        "max_ms": 1391.8411490012659,
+        "samples": 140,
+        "over_1ms_fraction": 1.0
+      }
+    },
+    "40": {
+      "horizon": 40,
+      "prediction_ms": 40.0,
+      "status": "completed",
+      "failure": null,
+      "final_time_s": 0.15,
+      "samples": 151,
+      "peak_position_mm": 50.38517859809273,
+      "peak_position_time_s": 0.061,
+      "overshoot_pct": 0.7703571961854578,
+      "first_target_sample_s": 0.059000000000000004,
+      "final_error_mm": -0.015569524647887079,
+      "peak_pressure_mpa": 20.59111183633131,
+      "peak_pressure_time_s": 0.05872781185201776,
+      "sampled_peak_pressure_mpa": 20.483873462438574,
+      "pressure_violation_mpa": 0.0,
+      "max_abs_voltage_v": 10.0,
+      "max_abs_increment_v": 4.5,
+      "restoration_count": 0,
+      "refinement_count": 3,
+      "shifted_count": 30,
+      "solver": {
+        "mean_ms": 41.96785935766423,
+        "median_ms": 2.621975,
+        "p95_ms": 172.41031819999995,
+        "max_ms": 628.330955,
+        "samples": 137,
+        "over_1ms_fraction": 1.0
+      },
+      "cvxpy_call": {
+        "mean_ms": 46.140840328379234,
+        "median_ms": 6.622655000683153,
+        "p95_ms": 178.12933439927286,
+        "max_ms": 635.7797620003112,
+        "samples": 137,
+        "over_1ms_fraction": 1.0
+      },
+      "whole_controller": {
+        "mean_ms": 396.02263782864094,
+        "median_ms": 95.81212850207521,
+        "p95_ms": 1438.4004547013317,
+        "max_ms": 1843.1018299997959,
+        "samples": 140,
+        "over_1ms_fraction": 1.0
+      }
+    },
+    "50": {
+      "horizon": 50,
+      "prediction_ms": 50.0,
+      "status": "completed",
+      "failure": null,
+      "final_time_s": 0.15,
+      "samples": 151,
+      "peak_position_mm": 50.180178016338935,
+      "peak_position_time_s": 0.06,
+      "overshoot_pct": 0.36035603267787053,
+      "first_target_sample_s": 0.059000000000000004,
+      "final_error_mm": -0.016481381378177673,
+      "peak_pressure_mpa": 20.56292252141306,
+      "peak_pressure_time_s": 0.059294709278268125,
+      "sampled_peak_pressure_mpa": 20.326718419592357,
+      "pressure_violation_mpa": 0.0,
+      "max_abs_voltage_v": 9.999999994731251,
+      "max_abs_increment_v": 4.5,
+      "restoration_count": 1,
+      "refinement_count": 2,
+      "shifted_count": 37,
+      "solver": {
+        "mean_ms": 110.47523872992701,
+        "median_ms": 3.9806280000000003,
+        "p95_ms": 513.2391485999997,
+        "max_ms": 670.11501,
+        "samples": 137,
+        "over_1ms_fraction": 1.0
+      },
+      "cvxpy_call": {
+        "mean_ms": 114.76273927739358,
+        "median_ms": 7.556728000054136,
+        "p95_ms": 519.3291028008385,
+        "max_ms": 676.591177998489,
+        "samples": 137,
+        "over_1ms_fraction": 1.0
+      },
+      "whole_controller": {
+        "mean_ms": 579.8310983641776,
+        "median_ms": 110.0813590001053,
+        "p95_ms": 1895.472539847651,
+        "max_ms": 2115.5808020012046,
+        "samples": 140,
+        "over_1ms_fraction": 1.0
+      }
+    }
+  },
+  "timing_definitions": {
+    "solver": "OSQP solver_stats.solve_time for accepted QP attempts, summed per control step",
+    "cvxpy_call": "wall time inside each cvxpy Problem.solve, summed per control step",
+    "whole_controller": "wall time for linearization, QP, validation and any restoration",
+    "deadline": "nominal sample period 1.0 ms; Linux desktop timing is illustrative, not RT-certified"
+  },
+  "matrix_dimensions": {
+    "5": {
+      "augmented_states": 6,
+      "condensed_phi": [
+        30,
+        5
+      ],
+      "hessian": [
+        5,
+        5
+      ],
+      "dense_hessian_entries": 25
+    },
+    "10": {
+      "augmented_states": 6,
+      "condensed_phi": [
+        60,
+        10
+      ],
+      "hessian": [
+        10,
+        10
+      ],
+      "dense_hessian_entries": 100
+    },
+    "15": {
+      "augmented_states": 6,
+      "condensed_phi": [
+        90,
+        15
+      ],
+      "hessian": [
+        15,
+        15
+      ],
+      "dense_hessian_entries": 225
+    },
+    "20": {
+      "augmented_states": 6,
+      "condensed_phi": [
+        120,
+        20
+      ],
+      "hessian": [
+        20,
+        20
+      ],
+      "dense_hessian_entries": 400
+    },
+    "30": {
+      "augmented_states": 6,
+      "condensed_phi": [
+        180,
+        30
+      ],
+      "hessian": [
+        30,
+        30
+      ],
+      "dense_hessian_entries": 900
+    },
+    "40": {
+      "augmented_states": 6,
+      "condensed_phi": [
+        240,
+        40
+      ],
+      "hessian": [
+        40,
+        40
+      ],
+      "dense_hessian_entries": 1600
+    },
+    "50": {
+      "augmented_states": 6,
+      "condensed_phi": [
+        300,
+        50
+      ],
+      "hessian": [
+        50,
+        50
+      ],
+      "dense_hessian_entries": 2500
+    }
+  }
+}

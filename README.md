@@ -51,6 +51,25 @@ python mpc_hydraulic_lab.py
 
 压力峰值使用包含采样间极值的真实混合积分记录，未裁剪到 21 MPa；求解耗时及与 PPT 的数值差异单独披露。Ts=1 ms 是仿真采样周期，当前 Python 实现尚未达到 1 ms 硬实时要求。
 
+## 第七章作业 7-2：预测时域与压力—算力权衡
+
+独立作业以 CVXPY/OSQP 扫描 N=5、10、15、20、30、40、50，在同一 50 mm 定位工况下比较位移超调、21 MPa 有杆腔安全线和求解耗时。图中突出 N=5、20、50，所有电压、位移与采样间压力均来自真实闭环。局部 QP 无新可行计划时，公开记录经过非线性验证的恢复或移位计划改进，分别计数。
+
+- [作业代码与说明](homework7_2/README.md)
+- [四联对比图](homework7_2/outputs/horizon_comparison.png)
+- [七组定量结果](homework7_2/outputs/summary.json)
+- [完整 ZIP](homework7_2/deliverables/第七章_习题7-2_预测时域完整交付.zip)
+- [Word 报告](homework7_2/deliverables/第七章_习题7-2_预测时域实验报告.docx)
+
+```bash
+cd homework7_2
+python -m pip install -r requirements.txt
+python work_7_2.py
+python verify_experiment.py --strict
+```
+
+本次 N=5 超调约 5.30%，N=20 约 0.47%，N=50 约 0.36%；七组高密真实 P2 均低于 21 MPa。底层 QP、CVXPY 调用和完整控制步骤的耗时分别报告；当前 Python 实现的完整周期均不能满足 1 ms 截止时间。凝聚矩阵条目按 O(N²) 增长，不能称作指数级维度膨胀。
+
 ## 第五章作业 5-1：PID 抗积分饱和对比
 
 新项目在相同液压对象、PID 增益和 ±10 V 限幅下，对比位置式的积分累积与增量式的截断输出记忆。独立目录包含 `work_5_1.py`、一张三联图、两种微分模式的 CSV、Word 报告、验证记录和完整 ZIP。
