@@ -124,12 +124,12 @@ def build_report(summary, validation, figure, destination):
 
     report.add_heading('3. 七组实际测量结果', 1)
     _table(report,
-           ('N', '视野 ms', '位移超调 %', '真实 P2 峰 MPa', 'OSQP 均值 ms',
+           ('N', '视野 ms', '位移超调 %', '真实 P2 峰 MPa', '单次 QP 中位 ms',
             'CVXPY 均值 ms', '完整控制中位 ms', '失败恢复次数', '移位改进次数', '状态'),
            [(n, _fmt(_field(records[str(n)], 'prediction_ms'), 0),
              _fmt(_field(records[str(n)], 'overshoot_pct'), 3),
              _fmt(_field(records[str(n)], 'peak_pressure_mpa'), 4),
-             _fmt(_field(records[str(n)], 'solver', 'mean_ms'), 3),
+             _fmt(_field(records[str(n)], 'solver_attempt', 'median_ms'), 3),
              _fmt(_field(records[str(n)], 'cvxpy_call', 'mean_ms'), 3),
              _fmt(_field(records[str(n)], 'whole_controller', 'median_ms'), 3),
              records[str(n)].get('restoration_count', 0),
@@ -137,22 +137,25 @@ def build_report(summary, validation, figure, destination):
              '完成' if records[str(n)].get('status') == 'completed' else '未完成')
             for n in horizons])
     report.add_paragraph(
-        'OSQP 均值来自底层求解器记录；CVXPY 均值是每次 Problem.solve 的实际墙钟时间；'
-        '完整控制时间还含模型预测和非线性验证。三者不能互换。表中平均耗时只统计完成的'
-        'QP 控制步骤；所有数值保存在逐步 CSV 和求解日志中。')
+        '单次 QP 中位数逐次统计 OSQP 底层求解时间，与图 (d) 口径一致；'
+        'CVXPY 栏为每控制周期内 Problem.solve 的墙钟时间合计均值；'
+        '完整控制时间还含模型预测和非线性验证。三者不能互换。'
+        '所有数值保存在逐步 CSV 和求解日志中。')
     deadline_rows = []
     for n in horizons:
         item = records[str(n)]
         fraction = _field(item, 'whole_controller', 'over_1ms_fraction')
-        deadline_rows.append((n, _fmt(_field(item, 'solver', 'p95_ms'), 3),
+        deadline_rows.append((n, _fmt(_field(item, 'solver_attempt', 'p95_ms'), 3),
+                              _fmt(_field(item, 'solver', 'mean_ms'), 3),
                               _fmt(_field(item, 'cvxpy_call', 'p95_ms'), 3),
                               _fmt(_field(item, 'whole_controller', 'p95_ms'), 3),
                               _fmt(100*fraction, 1) if fraction is not None else '未记录',
                               _fmt(item.get('pressure_violation_mpa'), 5)))
     _table(report,
-           ('N', 'OSQP P95 ms', 'CVXPY P95 ms', '完整控制 P95 ms',
+           ('N', '单次 QP P95 ms', '周期 QP 均值 ms', '周期 CVXPY P95 ms', '完整控制 P95 ms',
             '完整控制 >1ms 占比 %', '真实 P2 越限 MPa'), deadline_rows)
     report.add_paragraph(
+        '一周期内可能连续求解多个局部 QP，所以周期 QP 均值可能明显高于单次中位数。'
         '采样周期 1 ms 是理论实时截止线；本表是在当前通用计算环境的观测时间，'
         '不能代替实时操作系统、指定处理器和最坏情况执行时间认证。')
     deadline_failures = [n for n in horizons
@@ -197,6 +200,12 @@ def build_report(summary, validation, figure, destination):
         + '有限仿真中守住安全线，不等于任意模型误差、扰动与实物系统均安全。'
         '当前硬约束针对 P2 上界，未保护 P1 上界或两腔压力下界。')
     report.add_paragraph(
+        '与提供的课堂示意图相比，本回路的巡航与制动后 P2 基线更高。'
+        '原因是当前四通阀的回油节流口与供油口采用相同系数，高速巡航需要回油压差；'
+        '阀芯回中位后两腔封闭，且外泄漏系数为零，残余压力不能在几十毫秒内自动降回初始 2 MPa。'
+        '参考图若体现近零巡航压力和快速卸压，需要另设回油/卸荷回路。'
+        '本实验没有为匹配图形而修改压力数据、插入隐式卸压或裁剪峰值。')
+    report.add_paragraph(
         f"验证脚本总体结果：{'通过' if validation.get('passed') else '未全部通过'}。"
         '验证内容包含图表数值与 CSV、真实积分峰值、输入约束及预测压力节点的独立核对；'
         '如开启严格复算，见 outputs/validation.json 的 recorded-input replay 数据。')
@@ -205,10 +214,10 @@ def build_report(summary, validation, figure, destination):
     report.add_picture(str(figure), width=Inches(10.0))
     report.add_paragraph(
         '图 (a)–(c) 使用 N=5/20/50 的闭环样本、实际控制电压和高密 P2；'
-        '图 (d) 绘制七组底层 QP 平均耗时与真实压力峰值。'
+        '图 (d) 绘制七组单次 QP 耗时中位数、均值与真实压力峰值。'
         '运行命令：python work_7_2.py；随后 python verify_experiment.py --strict；'
         '再运行 python package_delivery.py。源代码、配置、原始数据、逐步诊断、'
-        '课件资料和 SHA256 清单均随 ZIP 一同提供。')
+        '课件资料、reference_comparison.md 差异诊断和 SHA256 清单均随 ZIP 一同提供。')
     report.save(destination)
     return destination
 

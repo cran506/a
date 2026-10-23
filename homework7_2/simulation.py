@@ -41,7 +41,7 @@ def _stats(values):
                 over_1ms_fraction=float(np.mean(a > 1.)) if len(a) else None)
 
 
-def _metrics(data, pressure_trace, config, horizon, failure):
+def _metrics(data, pressure_trace, config, horizon, failure, solver_logs):
     x = np.asarray(data['x_mm'])
     t = np.asarray(data['t_s'])
     u = np.asarray(data['u_v'])
@@ -51,6 +51,11 @@ def _metrics(data, pressure_trace, config, horizon, failure):
     # Mean timing excludes warmup, idle intervals, and restoration-only rows.
     solved = np.isin(data['status_code'], [1, 2])
     solver_stats = _stats(np.asarray(data['solver_time_ms'])[solved])
+    attempt_times = [diagnostic['backend_solve_time_ms']
+                     for log in solver_logs
+                     for diagnostic in log.get('qp_diagnostics', [])
+                     if diagnostic.get('backend_solve_time_ms') is not None]
+    attempt_stats = _stats(attempt_times)
     cvxpy_stats = _stats(np.asarray(data['cvxpy_wall_ms'])[solved])
     controller_stats = _stats(np.asarray(data['controller_wall_ms'])[active])
     target = config['target_mm']
@@ -72,7 +77,8 @@ def _metrics(data, pressure_trace, config, horizon, failure):
         restoration_count=int(np.sum(np.asarray(data['status_code']) == 3)),
         refinement_count=int(np.sum(np.asarray(data['status_code']) == 4)),
         shifted_count=int(np.sum(np.asarray(data['status_code']) == 2)),
-        solver=solver_stats, cvxpy_call=cvxpy_stats, whole_controller=controller_stats)
+        solver=solver_stats, solver_attempt=attempt_stats,
+        cvxpy_call=cvxpy_stats, whole_controller=controller_stats)
 
 
 @threadpool_limits.wrap(limits=1)
@@ -182,7 +188,7 @@ def simulate(horizon, config, progress=False):
     data = {key: np.asarray(value) for key, value in rows.items()}
     trace = plant.pressure_trace
     pressure = dict(t_s=trace[:,0], p1_mpa=trace[:,1]/1e6, p2_mpa=trace[:,2]/1e6)
-    metrics = _metrics(data, pressure, config, horizon, failure)
+    metrics = _metrics(data, pressure, config, horizon, failure, logs)
     metadata = dict(config, horizon=horizon, physical_parameters=params,
                     initial_state=initial_state, n_physical_states=5,
                     n_augmented_states=6, state_units=['mm','m/s','MPa','MPa','V'],
@@ -216,7 +222,8 @@ def save_results(results, folder):
     summary = dict(config=next(iter(results.values()))['config'] if results else {},
                    results={str(h): result['metrics'] for h,result in results.items()},
                    timing_definitions={
-                       'solver': 'OSQP solver_stats.solve_time for accepted QP attempts, summed per control step',
+                       'solver': 'OSQP solver_stats.solve_time of recorded QP attempts, summed per control step',
+                       'solver_attempt': 'OSQP native solve_time for each recorded QP attempt, including attempts not ultimately applied',
                        'cvxpy_call': 'wall time inside each cvxpy Problem.solve, summed per control step',
                        'whole_controller': 'wall time for linearization, QP, validation and any restoration',
                        'deadline': 'nominal sample period 1.0 ms; Linux desktop timing is illustrative, not RT-certified'},

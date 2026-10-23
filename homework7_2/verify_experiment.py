@@ -114,7 +114,7 @@ def _compare_metric(audit, case, metrics, name, expected, *, atol=1e-8):
                 case=case, detail={"reported": actual, "derived": expected})
 
 
-def _validate_summary(audit, case, metrics, data, trace, config):
+def _validate_summary(audit, case, metrics, data, trace, config, logs):
     t, x, u = data["t_s"], data["x_mm"], data["u_v"]
     p2 = trace["p2_mpa"]
     target = float(config["target_mm"])
@@ -144,6 +144,9 @@ def _validate_summary(audit, case, metrics, data, trace, config):
         _compare_metric(audit, case, metrics, name, expected)
     for key, values in (
         ("solver", data["solver_time_ms"][np.isin(data["status_code"], (1, 2))]),
+        ("solver_attempt", [diagnostic["backend_solve_time_ms"]
+                            for log in logs for diagnostic in log.get("qp_diagnostics", [])
+                            if diagnostic.get("backend_solve_time_ms") is not None]),
         ("cvxpy_call", data["cvxpy_wall_ms"][np.isin(data["status_code"], (1, 2))]),
         ("whole_controller", data["controller_wall_ms"][data["status_code"] > 0]),
     ):
@@ -457,7 +460,7 @@ def validate_outputs(output_dir=None, strict=False):
         else:
             audit.check("solver log is a list", False, case=case)
         if complete and all_finite:
-            _validate_summary(audit, case, metrics, data, trace, config)
+            _validate_summary(audit, case, metrics, data, trace, config, logs)
         if strict and case in (5, 20, 50) and complete and all_finite:
             _replay(audit, case, data, saved_cfg, dense_limit)
     report["passed"] = not report["errors"]

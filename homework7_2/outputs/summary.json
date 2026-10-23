@@ -85,7 +85,7 @@
     "physical_integrator": "Radau with hybrid friction events and dense pressure trace",
     "physical_rhs_sha256": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f",
     "physical_function_evaluations": 18703,
-    "simulation_wall_s": 10.23525684299966,
+    "simulation_wall_s": 10.980452341000046,
     "blas_threads": 1
   },
   "results": {
@@ -111,26 +111,34 @@
       "refinement_count": 2,
       "shifted_count": 8,
       "solver": {
-        "mean_ms": 0.5076890984848484,
-        "median_ms": 0.1460845,
-        "p95_ms": 1.3034436499999917,
-        "max_ms": 13.826763000000001,
+        "mean_ms": 0.5344485909090909,
+        "median_ms": 0.15032299999999998,
+        "p95_ms": 1.5925439999999973,
+        "max_ms": 14.196824,
         "samples": 132,
-        "over_1ms_fraction": 0.05303030303030303
+        "over_1ms_fraction": 0.06060606060606061
+      },
+      "solver_attempt": {
+        "mean_ms": 0.25858577627118645,
+        "median_ms": 0.077705,
+        "p95_ms": 0.5866685000000003,
+        "max_ms": 14.196824,
+        "samples": 295,
+        "over_1ms_fraction": 0.04406779661016949
       },
       "cvxpy_call": {
-        "mean_ms": 2.90412446241989,
-        "median_ms": 2.300390500749927,
-        "p95_ms": 4.764706450623629,
-        "max_ms": 15.548384999419795,
+        "mean_ms": 3.2643361893910807,
+        "median_ms": 2.7270864999309197,
+        "p95_ms": 5.180322250009794,
+        "max_ms": 16.275152999924103,
         "samples": 132,
         "over_1ms_fraction": 1.0
       },
       "whole_controller": {
-        "mean_ms": 65.59050656427904,
-        "median_ms": 30.77300399854721,
-        "p95_ms": 328.0599758487366,
-        "max_ms": 611.8597970016708,
+        "mean_ms": 70.31861689286042,
+        "median_ms": 32.07610700002306,
+        "p95_ms": 356.43534014993156,
+        "max_ms": 657.0503600000848,
         "samples": 140,
         "over_1ms_fraction": 1.0
       }
@@ -157,26 +165,34 @@
       "refinement_count": 1,
       "shifted_count": 9,
       "solver": {
-        "mean_ms": 0.4857407769784172,
-        "median_ms": 0.22610999999999998,
-        "p95_ms": 1.522278599999999,
-        "max_ms": 8.765070000000001,
+        "mean_ms": 0.5125766187050359,
+        "median_ms": 0.262717,
+        "p95_ms": 1.6022886999999988,
+        "max_ms": 8.160390000000001,
         "samples": 139,
         "over_1ms_fraction": 0.09352517985611511
       },
+      "solver_attempt": {
+        "mean_ms": 0.2567914,
+        "median_ms": 0.110984,
+        "p95_ms": 0.8908661500000002,
+        "max_ms": 8.087502,
+        "samples": 290,
+        "over_1ms_fraction": 0.041379310344827586
+      },
       "cvxpy_call": {
-        "mean_ms": 2.9509570000732146,
-        "median_ms": 2.527393000491429,
-        "p95_ms": 5.665576400861026,
-        "max_ms": 14.033545998245245,
+        "mean_ms": 3.3865592446048356,
+        "median_ms": 2.9532369999287766,
+        "p95_ms": 6.518108199998095,
+        "max_ms": 14.322761000016726,
         "samples": 139,
         "over_1ms_fraction": 1.0
       },
       "whole_controller": {
-        "mean_ms": 70.15116034290259,
-        "median_ms": 34.081086500009405,
-        "p95_ms": 462.70318759943564,
-        "max_ms": 632.6283709968266,
+        "mean_ms": 76.06477953570773,
+        "median_ms": 38.479600500068045,
+        "p95_ms": 507.69790125000844,
+        "max_ms": 664.7409180000068,
         "samples": 140,
         "over_1ms_fraction": 1.0
       }
@@ -203,26 +219,34 @@
       "refinement_count": 1,
       "shifted_count": 10,
       "solver": {
-        "mean_ms": 1.9932934532374096,
-        "median_ms": 0.431367,
-        "p95_ms": 9.338457699999989,
-        "max_ms": 34.74284,
+        "mean_ms": 2.1494373021582733,
+        "median_ms": 0.49987000000000004,
+        "p95_ms": 9.795890399999994,
+        "max_ms": 36.831705,
         "samples": 139,
-        "over_1ms_fraction": 0.19424460431654678
+        "over_1ms_fraction": 0.20863309352517986
+      },
+      "solver_attempt": {
+        "mean_ms": 1.0464313219178083,
+        "median_ms": 0.22750800000000004,
+        "p95_ms": 4.311839349999999,
+        "max_ms": 26.546582,
+        "samples": 292,
+        "over_1ms_fraction": 0.2054794520547945
       },
       "cvxpy_call": {
-        "mean_ms": 4.763792964466303,
-        "median_ms": 2.9307589975360315,
-        "p95_ms": 15.587351897193003,
-        "max_ms": 39.72457400232088,
+        "mean_ms": 5.534912237385306,
+        "median_ms": 3.639252999960263,
+        "p95_ms": 15.388886100004122,
+        "max_ms": 41.58357899973453,
         "samples": 139,
         "over_1ms_fraction": 1.0
       },
       "whole_controller": {
-        "mean_ms": 104.6139228001526,
-        "median_ms": 47.45813400222687,
-        "p95_ms": 698.3353016026739,
-        "max_ms": 814.3679540007724,
+        "mean_ms": 113.35045984999722,
+        "median_ms": 53.63362099990354,
+        "p95_ms": 740.585848549972,
+        "max_ms": 818.6710030001905,
         "samples": 140,
         "over_1ms_fraction": 1.0
       }
@@ -249,26 +273,34 @@
       "refinement_count": 1,
       "shifted_count": 18,
       "solver": {
-        "mean_ms": 5.25446,
-        "median_ms": 0.692351,
-        "p95_ms": 24.462716200000003,
-        "max_ms": 146.72996,
+        "mean_ms": 5.63633,
+        "median_ms": 0.7974209999999999,
+        "p95_ms": 25.8616063,
+        "max_ms": 155.618598,
         "samples": 139,
-        "over_1ms_fraction": 0.34532374100719426
+        "over_1ms_fraction": 0.3669064748201439
+      },
+      "solver_attempt": {
+        "mean_ms": 2.6690172433333337,
+        "median_ms": 0.366919,
+        "p95_ms": 9.891355900000006,
+        "max_ms": 111.07367699999999,
+        "samples": 300,
+        "over_1ms_fraction": 0.2833333333333333
       },
       "cvxpy_call": {
-        "mean_ms": 8.126746597161715,
-        "median_ms": 3.316450005513616,
-        "p95_ms": 28.13459190037974,
-        "max_ms": 151.3522249988455,
+        "mean_ms": 9.051166489207521,
+        "median_ms": 4.052055000101973,
+        "p95_ms": 30.752221699981416,
+        "max_ms": 160.07721699998,
         "samples": 139,
         "over_1ms_fraction": 1.0
       },
       "whole_controller": {
-        "mean_ms": 164.2692721570711,
-        "median_ms": 57.17347000063455,
-        "p95_ms": 848.1249294474762,
-        "max_ms": 973.9895230013644,
+        "mean_ms": 178.10948650000486,
+        "median_ms": 64.54789800000071,
+        "p95_ms": 896.3202953000969,
+        "max_ms": 963.2335950000197,
         "samples": 140,
         "over_1ms_fraction": 1.0
       }
@@ -295,26 +327,34 @@
       "refinement_count": 1,
       "shifted_count": 26,
       "solver": {
-        "mean_ms": 17.14010804316547,
-        "median_ms": 1.450333,
-        "p95_ms": 80.61981719999997,
-        "max_ms": 326.88169300000004,
+        "mean_ms": 17.621733194244605,
+        "median_ms": 1.573502,
+        "p95_ms": 82.69660789999998,
+        "max_ms": 324.51251,
         "samples": 139,
         "over_1ms_fraction": 1.0
       },
+      "solver_attempt": {
+        "mean_ms": 9.259837986928103,
+        "median_ms": 0.788525,
+        "p95_ms": 31.2845205,
+        "max_ms": 342.47061199999996,
+        "samples": 306,
+        "over_1ms_fraction": 0.4019607843137255
+      },
       "cvxpy_call": {
-        "mean_ms": 20.44742896424991,
-        "median_ms": 4.285508002794813,
-        "p95_ms": 85.43434489620266,
-        "max_ms": 331.99621999665396,
+        "mean_ms": 21.253838784165552,
+        "median_ms": 4.8027289997207845,
+        "p95_ms": 88.17105739992711,
+        "max_ms": 329.8117260001163,
         "samples": 139,
         "over_1ms_fraction": 1.0
       },
       "whole_controller": {
-        "mean_ms": 278.12585135707195,
-        "median_ms": 75.75174449993938,
-        "p95_ms": 1152.337834701029,
-        "max_ms": 1391.8411490012659,
+        "mean_ms": 291.2121187071501,
+        "median_ms": 82.15261800000917,
+        "p95_ms": 1151.9290642999745,
+        "max_ms": 1617.6404790001015,
         "samples": 140,
         "over_1ms_fraction": 1.0
       }
@@ -341,26 +381,34 @@
       "refinement_count": 3,
       "shifted_count": 30,
       "solver": {
-        "mean_ms": 41.96785935766423,
-        "median_ms": 2.621975,
-        "p95_ms": 172.41031819999995,
-        "max_ms": 628.330955,
+        "mean_ms": 46.57507322627737,
+        "median_ms": 2.842013,
+        "p95_ms": 191.30444599999967,
+        "max_ms": 736.5836630000001,
         "samples": 137,
         "over_1ms_fraction": 1.0
       },
+      "solver_attempt": {
+        "mean_ms": 22.14157852698413,
+        "median_ms": 1.6715980000000001,
+        "p95_ms": 78.23220180000003,
+        "max_ms": 563.3948980000001,
+        "samples": 315,
+        "over_1ms_fraction": 0.9682539682539683
+      },
       "cvxpy_call": {
-        "mean_ms": 46.140840328379234,
-        "median_ms": 6.622655000683153,
-        "p95_ms": 178.12933439927286,
-        "max_ms": 635.7797620003112,
+        "mean_ms": 50.970546781011755,
+        "median_ms": 6.7636069998116,
+        "p95_ms": 199.13597799982168,
+        "max_ms": 742.7727160002178,
         "samples": 137,
         "over_1ms_fraction": 1.0
       },
       "whole_controller": {
-        "mean_ms": 396.02263782864094,
-        "median_ms": 95.81212850207521,
-        "p95_ms": 1438.4004547013317,
-        "max_ms": 1843.1018299997959,
+        "mean_ms": 455.3104101285547,
+        "median_ms": 102.11101649997545,
+        "p95_ms": 1754.2205452500748,
+        "max_ms": 2268.637280000121,
         "samples": 140,
         "over_1ms_fraction": 1.0
       }
@@ -387,33 +435,42 @@
       "refinement_count": 2,
       "shifted_count": 37,
       "solver": {
-        "mean_ms": 110.47523872992701,
-        "median_ms": 3.9806280000000003,
-        "p95_ms": 513.2391485999997,
-        "max_ms": 670.11501,
+        "mean_ms": 116.31658806569341,
+        "median_ms": 4.349226999999999,
+        "p95_ms": 525.2366799999999,
+        "max_ms": 721.506919,
         "samples": 137,
         "over_1ms_fraction": 1.0
       },
+      "solver_attempt": {
+        "mean_ms": 52.257527548589344,
+        "median_ms": 2.3737179999999998,
+        "p95_ms": 199.50510379999997,
+        "max_ms": 573.759788,
+        "samples": 319,
+        "over_1ms_fraction": 1.0
+      },
       "cvxpy_call": {
-        "mean_ms": 114.76273927739358,
-        "median_ms": 7.556728000054136,
-        "p95_ms": 519.3291028008385,
-        "max_ms": 676.591177998489,
+        "mean_ms": 120.93391535766712,
+        "median_ms": 8.23456500006614,
+        "p95_ms": 531.7383491998497,
+        "max_ms": 728.5499519998666,
         "samples": 137,
         "over_1ms_fraction": 1.0
       },
       "whole_controller": {
-        "mean_ms": 579.8310983641776,
-        "median_ms": 110.0813590001053,
-        "p95_ms": 1895.472539847651,
-        "max_ms": 2115.5808020012046,
+        "mean_ms": 626.9489163785726,
+        "median_ms": 119.54405400001633,
+        "p95_ms": 2028.1904049999298,
+        "max_ms": 2354.536401000132,
         "samples": 140,
         "over_1ms_fraction": 1.0
       }
     }
   },
   "timing_definitions": {
-    "solver": "OSQP solver_stats.solve_time for accepted QP attempts, summed per control step",
+    "solver": "OSQP solver_stats.solve_time of recorded QP attempts, summed per control step",
+    "solver_attempt": "OSQP native solve_time for each recorded QP attempt, including attempts not ultimately applied",
     "cvxpy_call": "wall time inside each cvxpy Problem.solve, summed per control step",
     "whole_controller": "wall time for linearization, QP, validation and any restoration",
     "deadline": "nominal sample period 1.0 ms; Linux desktop timing is illustrative, not RT-certified"

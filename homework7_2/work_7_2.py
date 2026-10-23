@@ -18,12 +18,13 @@ def _fmt(value, decimals=3):
 
 
 def print_table(results):
-    print('\n预测时域 | 超调 % | P2 峰值 MPa | OSQP 均值 ms | CVXPY 均值 ms | 控制中位 ms | 控制超时 % | 恢复/改进次数 | 状态')
-    print('-'*132)
+    print('\n预测时域 | 超调 % | P2 峰值 MPa | 单次QP中位 ms | 周期QP均值 ms | CVXPY 均值 ms | 控制中位 ms | 控制超时 % | 恢复/改进次数 | 状态')
+    print('-'*153)
     for n, result in results.items():
         metric = result['metrics']
         print(f'{n:>8d} | {_fmt(metric["overshoot_pct"]):>6} | '
               f'{_fmt(metric["peak_pressure_mpa"]):>12} | '
+              f'{_fmt(metric["solver_attempt"]["median_ms"]):>13} | '
               f'{_fmt(metric["solver"]["mean_ms"]):>12} | '
               f'{_fmt(metric["cvxpy_call"]["mean_ms"]):>13} | '
               f'{_fmt(metric["whole_controller"]["median_ms"]):>11} | '
@@ -59,7 +60,8 @@ def main():
         from plotting import plot_results
         summary_rows = [dict(horizon=n, **dict(
             peak_pressure_mpa=result['metrics']['peak_pressure_mpa'],
-            solver_mean_ms=result['metrics']['solver']['mean_ms'],
+            solver_attempt_median_ms=result['metrics']['solver_attempt']['median_ms'],
+            solver_attempt_mean_ms=result['metrics']['solver_attempt']['mean_ms'],
             overshoot_pct=result['metrics']['overshoot_pct'],
             status=result['metrics']['status']))
             for n, result in results.items()]

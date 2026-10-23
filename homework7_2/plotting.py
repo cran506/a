@@ -81,7 +81,8 @@ def plot_results(results, summary_rows, config, output_path):
     optionally ``pressure_t_s`` (dense pressure times) and ``failure_time_s``.
     A failed run remains a partial trace with an explicit terminal marker.
     ``summary_rows`` contain ``horizon``, ``peak_pressure_mpa``,
-    ``solver_mean_ms``, ``overshoot_pct`` and ``status``.
+    ``solver_attempt_median_ms``, ``solver_attempt_mean_ms``,
+    ``overshoot_pct`` and ``status``.
     """
     rows = {int(item.get("horizon", item.get("N"))): item for item in summary_rows}
     if not rows:
@@ -141,20 +142,29 @@ def plot_results(results, summary_rows, config, output_path):
                      color="#e94e63", alpha=.09, zorder=0)
 
         horizons = np.array(sorted(rows), dtype=float)
-        solver = np.array([_as_float(rows[int(n)].get("solver_mean_ms")) for n in horizons])
+        solver = np.array([_as_float(rows[int(n)].get("solver_attempt_median_ms"))
+                           for n in horizons])
+        solver_mean = np.array([_as_float(rows[int(n)].get("solver_attempt_mean_ms"))
+                                for n in horizons])
         pressure = np.array([_as_float(rows[int(n)].get("peak_pressure_mpa")) for n in horizons])
         finite_solver, finite_pressure = np.isfinite(solver), np.isfinite(pressure)
         if finite_solver.any():
             ax_trade.plot(horizons[finite_solver], solver[finite_solver], color="#f07800",
-                          marker="s", markersize=5, lw=2., label="QP 平均求解时间")
-            positive = solver[finite_solver & (solver > 0.)]
+                          marker="s", markersize=5, lw=2., label="单次 QP 求解时间中位数")
+            finite_mean = np.isfinite(solver_mean)
+            if finite_mean.any():
+                ax_trade.plot(horizons[finite_mean], solver_mean[finite_mean],
+                              color="#e4a029", marker="^", ls="--", markersize=4,
+                              lw=1.5, label="单次 QP 求解时间均值")
+            plotted = np.r_[solver[finite_solver], solver_mean[finite_mean]]
+            positive = plotted[plotted > 0.]
             if len(positive) and np.max(positive)/np.min(positive) > 20.:
                 ax_trade.set_yscale("log")
-                ax_trade.set_ylim(max(0.1, np.min(positive)/2.), np.max(positive)*1.7)
+                ax_trade.set_ylim(np.min(positive)/2., np.max(positive)*1.7)
         ax_trade.axhline(ts_ms, color="#f07800", ls="--", lw=1.2,
                          label=f"{ts_ms:g} ms 采样周期")
         timing_unit = "ms，对数轴" if ax_trade.get_yscale() == "log" else "ms"
-        ax_trade.set_ylabel(f"QP 平均求解时间 ({timing_unit})", color="#d66a00")
+        ax_trade.set_ylabel(f"单次 QP 耗时 ({timing_unit})", color="#d66a00")
         ax_trade.tick_params(axis="y", labelcolor="#d66a00")
         pressure_axis = ax_trade.twinx()
         if finite_pressure.any():
@@ -196,14 +206,15 @@ def plot_results(results, summary_rows, config, output_path):
             axis.legend(loc="upper right", fontsize=8.7, framealpha=.95)
         ax_x.set_ylim(bottom=min(-2., ax_x.get_ylim()[0]))
         ax_u.set_ylim(-15., 15.)
-        ax_trade.set_title("(d) 预测时域、真实峰压与 QP 耗时", loc="left", fontsize=13, pad=8)
+        ax_trade.set_title("(d) 预测时域、真实峰压与单次 QP 耗时", loc="left", fontsize=13, pad=8)
         ax_trade.set_xlabel("预测时域步数 $N$")
         ax_trade.grid(True, ls=":", lw=.75, color="#b6bcc5", alpha=.6)
         ax_trade.set_axisbelow(True)
         fig.subplots_adjust(left=.073, right=.93, top=.925, bottom=.145, hspace=.28, wspace=.2)
         fig.text(.073, .065,
                  "电压、位移直接取闭环记录；压力使用积分器高密轨迹。× 表示该时域闭环提前终止。\n"
-                 "QP 均值仅计求解步骤；CVXPY 构图、线性化、非线性可行性验证与整体控制耗时须另看指标表。",
+                 "图 (d) 分别给出每次 QP 的中位数与均值；完整控制周期与 P95 耗时另见指标表。\n"
+                 "闭中位阀在制动后保压；参考示意的快速卸压需要不同的液压回路，本图未重置压力。",
                  va="top", fontsize=9.2, color="#4a5563", linespacing=1.5)
         try:
             fig.savefig(output, facecolor="white")
