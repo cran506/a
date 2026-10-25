@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-10-23T11:23:56.809781+00:00",
+  "created_utc": "2026-10-25T01:22:20.643550+00:00",
   "strict_replay": true,
   "passed": true,
   "checks": [
@@ -46,6 +46,14 @@
       "detail": {
         "saved": 50.0,
         "current": 50.0
+      }
+    },
+    {
+      "check": "shared configuration: plant_config_file",
+      "passed": true,
+      "detail": {
+        "saved": "teaching_plant_config.json",
+        "current": "teaching_plant_config.json"
       }
     },
     {
@@ -169,6 +177,46 @@
       }
     },
     {
+      "check": "shared configuration: terminal_velocity_factor",
+      "passed": true,
+      "detail": {
+        "saved": 10.0,
+        "current": 10.0
+      }
+    },
+    {
+      "check": "shared configuration: terminal_tail_weight0",
+      "passed": true,
+      "detail": {
+        "saved": 35.0,
+        "current": 35.0
+      }
+    },
+    {
+      "check": "shared configuration: terminal_tail_decay_s",
+      "passed": true,
+      "detail": {
+        "saved": 0.004,
+        "current": 0.004
+      }
+    },
+    {
+      "check": "shared configuration: terminal_stop_time_s",
+      "passed": true,
+      "detail": {
+        "saved": 0.008,
+        "current": 0.008
+      }
+    },
+    {
+      "check": "shared configuration: terminal_stop_smoothing_mm",
+      "passed": true,
+      "detail": {
+        "saved": 0.5,
+        "current": 0.5
+      }
+    },
+    {
       "check": "shared configuration: move_weight",
       "passed": true,
       "detail": {
@@ -203,7 +251,7 @@
     {
       "check": "same physical RHS source hash",
       "passed": true,
-      "detail": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f"
+      "detail": "73f177487c6e5d5cc3db5c1b6ef27d90d266a595e8df64b0ad4a3cfbdbb1f4e9"
     },
     {
       "check": "shared physical parameters match current model",
@@ -265,7 +313,7 @@
           "check": "dense trace covers complete control interval",
           "passed": true,
           "detail": {
-            "dense_points": 6566,
+            "dense_points": 5666,
             "control_points": 151
           }
         },
@@ -310,7 +358,7 @@
           "check": "true dense P2 <= 21 MPa",
           "passed": true,
           "detail": {
-            "peak_mpa": 20.653223528245885,
+            "peak_mpa": 20.40634403890021,
             "limit_mpa": 21.0
           }
         },
@@ -366,64 +414,64 @@
           "check": "summary.peak_position_mm",
           "passed": true,
           "detail": {
-            "reported": 52.64742041550005,
-            "derived": 52.64742041550005
+            "reported": 50.95965994066762,
+            "derived": 50.95965994066762
           }
         },
         {
           "check": "summary.peak_position_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.061,
-            "derived": 0.061
+            "reported": 0.063,
+            "derived": 0.063
           }
         },
         {
           "check": "summary.overshoot_pct",
           "passed": true,
           "detail": {
-            "reported": 5.294840831000101,
-            "derived": 5.294840831000101
+            "reported": 1.9193198813352412,
+            "derived": 1.9193198813352412
           }
         },
         {
           "check": "summary.first_target_sample_s",
           "passed": true,
           "detail": {
-            "reported": 0.056,
-            "derived": 0.056
+            "reported": 0.06,
+            "derived": 0.06
           }
         },
         {
           "check": "summary.final_error_mm",
           "passed": true,
           "detail": {
-            "reported": 0.014588559032191029,
-            "derived": 0.014588559032191029
+            "reported": -0.003396533322430173,
+            "derived": -0.003396533322430173
           }
         },
         {
           "check": "summary.peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.653223528245885,
-            "derived": 20.653223528245885
+            "reported": 20.40634403890021,
+            "derived": 20.40634403890021
           }
         },
         {
           "check": "summary.peak_pressure_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.09060496869181867,
-            "derived": 0.09060496869181867
+            "reported": 0.062320224953666216,
+            "derived": 0.062320224953666216
           }
         },
         {
           "check": "summary.sampled_peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.488256291185532,
-            "derived": 20.488256291185532
+            "reported": 20.361604270771437,
+            "derived": 20.361604270771437
           }
         },
         {
@@ -454,160 +502,160 @@
           "check": "summary.restoration_count",
           "passed": true,
           "detail": {
-            "reported": 6,
-            "derived": 6
+            "reported": 2,
+            "derived": 2
           }
         },
         {
           "check": "summary.shifted_count",
           "passed": true,
           "detail": {
-            "reported": 8,
-            "derived": 8
+            "reported": 4,
+            "derived": 4
           }
         },
         {
           "check": "summary.refinement_count",
           "passed": true,
           "detail": {
-            "reported": 2,
-            "derived": 2
+            "reported": 1,
+            "derived": 1
           }
         },
         {
           "check": "summary.solver.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 0.5344485909090909,
-            "derived": 0.5344485909090909
+            "reported": 0.22938446715328467,
+            "derived": 0.22938446715328467
           }
         },
         {
           "check": "summary.solver.median_ms",
           "passed": true,
           "detail": {
-            "reported": 0.15032299999999998,
-            "derived": 0.15032299999999998
+            "reported": 0.095336,
+            "derived": 0.095336
           }
         },
         {
           "check": "summary.solver.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 1.5925439999999973,
-            "derived": 1.5925439999999973
+            "reported": 0.6857931999999995,
+            "derived": 0.6857931999999995
           }
         },
         {
           "check": "summary.solver.max_ms",
           "passed": true,
           "detail": {
-            "reported": 14.196824,
-            "derived": 14.196824
+            "reported": 5.975853000000001,
+            "derived": 5.975853000000001
           }
         },
         {
           "check": "summary.solver.samples",
           "passed": true,
           "detail": {
-            "reported": 132,
-            "derived": 132
+            "reported": 137,
+            "derived": 137
           }
         },
         {
           "check": "summary.solver.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.06060606060606061,
-            "derived": 0.06060606060606061
+            "reported": 0.014598540145985401,
+            "derived": 0.014598540145985401
           }
         },
         {
           "check": "summary.solver_attempt.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 0.25858577627118645,
-            "derived": 0.25858577627118645
+            "reported": 0.1205435798611111,
+            "derived": 0.1205435798611111
           }
         },
         {
           "check": "summary.solver_attempt.median_ms",
           "passed": true,
           "detail": {
-            "reported": 0.077705,
-            "derived": 0.077705
+            "reported": 0.0459585,
+            "derived": 0.0459585
           }
         },
         {
           "check": "summary.solver_attempt.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 0.5866685000000003,
-            "derived": 0.5866685000000003
+            "reported": 0.361943299999999,
+            "derived": 0.361943299999999
           }
         },
         {
           "check": "summary.solver_attempt.max_ms",
           "passed": true,
           "detail": {
-            "reported": 14.196824,
-            "derived": 14.196824
+            "reported": 3.792063,
+            "derived": 3.792063
           }
         },
         {
           "check": "summary.solver_attempt.samples",
           "passed": true,
           "detail": {
-            "reported": 295,
-            "derived": 295
+            "reported": 288,
+            "derived": 288
           }
         },
         {
           "check": "summary.solver_attempt.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.04406779661016949,
-            "derived": 0.04406779661016949
+            "reported": 0.010416666666666666,
+            "derived": 0.010416666666666666
           }
         },
         {
           "check": "summary.cvxpy_call.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 3.2643361893910807,
-            "derived": 3.2643361893910807
+            "reported": 2.822310978102155,
+            "derived": 2.822310978102155
           }
         },
         {
           "check": "summary.cvxpy_call.median_ms",
           "passed": true,
           "detail": {
-            "reported": 2.7270864999309197,
-            "derived": 2.7270864999309197
+            "reported": 2.5582939999821974,
+            "derived": 2.5582939999821974
           }
         },
         {
           "check": "summary.cvxpy_call.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 5.180322250009794,
-            "derived": 5.180322250009794
+            "reported": 3.791460000002178,
+            "derived": 3.791460000002178
           }
         },
         {
           "check": "summary.cvxpy_call.max_ms",
           "passed": true,
           "detail": {
-            "reported": 16.275152999924103,
-            "derived": 16.275152999924103
+            "reported": 11.091131000000587,
+            "derived": 11.091131000000587
           }
         },
         {
           "check": "summary.cvxpy_call.samples",
           "passed": true,
           "detail": {
-            "reported": 132,
-            "derived": 132
+            "reported": 137,
+            "derived": 137
           }
         },
         {
@@ -622,32 +670,32 @@
           "check": "summary.whole_controller.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 70.31861689286042,
-            "derived": 70.31861689286042
+            "reported": 55.98751602142755,
+            "derived": 55.98751602142755
           }
         },
         {
           "check": "summary.whole_controller.median_ms",
           "passed": true,
           "detail": {
-            "reported": 32.07610700002306,
-            "derived": 32.07610700002306
+            "reported": 24.718733999989695,
+            "derived": 24.718733999989695
           }
         },
         {
           "check": "summary.whole_controller.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 356.43534014993156,
-            "derived": 356.43534014993156
+            "reported": 116.52010804999202,
+            "derived": 116.52010804999202
           }
         },
         {
           "check": "summary.whole_controller.max_ms",
           "passed": true,
           "detail": {
-            "reported": 657.0503600000848,
-            "derived": 657.0503600000848
+            "reported": 816.3177849999954,
+            "derived": 816.3177849999954
           }
         },
         {
@@ -671,11 +719,11 @@
           "passed": true,
           "detail": {
             "max_abs": [
-              7.735349541349024e-06,
-              2.151868931432599e-06,
-              6.738754107415978e-05,
-              4.279919131988663e-05,
-              3.024292460906963e-08
+              4.3557763973467445e-07,
+              7.887861527963377e-08,
+              4.349774910927806e-06,
+              7.141403600030571e-06,
+              4.347926463310614e-09
             ],
             "tolerance": [
               0.05,
@@ -690,24 +738,24 @@
           "check": "tight-tolerance replay dense P2 <= safety limit",
           "passed": true,
           "detail": {
-            "peak_mpa": 20.65322567925867,
+            "peak_mpa": 20.406344909333637,
             "limit_mpa": 21.0
           }
         }
       ],
-      "observed_dense_peak_p2_mpa": 20.653223528245885,
-      "max_logged_predicted_p2_mpa": 20.48825329153466,
+      "observed_dense_peak_p2_mpa": 20.40634403890021,
+      "max_logged_predicted_p2_mpa": 20.499915540731564,
       "strict_replay": {
         "relative_tolerance": 1e-08,
         "pressure_subdivisions": 64,
         "max_abs_state_deviation": {
-          "x_mm": 7.735349541349024e-06,
-          "velocity_m_s": 2.151868931432599e-06,
-          "p1_mpa": 6.738754107415978e-05,
-          "p2_mpa": 4.279919131988663e-05,
-          "valve_v": 3.024292460906963e-08
+          "x_mm": 4.3557763973467445e-07,
+          "velocity_m_s": 7.887861527963377e-08,
+          "p1_mpa": 4.349774910927806e-06,
+          "p2_mpa": 7.141403600030571e-06,
+          "valve_v": 4.347926463310614e-09
         },
-        "dense_peak_p2_mpa": 20.65322567925867,
+        "dense_peak_p2_mpa": 20.406344909333637,
         "end_time_s": 0.1500000000000001
       }
     },
@@ -748,7 +796,7 @@
           "check": "dense trace covers complete control interval",
           "passed": true,
           "detail": {
-            "dense_points": 5709,
+            "dense_points": 5790,
             "control_points": 151
           }
         },
@@ -797,7 +845,7 @@
           "check": "true dense P2 <= 21 MPa",
           "passed": true,
           "detail": {
-            "peak_mpa": 19.901984014080448,
+            "peak_mpa": 20.112728473821278,
             "limit_mpa": 21.0
           }
         },
@@ -853,64 +901,64 @@
           "check": "summary.peak_position_mm",
           "passed": true,
           "detail": {
-            "reported": 50.23291205451899,
-            "derived": 50.23291205451899
+            "reported": 50.232458877277686,
+            "derived": 50.232458877277686
           }
         },
         {
           "check": "summary.peak_position_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.059000000000000004,
-            "derived": 0.059000000000000004
+            "reported": 0.068,
+            "derived": 0.068
           }
         },
         {
           "check": "summary.overshoot_pct",
           "passed": true,
           "detail": {
-            "reported": 0.46582410903798177,
-            "derived": 0.46582410903798177
+            "reported": 0.46491775455537265,
+            "derived": 0.46491775455537265
           }
         },
         {
           "check": "summary.first_target_sample_s",
           "passed": true,
           "detail": {
-            "reported": 0.058,
-            "derived": 0.058
+            "reported": 0.061,
+            "derived": 0.061
           }
         },
         {
           "check": "summary.final_error_mm",
           "passed": true,
           "detail": {
-            "reported": -0.015110701707264695,
-            "derived": -0.015110701707264695
+            "reported": 0.012179012741455608,
+            "derived": 0.012179012741455608
           }
         },
         {
           "check": "summary.peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 19.901984014080448,
-            "derived": 19.901984014080448
+            "reported": 20.112728473821278,
+            "derived": 20.112728473821278
           }
         },
         {
           "check": "summary.peak_pressure_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.057965835837918575,
-            "derived": 0.057965835837918575
+            "reported": 0.06056004054481737,
+            "derived": 0.06056004054481737
           }
         },
         {
           "check": "summary.sampled_peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 19.901264550103942,
-            "derived": 19.901264550103942
+            "reported": 19.891239631070526,
+            "derived": 19.891239631070526
           }
         },
         {
@@ -949,152 +997,152 @@
           "check": "summary.shifted_count",
           "passed": true,
           "detail": {
-            "reported": 9,
-            "derived": 9
+            "reported": 6,
+            "derived": 6
           }
         },
         {
           "check": "summary.refinement_count",
           "passed": true,
           "detail": {
-            "reported": 1,
-            "derived": 1
+            "reported": 2,
+            "derived": 2
           }
         },
         {
           "check": "summary.solver.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 0.5125766187050359,
-            "derived": 0.5125766187050359
+            "reported": 0.9477670579710145,
+            "derived": 0.9477670579710145
           }
         },
         {
           "check": "summary.solver.median_ms",
           "passed": true,
           "detail": {
-            "reported": 0.262717,
-            "derived": 0.262717
+            "reported": 0.254558,
+            "derived": 0.254558
           }
         },
         {
           "check": "summary.solver.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 1.6022886999999988,
-            "derived": 1.6022886999999988
+            "reported": 4.3527174500000045,
+            "derived": 4.3527174500000045
           }
         },
         {
           "check": "summary.solver.max_ms",
           "passed": true,
           "detail": {
-            "reported": 8.160390000000001,
-            "derived": 8.160390000000001
+            "reported": 21.436214,
+            "derived": 21.436214
           }
         },
         {
           "check": "summary.solver.samples",
           "passed": true,
           "detail": {
-            "reported": 139,
-            "derived": 139
+            "reported": 138,
+            "derived": 138
           }
         },
         {
           "check": "summary.solver.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.09352517985611511,
-            "derived": 0.09352517985611511
+            "reported": 0.12318840579710146,
+            "derived": 0.12318840579710146
           }
         },
         {
           "check": "summary.solver_attempt.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 0.2567914,
-            "derived": 0.2567914
+            "reported": 0.5970705937499999,
+            "derived": 0.5970705937499999
           }
         },
         {
           "check": "summary.solver_attempt.median_ms",
           "passed": true,
           "detail": {
-            "reported": 0.110984,
-            "derived": 0.110984
+            "reported": 0.1093495,
+            "derived": 0.1093495
           }
         },
         {
           "check": "summary.solver_attempt.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 0.8908661500000002,
-            "derived": 0.8908661500000002
+            "reported": 1.508391399999993,
+            "derived": 1.508391399999993
           }
         },
         {
           "check": "summary.solver_attempt.max_ms",
           "passed": true,
           "detail": {
-            "reported": 8.087502,
-            "derived": 8.087502
+            "reported": 37.487325999999996,
+            "derived": 37.487325999999996
           }
         },
         {
           "check": "summary.solver_attempt.samples",
           "passed": true,
           "detail": {
-            "reported": 290,
-            "derived": 290
+            "reported": 288,
+            "derived": 288
           }
         },
         {
           "check": "summary.solver_attempt.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.041379310344827586,
-            "derived": 0.041379310344827586
+            "reported": 0.0763888888888889,
+            "derived": 0.0763888888888889
           }
         },
         {
           "check": "summary.cvxpy_call.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 3.3865592446048356,
-            "derived": 3.3865592446048356
+            "reported": 3.7594974420280236,
+            "derived": 3.7594974420280236
           }
         },
         {
           "check": "summary.cvxpy_call.median_ms",
           "passed": true,
           "detail": {
-            "reported": 2.9532369999287766,
-            "derived": 2.9532369999287766
+            "reported": 2.904902000011589,
+            "derived": 2.904902000011589
           }
         },
         {
           "check": "summary.cvxpy_call.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 6.518108199998095,
-            "derived": 6.518108199998095
+            "reported": 8.237393500006368,
+            "derived": 8.237393500006368
           }
         },
         {
           "check": "summary.cvxpy_call.max_ms",
           "passed": true,
           "detail": {
-            "reported": 14.322761000016726,
-            "derived": 14.322761000016726
+            "reported": 24.188951999974506,
+            "derived": 24.188951999974506
           }
         },
         {
           "check": "summary.cvxpy_call.samples",
           "passed": true,
           "detail": {
-            "reported": 139,
-            "derived": 139
+            "reported": 138,
+            "derived": 138
           }
         },
         {
@@ -1109,32 +1157,32 @@
           "check": "summary.whole_controller.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 76.06477953570773,
-            "derived": 76.06477953570773
+            "reported": 93.05708326428633,
+            "derived": 93.05708326428633
           }
         },
         {
           "check": "summary.whole_controller.median_ms",
           "passed": true,
           "detail": {
-            "reported": 38.479600500068045,
-            "derived": 38.479600500068045
+            "reported": 41.89950450000879,
+            "derived": 41.89950450000879
           }
         },
         {
           "check": "summary.whole_controller.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 507.69790125000844,
-            "derived": 507.69790125000844
+            "reported": 562.5389624500182,
+            "derived": 562.5389624500182
           }
         },
         {
           "check": "summary.whole_controller.max_ms",
           "passed": true,
           "detail": {
-            "reported": 664.7409180000068,
-            "derived": 664.7409180000068
+            "reported": 801.8352010000172,
+            "derived": 801.8352010000172
           }
         },
         {
@@ -1154,8 +1202,8 @@
           }
         }
       ],
-      "observed_dense_peak_p2_mpa": 19.901984014080448,
-      "max_logged_predicted_p2_mpa": 19.901225224547566
+      "observed_dense_peak_p2_mpa": 20.112728473821278,
+      "max_logged_predicted_p2_mpa": 19.89116079133551
     },
     "15": {
       "checks": [
@@ -1194,7 +1242,7 @@
           "check": "dense trace covers complete control interval",
           "passed": true,
           "detail": {
-            "dense_points": 5717,
+            "dense_points": 5771,
             "control_points": 151
           }
         },
@@ -1243,7 +1291,7 @@
           "check": "true dense P2 <= 21 MPa",
           "passed": true,
           "detail": {
-            "peak_mpa": 20.50411249758791,
+            "peak_mpa": 20.438422533862283,
             "limit_mpa": 21.0
           }
         },
@@ -1299,12 +1347,28 @@
           "check": "summary.peak_position_mm",
           "passed": true,
           "detail": {
-            "reported": 50.56121645946997,
-            "derived": 50.56121645946997
+            "reported": 50.573984404764225,
+            "derived": 50.573984404764225
           }
         },
         {
           "check": "summary.peak_position_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.062,
+            "derived": 0.062
+          }
+        },
+        {
+          "check": "summary.overshoot_pct",
+          "passed": true,
+          "detail": {
+            "reported": 1.1479688095284502,
+            "derived": 1.1479688095284502
+          }
+        },
+        {
+          "check": "summary.first_target_sample_s",
           "passed": true,
           "detail": {
             "reported": 0.06,
@@ -1312,51 +1376,35 @@
           }
         },
         {
-          "check": "summary.overshoot_pct",
-          "passed": true,
-          "detail": {
-            "reported": 1.1224329189399356,
-            "derived": 1.1224329189399356
-          }
-        },
-        {
-          "check": "summary.first_target_sample_s",
-          "passed": true,
-          "detail": {
-            "reported": 0.058,
-            "derived": 0.058
-          }
-        },
-        {
           "check": "summary.final_error_mm",
           "passed": true,
           "detail": {
-            "reported": -0.014930514442539788,
-            "derived": -0.014930514442539788
+            "reported": -0.00018437932362758147,
+            "derived": -0.00018437932362758147
           }
         },
         {
           "check": "summary.peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.50411249758791,
-            "derived": 20.50411249758791
+            "reported": 20.438422533862283,
+            "derived": 20.438422533862283
           }
         },
         {
           "check": "summary.peak_pressure_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.060045206357600384,
-            "derived": 0.060045206357600384
+            "reported": 0.058974380352009324,
+            "derived": 0.058974380352009324
           }
         },
         {
           "check": "summary.sampled_peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.500036180164948,
-            "derived": 20.500036180164948
+            "reported": 20.437028873755313,
+            "derived": 20.437028873755313
           }
         },
         {
@@ -1395,8 +1443,8 @@
           "check": "summary.shifted_count",
           "passed": true,
           "detail": {
-            "reported": 10,
-            "derived": 10
+            "reported": 12,
+            "derived": 12
           }
         },
         {
@@ -1411,32 +1459,32 @@
           "check": "summary.solver.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 2.1494373021582733,
-            "derived": 2.1494373021582733
+            "reported": 5.507849690647482,
+            "derived": 5.507849690647482
           }
         },
         {
           "check": "summary.solver.median_ms",
           "passed": true,
           "detail": {
-            "reported": 0.49987000000000004,
-            "derived": 0.49987000000000004
+            "reported": 0.51795,
+            "derived": 0.51795
           }
         },
         {
           "check": "summary.solver.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 9.795890399999994,
-            "derived": 9.795890399999994
+            "reported": 24.289904099999994,
+            "derived": 24.289904099999994
           }
         },
         {
           "check": "summary.solver.max_ms",
           "passed": true,
           "detail": {
-            "reported": 36.831705,
-            "derived": 36.831705
+            "reported": 95.800838,
+            "derived": 95.800838
           }
         },
         {
@@ -1451,88 +1499,88 @@
           "check": "summary.solver.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.20863309352517986,
-            "derived": 0.20863309352517986
+            "reported": 0.2517985611510791,
+            "derived": 0.2517985611510791
           }
         },
         {
           "check": "summary.solver_attempt.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 1.0464313219178083,
-            "derived": 1.0464313219178083
+            "reported": 2.7303884548611115,
+            "derived": 2.7303884548611115
           }
         },
         {
           "check": "summary.solver_attempt.median_ms",
           "passed": true,
           "detail": {
-            "reported": 0.22750800000000004,
-            "derived": 0.22750800000000004
+            "reported": 0.2370375,
+            "derived": 0.2370375
           }
         },
         {
           "check": "summary.solver_attempt.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 4.311839349999999,
-            "derived": 4.311839349999999
+            "reported": 11.329762199999998,
+            "derived": 11.329762199999998
           }
         },
         {
           "check": "summary.solver_attempt.max_ms",
           "passed": true,
           "detail": {
-            "reported": 26.546582,
-            "derived": 26.546582
+            "reported": 95.800838,
+            "derived": 95.800838
           }
         },
         {
           "check": "summary.solver_attempt.samples",
           "passed": true,
           "detail": {
-            "reported": 292,
-            "derived": 292
+            "reported": 288,
+            "derived": 288
           }
         },
         {
           "check": "summary.solver_attempt.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.2054794520547945,
-            "derived": 0.2054794520547945
+            "reported": 0.2361111111111111,
+            "derived": 0.2361111111111111
           }
         },
         {
           "check": "summary.cvxpy_call.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 5.534912237385306,
-            "derived": 5.534912237385306
+            "reported": 8.550138705034895,
+            "derived": 8.550138705034895
           }
         },
         {
           "check": "summary.cvxpy_call.median_ms",
           "passed": true,
           "detail": {
-            "reported": 3.639252999960263,
-            "derived": 3.639252999960263
+            "reported": 3.36098299996479,
+            "derived": 3.36098299996479
           }
         },
         {
           "check": "summary.cvxpy_call.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 15.388886100004122,
-            "derived": 15.388886100004122
+            "reported": 29.15142419998631,
+            "derived": 29.15142419998631
           }
         },
         {
           "check": "summary.cvxpy_call.max_ms",
           "passed": true,
           "detail": {
-            "reported": 41.58357899973453,
-            "derived": 41.58357899973453
+            "reported": 100.05469200001471,
+            "derived": 100.05469200001471
           }
         },
         {
@@ -1555,32 +1603,32 @@
           "check": "summary.whole_controller.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 113.35045984999722,
-            "derived": 113.35045984999722
+            "reported": 163.4738791357147,
+            "derived": 163.4738791357147
           }
         },
         {
           "check": "summary.whole_controller.median_ms",
           "passed": true,
           "detail": {
-            "reported": 53.63362099990354,
-            "derived": 53.63362099990354
+            "reported": 71.8936650000046,
+            "derived": 71.8936650000046
           }
         },
         {
           "check": "summary.whole_controller.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 740.585848549972,
-            "derived": 740.585848549972
+            "reported": 1049.2827840000002,
+            "derived": 1049.2827840000002
           }
         },
         {
           "check": "summary.whole_controller.max_ms",
           "passed": true,
           "detail": {
-            "reported": 818.6710030001905,
-            "derived": 818.6710030001905
+            "reported": 1145.8692369999994,
+            "derived": 1145.8692369999994
           }
         },
         {
@@ -1600,8 +1648,8 @@
           }
         }
       ],
-      "observed_dense_peak_p2_mpa": 20.50411249758791,
-      "max_logged_predicted_p2_mpa": 20.48301175071387
+      "observed_dense_peak_p2_mpa": 20.438422533862283,
+      "max_logged_predicted_p2_mpa": 20.483676412616244
     },
     "20": {
       "checks": [
@@ -1640,7 +1688,7 @@
           "check": "dense trace covers complete control interval",
           "passed": true,
           "detail": {
-            "dense_points": 5714,
+            "dense_points": 5909,
             "control_points": 151
           }
         },
@@ -1689,7 +1737,7 @@
           "check": "true dense P2 <= 21 MPa",
           "passed": true,
           "detail": {
-            "peak_mpa": 19.901983825380128,
+            "peak_mpa": 20.49414126066744,
             "limit_mpa": 21.0
           }
         },
@@ -1745,64 +1793,64 @@
           "check": "summary.peak_position_mm",
           "passed": true,
           "detail": {
-            "reported": 50.23296186790599,
-            "derived": 50.23296186790599
+            "reported": 50.30851951029321,
+            "derived": 50.30851951029321
           }
         },
         {
           "check": "summary.peak_position_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.059000000000000004,
-            "derived": 0.059000000000000004
+            "reported": 0.062,
+            "derived": 0.062
           }
         },
         {
           "check": "summary.overshoot_pct",
           "passed": true,
           "detail": {
-            "reported": 0.4659237358119839,
-            "derived": 0.4659237358119839
+            "reported": 0.617039020586418,
+            "derived": 0.617039020586418
           }
         },
         {
           "check": "summary.first_target_sample_s",
           "passed": true,
           "detail": {
-            "reported": 0.058,
-            "derived": 0.058
+            "reported": 0.061,
+            "derived": 0.061
           }
         },
         {
           "check": "summary.final_error_mm",
           "passed": true,
           "detail": {
-            "reported": -0.014419652198924382,
-            "derived": -0.014419652198924382
+            "reported": 0.002448078916927443,
+            "derived": 0.002448078916927443
           }
         },
         {
           "check": "summary.peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 19.901983825380128,
-            "derived": 19.901983825380128
+            "reported": 20.49414126066744,
+            "derived": 20.49414126066744
           }
         },
         {
           "check": "summary.peak_pressure_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.057965835803763244,
-            "derived": 0.057965835803763244
+            "reported": 0.06091922004014098,
+            "derived": 0.06091922004014098
           }
         },
         {
           "check": "summary.sampled_peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 19.90126435997201,
-            "derived": 19.90126435997201
+            "reported": 20.49309763966921,
+            "derived": 20.49309763966921
           }
         },
         {
@@ -1841,152 +1889,152 @@
           "check": "summary.shifted_count",
           "passed": true,
           "detail": {
-            "reported": 18,
-            "derived": 18
+            "reported": 11,
+            "derived": 11
           }
         },
         {
           "check": "summary.refinement_count",
           "passed": true,
           "detail": {
-            "reported": 1,
-            "derived": 1
+            "reported": 2,
+            "derived": 2
           }
         },
         {
           "check": "summary.solver.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 5.63633,
-            "derived": 5.63633
+            "reported": 8.053125942028986,
+            "derived": 8.053125942028986
           }
         },
         {
           "check": "summary.solver.median_ms",
           "passed": true,
           "detail": {
-            "reported": 0.7974209999999999,
-            "derived": 0.7974209999999999
+            "reported": 0.742294,
+            "derived": 0.742294
           }
         },
         {
           "check": "summary.solver.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 25.8616063,
-            "derived": 25.8616063
+            "reported": 41.544813250000004,
+            "derived": 41.544813250000004
           }
         },
         {
           "check": "summary.solver.max_ms",
           "passed": true,
           "detail": {
-            "reported": 155.618598,
-            "derived": 155.618598
+            "reported": 131.592136,
+            "derived": 131.592136
           }
         },
         {
           "check": "summary.solver.samples",
           "passed": true,
           "detail": {
-            "reported": 139,
-            "derived": 139
+            "reported": 138,
+            "derived": 138
           }
         },
         {
           "check": "summary.solver.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.3669064748201439,
-            "derived": 0.3669064748201439
+            "reported": 0.43478260869565216,
+            "derived": 0.43478260869565216
           }
         },
         {
           "check": "summary.solver_attempt.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 2.6690172433333337,
-            "derived": 2.6690172433333337
+            "reported": 4.049508395189004,
+            "derived": 4.049508395189004
           }
         },
         {
           "check": "summary.solver_attempt.median_ms",
           "passed": true,
           "detail": {
-            "reported": 0.366919,
-            "derived": 0.366919
+            "reported": 0.35637699999999994,
+            "derived": 0.35637699999999994
           }
         },
         {
           "check": "summary.solver_attempt.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 9.891355900000006,
-            "derived": 9.891355900000006
+            "reported": 13.1987245,
+            "derived": 13.1987245
           }
         },
         {
           "check": "summary.solver_attempt.max_ms",
           "passed": true,
           "detail": {
-            "reported": 111.07367699999999,
-            "derived": 111.07367699999999
+            "reported": 129.109196,
+            "derived": 129.109196
           }
         },
         {
           "check": "summary.solver_attempt.samples",
           "passed": true,
           "detail": {
-            "reported": 300,
-            "derived": 300
+            "reported": 291,
+            "derived": 291
           }
         },
         {
           "check": "summary.solver_attempt.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.2833333333333333,
-            "derived": 0.2833333333333333
+            "reported": 0.2920962199312715,
+            "derived": 0.2920962199312715
           }
         },
         {
           "check": "summary.cvxpy_call.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 9.051166489207521,
-            "derived": 9.051166489207521
+            "reported": 11.07110726087121,
+            "derived": 11.07110726087121
           }
         },
         {
           "check": "summary.cvxpy_call.median_ms",
           "passed": true,
           "detail": {
-            "reported": 4.052055000101973,
-            "derived": 4.052055000101973
+            "reported": 3.725471999970864,
+            "derived": 3.725471999970864
           }
         },
         {
           "check": "summary.cvxpy_call.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 30.752221699981416,
-            "derived": 30.752221699981416
+            "reported": 45.817688950013746,
+            "derived": 45.817688950013746
           }
         },
         {
           "check": "summary.cvxpy_call.max_ms",
           "passed": true,
           "detail": {
-            "reported": 160.07721699998,
-            "derived": 160.07721699998
+            "reported": 134.70700999999963,
+            "derived": 134.70700999999963
           }
         },
         {
           "check": "summary.cvxpy_call.samples",
           "passed": true,
           "detail": {
-            "reported": 139,
-            "derived": 139
+            "reported": 138,
+            "derived": 138
           }
         },
         {
@@ -2001,32 +2049,32 @@
           "check": "summary.whole_controller.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 178.10948650000486,
-            "derived": 178.10948650000486
+            "reported": 205.24712812857004,
+            "derived": 205.24712812857004
           }
         },
         {
           "check": "summary.whole_controller.median_ms",
           "passed": true,
           "detail": {
-            "reported": 64.54789800000071,
-            "derived": 64.54789800000071
+            "reported": 97.20886499999892,
+            "derived": 97.20886499999892
           }
         },
         {
           "check": "summary.whole_controller.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 896.3202953000969,
-            "derived": 896.3202953000969
+            "reported": 1183.87067484999,
+            "derived": 1183.87067484999
           }
         },
         {
           "check": "summary.whole_controller.max_ms",
           "passed": true,
           "detail": {
-            "reported": 963.2335950000197,
-            "derived": 963.2335950000197
+            "reported": 1283.59065799998,
+            "derived": 1283.59065799998
           }
         },
         {
@@ -2050,11 +2098,11 @@
           "passed": true,
           "detail": {
             "max_abs": [
-              8.814529337541899e-07,
-              4.4771494716287774e-07,
-              1.2157411227953219e-05,
-              8.457836159436738e-06,
-              8.58493647282188e-08
+              0.001883506145595959,
+              0.0005784481065515545,
+              0.019366633474708017,
+              0.0277132154805928,
+              3.6946934955928157e-09
             ],
             "tolerance": [
               0.05,
@@ -2069,24 +2117,24 @@
           "check": "tight-tolerance replay dense P2 <= safety limit",
           "passed": true,
           "detail": {
-            "peak_mpa": 19.901983843250015,
+            "peak_mpa": 20.49414122205455,
             "limit_mpa": 21.0
           }
         }
       ],
-      "observed_dense_peak_p2_mpa": 19.901983825380128,
-      "max_logged_predicted_p2_mpa": 20.16160321838032,
+      "observed_dense_peak_p2_mpa": 20.49414126066744,
+      "max_logged_predicted_p2_mpa": 20.49305136089999,
       "strict_replay": {
         "relative_tolerance": 1e-08,
         "pressure_subdivisions": 64,
         "max_abs_state_deviation": {
-          "x_mm": 8.814529337541899e-07,
-          "velocity_m_s": 4.4771494716287774e-07,
-          "p1_mpa": 1.2157411227953219e-05,
-          "p2_mpa": 8.457836159436738e-06,
-          "valve_v": 8.58493647282188e-08
+          "x_mm": 0.001883506145595959,
+          "velocity_m_s": 0.0005784481065515545,
+          "p1_mpa": 0.019366633474708017,
+          "p2_mpa": 0.0277132154805928,
+          "valve_v": 3.6946934955928157e-09
         },
-        "dense_peak_p2_mpa": 19.901983843250015,
+        "dense_peak_p2_mpa": 20.49414122205455,
         "end_time_s": 0.1500000000000001
       }
     },
@@ -2127,7 +2175,7 @@
           "check": "dense trace covers complete control interval",
           "passed": true,
           "detail": {
-            "dense_points": 5661,
+            "dense_points": 5856,
             "control_points": 151
           }
         },
@@ -2176,7 +2224,7 @@
           "check": "true dense P2 <= 21 MPa",
           "passed": true,
           "detail": {
-            "peak_mpa": 20.716837726147386,
+            "peak_mpa": 20.538051860559047,
             "limit_mpa": 21.0
           }
         },
@@ -2232,64 +2280,64 @@
           "check": "summary.peak_position_mm",
           "passed": true,
           "detail": {
-            "reported": 50.39768831060322,
-            "derived": 50.39768831060322
+            "reported": 50.115154686248154,
+            "derived": 50.115154686248154
           }
         },
         {
           "check": "summary.peak_position_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.06,
-            "derived": 0.06
+            "reported": 0.062,
+            "derived": 0.062
           }
         },
         {
           "check": "summary.overshoot_pct",
           "passed": true,
           "detail": {
-            "reported": 0.7953766212064437,
-            "derived": 0.7953766212064437
+            "reported": 0.23030937249630765,
+            "derived": 0.23030937249630765
           }
         },
         {
           "check": "summary.first_target_sample_s",
           "passed": true,
           "detail": {
-            "reported": 0.058,
-            "derived": 0.058
+            "reported": 0.062,
+            "derived": 0.062
           }
         },
         {
           "check": "summary.final_error_mm",
           "passed": true,
           "detail": {
-            "reported": -0.013308513486606444,
-            "derived": -0.013308513486606444
+            "reported": -0.013981541635779138,
+            "derived": -0.013981541635779138
           }
         },
         {
           "check": "summary.peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.716837726147386,
-            "derived": 20.716837726147386
+            "reported": 20.538051860559047,
+            "derived": 20.538051860559047
           }
         },
         {
           "check": "summary.peak_pressure_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.057516203682835894,
-            "derived": 0.057516203682835894
+            "reported": 0.06067425557488932,
+            "derived": 0.06067425557488932
           }
         },
         {
           "check": "summary.sampled_peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.497232420883634,
-            "derived": 20.497232420883634
+            "reported": 20.301712360250164,
+            "derived": 20.301712360250164
           }
         },
         {
@@ -2328,56 +2376,56 @@
           "check": "summary.shifted_count",
           "passed": true,
           "detail": {
-            "reported": 26,
-            "derived": 26
+            "reported": 20,
+            "derived": 20
           }
         },
         {
           "check": "summary.refinement_count",
           "passed": true,
           "detail": {
-            "reported": 1,
-            "derived": 1
+            "reported": 2,
+            "derived": 2
           }
         },
         {
           "check": "summary.solver.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 17.621733194244605,
-            "derived": 17.621733194244605
+            "reported": 29.033927499999997,
+            "derived": 29.033927499999997
           }
         },
         {
           "check": "summary.solver.median_ms",
           "passed": true,
           "detail": {
-            "reported": 1.573502,
-            "derived": 1.573502
+            "reported": 1.680938,
+            "derived": 1.680938
           }
         },
         {
           "check": "summary.solver.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 82.69660789999998,
-            "derived": 82.69660789999998
+            "reported": 168.0185068500001,
+            "derived": 168.0185068500001
           }
         },
         {
           "check": "summary.solver.max_ms",
           "passed": true,
           "detail": {
-            "reported": 324.51251,
-            "derived": 324.51251
+            "reported": 363.82636299999996,
+            "derived": 363.82636299999996
           }
         },
         {
           "check": "summary.solver.samples",
           "passed": true,
           "detail": {
-            "reported": 139,
-            "derived": 139
+            "reported": 138,
+            "derived": 138
           }
         },
         {
@@ -2392,88 +2440,88 @@
           "check": "summary.solver_attempt.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 9.259837986928103,
-            "derived": 9.259837986928103
+            "reported": 14.264932047297297,
+            "derived": 14.264932047297297
           }
         },
         {
           "check": "summary.solver_attempt.median_ms",
           "passed": true,
           "detail": {
-            "reported": 0.788525,
-            "derived": 0.788525
+            "reported": 0.8190200000000001,
+            "derived": 0.8190200000000001
           }
         },
         {
           "check": "summary.solver_attempt.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 31.2845205,
-            "derived": 31.2845205
+            "reported": 63.634696000000005,
+            "derived": 63.634696000000005
           }
         },
         {
           "check": "summary.solver_attempt.max_ms",
           "passed": true,
           "detail": {
-            "reported": 342.47061199999996,
-            "derived": 342.47061199999996
+            "reported": 280.222617,
+            "derived": 280.222617
           }
         },
         {
           "check": "summary.solver_attempt.samples",
           "passed": true,
           "detail": {
-            "reported": 306,
-            "derived": 306
+            "reported": 296,
+            "derived": 296
           }
         },
         {
           "check": "summary.solver_attempt.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.4019607843137255,
-            "derived": 0.4019607843137255
+            "reported": 0.3918918918918919,
+            "derived": 0.3918918918918919
           }
         },
         {
           "check": "summary.cvxpy_call.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 21.253838784165552,
-            "derived": 21.253838784165552
+            "reported": 32.65004088405866,
+            "derived": 32.65004088405866
           }
         },
         {
           "check": "summary.cvxpy_call.median_ms",
           "passed": true,
           "detail": {
-            "reported": 4.8027289997207845,
-            "derived": 4.8027289997207845
+            "reported": 5.116469499995446,
+            "derived": 5.116469499995446
           }
         },
         {
           "check": "summary.cvxpy_call.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 88.17105739992711,
-            "derived": 88.17105739992711
+            "reported": 172.94510020002474,
+            "derived": 172.94510020002474
           }
         },
         {
           "check": "summary.cvxpy_call.max_ms",
           "passed": true,
           "detail": {
-            "reported": 329.8117260001163,
-            "derived": 329.8117260001163
+            "reported": 368.81012099999566,
+            "derived": 368.81012099999566
           }
         },
         {
           "check": "summary.cvxpy_call.samples",
           "passed": true,
           "detail": {
-            "reported": 139,
-            "derived": 139
+            "reported": 138,
+            "derived": 138
           }
         },
         {
@@ -2488,32 +2536,32 @@
           "check": "summary.whole_controller.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 291.2121187071501,
-            "derived": 291.2121187071501
+            "reported": 387.5142505714269,
+            "derived": 387.5142505714269
           }
         },
         {
           "check": "summary.whole_controller.median_ms",
           "passed": true,
           "detail": {
-            "reported": 82.15261800000917,
-            "derived": 82.15261800000917
+            "reported": 99.36218050000889,
+            "derived": 99.36218050000889
           }
         },
         {
           "check": "summary.whole_controller.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 1151.9290642999745,
-            "derived": 1151.9290642999745
+            "reported": 1783.8844111000217,
+            "derived": 1783.8844111000217
           }
         },
         {
           "check": "summary.whole_controller.max_ms",
           "passed": true,
           "detail": {
-            "reported": 1617.6404790001015,
-            "derived": 1617.6404790001015
+            "reported": 2172.5421289999645,
+            "derived": 2172.5421289999645
           }
         },
         {
@@ -2533,8 +2581,8 @@
           }
         }
       ],
-      "observed_dense_peak_p2_mpa": 20.716837726147386,
-      "max_logged_predicted_p2_mpa": 20.497219448917463
+      "observed_dense_peak_p2_mpa": 20.538051860559047,
+      "max_logged_predicted_p2_mpa": 20.29655579190982
     },
     "40": {
       "checks": [
@@ -2573,7 +2621,7 @@
           "check": "dense trace covers complete control interval",
           "passed": true,
           "detail": {
-            "dense_points": 5753,
+            "dense_points": 5790,
             "control_points": 151
           }
         },
@@ -2622,7 +2670,7 @@
           "check": "true dense P2 <= 21 MPa",
           "passed": true,
           "detail": {
-            "peak_mpa": 20.59111183633131,
+            "peak_mpa": 20.66579627466948,
             "limit_mpa": 21.0
           }
         },
@@ -2678,64 +2726,64 @@
           "check": "summary.peak_position_mm",
           "passed": true,
           "detail": {
-            "reported": 50.38517859809273,
-            "derived": 50.38517859809273
+            "reported": 50.53223517417293,
+            "derived": 50.53223517417293
           }
         },
         {
           "check": "summary.peak_position_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.061,
-            "derived": 0.061
+            "reported": 0.062,
+            "derived": 0.062
           }
         },
         {
           "check": "summary.overshoot_pct",
           "passed": true,
           "detail": {
-            "reported": 0.7703571961854578,
-            "derived": 0.7703571961854578
+            "reported": 1.0644703483458642,
+            "derived": 1.0644703483458642
           }
         },
         {
           "check": "summary.first_target_sample_s",
           "passed": true,
           "detail": {
-            "reported": 0.059000000000000004,
-            "derived": 0.059000000000000004
+            "reported": 0.06,
+            "derived": 0.06
           }
         },
         {
           "check": "summary.final_error_mm",
           "passed": true,
           "detail": {
-            "reported": -0.015569524647887079,
-            "derived": -0.015569524647887079
+            "reported": 0.005881230324021658,
+            "derived": 0.005881230324021658
           }
         },
         {
           "check": "summary.peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.59111183633131,
-            "derived": 20.59111183633131
+            "reported": 20.66579627466948,
+            "derived": 20.66579627466948
           }
         },
         {
           "check": "summary.peak_pressure_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.05872781185201776,
-            "derived": 0.05872781185201776
+            "reported": 0.0596146565126168,
+            "derived": 0.0596146565126168
           }
         },
         {
           "check": "summary.sampled_peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.483873462438574,
-            "derived": 20.483873462438574
+            "reported": 20.493405104890524,
+            "derived": 20.493405104890524
           }
         },
         {
@@ -2782,48 +2830,48 @@
           "check": "summary.refinement_count",
           "passed": true,
           "detail": {
-            "reported": 3,
-            "derived": 3
+            "reported": 2,
+            "derived": 2
           }
         },
         {
           "check": "summary.solver.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 46.57507322627737,
-            "derived": 46.57507322627737
+            "reported": 58.409992195652165,
+            "derived": 58.409992195652165
           }
         },
         {
           "check": "summary.solver.median_ms",
           "passed": true,
           "detail": {
-            "reported": 2.842013,
-            "derived": 2.842013
+            "reported": 2.9577355,
+            "derived": 2.9577355
           }
         },
         {
           "check": "summary.solver.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 191.30444599999967,
-            "derived": 191.30444599999967
+            "reported": 232.27479880000016,
+            "derived": 232.27479880000016
           }
         },
         {
           "check": "summary.solver.max_ms",
           "passed": true,
           "detail": {
-            "reported": 736.5836630000001,
-            "derived": 736.5836630000001
+            "reported": 570.458556,
+            "derived": 570.458556
           }
         },
         {
           "check": "summary.solver.samples",
           "passed": true,
           "detail": {
-            "reported": 137,
-            "derived": 137
+            "reported": 138,
+            "derived": 138
           }
         },
         {
@@ -2838,88 +2886,88 @@
           "check": "summary.solver_attempt.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 22.14157852698413,
-            "derived": 22.14157852698413
+            "reported": 27.847020559602647,
+            "derived": 27.847020559602647
           }
         },
         {
           "check": "summary.solver_attempt.median_ms",
           "passed": true,
           "detail": {
-            "reported": 1.6715980000000001,
-            "derived": 1.6715980000000001
+            "reported": 1.7886695000000001,
+            "derived": 1.7886695000000001
           }
         },
         {
           "check": "summary.solver_attempt.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 78.23220180000003,
-            "derived": 78.23220180000003
+            "reported": 99.2109373,
+            "derived": 99.2109373
           }
         },
         {
           "check": "summary.solver_attempt.max_ms",
           "passed": true,
           "detail": {
-            "reported": 563.3948980000001,
-            "derived": 563.3948980000001
+            "reported": 475.659092,
+            "derived": 475.659092
           }
         },
         {
           "check": "summary.solver_attempt.samples",
           "passed": true,
           "detail": {
-            "reported": 315,
-            "derived": 315
+            "reported": 302,
+            "derived": 302
           }
         },
         {
           "check": "summary.solver_attempt.over_1ms_fraction",
           "passed": true,
           "detail": {
-            "reported": 0.9682539682539683,
-            "derived": 0.9682539682539683
+            "reported": 0.9966887417218543,
+            "derived": 0.9966887417218543
           }
         },
         {
           "check": "summary.cvxpy_call.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 50.970546781011755,
-            "derived": 50.970546781011755
+            "reported": 62.34683738405666,
+            "derived": 62.34683738405666
           }
         },
         {
           "check": "summary.cvxpy_call.median_ms",
           "passed": true,
           "detail": {
-            "reported": 6.7636069998116,
-            "derived": 6.7636069998116
+            "reported": 7.022465000034117,
+            "derived": 7.022465000034117
           }
         },
         {
           "check": "summary.cvxpy_call.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 199.13597799982168,
-            "derived": 199.13597799982168
+            "reported": 237.46524895007911,
+            "derived": 237.46524895007911
           }
         },
         {
           "check": "summary.cvxpy_call.max_ms",
           "passed": true,
           "detail": {
-            "reported": 742.7727160002178,
-            "derived": 742.7727160002178
+            "reported": 575.8076449999407,
+            "derived": 575.8076449999407
           }
         },
         {
           "check": "summary.cvxpy_call.samples",
           "passed": true,
           "detail": {
-            "reported": 137,
-            "derived": 137
+            "reported": 138,
+            "derived": 138
           }
         },
         {
@@ -2934,32 +2982,32 @@
           "check": "summary.whole_controller.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 455.3104101285547,
-            "derived": 455.3104101285547
+            "reported": 591.6526769142807,
+            "derived": 591.6526769142807
           }
         },
         {
           "check": "summary.whole_controller.median_ms",
           "passed": true,
           "detail": {
-            "reported": 102.11101649997545,
-            "derived": 102.11101649997545
+            "reported": 135.2788175000228,
+            "derived": 135.2788175000228
           }
         },
         {
           "check": "summary.whole_controller.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 1754.2205452500748,
-            "derived": 1754.2205452500748
+            "reported": 2095.236068750026,
+            "derived": 2095.236068750026
           }
         },
         {
           "check": "summary.whole_controller.max_ms",
           "passed": true,
           "detail": {
-            "reported": 2268.637280000121,
-            "derived": 2268.637280000121
+            "reported": 2327.745972999992,
+            "derived": 2327.745972999992
           }
         },
         {
@@ -2979,8 +3027,8 @@
           }
         }
       ],
-      "observed_dense_peak_p2_mpa": 20.59111183633131,
-      "max_logged_predicted_p2_mpa": 20.483867079949043
+      "observed_dense_peak_p2_mpa": 20.66579627466948,
+      "max_logged_predicted_p2_mpa": 20.493409993961144
     },
     "50": {
       "checks": [
@@ -3019,7 +3067,7 @@
           "check": "dense trace covers complete control interval",
           "passed": true,
           "detail": {
-            "dense_points": 5811,
+            "dense_points": 6808,
             "control_points": 151
           }
         },
@@ -3046,7 +3094,7 @@
           "check": "applied valve voltage within ±10 V",
           "passed": true,
           "detail": {
-            "max_abs_v": 9.999999994731251
+            "max_abs_v": 10.0
           }
         },
         {
@@ -3068,7 +3116,7 @@
           "check": "true dense P2 <= 21 MPa",
           "passed": true,
           "detail": {
-            "peak_mpa": 20.56292252141306,
+            "peak_mpa": 20.408964603373395,
             "limit_mpa": 21.0
           }
         },
@@ -3124,12 +3172,28 @@
           "check": "summary.peak_position_mm",
           "passed": true,
           "detail": {
-            "reported": 50.180178016338935,
-            "derived": 50.180178016338935
+            "reported": 50.48254027872398,
+            "derived": 50.48254027872398
           }
         },
         {
           "check": "summary.peak_position_time_s",
+          "passed": true,
+          "detail": {
+            "reported": 0.07100000000000001,
+            "derived": 0.07100000000000001
+          }
+        },
+        {
+          "check": "summary.overshoot_pct",
+          "passed": true,
+          "detail": {
+            "reported": 0.9650805574479621,
+            "derived": 0.9650805574479621
+          }
+        },
+        {
+          "check": "summary.first_target_sample_s",
           "passed": true,
           "detail": {
             "reported": 0.06,
@@ -3137,51 +3201,35 @@
           }
         },
         {
-          "check": "summary.overshoot_pct",
-          "passed": true,
-          "detail": {
-            "reported": 0.36035603267787053,
-            "derived": 0.36035603267787053
-          }
-        },
-        {
-          "check": "summary.first_target_sample_s",
-          "passed": true,
-          "detail": {
-            "reported": 0.059000000000000004,
-            "derived": 0.059000000000000004
-          }
-        },
-        {
           "check": "summary.final_error_mm",
           "passed": true,
           "detail": {
-            "reported": -0.016481381378177673,
-            "derived": -0.016481381378177673
+            "reported": 0.012309053215275867,
+            "derived": 0.012309053215275867
           }
         },
         {
           "check": "summary.peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.56292252141306,
-            "derived": 20.56292252141306
+            "reported": 20.408964603373395,
+            "derived": 20.408964603373395
           }
         },
         {
           "check": "summary.peak_pressure_time_s",
           "passed": true,
           "detail": {
-            "reported": 0.059294709278268125,
-            "derived": 0.059294709278268125
+            "reported": 0.05928390990205692,
+            "derived": 0.05928390990205692
           }
         },
         {
           "check": "summary.sampled_peak_pressure_mpa",
           "passed": true,
           "detail": {
-            "reported": 20.326718419592357,
-            "derived": 20.326718419592357
+            "reported": 20.398917268084837,
+            "derived": 20.398917268084837
           }
         },
         {
@@ -3196,8 +3244,8 @@
           "check": "summary.max_abs_voltage_v",
           "passed": true,
           "detail": {
-            "reported": 9.999999994731251,
-            "derived": 9.999999994731251
+            "reported": 10.0,
+            "derived": 10.0
           }
         },
         {
@@ -3212,64 +3260,64 @@
           "check": "summary.restoration_count",
           "passed": true,
           "detail": {
-            "reported": 1,
-            "derived": 1
+            "reported": 0,
+            "derived": 0
           }
         },
         {
           "check": "summary.shifted_count",
           "passed": true,
           "detail": {
-            "reported": 37,
-            "derived": 37
+            "reported": 51,
+            "derived": 51
           }
         },
         {
           "check": "summary.refinement_count",
           "passed": true,
           "detail": {
-            "reported": 2,
-            "derived": 2
+            "reported": 4,
+            "derived": 4
           }
         },
         {
           "check": "summary.solver.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 116.31658806569341,
-            "derived": 116.31658806569341
+            "reported": 148.36186877941176,
+            "derived": 148.36186877941176
           }
         },
         {
           "check": "summary.solver.median_ms",
           "passed": true,
           "detail": {
-            "reported": 4.349226999999999,
-            "derived": 4.349226999999999
+            "reported": 4.651652,
+            "derived": 4.651652
           }
         },
         {
           "check": "summary.solver.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 525.2366799999999,
-            "derived": 525.2366799999999
+            "reported": 585.40535375,
+            "derived": 585.40535375
           }
         },
         {
           "check": "summary.solver.max_ms",
           "passed": true,
           "detail": {
-            "reported": 721.506919,
-            "derived": 721.506919
+            "reported": 1671.658654,
+            "derived": 1671.658654
           }
         },
         {
           "check": "summary.solver.samples",
           "passed": true,
           "detail": {
-            "reported": 137,
-            "derived": 137
+            "reported": 136,
+            "derived": 136
           }
         },
         {
@@ -3284,40 +3332,40 @@
           "check": "summary.solver_attempt.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 52.257527548589344,
-            "derived": 52.257527548589344
+            "reported": 73.11137473630137,
+            "derived": 73.11137473630137
           }
         },
         {
           "check": "summary.solver_attempt.median_ms",
           "passed": true,
           "detail": {
-            "reported": 2.3737179999999998,
-            "derived": 2.3737179999999998
+            "reported": 3.2887645,
+            "derived": 3.2887645
           }
         },
         {
           "check": "summary.solver_attempt.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 199.50510379999997,
-            "derived": 199.50510379999997
+            "reported": 275.55335594999997,
+            "derived": 275.55335594999997
           }
         },
         {
           "check": "summary.solver_attempt.max_ms",
           "passed": true,
           "detail": {
-            "reported": 573.759788,
-            "derived": 573.759788
+            "reported": 757.385623,
+            "derived": 757.385623
           }
         },
         {
           "check": "summary.solver_attempt.samples",
           "passed": true,
           "detail": {
-            "reported": 319,
-            "derived": 319
+            "reported": 292,
+            "derived": 292
           }
         },
         {
@@ -3332,40 +3380,40 @@
           "check": "summary.cvxpy_call.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 120.93391535766712,
-            "derived": 120.93391535766712
+            "reported": 152.64712016911207,
+            "derived": 152.64712016911207
           }
         },
         {
           "check": "summary.cvxpy_call.median_ms",
           "passed": true,
           "detail": {
-            "reported": 8.23456500006614,
-            "derived": 8.23456500006614
+            "reported": 8.860083999962853,
+            "derived": 8.860083999962853
           }
         },
         {
           "check": "summary.cvxpy_call.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 531.7383491998497,
-            "derived": 531.7383491998497
+            "reported": 591.7998052499485,
+            "derived": 591.7998052499485
           }
         },
         {
           "check": "summary.cvxpy_call.max_ms",
           "passed": true,
           "detail": {
-            "reported": 728.5499519998666,
-            "derived": 728.5499519998666
+            "reported": 1677.5801180000371,
+            "derived": 1677.5801180000371
           }
         },
         {
           "check": "summary.cvxpy_call.samples",
           "passed": true,
           "detail": {
-            "reported": 137,
-            "derived": 137
+            "reported": 136,
+            "derived": 136
           }
         },
         {
@@ -3380,32 +3428,32 @@
           "check": "summary.whole_controller.mean_ms",
           "passed": true,
           "detail": {
-            "reported": 626.9489163785726,
-            "derived": 626.9489163785726
+            "reported": 976.46025592143,
+            "derived": 976.46025592143
           }
         },
         {
           "check": "summary.whole_controller.median_ms",
           "passed": true,
           "detail": {
-            "reported": 119.54405400001633,
-            "derived": 119.54405400001633
+            "reported": 164.27553049999233,
+            "derived": 164.27553049999233
           }
         },
         {
           "check": "summary.whole_controller.p95_ms",
           "passed": true,
           "detail": {
-            "reported": 2028.1904049999298,
-            "derived": 2028.1904049999298
+            "reported": 2456.9729798499848,
+            "derived": 2456.9729798499848
           }
         },
         {
           "check": "summary.whole_controller.max_ms",
           "passed": true,
           "detail": {
-            "reported": 2354.536401000132,
-            "derived": 2354.536401000132
+            "reported": 3499.3566859999987,
+            "derived": 3499.3566859999987
           }
         },
         {
@@ -3429,11 +3477,11 @@
           "passed": true,
           "detail": {
             "max_abs": [
-              3.1534966709045875e-06,
-              8.775093175913962e-07,
-              2.6193643349436968e-05,
-              2.049014799254678e-05,
-              2.5640378820135368e-08
+              2.2220788906679445e-06,
+              5.68295918573769e-07,
+              1.7646909753032958e-05,
+              2.9162663446768988e-05,
+              2.5189504232470128e-09
             ],
             "tolerance": [
               0.05,
@@ -3448,24 +3496,24 @@
           "check": "tight-tolerance replay dense P2 <= safety limit",
           "passed": true,
           "detail": {
-            "peak_mpa": 20.562922549319747,
+            "peak_mpa": 20.408964918655958,
             "limit_mpa": 21.0
           }
         }
       ],
-      "observed_dense_peak_p2_mpa": 20.56292252141306,
-      "max_logged_predicted_p2_mpa": 20.271742462774426,
+      "observed_dense_peak_p2_mpa": 20.408964603373395,
+      "max_logged_predicted_p2_mpa": 20.398915286981744,
       "strict_replay": {
         "relative_tolerance": 1e-08,
         "pressure_subdivisions": 64,
         "max_abs_state_deviation": {
-          "x_mm": 3.1534966709045875e-06,
-          "velocity_m_s": 8.775093175913962e-07,
-          "p1_mpa": 2.6193643349436968e-05,
-          "p2_mpa": 2.049014799254678e-05,
-          "valve_v": 2.5640378820135368e-08
+          "x_mm": 2.2220788906679445e-06,
+          "velocity_m_s": 5.68295918573769e-07,
+          "p1_mpa": 1.7646909753032958e-05,
+          "p2_mpa": 2.9162663446768988e-05,
+          "valve_v": 2.5189504232470128e-09
         },
-        "dense_peak_p2_mpa": 20.562922549319747,
+        "dense_peak_p2_mpa": 20.408964918655958,
         "end_time_s": 0.1500000000000001
       }
     }

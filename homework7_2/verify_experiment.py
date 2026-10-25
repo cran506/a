@@ -76,6 +76,27 @@ def _json_safe(value):
     return value
 
 
+def _physical_rhs_hash():
+    digest = hashlib.sha256()
+    for name in ('hydraulic_digital_twin.py', 'twin_adapter.py', 'hydraulic_plant.py'):
+        digest.update(name.encode('ascii'))
+        digest.update((HERE / name).read_bytes())
+    return digest.hexdigest()
+
+
+def _plant_overrides(config):
+    name = config.get('plant_config_file')
+    if not name:
+        return None
+    path = (HERE / name).resolve()
+    if not path.is_relative_to(HERE) or not path.is_file():
+        raise ValueError('plant_config_file must name a file in this experiment folder')
+    overrides = json.loads(path.read_text(encoding='utf-8'))
+    if not isinstance(overrides, dict):
+        raise ValueError('plant_config_file must contain a JSON object')
+    return overrides
+
+
 def _stat(values):
     finite = np.asarray(values, dtype=float)
     finite = finite[np.isfinite(finite)]
@@ -237,9 +258,21 @@ def _validate_logs(audit, case, data, logs, config):
             else:
                 state_error = prediction[:, :2]-target
                 increments = np.diff(np.r_[previous, command])
-                calculated_cost = float(np.sum(state_error**2*np.array(
-                    [config["q_position"], config["q_velocity"]]))+
+                weights = np.tile([config["q_position"], config["q_velocity"]],
+                                  (case, 1))
+                weights[-1, 1] *= config.get("terminal_velocity_factor", 1.)
+                calculated_cost = float(np.sum(state_error**2*weights)+
                     move_weight*np.dot(increments, increments))
+                tail_weight0 = config.get("terminal_tail_weight0", 0.)
+                if tail_weight0:
+                    stop_error = (float(prediction[-1, 0]-target[0]) +
+                                  1000.*config.get("terminal_stop_time_s", .008)*
+                                  float(prediction[-1, 1]))
+                    smoothing = config.get("terminal_stop_smoothing_mm", .5)
+                    positive = smoothing*np.logaddexp(0., stop_error/smoothing)
+                    tail_weight = tail_weight0*np.exp(
+                        -case*config["ts"]/config.get("terminal_tail_decay_s", .004))
+                    calculated_cost += float(tail_weight*positive**2)
                 if (not _close(calculated_cost, selected_cost, atol=1e-4,
                                rtol=1e-8) or
                         not _close(log.get("nonlinear_cost"), calculated_cost,
@@ -348,11 +381,11 @@ def validate_outputs(output_dir=None, strict=False):
     for name in config:
         audit.check(f"shared configuration: {name}", saved_cfg.get(name) == config[name],
                     detail={"saved": saved_cfg.get(name), "current": config[name]})
-    rhs_path = HERE/"hydraulic_digital_twin.py"
-    expected_hash = hashlib.sha256(rhs_path.read_bytes()).hexdigest()
+    expected_hash = _physical_rhs_hash()
     audit.check("same physical RHS source hash", saved_cfg.get("physical_rhs_sha256") ==
                 expected_hash, detail=expected_hash)
-    plant = HydraulicPlant(origin_m=config["origin_m"],
+    plant = HydraulicPlant(config=_plant_overrides(config),
+                           origin_m=config["origin_m"],
                            valve_tau=config["valve_tau"],
                            makeup_area=config["makeup_area"], rtol=config["rtol"])
     audit.check("shared physical parameters match current model",

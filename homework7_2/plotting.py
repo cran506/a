@@ -214,7 +214,7 @@ def plot_results(results, summary_rows, config, output_path):
         fig.text(.073, .065,
                  "电压、位移直接取闭环记录；压力使用积分器高密轨迹。× 表示该时域闭环提前终止。\n"
                  "图 (d) 分别给出每次 QP 的中位数与均值；完整控制周期与 P95 耗时另见指标表。\n"
-                 "闭中位阀在制动后保压；参考示意的快速卸压需要不同的液压回路，本图未重置压力。",
+                 "默认教学等效回路含显式回油旁路与近静止双腔调压；参数是假设，本图未重置压力。",
                  va="top", fontsize=9.2, color="#4a5563", linespacing=1.5)
         try:
             fig.savefig(output, facecolor="white")

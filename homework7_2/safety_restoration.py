@@ -85,11 +85,7 @@ def restore_pressure_feasible(
         if not valid:
             continue
         feasible_count += 1
-        tracking_error = predicted[:, :2] - target
-        increments = np.diff(np.r_[u_prev, sequence])
-        cost = float(np.sum(tracking_error**2 * np.array([
-            controller.q_position, controller.q_velocity
-        ])) + controller.move_weight * np.dot(increments, increments))
+        cost = controller._trajectory_cost(predicted, target, sequence, u_prev)
         if best is None or cost < best[0]:
             best = (cost, source, sequence, predicted, pressure_violation, input_violation)
 
@@ -190,11 +186,7 @@ def refine_shifted_plan(
     target = controller._reference(reference)
 
     def candidate_cost(sequence, predicted):
-        errors = predicted[:, :2]-target
-        increments = np.diff(np.r_[u_prev, sequence])
-        return float(np.sum(errors**2*np.array([controller.q_position,
-                                               controller.q_velocity]))
-                     + controller.move_weight*np.dot(increments, increments))
+        return controller._trajectory_cost(predicted, target, sequence, u_prev)
 
     valid, original_prediction, original_violation, original_input_violation = (
         controller._nonlinear_validation(z, original, u_prev))

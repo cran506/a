@@ -81,7 +81,10 @@ class HydraulicMPC:
     """
     def __init__(self,horizon=20,dt=.001,sys_params=None,
                  enable_pressure_constraint=True,model=None,*,
-                 q_position=50000.,q_velocity=50.,move_weight=.01,Q=None,W=None,
+                 q_position=50000.,q_velocity=50.,move_weight=.01,
+                 terminal_velocity_factor=1.,Q=None,W=None,
+                 terminal_tail_weight0=0.,terminal_tail_decay_s=.004,
+                 terminal_stop_time_s=.008,terminal_stop_smoothing_mm=.5,
                  u_min=-10.,u_max=10.,delta_u_max=4.5,p_safe=21.,
                  pressure_margin=.5,constrain_p1=False,pressure_lower=None,
                  pressure_upper=None,sequential_iterations=3,min_iterations=2,
@@ -107,11 +110,17 @@ class HydraulicMPC:
             if w.size!=1:
                 raise ValueError('W is a positive scalar incremental-input weight')
             move_weight=float(w.ravel()[0])
-        scalars=(dt,q_position,q_velocity,move_weight,u_min,u_max,delta_u_max,p_safe,
+        scalars=(dt,q_position,q_velocity,move_weight,terminal_velocity_factor,
+                 terminal_tail_weight0,terminal_tail_decay_s,
+                 terminal_stop_time_s,terminal_stop_smoothing_mm,
+                 u_min,u_max,delta_u_max,p_safe,
                  pressure_margin,eps_abs,eps_rel,primal_tolerance,dual_tolerance,
                  nonlinear_tolerance,bootstrap_error_mm,linearization_reserve_mpa)
         if (not all(math.isfinite(v) for v in scalars) or dt<=0
-                or min(q_position,q_velocity)<0 or move_weight<=0 or u_min>=u_max
+                or min(q_position,q_velocity)<0 or move_weight<=0
+                or terminal_velocity_factor<1. or u_min>=u_max
+                or terminal_tail_weight0<0. or terminal_tail_decay_s<=0.
+                or terminal_stop_time_s<0. or terminal_stop_smoothing_mm<=0.
                 or u_min < -10. or u_max>10. or delta_u_max<=0 or p_safe<=0
                 or pressure_margin<0 or pressure_margin>=p_safe
                 or min(eps_abs,eps_rel,primal_tolerance,dual_tolerance,nonlinear_tolerance)<=0
@@ -128,6 +137,15 @@ class HydraulicMPC:
         self.nx_physical,self.nx_augmented=5,6
         self.enable_pressure_constraint=bool(enable_pressure_constraint)
         self.q_position,self.q_velocity=float(q_position),float(q_velocity)
+        self.terminal_velocity_factor=float(terminal_velocity_factor)
+        self.terminal_tail_weight0=float(terminal_tail_weight0)
+        self.terminal_tail_decay_s=float(terminal_tail_decay_s)
+        self.terminal_stop_time_s=float(terminal_stop_time_s)
+        self.terminal_stop_smoothing_mm=float(terminal_stop_smoothing_mm)
+        # The same physical decay law applies at every N. A horizon longer
+        # than the braking transient needs less terminal extrapolation.
+        self.terminal_tail_weight=(self.terminal_tail_weight0*
+            math.exp(-self.horizon*self.dt/self.terminal_tail_decay_s))
         self.move_weight=float(move_weight)
         self.Q=np.diag([self.q_position,self.q_velocity]);self.W=self.move_weight
         # A common objective factor leaves the optimizer unchanged.  Keeping
@@ -253,10 +271,27 @@ class HydraulicMPC:
         free=f@initial+b
         track=np.array([6*i+j for i in range(self.horizon) for j in (0,1)])
         response=phi[track];offset=free[track]-reference.ravel()
-        q=np.tile([self.q_position,self.q_velocity],self.horizon)/self.objective_scale
+        q=self._tracking_weights().ravel()/self.objective_scale
         h=2*(response.T@(q[:,None]*response)+self.move_weight/self.objective_scale*np.eye(self.horizon))
         h=(h+h.T)/2
         g=2*response.T@(q*offset)
+        if self.terminal_tail_weight:
+            # s is the predicted stopping position relative to the target.
+            # Penalize only positive overrun; smooth the hinge so each RTI QP
+            # receives a differentiable Gauss-Newton approximation.
+            last=6*(self.horizon-1)
+            distance_per_speed=1000.*self.terminal_stop_time_s
+            stop_response=(phi[last]+distance_per_speed*phi[last+1])
+            stop_offset=(free[last]+distance_per_speed*free[last+1]
+                         -reference[-1,0])
+            nominal_du=np.diff(np.r_[u_previous,nominal])
+            nominal_stop=float(stop_offset+stop_response@nominal_du)
+            hinge,slope=self._softplus_and_slope(nominal_stop)
+            effective_response=slope*stop_response
+            effective_offset=hinge+slope*(stop_offset-nominal_stop)
+            scaled_weight=self.terminal_tail_weight/self.objective_scale
+            h+=2*scaled_weight*np.outer(effective_response,effective_response)
+            g+=2*scaled_weight*effective_response*effective_offset
         matrices=[np.eye(self.horizon),self._sum]
         lower=[np.full(self.horizon,-self.delta_u_max),np.full(self.horizon,self.u_min-u_previous)]
         upper=[np.full(self.horizon,self.delta_u_max),np.full(self.horizon,self.u_max-u_previous)]
@@ -272,6 +307,38 @@ class HydraulicMPC:
                     hi.append(np.inf if maximum is None else maximum-self.linearization_reserve_mpa-free[row])
             matrices.append(phi[rows]);lower.append(np.asarray(lo));upper.append(np.asarray(hi))
         return h,g,np.vstack(matrices),np.concatenate(lower),np.concatenate(upper),free,phi
+
+    def _tracking_weights(self):
+        """Common stage weights with an extra velocity cost at the horizon end."""
+        weights=np.tile([self.q_position,self.q_velocity],(self.horizon,1))
+        weights[-1,1]*=self.terminal_velocity_factor
+        return weights
+
+    def _softplus_and_slope(self,stop_error_mm):
+        """Stable smooth positive part and derivative of stopping overrun."""
+        scaled=float(stop_error_mm)/self.terminal_stop_smoothing_mm
+        magnitude=abs(scaled)
+        positive=(self.terminal_stop_smoothing_mm*
+                  (max(scaled,0.)+math.log1p(math.exp(-magnitude))))
+        if scaled>=0.:
+            slope=1./(1.+math.exp(-scaled))
+        else:
+            exp_scaled=math.exp(scaled)
+            slope=exp_scaled/(1.+exp_scaled)
+        return positive,slope
+
+    def _trajectory_cost(self,predicted,reference,sequence,u_previous):
+        """Score nonlinear plans with precisely the QP's tracking objective."""
+        errors=np.asarray(predicted,dtype=float)[:,:2]-reference
+        increments=np.diff(np.r_[u_previous,sequence])
+        cost=float(np.sum(errors**2*self._tracking_weights())
+                   +self.move_weight*np.dot(increments,increments))
+        if self.terminal_tail_weight:
+            stop_error=(float(predicted[-1,0]-reference[-1,0])
+                        +1000.*self.terminal_stop_time_s*float(predicted[-1,1]))
+            positive,_=self._softplus_and_slope(stop_error)
+            cost+=self.terminal_tail_weight*positive**2
+        return cost
 
     def _solve_qp(self,h,g,a,lower,upper,warm):
         p_csc=_dense_csc(h,upper=True);a_csc=_dense_csc(a)
@@ -413,9 +480,7 @@ class HydraulicMPC:
                     info.setdefault('linear_constraint_violation',None)
                     info.setdefault('kkt_stationarity',None)
                     diagnostics.append(info)
-                    errors=predicted[:,:2]-reference;du=np.diff(np.r_[u_prev,shifted])
-                    cost=float(np.sum(errors**2*np.array([self.q_position,self.q_velocity]))
-                               +self.move_weight*np.dot(du,du))
+                    cost=self._trajectory_cost(predicted,reference,shifted,u_prev)
                     best=(cost,shifted,predicted,info,violation,input_violation)
                     forced_shift=True
                     break
@@ -436,10 +501,7 @@ class HydraulicMPC:
                             candidate_voltage_v=raw_first)
                 diagnostics.append(info)
                 if feasible:
-                    errors=predicted[:,:2]-reference
-                    du=np.diff(np.r_[u_prev,applied])
-                    cost=float(np.sum(errors**2*np.array([self.q_position,self.q_velocity]))
-                               +self.move_weight*np.dot(du,du))
+                    cost=self._trajectory_cost(predicted,reference,applied,u_prev)
                     if best is None or cost<best[0]:
                         best=(cost,applied,predicted,info,violation,input_violation)
                 nominal=applied
@@ -452,9 +514,7 @@ class HydraulicMPC:
                 if self.nominal_sequence is not None:
                     feasible,predicted,violation,input_violation=self._nonlinear_validation(z,shifted,u_prev)
                     if feasible:
-                        errors=predicted[:,:2]-reference;du=np.diff(np.r_[u_prev,shifted])
-                        cost=float(np.sum(errors**2*np.array([self.q_position,self.q_velocity]))
-                                   +self.move_weight*np.dot(du,du))
+                        cost=self._trajectory_cost(predicted,reference,shifted,u_prev)
                         best=(cost,shifted,predicted,diagnostics[-1],violation,input_violation)
                         fallback=True
                 if best is None:

@@ -1,79 +1,72 @@
 [
   {
-    "time_s": 0.010409803346031886,
+    "time_s": 0.010452414353331232,
     "kind": "release",
     "direction": 1,
-    "net_drive_n": 800.0000009999912,
+    "net_drive_n": 800.0000010000058,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.059316659018578716,
+    "time_s": 0.06231982936072059,
     "kind": "reverse_release",
     "direction": -1,
-    "net_drive_n": -82909.99573761871,
+    "net_drive_n": -95917.38834171277,
     "friction_n": -800.0
   },
   {
-    "time_s": 0.06298841492506797,
+    "time_s": 0.06614021035218338,
     "kind": "reverse_release",
     "direction": 1,
-    "net_drive_n": 35541.62484873776,
+    "net_drive_n": 30684.499448916526,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.06629948588923727,
+    "time_s": 0.06766150614900507,
     "kind": "reverse_release",
     "direction": -1,
-    "net_drive_n": -17093.286537363056,
+    "net_drive_n": -22362.188451279464,
     "friction_n": -800.0
   },
   {
-    "time_s": 0.06996962309892192,
+    "time_s": 0.07092489272471322,
     "kind": "reverse_release",
     "direction": 1,
-    "net_drive_n": 9607.427773622767,
+    "net_drive_n": 36535.34589491843,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.07382870111555685,
+    "time_s": 0.07584987328502601,
     "kind": "reverse_release",
     "direction": -1,
-    "net_drive_n": -5283.2277226047445,
+    "net_drive_n": -29920.02453422668,
     "friction_n": -800.0
   },
   {
-    "time_s": 0.07854926002291833,
+    "time_s": 0.08033802984368053,
     "kind": "reverse_release",
     "direction": 1,
-    "net_drive_n": 3659.4400410796807,
+    "net_drive_n": 17947.79588907941,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.08375253592121298,
+    "time_s": 0.0838507120944405,
     "kind": "reverse_release",
     "direction": -1,
-    "net_drive_n": -2036.135182484446,
+    "net_drive_n": -9184.241478714634,
     "friction_n": -800.0
   },
   {
-    "time_s": 0.08798186526269777,
+    "time_s": 0.08866622130385612,
+    "kind": "reverse_release",
+    "direction": 1,
+    "net_drive_n": 3329.4736498874554,
+    "friction_n": 800.0
+  },
+  {
+    "time_s": 0.09308594377770202,
     "kind": "restick",
     "direction": 0,
-    "net_drive_n": 425.98885756397794,
-    "friction_n": 425.98885756397794
-  },
-  {
-    "time_s": 0.09017759976206492,
-    "kind": "release",
-    "direction": 1,
-    "net_drive_n": 800.0000009999931,
-    "friction_n": 800.0
-  },
-  {
-    "time_s": 0.09599782730179036,
-    "kind": "restick",
-    "direction": 0,
-    "net_drive_n": 440.62025766087754,
-    "friction_n": 440.62025766087754
+    "net_drive_n": -525.6848368790961,
+    "friction_n": -525.6848368790961
   }
 ]

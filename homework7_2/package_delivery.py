@@ -97,6 +97,13 @@ def build_report(summary, validation, figure, destination):
         '真实对象为带硬死区、静摩擦事件、有向孔口、泄漏与阀动态的混合液压模型；'
         '控制器使用可微灰箱近似。每个采样时刻以真实对象状态重置预测，只执行最优序列首个电压。'
         '压力峰值从真实积分器的高密轨迹读取，包含采样间峰值；未削顶或平滑真实压力。')
+    if config.get('plant_config_file'):
+        report.add_paragraph(
+            f"本次实验通过 {config['plant_config_file']} 启用显式教学等效回路："
+            '伸出供油口与回油旁路分别设定流量能力，阀芯和活塞近静止时开放双腔压力调节支路。'
+            '支路流量写入真实对象及预测模型的压力微分方程，不重置、平移或裁剪压力记录。'
+            '此回路及参数依据参考图形提出，属于公开的课堂假设；单张参考图无法辨识真实装置的回路。'
+            '移除 experiment_config.json 中的 plant_config_file 可运行原闭中位对称计量口对象。')
 
     report.add_heading('2. 模型与优化问题', 1)
     report.add_paragraph(
@@ -112,6 +119,16 @@ def build_report(summary, validation, figure, destination):
         '若局部 QP 无可用计划，程序可调用公开的有限网格恢复策略：测试投影后的候选控制序列，'
         '只接受经过同一非线性预测约束验证的序列，且把该步骤单独计数。此举不是纯 QP 求解成功，'
         '也不构成一般的递归可行性证明。')
+    if config.get('terminal_tail_weight0', 0.) > 0.:
+        report.add_paragraph(
+            f"所有时域共用终端制动代价：终端速度权重乘以 "
+            f"{_fmt(config.get('terminal_velocity_factor', 1.), 1)}；"
+            f"以 {_fmt(1000*config.get('terminal_stop_time_s', 0.), 1)} ms "
+            '估计视野外的惯性滑行，平滑地惩罚预计停止位置超过目标。'
+            f"越程代价权重采用 {config['terminal_tail_weight0']:g}·"
+            f"exp[−N·Ts/{_fmt(1000*config['terminal_tail_decay_s'], 1)} ms]，"
+            '对全部 N 使用同一公式；局部 QP 求其二次近似，非线性候选按原代价重新评分。'
+            '这是控制器的终端预测假设，不代表新增物理制动器。')
     report.add_paragraph(
         '另外，当 CVXPY 局部 QP 没有产出新的非线性可行计划、控制器仅保留已经重新验证的'
         '历史移位计划时，程序可对该移位计划进行有限网格改进：原计划仍作为可行候选，'
@@ -199,12 +216,18 @@ def build_report(summary, validation, figure, destination):
         safety_text
         + '有限仿真中守住安全线，不等于任意模型误差、扰动与实物系统均安全。'
         '当前硬约束针对 P2 上界，未保护 P1 上界或两腔压力下界。')
-    report.add_paragraph(
-        '与提供的课堂示意图相比，本回路的巡航与制动后 P2 基线更高。'
-        '原因是当前四通阀的回油节流口与供油口采用相同系数，高速巡航需要回油压差；'
-        '阀芯回中位后两腔封闭，且外泄漏系数为零，残余压力不能在几十毫秒内自动降回初始 2 MPa。'
-        '参考图若体现近零巡航压力和快速卸压，需要另设回油/卸荷回路。'
-        '本实验没有为匹配图形而修改压力数据、插入隐式卸压或裁剪峰值。')
+    if config.get('plant_config_file'):
+        report.add_paragraph(
+            '原闭中位对称计量口对象的巡航回油压差和制动后封闭腔压，'
+            '与课堂示意图的低巡航压力及约 2 MPa 尾压差异较大。'
+            '本次教学等效回路显式加入回油旁路与近静止压力调节支路来研究这一差异；'
+            '图和表中的压力仍来自真实积分轨迹，未修改记录。'
+            '该结果仅说明所声明回路假设下的响应，不能由图形反推出真实设备具有同一结构。')
+    else:
+        report.add_paragraph(
+            '本次采用原闭中位对称计量口对象。巡航时有杆腔需形成回油压差；'
+            '阀芯回中位后两腔封闭，外泄漏系数为零，制动后压力不会自动回到初始基线。'
+            '图和表中的压力来自真实积分轨迹，未修改记录。')
     report.add_paragraph(
         f"验证脚本总体结果：{'通过' if validation.get('passed') else '未全部通过'}。"
         '验证内容包含图表数值与 CSV、真实积分峰值、输入约束及预测压力节点的独立核对；'

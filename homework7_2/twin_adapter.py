@@ -1,11 +1,58 @@
 """原始 HydraulicTwin 的闭环适配：有向节流、补油、阀动态与工艺负载。"""
 import json
+import math
 from pathlib import Path
 import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.optimize import brentq
 from media_model import AeratedHydraulicModel
 from friction_model import sliding_friction, validate_friction
+
+
+def auxiliary_circuit_settings(p):
+    """Optional classroom return bypass and two-chamber pressure regulator.
+
+    Zero regulator conductance and unit return gain recover the original
+    closed-center four-way valve exactly.  The regulator has its own pilot
+    valves and pressure supplies: it is an explicit alternative circuit, not
+    a pressure reset or a change to the measured output.
+    """
+    p2_target = float(p.get('pilot_p2_target_pa', p.get('initial_p2_pa', 2e6)))
+    ambient = float(p.get('ambient_pressure', 1e5))
+    p1_target = float(p.get('pilot_p1_target_pa',
+                          (p2_target*p['A2']+ambient*(p['A1']-p['A2']))/p['A1']))
+    settings = dict(
+        supply_gain=float(p.get('extension_supply_gain', 1.)),
+        return_gain=float(p.get('extension_return_gain', 1.)),
+        return_open_v=float(p.get('extension_return_open_v', 2.5)),
+        return_width_v=float(p.get('extension_return_width_v', .25)),
+        pilot_conductance=float(p.get('pilot_unload_conductance', 0.)),
+        pilot_valve_scale_v=float(p.get('pilot_unload_valve_scale_v', .65)),
+        pilot_speed_scale_m_s=float(p.get('pilot_unload_speed_scale_m_s', .08)),
+        p1_target=p1_target, p2_target=p2_target)
+    values = tuple(settings.values())
+    if (not all(math.isfinite(value) for value in values)
+            or settings['supply_gain'] <= 0. or settings['return_gain'] < 1.
+            or min(settings['return_width_v'], settings['pilot_valve_scale_v'],
+                   settings['pilot_speed_scale_m_s'], p1_target, p2_target) <= 0.
+            or settings['pilot_conductance'] < 0.):
+        raise ValueError('课堂回油旁路或压力调节回路参数无效')
+    return settings
+
+
+def return_bypass_gate(valve_v, settings):
+    """Smooth pilot opening for the extension return bypass (voltage units)."""
+    argument = (valve_v-settings['return_open_v'])/settings['return_width_v']
+    if argument >= 0.:
+        return 1./(1.+math.exp(-argument))
+    value = math.exp(argument)
+    return value/(1.+value)
+
+
+def pilot_unload_gate(valve_v, velocity, settings):
+    """Open the auxiliary pressure regulators only near neutral and rest."""
+    return (1./(1.+(valve_v/settings['pilot_valve_scale_v'])**8)
+            /(1.+(velocity/settings['pilot_speed_scale_m_s'])**4))
 
 
 def physical_config():
@@ -59,6 +106,7 @@ class ClosedLoopTwin(AeratedHydraulicModel):
         config['x_work'] = config['L']+1.
         validate_friction(config)
         super().__init__(config)
+        self.auxiliary_circuit = auxiliary_circuit_settings(config)
         unload_ramp = load_ramp if unload_ramp is None else unload_ramp
         values = (valve_tau, load_force, rtol, load_ramp, unload_ramp, makeup_area,
                   ambient_pressure, *load_window)
@@ -233,9 +281,20 @@ class ClosedLoopTwin(AeratedHydraulicModel):
                           else (p['Pr']-p1, p['Ps']-p2))
         q1 = area*np.sign(delta1)*np.sqrt(2/p['rho']*abs(delta1))
         q2 = area*np.sign(delta2)*np.sqrt(2/p['rho']*abs(delta2))
+        auxiliary = self.auxiliary_circuit
+        if ue > 0. and auxiliary['supply_gain'] != 1.:
+            q1 *= auxiliary['supply_gain']
+        if ue > 0. and auxiliary['return_gain'] > 1.:
+            q2 += (auxiliary['return_gain']-1.)*return_bypass_gate(10.*u, auxiliary)*(
+                area*np.sign(p['Pr']-p2)*np.sqrt(2/p['rho']*abs(p['Pr']-p2)))
         # 双向缸的两腔各接油箱补油单向阀；仅 P<Pr 时有流入。
         q1 += p['Cd']*self.makeup_area*np.sqrt(2/p['rho']*max(p['Pr']-p1, 0.))
         q2 += p['Cd']*self.makeup_area*np.sqrt(2/p['rho']*max(p['Pr']-p2, 0.))
+        if auxiliary['pilot_conductance']:
+            pilot = auxiliary['pilot_conductance']*pilot_unload_gate(
+                10.*u, velocity, auxiliary)
+            q1 += pilot*(auxiliary['p1_target']-p1)
+            q2 += pilot*(auxiliary['p2_target']-p2)
         leak = p['C_ip']*(p1-p2)
         dp1 = self._get_beta(p1)/v1*(q1-p['A1']*velocity-leak-p['C_ep']*p1)
         dp2 = self._get_beta(p2)/v2*(q2+p['A2']*velocity+leak-p['C_ep']*p2)

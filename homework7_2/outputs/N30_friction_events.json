@@ -1,79 +1,51 @@
 [
   {
-    "time_s": 0.010409803346031886,
+    "time_s": 0.010452414358187105,
     "kind": "release",
     "direction": 1,
-    "net_drive_n": 800.0000009999912,
+    "net_drive_n": 800.0000010000058,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.05963394168383737,
+    "time_s": 0.06243817190259874,
     "kind": "reverse_release",
     "direction": -1,
-    "net_drive_n": -92855.52696302965,
+    "net_drive_n": -46668.856890240306,
     "friction_n": -800.0
   },
   {
-    "time_s": 0.06375766031325242,
+    "time_s": 0.06593594935329884,
     "kind": "reverse_release",
     "direction": 1,
-    "net_drive_n": 37762.39998913415,
+    "net_drive_n": 10038.176021018306,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.06669546684659261,
+    "time_s": 0.06831942665043629,
     "kind": "reverse_release",
     "direction": -1,
-    "net_drive_n": -15789.23734806999,
+    "net_drive_n": -2704.4517687302214,
     "friction_n": -800.0
   },
   {
-    "time_s": 0.07064896546368987,
-    "kind": "reverse_release",
-    "direction": 1,
-    "net_drive_n": 9576.921651586686,
-    "friction_n": 800.0
-  },
-  {
-    "time_s": 0.07473605879451169,
-    "kind": "reverse_release",
-    "direction": -1,
-    "net_drive_n": -4457.3520875673275,
-    "friction_n": -800.0
-  },
-  {
-    "time_s": 0.07939701587118142,
-    "kind": "reverse_release",
-    "direction": 1,
-    "net_drive_n": 2834.234265162275,
-    "friction_n": 800.0
-  },
-  {
-    "time_s": 0.08474678199281395,
-    "kind": "reverse_release",
-    "direction": -1,
-    "net_drive_n": -1213.8618225556856,
-    "friction_n": -800.0
-  },
-  {
-    "time_s": 0.08773160904976611,
+    "time_s": 0.07656233881060837,
     "kind": "restick",
     "direction": 0,
-    "net_drive_n": -388.4866266061872,
-    "friction_n": -388.4866266061872
+    "net_drive_n": 512.2261777069325,
+    "friction_n": 512.2261777069325
   },
   {
-    "time_s": 0.0942012847159252,
+    "time_s": 0.08027654053720204,
     "kind": "release",
-    "direction": 1,
-    "net_drive_n": 800.0000010000076,
-    "friction_n": 800.0
+    "direction": -1,
+    "net_drive_n": -800.0000010000003,
+    "friction_n": -800.0
   },
   {
-    "time_s": 0.09835285610154106,
+    "time_s": 0.0841997468811526,
     "kind": "restick",
     "direction": 0,
-    "net_drive_n": 584.4384267884743,
-    "friction_n": 584.4384267884743
+    "net_drive_n": -277.8756914089972,
+    "friction_n": -277.8756914089972
   }
 ]

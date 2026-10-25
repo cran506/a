@@ -1,58 +1,58 @@
 [
   {
-    "time_s": 0.010409803346031886,
+    "time_s": 0.01045241435361623,
     "kind": "release",
     "direction": 1,
-    "net_drive_n": 800.0000009999912,
+    "net_drive_n": 800.0000010000003,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.06051751606905361,
+    "time_s": 0.06214861961326459,
     "kind": "reverse_release",
     "direction": -1,
-    "net_drive_n": -90703.3473241512,
+    "net_drive_n": -99619.97631390615,
     "friction_n": -800.0
   },
   {
-    "time_s": 0.0652086723395563,
+    "time_s": 0.06635950762255818,
     "kind": "reverse_release",
     "direction": 1,
-    "net_drive_n": 14337.002603394401,
+    "net_drive_n": 68847.24207007897,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.06794809305295475,
+    "time_s": 0.06958706939105083,
     "kind": "reverse_release",
     "direction": -1,
-    "net_drive_n": -3116.156821379729,
+    "net_drive_n": -33366.193840070315,
     "friction_n": -800.0
   },
   {
-    "time_s": 0.07246267997523599,
+    "time_s": 0.07329802746203348,
     "kind": "reverse_release",
     "direction": 1,
-    "net_drive_n": 1498.2513539138017,
+    "net_drive_n": 15462.115890252215,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.07860183882833112,
-    "kind": "restick",
-    "direction": 0,
-    "net_drive_n": 113.75526222768531,
-    "friction_n": 113.75526222768531
+    "time_s": 0.07683708898005798,
+    "kind": "reverse_release",
+    "direction": -1,
+    "net_drive_n": -7696.620980450556,
+    "friction_n": -800.0
   },
   {
-    "time_s": 0.08233017673372482,
-    "kind": "release",
+    "time_s": 0.08158375015518729,
+    "kind": "reverse_release",
     "direction": 1,
-    "net_drive_n": 800.0000009999931,
+    "net_drive_n": 2569.125677572316,
     "friction_n": 800.0
   },
   {
-    "time_s": 0.10992031914431756,
+    "time_s": 0.08576047984557672,
     "kind": "restick",
     "direction": 0,
-    "net_drive_n": 320.41579808926326,
-    "friction_n": 320.41579808926326
+    "net_drive_n": -183.4658842873323,
+    "friction_n": -183.4658842873323
   }
 ]

@@ -17,6 +17,28 @@ from mpc_core import MPCSolveError
 ROOT = Path(__file__).resolve().parent
 
 
+def plant_overrides(config):
+    """Load the declared classroom circuit without changing the source twin."""
+    name = config.get('plant_config_file')
+    if not name:
+        return None
+    path = (ROOT / name).resolve()
+    if not path.is_relative_to(ROOT) or not path.is_file():
+        raise ValueError('plant_config_file must name a file in this experiment folder')
+    overrides = json.loads(path.read_text(encoding='utf-8'))
+    if not isinstance(overrides, dict):
+        raise ValueError('plant_config_file must contain a JSON object')
+    return overrides
+
+
+def physical_rhs_hash():
+    digest = hashlib.sha256()
+    for name in ('hydraulic_digital_twin.py', 'twin_adapter.py', 'hydraulic_plant.py'):
+        digest.update(name.encode('ascii'))
+        digest.update((ROOT / name).read_bytes())
+    return digest.hexdigest()
+
+
 def load_config(path=None):
     config = json.loads((Path(path) if path else ROOT / 'experiment_config.json').read_text(encoding='utf-8'))
     horizons = config['horizons']
@@ -27,6 +49,7 @@ def load_config(path=None):
             or config['target_mm'] <= 0 or not 0 <= config['pressure_margin'] < config['p_safe']
             or abs(config['duration'] / config['ts'] - round(config['duration'] / config['ts'])) > 1e-9):
         raise ValueError('Invalid horizon scan, clock, target, or pressure limit')
+    plant_overrides(config)
     return config
 
 
@@ -95,7 +118,8 @@ def simulate(horizon, config, progress=False):
     horizon = int(horizon)
     if horizon not in config['horizons']:
         raise ValueError('Requested horizon is not listed in the experiment config')
-    arguments = dict(origin_m=config['origin_m'], valve_tau=config['valve_tau'],
+    arguments = dict(config=plant_overrides(config),
+                     origin_m=config['origin_m'], valve_tau=config['valve_tau'],
                      makeup_area=config['makeup_area'], rtol=config['rtol'])
     plant = HydraulicPlant(**arguments)
     params = plant.parameters
@@ -103,13 +127,19 @@ def simulate(horizon, config, progress=False):
     p1 = (p2*params['A2']+params['ambient_pressure']*(params['A1']-params['A2']))/params['A1']
     initial_state = [0., 0., p1/1e6, p2/1e6, 0.]
     plant.reset(initial_state)
-    predictor = GreyBoxModel(params, **arguments)
+    predictor_arguments = dict(arguments, config=params)
+    predictor = GreyBoxModel(**predictor_arguments)
     controller = CVXPYHydraulicMPC(
         horizon=horizon, dt=config['ts'], model=predictor,
         enable_pressure_constraint=True, delta_u_max=config['max_du_step'],
         p_safe=config['p_safe'], pressure_margin=config['pressure_margin'],
         sequential_iterations=config['mpc_outer_iterations'],
         q_position=config['q_position'], q_velocity=config['q_velocity'],
+        terminal_velocity_factor=config.get('terminal_velocity_factor', 1.),
+        terminal_tail_weight0=config.get('terminal_tail_weight0', 0.),
+        terminal_tail_decay_s=config.get('terminal_tail_decay_s', .004),
+        terminal_stop_time_s=config.get('terminal_stop_time_s', .008),
+        terminal_stop_smoothing_mm=config.get('terminal_stop_smoothing_mm', .5),
         move_weight=config['move_weight'])
     grid = np.arange(round(config['duration']/config['ts'])+1)*config['ts']
     fields = ('t_s', 'reference_mm', 'x_mm', 'velocity_m_s', 'p1_mpa',
@@ -196,7 +226,7 @@ def simulate(horizon, config, progress=False):
                     pressure_constraint_scope='predicted P2 upper bound only',
                     prediction_p2_limit_mpa=config['p_safe']-config['pressure_margin'],
                     physical_integrator='Radau with hybrid friction events and dense pressure trace',
-                    physical_rhs_sha256=hashlib.sha256((ROOT/'hydraulic_digital_twin.py').read_bytes()).hexdigest(),
+                    physical_rhs_sha256=physical_rhs_hash(),
                     physical_function_evaluations=plant.nfev,
                     simulation_wall_s=time.perf_counter()-tic_run,
                     blas_threads=1)

@@ -1,0 +1,11 @@
+{
+  "extension_supply_gain": 0.88,
+  "extension_return_gain": 7.0,
+  "extension_return_open_v": 7.5,
+  "extension_return_width_v": 0.25,
+  "pilot_unload_conductance": 2.0e-10,
+  "pilot_unload_valve_scale_v": 0.65,
+  "pilot_unload_speed_scale_m_s": 0.02,
+  "pilot_p1_target_pa": 1050000.0,
+  "pilot_p2_target_pa": 2000000.0
+}
