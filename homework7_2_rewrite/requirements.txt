@@ -1,0 +1,7 @@
+numpy>=2.0,<3
+scipy>=1.13,<2
+matplotlib>=3.7,<4
+cvxpy>=1.6,<2
+osqp>=1.0,<2
+threadpoolctl>=3.5,<4
+python-docx>=1.1,<2

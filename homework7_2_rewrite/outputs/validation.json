@@ -1,0 +1,641 @@
+{
+  "passed": true,
+  "independent_replay": "DOP853 from physical force/flow equations",
+  "checks": [
+    {
+      "name": "seven required horizons present",
+      "passed": true
+    },
+    {
+      "name": "fixed horizon-independent weights and plant declared",
+      "passed": true
+    },
+    {
+      "name": "textbook five-dimensional augmented matrices",
+      "passed": true
+    },
+    {
+      "name": "condensed Hessian is positive definite",
+      "passed": true
+    }
+  ],
+  "cases": {
+    "5": {
+      "checks": [
+        {
+          "name": "complete finite sample grid",
+          "passed": true
+        },
+        {
+          "name": "initial force-balanced state",
+          "passed": true
+        },
+        {
+          "name": "step reference matches task",
+          "passed": true
+        },
+        {
+          "name": "one QP per applied interval",
+          "passed": true
+        },
+        {
+          "name": "hardware voltage and slew bounds",
+          "passed": true
+        },
+        {
+          "name": "recorded increments match applied inputs",
+          "passed": true
+        },
+        {
+          "name": "QP plans, bounds and feedback reset consistent",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "saved intersample pressures within physical limits",
+          "passed": true,
+          "detail": {
+            "min_mpa": 0.11223231615240836,
+            "max_mpa": 20.82305538670948
+          }
+        },
+        {
+          "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "timing statistics match all post-command QPs",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "native OSQP run-time statistics include all post-command QPs",
+          "passed": true
+        },
+        {
+          "name": "independent SI-equation replay matches CSV states",
+          "passed": true,
+          "detail": [
+            1.5631940186722204e-13,
+            8.881784197001252e-16,
+            1.2434497875801753e-14,
+            3.375077994860476e-14
+          ]
+        },
+        {
+          "name": "independent continuous pressure extrema match trace",
+          "passed": true
+        },
+        {
+          "name": "independent continuous pressure stays within 0..21 MPa",
+          "passed": true
+        }
+      ],
+      "independent_replay": {
+        "max_state_error": [
+          1.5631940186722204e-13,
+          8.881784197001252e-16,
+          1.2434497875801753e-14,
+          3.375077994860476e-14
+        ],
+        "peak_pressure_mpa": [
+          10.162331275060648,
+          20.82305538670944
+        ],
+        "min_pressure_mpa": [
+          0.11223231615241797,
+          0.17328695342552397
+        ]
+      }
+    },
+    "10": {
+      "checks": [
+        {
+          "name": "complete finite sample grid",
+          "passed": true
+        },
+        {
+          "name": "initial force-balanced state",
+          "passed": true
+        },
+        {
+          "name": "step reference matches task",
+          "passed": true
+        },
+        {
+          "name": "one QP per applied interval",
+          "passed": true
+        },
+        {
+          "name": "hardware voltage and slew bounds",
+          "passed": true
+        },
+        {
+          "name": "recorded increments match applied inputs",
+          "passed": true
+        },
+        {
+          "name": "QP plans, bounds and feedback reset consistent",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "saved intersample pressures within physical limits",
+          "passed": true,
+          "detail": {
+            "min_mpa": 0.17328895381209963,
+            "max_mpa": 20.829000430813803
+          }
+        },
+        {
+          "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "timing statistics match all post-command QPs",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "native OSQP run-time statistics include all post-command QPs",
+          "passed": true
+        },
+        {
+          "name": "independent SI-equation replay matches CSV states",
+          "passed": true,
+          "detail": [
+            1.5631940186722204e-13,
+            1.1102230246251565e-15,
+            1.2434497875801753e-14,
+            4.085620730620576e-14
+          ]
+        },
+        {
+          "name": "independent continuous pressure extrema match trace",
+          "passed": true
+        },
+        {
+          "name": "independent continuous pressure stays within 0..21 MPa",
+          "passed": true
+        }
+      ],
+      "independent_replay": {
+        "max_state_error": [
+          1.5631940186722204e-13,
+          1.1102230246251565e-15,
+          1.2434497875801753e-14,
+          4.085620730620576e-14
+        ],
+        "peak_pressure_mpa": [
+          10.162330207109294,
+          20.82900043081378
+        ],
+        "min_pressure_mpa": [
+          0.2675382252564368,
+          0.1732889538121231
+        ]
+      }
+    },
+    "15": {
+      "checks": [
+        {
+          "name": "complete finite sample grid",
+          "passed": true
+        },
+        {
+          "name": "initial force-balanced state",
+          "passed": true
+        },
+        {
+          "name": "step reference matches task",
+          "passed": true
+        },
+        {
+          "name": "one QP per applied interval",
+          "passed": true
+        },
+        {
+          "name": "hardware voltage and slew bounds",
+          "passed": true
+        },
+        {
+          "name": "recorded increments match applied inputs",
+          "passed": true
+        },
+        {
+          "name": "QP plans, bounds and feedback reset consistent",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "saved intersample pressures within physical limits",
+          "passed": true,
+          "detail": {
+            "min_mpa": 0.17329154093641486,
+            "max_mpa": 20.828990226703088
+          }
+        },
+        {
+          "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "timing statistics match all post-command QPs",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "native OSQP run-time statistics include all post-command QPs",
+          "passed": true
+        },
+        {
+          "name": "independent SI-equation replay matches CSV states",
+          "passed": true,
+          "detail": [
+            2.1316282072803006e-13,
+            8.881784197001252e-16,
+            7.105427357601002e-15,
+            3.552713678800501e-14
+          ]
+        },
+        {
+          "name": "independent continuous pressure extrema match trace",
+          "passed": true
+        },
+        {
+          "name": "independent continuous pressure stays within 0..21 MPa",
+          "passed": true
+        }
+      ],
+      "independent_replay": {
+        "max_state_error": [
+          2.1316282072803006e-13,
+          8.881784197001252e-16,
+          7.105427357601002e-15,
+          3.552713678800501e-14
+        ],
+        "peak_pressure_mpa": [
+          10.16235278505335,
+          20.828990226703066
+        ],
+        "min_pressure_mpa": [
+          0.26771558467640516,
+          0.17329154093642546
+        ]
+      }
+    },
+    "20": {
+      "checks": [
+        {
+          "name": "complete finite sample grid",
+          "passed": true
+        },
+        {
+          "name": "initial force-balanced state",
+          "passed": true
+        },
+        {
+          "name": "step reference matches task",
+          "passed": true
+        },
+        {
+          "name": "one QP per applied interval",
+          "passed": true
+        },
+        {
+          "name": "hardware voltage and slew bounds",
+          "passed": true
+        },
+        {
+          "name": "recorded increments match applied inputs",
+          "passed": true
+        },
+        {
+          "name": "QP plans, bounds and feedback reset consistent",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "saved intersample pressures within physical limits",
+          "passed": true,
+          "detail": {
+            "min_mpa": 0.1732669726316145,
+            "max_mpa": 20.82891851263117
+          }
+        },
+        {
+          "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "timing statistics match all post-command QPs",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "native OSQP run-time statistics include all post-command QPs",
+          "passed": true
+        },
+        {
+          "name": "independent SI-equation replay matches CSV states",
+          "passed": true,
+          "detail": [
+            1.9895196601282805e-13,
+            1.1102230246251565e-15,
+            1.0658141036401503e-14,
+            3.197442310920451e-14
+          ]
+        },
+        {
+          "name": "independent continuous pressure extrema match trace",
+          "passed": true
+        },
+        {
+          "name": "independent continuous pressure stays within 0..21 MPa",
+          "passed": true
+        }
+      ],
+      "independent_replay": {
+        "max_state_error": [
+          1.9895196601282805e-13,
+          1.1102230246251565e-15,
+          1.0658141036401503e-14,
+          3.197442310920451e-14
+        ],
+        "peak_pressure_mpa": [
+          10.162322953418272,
+          20.82891851263114
+        ],
+        "min_pressure_mpa": [
+          0.26819931953590936,
+          0.17326697263162893
+        ]
+      }
+    },
+    "30": {
+      "checks": [
+        {
+          "name": "complete finite sample grid",
+          "passed": true
+        },
+        {
+          "name": "initial force-balanced state",
+          "passed": true
+        },
+        {
+          "name": "step reference matches task",
+          "passed": true
+        },
+        {
+          "name": "one QP per applied interval",
+          "passed": true
+        },
+        {
+          "name": "hardware voltage and slew bounds",
+          "passed": true
+        },
+        {
+          "name": "recorded increments match applied inputs",
+          "passed": true
+        },
+        {
+          "name": "QP plans, bounds and feedback reset consistent",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "saved intersample pressures within physical limits",
+          "passed": true,
+          "detail": {
+            "min_mpa": 0.17328683958996316,
+            "max_mpa": 20.828923295614004
+          }
+        },
+        {
+          "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "timing statistics match all post-command QPs",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "native OSQP run-time statistics include all post-command QPs",
+          "passed": true
+        },
+        {
+          "name": "independent SI-equation replay matches CSV states",
+          "passed": true,
+          "detail": [
+            1.7763568394002505e-13,
+            1.1102230246251565e-15,
+            1.5987211554602254e-14,
+            4.440892098500626e-14
+          ]
+        },
+        {
+          "name": "independent continuous pressure extrema match trace",
+          "passed": true
+        },
+        {
+          "name": "independent continuous pressure stays within 0..21 MPa",
+          "passed": true
+        }
+      ],
+      "independent_replay": {
+        "max_state_error": [
+          1.7763568394002505e-13,
+          1.1102230246251565e-15,
+          1.5987211554602254e-14,
+          4.440892098500626e-14
+        ],
+        "peak_pressure_mpa": [
+          10.162321270252702,
+          20.828923295613976
+        ],
+        "min_pressure_mpa": [
+          0.2683528233644901,
+          0.17328683958997884
+        ]
+      }
+    },
+    "40": {
+      "checks": [
+        {
+          "name": "complete finite sample grid",
+          "passed": true
+        },
+        {
+          "name": "initial force-balanced state",
+          "passed": true
+        },
+        {
+          "name": "step reference matches task",
+          "passed": true
+        },
+        {
+          "name": "one QP per applied interval",
+          "passed": true
+        },
+        {
+          "name": "hardware voltage and slew bounds",
+          "passed": true
+        },
+        {
+          "name": "recorded increments match applied inputs",
+          "passed": true
+        },
+        {
+          "name": "QP plans, bounds and feedback reset consistent",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "saved intersample pressures within physical limits",
+          "passed": true,
+          "detail": {
+            "min_mpa": 0.17328838281906078,
+            "max_mpa": 20.828374425979924
+          }
+        },
+        {
+          "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "timing statistics match all post-command QPs",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "native OSQP run-time statistics include all post-command QPs",
+          "passed": true
+        },
+        {
+          "name": "independent SI-equation replay matches CSV states",
+          "passed": true,
+          "detail": [
+            1.1368683772161603e-13,
+            1.1102230246251565e-15,
+            1.2434497875801753e-14,
+            2.842170943040401e-14
+          ]
+        },
+        {
+          "name": "independent continuous pressure extrema match trace",
+          "passed": true
+        },
+        {
+          "name": "independent continuous pressure stays within 0..21 MPa",
+          "passed": true
+        }
+      ],
+      "independent_replay": {
+        "max_state_error": [
+          1.1368683772161603e-13,
+          1.1102230246251565e-15,
+          1.2434497875801753e-14,
+          2.842170943040401e-14
+        ],
+        "peak_pressure_mpa": [
+          10.16232074546759,
+          20.8283744259799
+        ],
+        "min_pressure_mpa": [
+          0.27246275798687064,
+          0.17328838281907893
+        ]
+      }
+    },
+    "50": {
+      "checks": [
+        {
+          "name": "complete finite sample grid",
+          "passed": true
+        },
+        {
+          "name": "initial force-balanced state",
+          "passed": true
+        },
+        {
+          "name": "step reference matches task",
+          "passed": true
+        },
+        {
+          "name": "one QP per applied interval",
+          "passed": true
+        },
+        {
+          "name": "hardware voltage and slew bounds",
+          "passed": true
+        },
+        {
+          "name": "recorded increments match applied inputs",
+          "passed": true
+        },
+        {
+          "name": "QP plans, bounds and feedback reset consistent",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "saved intersample pressures within physical limits",
+          "passed": true,
+          "detail": {
+            "min_mpa": 0.1732753351511198,
+            "max_mpa": 20.82846726994312
+          }
+        },
+        {
+          "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "timing statistics match all post-command QPs",
+          "passed": true,
+          "detail": []
+        },
+        {
+          "name": "native OSQP run-time statistics include all post-command QPs",
+          "passed": true
+        },
+        {
+          "name": "independent SI-equation replay matches CSV states",
+          "passed": true,
+          "detail": [
+            1.7053025658242404e-13,
+            8.881784197001252e-16,
+            8.881784197001252e-15,
+            3.197442310920451e-14
+          ]
+        },
+        {
+          "name": "independent continuous pressure extrema match trace",
+          "passed": true
+        },
+        {
+          "name": "independent continuous pressure stays within 0..21 MPa",
+          "passed": true
+        }
+      ],
+      "independent_replay": {
+        "max_state_error": [
+          1.7053025658242404e-13,
+          8.881784197001252e-16,
+          8.881784197001252e-15,
+          3.197442310920451e-14
+        ],
+        "peak_pressure_mpa": [
+          10.162314722437788,
+          20.828467269943083
+        ],
+        "min_pressure_mpa": [
+          0.2719760221506776,
+          0.17327533515113372
+        ]
+      }
+    }
+  },
+  "errors": []
+}

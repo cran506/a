@@ -53,22 +53,23 @@ python mpc_hydraulic_lab.py
 
 ## 第七章作业 7-2：预测时域与压力—算力权衡
 
-独立作业以 CVXPY/OSQP 扫描 N=5、10、15、20、30、40、50，在同一 50 mm 定位工况下比较位移超调、21 MPa 有杆腔安全线和求解耗时。图中突出 N=5、20、50，所有电压、位移与采样间压力均来自真实闭环。局部 QP 无新可行计划时，公开记录经过非线性验证的恢复或移位计划改进，分别计数。
+重新依据第七章课件第 15 页编写的作业，使用四状态局部灰盒、五维增广、固定物理参数和权重，仅改变 N=5、10、15、20、30、40、50。默认采用教材凝聚形式，每采样周期求解一次 CVXPY/OSQP QP；记录位移、电压、连续时间压力极值与真实计算耗时。
 
-- [作业代码与说明](homework7_2/README.md)
-- [四联对比图](homework7_2/outputs/horizon_comparison.png)
-- [七组定量结果](homework7_2/outputs/summary.json)
-- [完整 ZIP](homework7_2/deliverables/第七章_习题7-2_预测时域完整交付.zip)
-- [Word 报告](homework7_2/deliverables/第七章_习题7-2_预测时域实验报告.docx)
+- [重写版说明与代码](homework7_2_rewrite/README.md)
+- [完整作业报告](homework7_2_rewrite/REPORT.md)
+- [四联对比图](homework7_2_rewrite/outputs/horizon_comparison.png)
+- [七组定量结果](homework7_2_rewrite/outputs/metrics.csv)
+- [完整 ZIP](homework7_2_rewrite/deliverables/第七章_习题7-2_重写版完整作业.zip)
+- [Word 报告](homework7_2_rewrite/deliverables/第七章_习题7-2_重写版报告.docx)
 
 ```bash
-cd homework7_2
+cd homework7_2_rewrite
 python -m pip install -r requirements.txt
 python work_7_2.py
-python verify_experiment.py --strict
+python verify.py
 ```
 
-本次 N=5 超调约 5.30%，N=20 约 0.47%，N=50 约 0.36%；七组高密真实 P2 均低于 21 MPa。底层 QP、CVXPY 调用和完整控制步骤的耗时分别报告；当前 Python 实现的完整周期均不能满足 1 ms 截止时间。凝聚矩阵条目按 O(N²) 增长，不能称作指数级维度膨胀。
+重写版 N=5 超调约 0.87%，N=20 约 0.27%，N=50 约 0.33%；七组连续轨迹 P2 峰值约 20.83 MPa。独立 SI 方程积分重放与矩阵/约束测试通过。固定工作点模型用于隔离 N 的作用，不能当成全孔口非线性设备验证；耗时实测与参考图不同，本机完整控制步骤未达到 1 ms 实时要求。旧版保留在 [homework7_2](homework7_2/) 供比较。
 
 ## 第五章作业 5-1：PID 抗积分饱和对比
 
