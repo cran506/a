@@ -167,6 +167,15 @@ def verify(output=ROOT/'outputs'):
             min_pressure_mpa=float(pressure.min()))
         check('summary extrema match raw data', all(np.isclose(metric[key], value, atol=1e-8, rtol=1e-8)
               for key, value in expected_metrics.items()), case=n)
+        # Independent vectorized threshold integration on the saved dense trace.
+        widths=np.diff(trace['t_s']);pl=trace['p2_mpa'][:-1];pr=trace['p2_mpa'][1:]
+        both=(pl>=20.)&(pr>=20.)
+        rising=(pl<20.)&(pr>=20.);falling=(pl>=20.)&(pr<20.)
+        dwell=(np.sum(widths[both])+
+               np.sum(widths[rising]*(pr[rising]-20.)/(pr[rising]-pl[rising]))+
+               np.sum(widths[falling]*(pl[falling]-20.)/(pl[falling]-pr[falling])))*1000.
+        check('near-limit dwell agrees with raw trace threshold crossings',
+              np.isclose(metric['p2_above_20mpa_ms'],dwell,atol=1e-9,rtol=1e-9),case=n)
         active = t[:-1] >= config['step_time_s']-1e-12
         timing_errors = []
         for field, key in [('backend_solve_ms','backend'), ('cvxpy_wall_ms','cvxpy'),

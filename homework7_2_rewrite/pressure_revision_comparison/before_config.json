@@ -1,0 +1,38 @@
+{
+  "sample_time_s": 0.001,
+  "duration_s": 0.15,
+  "step_time_s": 0.01,
+  "target_mm": 50.0,
+  "horizons": [5, 10, 15, 20, 30, 40, 50],
+  "highlight_horizons": [5, 20, 50],
+  "physical": {
+    "mass_kg": 71.42857142857143,
+    "area1_m2": 0.001,
+    "area2_m2": 0.0005,
+    "viscous_ns_m": 714.2857142857143,
+    "bulk_modulus_pa": 1000000000.0,
+    "volume1_m3": 0.0001,
+    "volume2_m3": 0.000025,
+    "flow_voltage1_m3_s_v": 0.00015,
+    "flow_voltage2_m3_s_v": 0.00005,
+    "flow_pressure1_m3_s_pa": 1e-10,
+    "flow_pressure2_m3_s_pa": 1.25e-11,
+    "equilibrium_p1_mpa": 5.0,
+    "equilibrium_p2_mpa": 2.0
+  },
+  "controller": {
+    "q_position": 1.0,
+    "q_velocity": 2.0,
+    "move_weight": 0.001,
+    "du_max": 10.0,
+    "voltage_limit": 9.995,
+    "pmax": 20.35,
+    "pressure_lower": 0.35,
+    "constrain_p1": true,
+    "eps_abs": 1e-5,
+    "eps_rel": 1e-5,
+    "max_iter": 50000
+  },
+  "pressure_check_fractions": [],
+  "physical_pressure_limit_mpa": 21.0
+}

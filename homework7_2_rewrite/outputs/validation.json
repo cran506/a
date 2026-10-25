@@ -55,12 +55,16 @@
           "name": "saved intersample pressures within physical limits",
           "passed": true,
           "detail": {
-            "min_mpa": 0.11223231615240836,
-            "max_mpa": 20.82305538670948
+            "min_mpa": 0.23460103908859975,
+            "max_mpa": 20.860851984524377
           }
         },
         {
           "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "near-limit dwell agrees with raw trace threshold crossings",
           "passed": true
         },
         {
@@ -76,10 +80,10 @@
           "name": "independent SI-equation replay matches CSV states",
           "passed": true,
           "detail": [
-            1.5631940186722204e-13,
+            4.973799150320701e-14,
             8.881784197001252e-16,
-            1.2434497875801753e-14,
-            3.375077994860476e-14
+            1.0658141036401503e-14,
+            2.4868995751603507e-14
           ]
         },
         {
@@ -93,18 +97,18 @@
       ],
       "independent_replay": {
         "max_state_error": [
-          1.5631940186722204e-13,
+          4.973799150320701e-14,
           8.881784197001252e-16,
-          1.2434497875801753e-14,
-          3.375077994860476e-14
+          1.0658141036401503e-14,
+          2.4868995751603507e-14
         ],
         "peak_pressure_mpa": [
-          10.162331275060648,
-          20.82305538670944
+          9.227291661179313,
+          20.860851984524373
         ],
         "min_pressure_mpa": [
-          0.11223231615241797,
-          0.17328695342552397
+          3.917664146557235,
+          0.23460103908859875
         ]
       }
     },
@@ -143,12 +147,16 @@
           "name": "saved intersample pressures within physical limits",
           "passed": true,
           "detail": {
-            "min_mpa": 0.17328895381209963,
-            "max_mpa": 20.829000430813803
+            "min_mpa": 0.23458992458495587,
+            "max_mpa": 20.84257717211272
           }
         },
         {
           "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "near-limit dwell agrees with raw trace threshold crossings",
           "passed": true
         },
         {
@@ -164,10 +172,10 @@
           "name": "independent SI-equation replay matches CSV states",
           "passed": true,
           "detail": [
-            1.5631940186722204e-13,
-            1.1102230246251565e-15,
-            1.2434497875801753e-14,
-            4.085620730620576e-14
+            7.815970093361102e-14,
+            8.881784197001252e-16,
+            7.105427357601002e-15,
+            2.220446049250313e-14
           ]
         },
         {
@@ -181,18 +189,18 @@
       ],
       "independent_replay": {
         "max_state_error": [
-          1.5631940186722204e-13,
-          1.1102230246251565e-15,
-          1.2434497875801753e-14,
-          4.085620730620576e-14
+          7.815970093361102e-14,
+          8.881784197001252e-16,
+          7.105427357601002e-15,
+          2.220446049250313e-14
         ],
         "peak_pressure_mpa": [
-          10.162330207109294,
-          20.82900043081378
+          9.227294805836312,
+          20.842577172112737
         ],
         "min_pressure_mpa": [
-          0.2675382252564368,
-          0.1732889538121231
+          4.453953024324781,
+          0.23458992458496697
         ]
       }
     },
@@ -231,12 +239,16 @@
           "name": "saved intersample pressures within physical limits",
           "passed": true,
           "detail": {
-            "min_mpa": 0.17329154093641486,
-            "max_mpa": 20.828990226703088
+            "min_mpa": 0.23460210979212337,
+            "max_mpa": 20.842701965280806
           }
         },
         {
           "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "near-limit dwell agrees with raw trace threshold crossings",
           "passed": true
         },
         {
@@ -252,10 +264,10 @@
           "name": "independent SI-equation replay matches CSV states",
           "passed": true,
           "detail": [
-            2.1316282072803006e-13,
+            4.973799150320701e-14,
             8.881784197001252e-16,
-            7.105427357601002e-15,
-            3.552713678800501e-14
+            8.881784197001252e-15,
+            3.197442310920451e-14
           ]
         },
         {
@@ -269,18 +281,18 @@
       ],
       "independent_replay": {
         "max_state_error": [
-          2.1316282072803006e-13,
+          4.973799150320701e-14,
           8.881784197001252e-16,
-          7.105427357601002e-15,
-          3.552713678800501e-14
+          8.881784197001252e-15,
+          3.197442310920451e-14
         ],
         "peak_pressure_mpa": [
-          10.16235278505335,
-          20.828990226703066
+          9.227287979120558,
+          20.842701965280785
         ],
         "min_pressure_mpa": [
-          0.26771558467640516,
-          0.17329154093642546
+          4.481917126384126,
+          0.23460210979213486
         ]
       }
     },
@@ -319,12 +331,16 @@
           "name": "saved intersample pressures within physical limits",
           "passed": true,
           "detail": {
-            "min_mpa": 0.1732669726316145,
-            "max_mpa": 20.82891851263117
+            "min_mpa": 0.23460634039131278,
+            "max_mpa": 20.842758704674115
           }
         },
         {
           "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "near-limit dwell agrees with raw trace threshold crossings",
           "passed": true
         },
         {
@@ -340,10 +356,10 @@
           "name": "independent SI-equation replay matches CSV states",
           "passed": true,
           "detail": [
-            1.9895196601282805e-13,
-            1.1102230246251565e-15,
-            1.0658141036401503e-14,
-            3.197442310920451e-14
+            1.3500311979441904e-13,
+            8.881784197001252e-16,
+            1.2434497875801753e-14,
+            3.019806626980426e-14
           ]
         },
         {
@@ -357,18 +373,18 @@
       ],
       "independent_replay": {
         "max_state_error": [
-          1.9895196601282805e-13,
-          1.1102230246251565e-15,
-          1.0658141036401503e-14,
-          3.197442310920451e-14
+          1.3500311979441904e-13,
+          8.881784197001252e-16,
+          1.2434497875801753e-14,
+          3.019806626980426e-14
         ],
         "peak_pressure_mpa": [
-          10.162322953418272,
-          20.82891851263114
+          9.2272960254753,
+          20.842758704674125
         ],
         "min_pressure_mpa": [
-          0.26819931953590936,
-          0.17326697263162893
+          4.494041491163016,
+          0.23460634039131323
         ]
       }
     },
@@ -407,12 +423,16 @@
           "name": "saved intersample pressures within physical limits",
           "passed": true,
           "detail": {
-            "min_mpa": 0.17328683958996316,
-            "max_mpa": 20.828923295614004
+            "min_mpa": 0.23460778835157803,
+            "max_mpa": 20.842386923066705
           }
         },
         {
           "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "near-limit dwell agrees with raw trace threshold crossings",
           "passed": true
         },
         {
@@ -428,10 +448,10 @@
           "name": "independent SI-equation replay matches CSV states",
           "passed": true,
           "detail": [
-            1.7763568394002505e-13,
-            1.1102230246251565e-15,
-            1.5987211554602254e-14,
-            4.440892098500626e-14
+            1.6342482922482304e-13,
+            8.881784197001252e-16,
+            7.105427357601002e-15,
+            2.3092638912203256e-14
           ]
         },
         {
@@ -445,18 +465,18 @@
       ],
       "independent_replay": {
         "max_state_error": [
-          1.7763568394002505e-13,
-          1.1102230246251565e-15,
-          1.5987211554602254e-14,
-          4.440892098500626e-14
+          1.6342482922482304e-13,
+          8.881784197001252e-16,
+          7.105427357601002e-15,
+          2.3092638912203256e-14
         ],
         "peak_pressure_mpa": [
-          10.162321270252702,
-          20.828923295613976
+          9.227306219100626,
+          20.84238692306672
         ],
         "min_pressure_mpa": [
-          0.2683528233644901,
-          0.17328683958997884
+          4.440733272501138,
+          0.23460778835158697
         ]
       }
     },
@@ -495,12 +515,16 @@
           "name": "saved intersample pressures within physical limits",
           "passed": true,
           "detail": {
-            "min_mpa": 0.17328838281906078,
-            "max_mpa": 20.828374425979924
+            "min_mpa": 0.23457288927033892,
+            "max_mpa": 20.842473122804382
           }
         },
         {
           "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "near-limit dwell agrees with raw trace threshold crossings",
           "passed": true
         },
         {
@@ -516,10 +540,10 @@
           "name": "independent SI-equation replay matches CSV states",
           "passed": true,
           "detail": [
-            1.1368683772161603e-13,
-            1.1102230246251565e-15,
-            1.2434497875801753e-14,
-            2.842170943040401e-14
+            4.263256414560601e-14,
+            8.881784197001252e-16,
+            8.881784197001252e-15,
+            2.3092638912203256e-14
           ]
         },
         {
@@ -533,18 +557,18 @@
       ],
       "independent_replay": {
         "max_state_error": [
-          1.1368683772161603e-13,
-          1.1102230246251565e-15,
-          1.2434497875801753e-14,
-          2.842170943040401e-14
+          4.263256414560601e-14,
+          8.881784197001252e-16,
+          8.881784197001252e-15,
+          2.3092638912203256e-14
         ],
         "peak_pressure_mpa": [
-          10.16232074546759,
-          20.8283744259799
+          9.226963243800586,
+          20.84247312280438
         ],
         "min_pressure_mpa": [
-          0.27246275798687064,
-          0.17328838281907893
+          4.439943696156342,
+          0.2345728892703426
         ]
       }
     },
@@ -583,12 +607,16 @@
           "name": "saved intersample pressures within physical limits",
           "passed": true,
           "detail": {
-            "min_mpa": 0.1732753351511198,
-            "max_mpa": 20.82846726994312
+            "min_mpa": 0.2345594409651386,
+            "max_mpa": 20.84328303652064
           }
         },
         {
           "name": "summary extrema match raw data",
+          "passed": true
+        },
+        {
+          "name": "near-limit dwell agrees with raw trace threshold crossings",
           "passed": true
         },
         {
@@ -604,10 +632,10 @@
           "name": "independent SI-equation replay matches CSV states",
           "passed": true,
           "detail": [
-            1.7053025658242404e-13,
+            5.684341886080802e-14,
             8.881784197001252e-16,
             8.881784197001252e-15,
-            3.197442310920451e-14
+            2.930988785010413e-14
           ]
         },
         {
@@ -621,18 +649,18 @@
       ],
       "independent_replay": {
         "max_state_error": [
-          1.7053025658242404e-13,
+          5.684341886080802e-14,
           8.881784197001252e-16,
           8.881784197001252e-15,
-          3.197442310920451e-14
+          2.930988785010413e-14
         ],
         "peak_pressure_mpa": [
-          10.162314722437788,
-          20.828467269943083
+          9.226983547903043,
+          20.843283036520646
         ],
         "min_pressure_mpa": [
-          0.2719760221506776,
-          0.17327533515113372
+          4.60507402526353,
+          0.23455944096514617
         ]
       }
     }

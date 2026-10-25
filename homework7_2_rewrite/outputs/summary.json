@@ -19,12 +19,12 @@
       50
     ],
     "physical": {
-      "mass_kg": 71.42857142857143,
+      "mass_kg": 50.0,
       "area1_m2": 0.001,
       "area2_m2": 0.0005,
-      "viscous_ns_m": 714.2857142857143,
+      "viscous_ns_m": 2500.0,
       "bulk_modulus_pa": 1000000000.0,
-      "volume1_m3": 0.0001,
+      "volume1_m3": 0.0008,
       "volume2_m3": 2.5e-05,
       "flow_voltage1_m3_s_v": 0.00015,
       "flow_voltage2_m3_s_v": 5e-05,
@@ -35,7 +35,7 @@
     },
     "controller": {
       "q_position": 1.0,
-      "q_velocity": 2.0,
+      "q_velocity": 0.5,
       "move_weight": 0.001,
       "du_max": 10.0,
       "voltage_limit": 9.995,
@@ -54,316 +54,337 @@
       "horizon": 5,
       "prediction_ms": 5.0,
       "samples": 151,
-      "peak_position_mm": 50.43310096458547,
-      "overshoot_pct": 0.8662019291709413,
-      "first_target_s": 0.07200000000000001,
-      "settling_2pct_s": 0.07,
-      "final_error_mm": 7.105427357601002e-15,
-      "peak_p1_mpa": 10.162331275060653,
-      "peak_p2_mpa": 20.82305538670948,
-      "min_pressure_mpa": 0.11223231615240836,
-      "max_abs_voltage_v": 9.995006089398505,
-      "max_abs_increment_v": 5.554574324639522,
+      "peak_position_mm": 50.69552571217704,
+      "overshoot_pct": 1.3910514243540746,
+      "first_target_s": 0.078,
+      "settling_2pct_s": 0.076,
+      "final_error_mm": -1.2027783213852672e-09,
+      "peak_p1_mpa": 9.227291661179308,
+      "peak_p2_mpa": 20.860851984524377,
+      "min_pressure_mpa": 0.23460103908859975,
+      "max_abs_voltage_v": 9.99500186857054,
+      "max_abs_increment_v": 6.158537014536988,
       "backend": {
-        "mean_ms": 0.10394442857142858,
-        "median_ms": 0.031618,
-        "p95_ms": 0.40008365,
-        "max_ms": 0.5221060000000001
+        "mean_ms": 0.11826659285714286,
+        "median_ms": 0.111382,
+        "p95_ms": 0.28382999999999997,
+        "max_ms": 0.9650989999999999
       },
       "backend_run": {
-        "mean_ms": 0.10501855714285714,
-        "median_ms": 0.032775,
-        "p95_ms": 0.4011536,
-        "max_ms": 0.5231180000000001
+        "mean_ms": 0.11929899285714285,
+        "median_ms": 0.11242849999999999,
+        "p95_ms": 0.284822,
+        "max_ms": 0.966081
       },
       "cvxpy": {
-        "mean_ms": 1.0611912642778927,
-        "median_ms": 0.9842929999877015,
-        "p95_ms": 1.3557683499357152,
-        "max_ms": 4.804277999937767
+        "mean_ms": 1.0780230357405733,
+        "median_ms": 1.019566999957533,
+        "p95_ms": 1.3695423499939352,
+        "max_ms": 3.311535000193544
       },
       "controller": {
-        "mean_ms": 1.3165743142914315,
-        "median_ms": 1.2381550000100106,
-        "p95_ms": 1.6142244498155378,
-        "max_ms": 5.055555999888384
+        "mean_ms": 1.3325598428601941,
+        "median_ms": 1.2733524997656787,
+        "p95_ms": 1.6228422501626478,
+        "max_ms": 3.5802790002890106
       },
       "backend_deadline_miss_pct": 0.0,
       "controller_deadline_miss_pct": 100.0,
-      "warmup_cvxpy_ms": 6.444109000085518,
-      "max_qp_violation": 0.0001128795946172545,
+      "warmup_cvxpy_ms": 6.843720999768266,
+      "max_qp_violation": 0.00012614842116853708,
       "qp_calls": 150,
-      "run_wall_s": 0.3177535170000283
+      "run_wall_s": 0.3160348280002836,
+      "p2_above_20mpa_ms": 5.0748295210871905,
+      "p2_first_20mpa_s": 0.07495254789813895,
+      "p2_last_20mpa_s": 0.08002737741922614
     },
     "10": {
       "horizon": 10,
       "prediction_ms": 10.0,
       "samples": 151,
-      "peak_position_mm": 50.13134715204315,
-      "overshoot_pct": 0.26269430408629546,
-      "first_target_s": 0.07200000000000001,
-      "settling_2pct_s": 0.07,
-      "final_error_mm": 7.105427357601002e-15,
-      "peak_p1_mpa": 10.162330207109296,
-      "peak_p2_mpa": 20.829000430813803,
-      "min_pressure_mpa": 0.17328895381209963,
-      "max_abs_voltage_v": 9.99500268118094,
-      "max_abs_increment_v": 4.530172973680085,
+      "peak_position_mm": 50.24412079611663,
+      "overshoot_pct": 0.48824159223326546,
+      "first_target_s": 0.078,
+      "settling_2pct_s": 0.076,
+      "final_error_mm": 2.3305801732931286e-12,
+      "peak_p1_mpa": 9.227294805836305,
+      "peak_p2_mpa": 20.84257717211272,
+      "min_pressure_mpa": 0.23458992458495587,
+      "max_abs_voltage_v": 9.995032952403534,
+      "max_abs_increment_v": 6.9793102166274705,
       "backend": {
-        "mean_ms": 0.26840194285714286,
-        "median_ms": 0.030872,
-        "p95_ms": 0.8755989999999997,
-        "max_ms": 2.067174
+        "mean_ms": 0.2737817928571428,
+        "median_ms": 0.20755649999999998,
+        "p95_ms": 0.7104526499999999,
+        "max_ms": 1.9676759999999998
       },
       "backend_run": {
-        "mean_ms": 0.2696630142857143,
-        "median_ms": 0.032378500000000004,
-        "p95_ms": 0.8767794999999997,
-        "max_ms": 2.068366
+        "mean_ms": 0.27497710000000003,
+        "median_ms": 0.208813,
+        "p95_ms": 0.7115646999999998,
+        "max_ms": 1.968808
       },
       "cvxpy": {
-        "mean_ms": 1.217141821423086,
-        "median_ms": 1.0639434999575315,
-        "p95_ms": 1.9872858999292475,
-        "max_ms": 3.002112999865858
+        "mean_ms": 1.2757084857087517,
+        "median_ms": 1.1837484998977743,
+        "p95_ms": 1.6880438999805834,
+        "max_ms": 3.358134999871254
       },
       "controller": {
-        "mean_ms": 1.475614821437635,
-        "median_ms": 1.3228079999407782,
-        "p95_ms": 2.2303409500636917,
-        "max_ms": 3.240280999989409
+        "mean_ms": 1.5448619500083234,
+        "median_ms": 1.4510794999296195,
+        "p95_ms": 1.9777818998363719,
+        "max_ms": 3.5971140000583546
       },
-      "backend_deadline_miss_pct": 3.571428571428571,
+      "backend_deadline_miss_pct": 2.142857142857143,
       "controller_deadline_miss_pct": 100.0,
-      "warmup_cvxpy_ms": 4.722626000102537,
-      "max_qp_violation": 0.00012496281192397873,
+      "warmup_cvxpy_ms": 4.832409999835363,
+      "max_qp_violation": 0.00011945468686924698,
       "qp_calls": 150,
-      "run_wall_s": 0.33159257700003764
+      "run_wall_s": 0.34278618500002267,
+      "p2_above_20mpa_ms": 3.9248166634871797,
+      "p2_first_20mpa_s": 0.0748556157940011,
+      "p2_last_20mpa_s": 0.07878043245748828
     },
     "15": {
       "horizon": 15,
       "prediction_ms": 15.0,
       "samples": 151,
-      "peak_position_mm": 50.13267892617321,
-      "overshoot_pct": 0.26535785234642617,
-      "first_target_s": 0.07200000000000001,
-      "settling_2pct_s": 0.07,
-      "final_error_mm": 7.105427357601002e-15,
-      "peak_p1_mpa": 10.16235278505335,
-      "peak_p2_mpa": 20.828990226703088,
-      "min_pressure_mpa": 0.17329154093641486,
-      "max_abs_voltage_v": 9.995047876388792,
-      "max_abs_increment_v": 4.521548221083325,
+      "peak_position_mm": 50.23205622010166,
+      "overshoot_pct": 0.46411244020332276,
+      "first_target_s": 0.078,
+      "settling_2pct_s": 0.076,
+      "final_error_mm": 4.374811624074937e-11,
+      "peak_p1_mpa": 9.227287979120558,
+      "peak_p2_mpa": 20.842701965280806,
+      "min_pressure_mpa": 0.23460210979212337,
+      "max_abs_voltage_v": 9.995066514972146,
+      "max_abs_increment_v": 7.11234922751872,
       "backend": {
-        "mean_ms": 0.5655008785714286,
-        "median_ms": 0.07781199999999999,
-        "p95_ms": 1.6564671999999987,
-        "max_ms": 5.683644
+        "mean_ms": 0.7461605642857143,
+        "median_ms": 0.546591,
+        "p95_ms": 1.9564175999999989,
+        "max_ms": 7.310281
       },
       "backend_run": {
-        "mean_ms": 0.5670735499999999,
-        "median_ms": 0.079229,
-        "p95_ms": 1.6571117499999986,
-        "max_ms": 5.6853169999999995
+        "mean_ms": 0.7481302285714285,
+        "median_ms": 0.548394,
+        "p95_ms": 1.9577465999999988,
+        "max_ms": 7.312344
       },
       "cvxpy": {
-        "mean_ms": 1.562603242858326,
-        "median_ms": 1.1805830000639617,
-        "p95_ms": 2.733519399964734,
-        "max_ms": 6.672292999837737
+        "mean_ms": 2.0225489785616446,
+        "median_ms": 1.8650169997727062,
+        "p95_ms": 3.3264129503777418,
+        "max_ms": 8.805188000224007
       },
       "controller": {
-        "mean_ms": 1.836284185713209,
-        "median_ms": 1.4638505000448276,
-        "p95_ms": 3.0048586500242886,
-        "max_ms": 6.942680000065593
+        "mean_ms": 2.3695132856898584,
+        "median_ms": 2.1799999999529973,
+        "p95_ms": 3.9123585496326982,
+        "max_ms": 9.152780000022176
       },
-      "backend_deadline_miss_pct": 29.28571428571429,
+      "backend_deadline_miss_pct": 35.0,
       "controller_deadline_miss_pct": 100.0,
-      "warmup_cvxpy_ms": 5.31428599992978,
-      "max_qp_violation": 0.00013226659329035328,
+      "warmup_cvxpy_ms": 5.6401130000267585,
+      "max_qp_violation": 0.00014548139021464124,
       "qp_calls": 150,
-      "run_wall_s": 0.38926220999996985
+      "run_wall_s": 0.48130300399998305,
+      "p2_above_20mpa_ms": 3.78531978468917,
+      "p2_first_20mpa_s": 0.07484624663694396,
+      "p2_last_20mpa_s": 0.07863156642163313
     },
     "20": {
       "horizon": 20,
       "prediction_ms": 20.0,
       "samples": 151,
-      "peak_position_mm": 50.13556333276878,
-      "overshoot_pct": 0.27112666553756526,
-      "first_target_s": 0.07200000000000001,
-      "settling_2pct_s": 0.07,
-      "final_error_mm": 7.105427357601002e-15,
-      "peak_p1_mpa": 10.162322953418272,
-      "peak_p2_mpa": 20.82891851263117,
-      "min_pressure_mpa": 0.1732669726316145,
-      "max_abs_voltage_v": 9.995051224385868,
-      "max_abs_increment_v": 4.496789633555213,
+      "peak_position_mm": 50.22696587175133,
+      "overshoot_pct": 0.4539317435026646,
+      "first_target_s": 0.078,
+      "settling_2pct_s": 0.076,
+      "final_error_mm": 4.212097337585874e-11,
+      "peak_p1_mpa": 9.227296025475294,
+      "peak_p2_mpa": 20.842758704674115,
+      "min_pressure_mpa": 0.23460634039131278,
+      "max_abs_voltage_v": 9.995016684070535,
+      "max_abs_increment_v": 7.168762807759214,
       "backend": {
-        "mean_ms": 1.14685725,
-        "median_ms": 0.105514,
-        "p95_ms": 2.982375399999998,
-        "max_ms": 13.80573
+        "mean_ms": 1.2591147500000002,
+        "median_ms": 0.5457000000000001,
+        "p95_ms": 3.398579849999998,
+        "max_ms": 12.602502
       },
       "backend_run": {
-        "mean_ms": 1.148369542857143,
-        "median_ms": 0.106946,
-        "p95_ms": 2.984137399999998,
-        "max_ms": 13.807152
+        "mean_ms": 1.260653235714286,
+        "median_ms": 0.547142,
+        "p95_ms": 3.4001148499999982,
+        "max_ms": 12.603864
       },
       "cvxpy": {
-        "mean_ms": 2.1674646785722222,
-        "median_ms": 1.1670285000491276,
-        "p95_ms": 4.153725349976867,
-        "max_ms": 14.799236000044402
+        "mean_ms": 2.3403736285510086,
+        "median_ms": 1.548316500020519,
+        "p95_ms": 4.8258467997357,
+        "max_ms": 13.771698999789805
       },
       "controller": {
-        "mean_ms": 2.443001892865076,
-        "median_ms": 1.4633595001214417,
-        "p95_ms": 4.451218499980313,
-        "max_ms": 15.05299800010107
+        "mean_ms": 2.614124114279548,
+        "median_ms": 1.8057175002468284,
+        "p95_ms": 5.089671400105544,
+        "max_ms": 14.056837000225642
       },
-      "backend_deadline_miss_pct": 36.42857142857142,
+      "backend_deadline_miss_pct": 42.857142857142854,
       "controller_deadline_miss_pct": 100.0,
-      "warmup_cvxpy_ms": 6.049243000006754,
-      "max_qp_violation": 0.00012326635300041744,
+      "warmup_cvxpy_ms": 6.1187620003693155,
+      "max_qp_violation": 0.00015621321051639825,
       "qp_calls": 150,
-      "run_wall_s": 0.5068927550000808
+      "run_wall_s": 0.5335294520000389,
+      "p2_above_20mpa_ms": 3.729584809761821,
+      "p2_first_20mpa_s": 0.07484201310641408,
+      "p2_last_20mpa_s": 0.0785715979161759
     },
     "30": {
       "horizon": 30,
       "prediction_ms": 30.0,
       "samples": 151,
-      "peak_position_mm": 50.13634883169571,
-      "overshoot_pct": 0.2726976633914262,
-      "first_target_s": 0.07200000000000001,
-      "settling_2pct_s": 0.07,
-      "final_error_mm": 7.105427357601002e-15,
-      "peak_p1_mpa": 10.162321270252708,
-      "peak_p2_mpa": 20.828923295614004,
-      "min_pressure_mpa": 0.17328683958996316,
-      "max_abs_voltage_v": 9.995055274959986,
-      "max_abs_increment_v": 4.490839460866565,
+      "peak_position_mm": 50.2596377096233,
+      "overshoot_pct": 0.5192754192465969,
+      "first_target_s": 0.078,
+      "settling_2pct_s": 0.076,
+      "final_error_mm": 4.168754230704508e-11,
+      "peak_p1_mpa": 9.227306219100619,
+      "peak_p2_mpa": 20.842386923066705,
+      "min_pressure_mpa": 0.23460778835157803,
+      "max_abs_voltage_v": 9.995063421418811,
+      "max_abs_increment_v": 6.81306281318378,
       "backend": {
-        "mean_ms": 2.416442721428572,
-        "median_ms": 0.189901,
-        "p95_ms": 6.339267999999999,
-        "max_ms": 24.33397
+        "mean_ms": 3.0395235357142854,
+        "median_ms": 2.021329,
+        "p95_ms": 8.643031199999989,
+        "max_ms": 47.196272
       },
       "backend_run": {
-        "mean_ms": 2.4182488571428573,
-        "median_ms": 0.191739,
-        "p95_ms": 6.341431349999999,
-        "max_ms": 24.335572
+        "mean_ms": 3.0416062714285714,
+        "median_ms": 2.0230915,
+        "p95_ms": 8.644654699999986,
+        "max_ms": 47.197934
       },
       "cvxpy": {
-        "mean_ms": 3.509582714280311,
-        "median_ms": 1.341160000038144,
-        "p95_ms": 7.7835026000229846,
-        "max_ms": 25.617173999989973
+        "mean_ms": 4.183054928551298,
+        "median_ms": 3.634234499941158,
+        "p95_ms": 9.947581749952397,
+        "max_ms": 48.41883799963398
       },
       "controller": {
-        "mean_ms": 3.7969532714344365,
-        "median_ms": 1.6335010000148031,
-        "p95_ms": 8.138660750137205,
-        "max_ms": 25.973260000000664
+        "mean_ms": 4.47890489287082,
+        "median_ms": 3.99267299985695,
+        "p95_ms": 10.266852250038017,
+        "max_ms": 48.79073600022821
       },
-      "backend_deadline_miss_pct": 44.285714285714285,
+      "backend_deadline_miss_pct": 52.142857142857146,
       "controller_deadline_miss_pct": 100.0,
-      "warmup_cvxpy_ms": 7.666128999971988,
-      "max_qp_violation": 0.00013127377894761594,
+      "warmup_cvxpy_ms": 7.4228299999958836,
+      "max_qp_violation": 0.000154967741639922,
       "qp_calls": 150,
-      "run_wall_s": 0.6674591749999763
+      "run_wall_s": 0.7631487150001703,
+      "p2_above_20mpa_ms": 4.019567388828041,
+      "p2_first_20mpa_s": 0.07486578628487844,
+      "p2_last_20mpa_s": 0.07888535367370648
     },
     "40": {
       "horizon": 40,
       "prediction_ms": 40.0,
       "samples": 151,
-      "peak_position_mm": 50.16364788208742,
-      "overshoot_pct": 0.32729576417483486,
-      "first_target_s": 0.07200000000000001,
-      "settling_2pct_s": 0.07,
-      "final_error_mm": 7.105427357601002e-15,
-      "peak_p1_mpa": 10.16232074546759,
-      "peak_p2_mpa": 20.828374425979924,
-      "min_pressure_mpa": 0.17328838281906078,
-      "max_abs_voltage_v": 9.995044422726382,
-      "max_abs_increment_v": 4.273123723913553,
+      "peak_position_mm": 50.24869193147117,
+      "overshoot_pct": 0.4973838629423426,
+      "first_target_s": 0.078,
+      "settling_2pct_s": 0.076,
+      "final_error_mm": 4.2241765640937956e-11,
+      "peak_p1_mpa": 9.226963243800586,
+      "peak_p2_mpa": 20.842473122804382,
+      "min_pressure_mpa": 0.23457288927033892,
+      "max_abs_voltage_v": 9.995064761275334,
+      "max_abs_increment_v": 4.719830786761556,
       "backend": {
-        "mean_ms": 3.9184271428571433,
-        "median_ms": 0.335711,
-        "p95_ms": 12.88104464999998,
-        "max_ms": 20.513514999999998
+        "mean_ms": 4.8302242857142845,
+        "median_ms": 2.5963874999999996,
+        "p95_ms": 12.421436449999968,
+        "max_ms": 38.460952999999996
       },
       "backend_run": {
-        "mean_ms": 3.9207029142857137,
-        "median_ms": 0.33804999999999996,
-        "p95_ms": 12.88308004999998,
-        "max_ms": 20.515757999999998
+        "mean_ms": 4.832599800000001,
+        "median_ms": 2.5988115,
+        "p95_ms": 12.423605999999966,
+        "max_ms": 38.46339699999999
       },
       "cvxpy": {
-        "mean_ms": 5.132839514294574,
-        "median_ms": 1.6033199999583303,
-        "p95_ms": 14.104238500192404,
-        "max_ms": 21.897609999996348
+        "mean_ms": 6.111373535687952,
+        "median_ms": 3.742868000017552,
+        "p95_ms": 13.745461299663438,
+        "max_ms": 40.057685999727255
       },
       "controller": {
-        "mean_ms": 5.450943635712845,
-        "median_ms": 2.0638790000475637,
-        "p95_ms": 14.701741850171842,
-        "max_ms": 22.22333100007745
+        "mean_ms": 6.456560300008667,
+        "median_ms": 4.041547500037268,
+        "p95_ms": 14.076648700188304,
+        "max_ms": 40.553812999860384
       },
-      "backend_deadline_miss_pct": 46.42857142857143,
+      "backend_deadline_miss_pct": 52.85714285714286,
       "controller_deadline_miss_pct": 100.0,
-      "warmup_cvxpy_ms": 10.80009199995402,
-      "max_qp_violation": 0.0001306761205910334,
+      "warmup_cvxpy_ms": 9.21863299981851,
+      "max_qp_violation": 0.0001485113991108733,
       "qp_calls": 150,
-      "run_wall_s": 0.9069104310001421
+      "run_wall_s": 1.0459388160002163,
+      "p2_above_20mpa_ms": 3.99302775046198,
+      "p2_first_20mpa_s": 0.0749036333349003,
+      "p2_last_20mpa_s": 0.07889666108536228
     },
     "50": {
       "horizon": 50,
       "prediction_ms": 50.0,
       "samples": 151,
-      "peak_position_mm": 50.16267315496299,
-      "overshoot_pct": 0.32534630992597613,
-      "first_target_s": 0.07200000000000001,
-      "settling_2pct_s": 0.07,
-      "final_error_mm": 6.7162346795157646e-09,
-      "peak_p1_mpa": 10.162314722437792,
-      "peak_p2_mpa": 20.82846726994312,
-      "min_pressure_mpa": 0.1732753351511198,
-      "max_abs_voltage_v": 9.99503373631335,
-      "max_abs_increment_v": 4.2993598803998845,
+      "peak_position_mm": 50.17273471891889,
+      "overshoot_pct": 0.34546943783777806,
+      "first_target_s": 0.078,
+      "settling_2pct_s": 0.076,
+      "final_error_mm": 4.2653880427678814e-11,
+      "peak_p1_mpa": 9.226983547903036,
+      "peak_p2_mpa": 20.84328303652064,
+      "min_pressure_mpa": 0.2345594409651386,
+      "max_abs_voltage_v": 9.995077436476093,
+      "max_abs_increment_v": 3.7873613488135547,
       "backend": {
-        "mean_ms": 5.860076692857143,
-        "median_ms": 0.439392,
-        "p95_ms": 21.783162999999995,
-        "max_ms": 34.430531
+        "mean_ms": 8.61458227142857,
+        "median_ms": 1.4149450000000001,
+        "p95_ms": 36.16306395,
+        "max_ms": 47.564293
       },
       "backend_run": {
-        "mean_ms": 5.862452221428571,
-        "median_ms": 0.441871,
-        "p95_ms": 21.7862089,
-        "max_ms": 34.433395
+        "mean_ms": 8.617169178571428,
+        "median_ms": 1.4171140000000002,
+        "p95_ms": 36.1665924,
+        "max_ms": 47.567247
       },
       "cvxpy": {
-        "mean_ms": 7.152679800002001,
-        "median_ms": 1.7913789999965957,
-        "p95_ms": 23.32379855000681,
-        "max_ms": 35.883732000002055
+        "mean_ms": 10.028514492858319,
+        "median_ms": 3.0291690002286487,
+        "p95_ms": 37.856970099801394,
+        "max_ms": 49.36085700001058
       },
       "controller": {
-        "mean_ms": 7.48740040001264,
-        "median_ms": 2.0819915000629408,
-        "p95_ms": 23.811255699854428,
-        "max_ms": 36.247228000092946
+        "mean_ms": 10.42522816431821,
+        "median_ms": 3.441694999992251,
+        "p95_ms": 38.30369924985461,
+        "max_ms": 49.81460999988485
       },
-      "backend_deadline_miss_pct": 44.285714285714285,
+      "backend_deadline_miss_pct": 50.71428571428571,
       "controller_deadline_miss_pct": 100.0,
-      "warmup_cvxpy_ms": 10.887061999937941,
-      "max_qp_violation": 0.0001330355531115046,
+      "warmup_cvxpy_ms": 16.302604999964387,
+      "max_qp_violation": 0.00015535649339071256,
       "qp_calls": 150,
-      "run_wall_s": 1.1939110629998595
+      "run_wall_s": 1.6121549150002465,
+      "p2_above_20mpa_ms": 3.3285853447438396,
+      "p2_first_20mpa_s": 0.07490219776526418,
+      "p2_last_20mpa_s": 0.07823078311000801
     }
   },
   "environment": {
@@ -371,9 +392,9 @@
     "numpy": "2.3.5",
     "scipy": "1.17.0",
     "cvxpy": "1.9.3",
+    "osqp": "1.1.3",
     "cpu": "AMD EPYC 9V74 80-Core Processor",
-    "threads": 1,
     "system": "Linux-6.18.55-x86_64-with-glibc2.41",
-    "osqp": "1.1.3"
+    "threads": 1
   }
 }

@@ -19,6 +19,7 @@ import osqp
 from threadpoolctl import threadpool_limits
 
 from model import HydraulicGreyBox
+from pressure_metrics import pressure_exposure
 from mpc import CondensedHydraulicMPC, augment_model, condensed_objective, prediction_matrices
 
 ROOT = Path(__file__).resolve().parent
@@ -102,6 +103,7 @@ def simulate(n, config):
         warmup_cvxpy_ms=logs[0]['cvxpy_wall_ms'],
         max_qp_violation=max(log['max_constraint_violation'] for log in logs),
         qp_calls=len(logs), run_wall_s=time.perf_counter()-start_run)
+    metrics.update(pressure_exposure(pressure))
     return dict(data=data, trace=pressure, logs=logs, metrics=metrics)
 
 
@@ -117,7 +119,7 @@ def save(results, config, destination):
         for suffix, fields, array in [('',FIELDS,result['data']),
             ('_pressure_trace',['t_s','p1_mpa','p2_mpa'],result['trace'])]:
             with Path(str(prefix)+suffix+'.csv').open('w',newline='',encoding='utf-8') as stream:
-                writer=csv.writer(stream);writer.writerow(fields);writer.writerows(array)
+                writer=csv.writer(stream,lineterminator='\n');writer.writerow(fields);writer.writerows(array)
         Path(str(prefix)+'_qp.json').write_text(json.dumps(result['logs'],ensure_ascii=False),encoding='utf-8')
     summary=dict(config=config,results={str(n):r['metrics'] for n,r in results.items()},
                  environment=dict(python=platform.python_version(),numpy=np.__version__,
@@ -125,11 +127,11 @@ def save(results, config, destination):
                                   cpu=cpu_name(),system=platform.platform(),threads=1))
     (destination/'summary.json').write_text(json.dumps(summary,indent=2,ensure_ascii=False),encoding='utf-8')
     with (destination/'metrics.csv').open('w',newline='',encoding='utf-8-sig') as stream:
-        writer=csv.writer(stream);writer.writerow(['N','视野ms','超调%','P2峰MPa','最小压力MPa','最终误差mm',
-                                                  '底层QP均值ms','完整控制均值ms','完整控制P95ms'])
+        writer=csv.writer(stream,lineterminator='\n');writer.writerow(['N','视野ms','超调%','P2峰MPa','最小压力MPa','最终误差mm',
+                                                  'P2不低于20MPa持续ms','底层QP均值ms','完整控制均值ms','完整控制P95ms'])
         for n,r in results.items():
             m=r['metrics'];writer.writerow([n,m['prediction_ms'],m['overshoot_pct'],m['peak_p2_mpa'],
-                 m['min_pressure_mpa'],m['final_error_mm'],m['backend_run']['mean_ms'],
+                 m['min_pressure_mpa'],m['final_error_mm'],m['p2_above_20mpa_ms'],m['backend_run']['mean_ms'],
                  m['controller']['mean_ms'],m['controller']['p95_ms']])
     model=HydraulicGreyBox(config['physical']);ad,bd,cd=model.discretize(config['sample_time_s'])
     n=20;h,g,f,phi,bias=condensed_objective(ad,bd,cd,n,model.equilibrium,0,config['target_mm'],
@@ -141,11 +143,11 @@ def save(results, config, destination):
 
 
 def print_table(summary):
-    print('\n N | 视野ms | 超调% | P2峰MPa | QP均值ms | QP P95ms | 完整控制均值ms')
-    print('-'*82)
+    print('\n N | 视野ms | 超调% | P2峰MPa | ≥20MPa持续ms | QP均值ms | QP P95ms | 完整控制均值ms')
+    print('-'*98)
     for n, m in summary['results'].items():
         print(f'{int(n):2d} | {m["prediction_ms"]:6.0f} | {m["overshoot_pct"]:5.3f} | '
-              f'{m["peak_p2_mpa"]:7.4f} | {m["backend_run"]["mean_ms"]:8.3f} | '
+              f'{m["peak_p2_mpa"]:7.4f} | {m["p2_above_20mpa_ms"]:11.3f} | {m["backend_run"]["mean_ms"]:8.3f} | '
               f'{m["backend_run"]["p95_ms"]:8.3f} | {m["controller"]["mean_ms"]:14.3f}')
 
 

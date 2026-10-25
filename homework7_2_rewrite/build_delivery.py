@@ -18,11 +18,11 @@ def main():
     summary=json.loads((ROOT/'outputs/summary.json').read_text(encoding='utf-8'))
     body=(ROOT/'REPORT.md').read_text(encoding='utf-8')
     start,end='<!-- AUTO_RESULTS_START -->','<!-- AUTO_RESULTS_END -->'
-    rows=['| N | 视野 (ms) | 超调 (%) | P2 峰值 (MPa) | 最小两腔压力 (MPa) | 底层 QP 均值 (ms) | 底层 QP P95 (ms) |',
+    rows=['| N | 视野 (ms) | 超调 (%) | P2 峰值 (MPa) | ≥20 MPa 持续 (ms) | 底层 QP 均值 (ms) | 底层 QP P95 (ms) |',
           '| ---: | ---: | ---: | ---: | ---: | ---: | ---: |']
     for n,m in summary['results'].items():
         rows.append(f'| {n} | {m["prediction_ms"]:.0f} | {m["overshoot_pct"]:.3f} | {m["peak_p2_mpa"]:.4f} | '
-                    f'{m["min_pressure_mpa"]:.4f} | {m["backend_run"]["mean_ms"]:.3f} | {m["backend_run"]["p95_ms"]:.3f} |')
+                    f'{m["p2_above_20mpa_ms"]:.3f} | {m["backend_run"]["mean_ms"]:.3f} | {m["backend_run"]["p95_ms"]:.3f} |')
     rows+=['','| N | CVXPY 均值 (ms) | CVXPY P95 (ms) | 完整控制均值 (ms) | 完整控制 P95 (ms) | 初次 CVXPY 编译/求解 (ms) |',
            '| ---: | ---: | ---: | ---: | ---: | ---: |']
     for n,m in summary['results'].items():

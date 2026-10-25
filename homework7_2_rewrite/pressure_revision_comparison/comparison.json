@@ -1,0 +1,105 @@
+{
+  "baseline_commit": "17e8317899a58a6fc9460d29bc8c71693fdbd3dd",
+  "pressure_threshold_mpa": 20.0,
+  "illustrative_sample_time_s": 0.08,
+  "physical_before": {
+    "mass_kg": 71.42857142857143,
+    "area1_m2": 0.001,
+    "area2_m2": 0.0005,
+    "viscous_ns_m": 714.2857142857143,
+    "bulk_modulus_pa": 1000000000.0,
+    "volume1_m3": 0.0001,
+    "volume2_m3": 2.5e-05,
+    "flow_voltage1_m3_s_v": 0.00015,
+    "flow_voltage2_m3_s_v": 5e-05,
+    "flow_pressure1_m3_s_pa": 1e-10,
+    "flow_pressure2_m3_s_pa": 1.25e-11,
+    "equilibrium_p1_mpa": 5.0,
+    "equilibrium_p2_mpa": 2.0
+  },
+  "physical_after": {
+    "mass_kg": 50.0,
+    "area1_m2": 0.001,
+    "area2_m2": 0.0005,
+    "viscous_ns_m": 2500.0,
+    "bulk_modulus_pa": 1000000000.0,
+    "volume1_m3": 0.0008,
+    "volume2_m3": 2.5e-05,
+    "flow_voltage1_m3_s_v": 0.00015,
+    "flow_voltage2_m3_s_v": 5e-05,
+    "flow_pressure1_m3_s_pa": 1e-10,
+    "flow_pressure2_m3_s_pa": 1.25e-11,
+    "equilibrium_p1_mpa": 5.0,
+    "equilibrium_p2_mpa": 2.0
+  },
+  "controller_before": {
+    "q_position": 1.0,
+    "q_velocity": 2.0,
+    "move_weight": 0.001,
+    "du_max": 10.0,
+    "voltage_limit": 9.995,
+    "pmax": 20.35,
+    "pressure_lower": 0.35,
+    "constrain_p1": true,
+    "eps_abs": 1e-05,
+    "eps_rel": 1e-05,
+    "max_iter": 50000
+  },
+  "controller_after": {
+    "q_position": 1.0,
+    "q_velocity": 0.5,
+    "move_weight": 0.001,
+    "du_max": 10.0,
+    "voltage_limit": 9.995,
+    "pmax": 20.35,
+    "pressure_lower": 0.35,
+    "constrain_p1": true,
+    "eps_abs": 1e-05,
+    "eps_rel": 1e-05,
+    "max_iter": 50000
+  },
+  "results": {
+    "5": {
+      "before": {
+        "p2_above_20mpa_ms": 4.384428585665331,
+        "p2_first_20mpa_s": 0.0679422660372968,
+        "p2_last_20mpa_s": 0.07232669462296214,
+        "p2_at_80ms_mpa": 0.34999961139250785
+      },
+      "after": {
+        "p2_above_20mpa_ms": 5.0748295210871905,
+        "p2_first_20mpa_s": 0.07495254789813895,
+        "p2_last_20mpa_s": 0.08002737741922614,
+        "p2_at_80ms_mpa": 20.35001762226812
+      }
+    },
+    "20": {
+      "before": {
+        "p2_above_20mpa_ms": 3.9893882829371288,
+        "p2_first_20mpa_s": 0.06789736145912365,
+        "p2_last_20mpa_s": 0.07188674974206077,
+        "p2_at_80ms_mpa": 2.0500175767555433
+      },
+      "after": {
+        "p2_above_20mpa_ms": 3.729584809761821,
+        "p2_first_20mpa_s": 0.07484201310641408,
+        "p2_last_20mpa_s": 0.0785715979161759,
+        "p2_at_80ms_mpa": 10.038213657085791
+      }
+    },
+    "50": {
+      "before": {
+        "p2_above_20mpa_ms": 4.000069497044886,
+        "p2_first_20mpa_s": 0.06790359354537782,
+        "p2_last_20mpa_s": 0.07190366304242271,
+        "p2_at_80ms_mpa": 2.340802875164566
+      },
+      "after": {
+        "p2_above_20mpa_ms": 3.3285853447438396,
+        "p2_first_20mpa_s": 0.07490219776526418,
+        "p2_last_20mpa_s": 0.07823078311000801,
+        "p2_at_80ms_mpa": 9.295081903273607
+      }
+    }
+  }
+}
