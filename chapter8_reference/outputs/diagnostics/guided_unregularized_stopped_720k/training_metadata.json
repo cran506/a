@@ -1,0 +1,57 @@
+{
+  "algorithm": "stable-baselines3 SAC",
+  "actual_timesteps": 1000000,
+  "gradient_updates": 30938,
+  "seed": 2026,
+  "wall_seconds": 232.7165701820004,
+  "torch_version": "2.14.1+cpu",
+  "target_entropy_normalized": -1.9525850929940458,
+  "target_entropy_voltage": 0.35,
+  "policy_architecture": [
+    5,
+    64,
+    64,
+    1
+  ],
+  "n_envs": 8,
+  "train_frequency_vector_steps": 4,
+  "gradient_steps_per_update": 1,
+  "optimizer_reward_multiplier": 0.01,
+  "learning_rate": 0.0003,
+  "observation_names": [
+    "position_error_mm",
+    "velocity_error_mm_s",
+    "acceleration_error_mm_s2",
+    "load_pressure_MPa",
+    "supply_pressure_MPa"
+  ],
+  "obs_mean": [
+    0.0,
+    0.0,
+    0.0,
+    10.0,
+    21.0
+  ],
+  "obs_std": [
+    10.0,
+    50.0,
+    500.0,
+    8.0,
+    2.0
+  ],
+  "reward": "-100*e_mm^2-.1*u_V^2-(u_V-u_prev_V)^2+2*I(|e_mm|<.2); explicit physical failure penalty -500",
+  "domain_randomization": "m ±20%; base beta 600..1400 MPa; Fc ±30%",
+  "fault_augmentation": "80% episodes: time U(.05,.8)s, load U(0,5500)N, beta multiplier U(.5,1)",
+  "training_initial_position_m": [
+    0.0001,
+    0.005
+  ],
+  "training_reference_velocity_m_s": [
+    0.035,
+    0.065
+  ],
+  "physical_config_sha256": "cf2fd7a85f565083d3a6bbb9b0c0bb3dd6e21bcbea8781a34e58080ddb36397a",
+  "observation_signs": "e=actual-reference, de=actual-reference, dde=actual-reference; PL=P1-(A2/A1)P2 in MPa",
+  "normalization": "User-supplied fixed mean/std Z-score formula; prior engineering statistics, not fitted empirical unit variance",
+  "policy_initialization": "from scratch, five-input network; no ten-dimensional checkpoint reuse"
+}

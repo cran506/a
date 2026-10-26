@@ -1,0 +1,98 @@
+[
+  {
+    "clip_quantile": 0.0,
+    "alpha": 0.5,
+    "prefault_rms": 4.625712174281573,
+    "prefault_max_step": 14.405885338783264,
+    "minimum": -19.89083540217,
+    "recovery": 0.031000000000000028
+  },
+  {
+    "clip_quantile": 0.0,
+    "alpha": 0.75,
+    "prefault_rms": 4.708453426226363,
+    "prefault_max_step": 14.463306665420532,
+    "minimum": -20.203565250071946,
+    "recovery": 0.03300000000000003
+  },
+  {
+    "clip_quantile": 0.0,
+    "alpha": 1.0,
+    "prefault_rms": 4.904393108690572,
+    "prefault_max_step": 14.408683776855469,
+    "minimum": -18.161836472878285,
+    "recovery": 0.038000000000000034
+  },
+  {
+    "clip_quantile": 0.001,
+    "alpha": 0.5,
+    "prefault_rms": 4.653986744845806,
+    "prefault_max_step": 14.179353713989258,
+    "minimum": -18.93896141134188,
+    "recovery": null
+  },
+  {
+    "clip_quantile": 0.001,
+    "alpha": 0.75,
+    "prefault_rms": 4.985808934862661,
+    "prefault_max_step": 14.259886145591736,
+    "minimum": -19.46880643890048,
+    "recovery": 0.031000000000000028
+  },
+  {
+    "clip_quantile": 0.001,
+    "alpha": 1.0,
+    "prefault_rms": 5.10082385990407,
+    "prefault_max_step": 14.354888796806335,
+    "minimum": -20.090165247438748,
+    "recovery": 0.04200000000000004
+  },
+  {
+    "clip_quantile": 0.01,
+    "alpha": 0.5,
+    "prefault_rms": 1.0555068661762346,
+    "prefault_max_step": 0.7961851358413696,
+    "minimum": -31.652692112379935,
+    "recovery": 0.09699999999999998
+  },
+  {
+    "clip_quantile": 0.01,
+    "alpha": 0.75,
+    "prefault_rms": 1.056569410556121,
+    "prefault_max_step": 0.7076787948608398,
+    "minimum": -37.44799563507948,
+    "recovery": 0.124
+  },
+  {
+    "clip_quantile": 0.01,
+    "alpha": 1.0,
+    "prefault_rms": 8.873133046579674,
+    "prefault_max_step": 5.152880847454071,
+    "minimum": -48.834397326131494,
+    "recovery": 0.04600000000000004
+  },
+  {
+    "clip_quantile": 0.03,
+    "alpha": 0.5,
+    "prefault_rms": 4.4297847758070255,
+    "prefault_max_step": 4.809164851903915,
+    "minimum": -50.82033897212762,
+    "recovery": 0.08499999999999996
+  },
+  {
+    "clip_quantile": 0.03,
+    "alpha": 0.75,
+    "prefault_rms": 5.689444135878526,
+    "prefault_max_step": 5.000450313091278,
+    "minimum": -49.028228021247,
+    "recovery": 0.06400000000000006
+  },
+  {
+    "clip_quantile": 0.03,
+    "alpha": 1.0,
+    "prefault_rms": 1.5385696904480546,
+    "prefault_max_step": 2.0740237832069397,
+    "minimum": -44.1261312709289,
+    "recovery": 0.10499999999999998
+  }
+]

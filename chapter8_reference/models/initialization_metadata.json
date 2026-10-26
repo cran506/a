@@ -1,0 +1,76 @@
+{
+  "method": "Five-feature approximate inverse plus fixed position/velocity/acceleration feedback",
+  "teacher_version": "v2_quasisteady_pressure_measured_gain_scheduling",
+  "reference_velocity_m_s": 0.05,
+  "return_pressure_estimate": "P2=(Ps+r^2*Pr-PL)/(r^2+1/r), r=A1/A2",
+  "gains": {
+    "kp_v_per_mm": 3.0,
+    "kv_v_per_mms": 0.2,
+    "ka_base_v_per_mms2": 5e-05,
+    "ka_increment_v_per_mms2": 0.00045
+  },
+  "gain_schedule": "ka=0.00005+0.00045*max(sigmoid(2*(PL_MPa-10)),sigmoid((-acc_mms2-3000)/1000))",
+  "physical_priors": {
+    "A1_m2": 0.00038,
+    "A2_m2": 0.00021,
+    "Pr_pa": 100000.0,
+    "K_flow": 1.64e-09,
+    "C_ip": 1e-14,
+    "deadzone_v": 0.5
+  },
+  "teacher_uses_only_measured_five_features": true,
+  "future_fault_or_random_parameters_as_input": false,
+  "seed": 2026,
+  "episodes": 48,
+  "physical_steps": 38400,
+  "physical_failures": 0,
+  "regression_coverage_samples": 38400,
+  "training_only_minimum_velocity_error_mms": -52.857833413785876,
+  "training_only_maximum_velocity_error_mms": 21.01218083204283,
+  "simulated_command_noise_std_v": 0.04,
+  "scope": "Actor behavior initialization only; neither supervisory samples nor teacher trajectories are SAC training-return samples.",
+  "behavior_gradient_steps": 6000,
+  "behavior_training_samples": 69120,
+  "behavior_validation_samples": 7680,
+  "validation_split_seed": 2027,
+  "initial_log_std": -3.0,
+  "wall_seconds": 8.471229069999936,
+  "log": [
+    {
+      "step": 1,
+      "loss": 0.23157399892807007,
+      "held_out_action_mae": 0.3647443354129791
+    },
+    {
+      "step": 1001,
+      "loss": 0.022215014323592186,
+      "held_out_action_mae": 0.044099386781454086
+    },
+    {
+      "step": 2001,
+      "loss": 0.013905081897974014,
+      "held_out_action_mae": 0.03777681291103363
+    },
+    {
+      "step": 3001,
+      "loss": 0.011110100895166397,
+      "held_out_action_mae": 0.03288884088397026
+    },
+    {
+      "step": 4001,
+      "loss": 0.011830265633761883,
+      "held_out_action_mae": 0.03057747147977352
+    },
+    {
+      "step": 5001,
+      "loss": 0.011067630723118782,
+      "held_out_action_mae": 0.0299400445073843
+    },
+    {
+      "step": 6000,
+      "loss": 0.008408373221755028,
+      "held_out_action_mae": 0.026023389771580696
+    }
+  ],
+  "final_held_out_voltage_mae_v": 0.26023389771580696
+}

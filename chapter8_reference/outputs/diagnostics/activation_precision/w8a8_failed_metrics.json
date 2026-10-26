@@ -1,0 +1,785 @@
+{
+  "policy": {
+    "minimum_velocity_error_mms": -20.203565250071946,
+    "minimum_velocity_error_time_s": 0.503,
+    "maximum_velocity_error_mms": 0.686645105086689,
+    "velocity_error_rms_mms": 2.530674656125136,
+    "final_100ms_velocity_bias_mms": 0.010912834688363826,
+    "recovery_1mms_s": 0.03300000000000003,
+    "peak_voltage_v": 9.97717797756195,
+    "final_voltage_v": 6.678525451386329,
+    "max_abs_voltage_v": 9.97717797756195,
+    "max_voltage_step_v": 14.463306665420532,
+    "prefault_velocity_error_rms_mms": 4.708453426226363,
+    "prefault_voltage_std_v": 5.50821694479436,
+    "prefault_max_voltage_step_v": 14.463306665420532,
+    "final_position_error_mm": -0.07408781858746563
+  },
+  "edge": {
+    "validation": {
+      "calibration_count": 20601,
+      "evaluation_count": 4000,
+      "target_prune_ratio": 0.7,
+      "actual_weight_sparsity": 0.6997767857142857,
+      "weight_count": 4480,
+      "zero_weight_count": 3135,
+      "pruned_action_mae": 0.001630965736694634,
+      "pruned_action_max_abs_error": 0.09097844362258911,
+      "int8_vs_pruned_action_mae": 0.006908822804689407,
+      "int8_vs_fp32_action_mae": 0.007521253544837236,
+      "int8_vs_fp32_action_max_abs_error": 0.0836629867553711,
+      "input_saturation_fraction": 0.0,
+      "input_balancing": "calibration_smoothquant_affine_folded_into_first_layer",
+      "input_balancing_mode": "smoothquant",
+      "weight_quantization": "per_channel",
+      "hidden_channel_equalization": true,
+      "hidden_channel_scales": [
+        [
+          3.4718270301818848,
+          0.7426538467407227,
+          1.4585272073745728,
+          2.8790690898895264,
+          1.8954577445983887,
+          0.507588267326355,
+          1.7183480262756348,
+          1.054538607597351,
+          1.0,
+          1.0640418529510498,
+          1.0,
+          1.4402313232421875,
+          1.7917927503585815,
+          8.959890365600586,
+          1.0,
+          1.4845367670059204,
+          4.264278888702393,
+          0.680968701839447,
+          3.806734800338745,
+          1.0,
+          1.9047495126724243,
+          2.01900577545166,
+          1.1858011484146118,
+          2.794881582260132,
+          8.405938148498535,
+          0.9260280728340149,
+          1.6156787872314453,
+          1.7183290719985962,
+          1.7614282369613647,
+          1.0,
+          1.2379387617111206,
+          1.0,
+          1.0,
+          1.273551106452942,
+          1.0,
+          1.622963547706604,
+          3.2480530738830566,
+          1.7623461484909058,
+          2.5052406787872314,
+          1.5865557193756104,
+          1.4195573329925537,
+          1.7068016529083252,
+          0.8986820578575134,
+          0.9137097001075745,
+          2.33909273147583,
+          1.7186180353164673,
+          2.212230920791626,
+          0.9881754517555237,
+          7.777548313140869,
+          0.9695486426353455,
+          1.212050437927246,
+          1.8719542026519775,
+          9.449172973632812,
+          1.4012638330459595,
+          1.0,
+          0.6298348307609558,
+          1.372464895248413,
+          2.3697142601013184,
+          1.5386086702346802,
+          1.094223141670227,
+          1.0,
+          0.37938305735588074,
+          1.3259272575378418,
+          0.3520837724208832
+        ],
+        [
+          5.059581279754639,
+          412.4588623046875,
+          344.15283203125,
+          351.7864074707031,
+          1.0,
+          465.88885498046875,
+          524.9454956054688,
+          1.0,
+          62.638607025146484,
+          261.42633056640625,
+          529.6090087890625,
+          2.362251043319702,
+          456.3020935058594,
+          1.0,
+          2.531208038330078,
+          1.0,
+          347.8110656738281,
+          1.0,
+          1.299748182296753,
+          2.38731050491333,
+          641.8543090820312,
+          1.0,
+          533.2249755859375,
+          0.467792809009552,
+          381.265380859375,
+          1.0,
+          1.2695890665054321,
+          1.0,
+          1.5828588008880615,
+          1.7237976789474487,
+          2.5039446353912354,
+          319.9742126464844,
+          92.51619720458984,
+          538.38427734375,
+          1.0,
+          3.341142416000366,
+          212.060302734375,
+          1.8108904361724854,
+          1.0,
+          3.5390357971191406,
+          338.4933166503906,
+          320.4271240234375,
+          3.6531145572662354,
+          279.895751953125,
+          313.04107666015625,
+          1.8030192852020264,
+          2.3030240535736084,
+          347.42999267578125,
+          3.4514353275299072,
+          1.0,
+          1.0,
+          368.4160461425781,
+          322.2831115722656,
+          692.6482543945312,
+          369.64422607421875,
+          451.0201110839844,
+          1.0,
+          3.219715118408203,
+          1.0,
+          336.41448974609375,
+          396.8774719238281,
+          294.7296447753906,
+          305.7904357910156,
+          1.0
+        ]
+      ],
+      "final_logits": "INT32 accumulator dequantized at tanh boundary",
+      "smoothquant_alpha": 0.75,
+      "input_balancing_center": [
+        -0.001737308455631137,
+        -0.0001429400290362537,
+        0.020286062732338905,
+        -0.39412763714790344,
+        0.0
+      ],
+      "input_balancing_channel_scale": [
+        0.11496592313051224,
+        0.882088840007782,
+        21.616914749145508,
+        1.3426361083984375,
+        1.0
+      ],
+      "input_balancing_selection_basis": "Configured exponent; laboratory calibration-MAE candidate scores are recorded in metrics.edge.quantization_selection. Closed-loop test values are not used for range calibration or exponent selection.",
+      "smoothquant_formula": "s_j=max(max|cal_j-center_j|,eps)^alpha/max(max|W_pruned[:,j]|,eps)^(1-alpha); eps=1e-5",
+      "constant_channel_scale_rule": "max centered absolute input <=1e-5 (mean_std: standard deviation <=1e-5) uses scale 1; channel is retained",
+      "kernel": "INT8 weights/hidden activations, INT32 accumulation, INT64 fixed-point requantization; float affine input prefix, input quantization and final tanh",
+      "speed_scope": "Python/NumPy CPU reference, not a DSP/MCU deployment measurement"
+    },
+    "distillation": {
+      "method": "fixed-mask actor distillation, cosine Adam polishing and local input-Jacobian preservation",
+      "steps": 31000,
+      "initial_action_mse": 0.28532901406288147,
+      "final_action_mse": 9.726838470669463e-06,
+      "stages": [
+        {
+          "method": "fixed-magnitude-mask action distillation from trained FP32 actor",
+          "steps": 8000,
+          "batch_size": 256,
+          "seed": 2026,
+          "initial_action_mse": 0.28532901406288147,
+          "final_action_mse": 1.4270834981289227e-05,
+          "history": [
+            {
+              "step": 1,
+              "batch_action_mse": 0.2868562340736389
+            },
+            {
+              "step": 100,
+              "batch_action_mse": 0.0009779089596122503
+            },
+            {
+              "step": 200,
+              "batch_action_mse": 0.0006102817715145648
+            },
+            {
+              "step": 300,
+              "batch_action_mse": 0.00027055994723923504
+            },
+            {
+              "step": 400,
+              "batch_action_mse": 0.00023009149299468845
+            },
+            {
+              "step": 500,
+              "batch_action_mse": 0.0001416964951204136
+            },
+            {
+              "step": 600,
+              "batch_action_mse": 0.00014360494969878346
+            },
+            {
+              "step": 700,
+              "batch_action_mse": 7.642900891369209e-05
+            },
+            {
+              "step": 800,
+              "batch_action_mse": 9.166185191133991e-05
+            },
+            {
+              "step": 900,
+              "batch_action_mse": 4.1521721868775785e-05
+            },
+            {
+              "step": 1000,
+              "batch_action_mse": 3.6037159588886425e-05
+            },
+            {
+              "step": 1100,
+              "batch_action_mse": 7.918690971564502e-05
+            },
+            {
+              "step": 1200,
+              "batch_action_mse": 0.00010848531383089721
+            },
+            {
+              "step": 1300,
+              "batch_action_mse": 2.713469075388275e-05
+            },
+            {
+              "step": 1400,
+              "batch_action_mse": 0.00014971214113757014
+            },
+            {
+              "step": 1500,
+              "batch_action_mse": 2.233674968010746e-05
+            },
+            {
+              "step": 1600,
+              "batch_action_mse": 4.285009345039725e-05
+            },
+            {
+              "step": 1700,
+              "batch_action_mse": 0.00012197287287563086
+            },
+            {
+              "step": 1800,
+              "batch_action_mse": 1.816725853132084e-05
+            },
+            {
+              "step": 1900,
+              "batch_action_mse": 2.7626476367004216e-05
+            },
+            {
+              "step": 2000,
+              "batch_action_mse": 9.806253365240991e-05
+            },
+            {
+              "step": 2100,
+              "batch_action_mse": 9.9298986242502e-06
+            },
+            {
+              "step": 2200,
+              "batch_action_mse": 1.7179738279082812e-05
+            },
+            {
+              "step": 2300,
+              "batch_action_mse": 0.00017743688658811152
+            },
+            {
+              "step": 2400,
+              "batch_action_mse": 4.006603921880014e-05
+            },
+            {
+              "step": 2500,
+              "batch_action_mse": 3.2794861908769235e-05
+            },
+            {
+              "step": 2600,
+              "batch_action_mse": 0.00015472776431124657
+            },
+            {
+              "step": 2700,
+              "batch_action_mse": 0.00010755141556728631
+            },
+            {
+              "step": 2800,
+              "batch_action_mse": 1.8560735043138266e-05
+            },
+            {
+              "step": 2900,
+              "batch_action_mse": 1.520228852314176e-05
+            },
+            {
+              "step": 3000,
+              "batch_action_mse": 2.7689071430359036e-05
+            },
+            {
+              "step": 3100,
+              "batch_action_mse": 3.604212906793691e-05
+            },
+            {
+              "step": 3200,
+              "batch_action_mse": 4.175863796263002e-05
+            },
+            {
+              "step": 3300,
+              "batch_action_mse": 3.8940161175560206e-05
+            },
+            {
+              "step": 3400,
+              "batch_action_mse": 0.0001806518412195146
+            },
+            {
+              "step": 3500,
+              "batch_action_mse": 1.9014929421246052e-05
+            },
+            {
+              "step": 3600,
+              "batch_action_mse": 2.310391573701054e-05
+            },
+            {
+              "step": 3700,
+              "batch_action_mse": 3.6581390304490924e-05
+            },
+            {
+              "step": 3800,
+              "batch_action_mse": 1.9690896806423552e-05
+            },
+            {
+              "step": 3900,
+              "batch_action_mse": 0.00011249676754232496
+            },
+            {
+              "step": 4000,
+              "batch_action_mse": 5.502250496647321e-05
+            },
+            {
+              "step": 4100,
+              "batch_action_mse": 7.451912551914575e-06
+            },
+            {
+              "step": 4200,
+              "batch_action_mse": 1.2217011317261495e-05
+            },
+            {
+              "step": 4300,
+              "batch_action_mse": 2.2161713786772452e-05
+            },
+            {
+              "step": 4400,
+              "batch_action_mse": 9.846189641393721e-06
+            },
+            {
+              "step": 4500,
+              "batch_action_mse": 3.238194767618552e-05
+            },
+            {
+              "step": 4600,
+              "batch_action_mse": 3.261407618992962e-05
+            },
+            {
+              "step": 4700,
+              "batch_action_mse": 1.443652763555292e-05
+            },
+            {
+              "step": 4800,
+              "batch_action_mse": 2.4543442123103887e-05
+            },
+            {
+              "step": 4900,
+              "batch_action_mse": 7.86122018325841e-06
+            },
+            {
+              "step": 5000,
+              "batch_action_mse": 7.67746678320691e-06
+            },
+            {
+              "step": 5100,
+              "batch_action_mse": 7.697644832660444e-06
+            },
+            {
+              "step": 5200,
+              "batch_action_mse": 8.995602911454625e-06
+            },
+            {
+              "step": 5300,
+              "batch_action_mse": 8.131419235724024e-06
+            },
+            {
+              "step": 5400,
+              "batch_action_mse": 1.552315916342195e-05
+            },
+            {
+              "step": 5500,
+              "batch_action_mse": 3.149142867187038e-05
+            },
+            {
+              "step": 5600,
+              "batch_action_mse": 5.924663128098473e-06
+            },
+            {
+              "step": 5700,
+              "batch_action_mse": 1.2479304132284597e-05
+            },
+            {
+              "step": 5800,
+              "batch_action_mse": 6.964371550566284e-06
+            },
+            {
+              "step": 5900,
+              "batch_action_mse": 6.611274329770822e-06
+            },
+            {
+              "step": 6000,
+              "batch_action_mse": 6.0666410718113184e-05
+            },
+            {
+              "step": 6100,
+              "batch_action_mse": 1.0319901775801554e-05
+            },
+            {
+              "step": 6200,
+              "batch_action_mse": 5.455282007460482e-06
+            },
+            {
+              "step": 6300,
+              "batch_action_mse": 7.939726856420748e-06
+            },
+            {
+              "step": 6400,
+              "batch_action_mse": 1.0127499990630895e-05
+            },
+            {
+              "step": 6500,
+              "batch_action_mse": 3.178482438670471e-05
+            },
+            {
+              "step": 6600,
+              "batch_action_mse": 1.028243059408851e-05
+            },
+            {
+              "step": 6700,
+              "batch_action_mse": 5.580574452324072e-06
+            },
+            {
+              "step": 6800,
+              "batch_action_mse": 9.394394510309212e-06
+            },
+            {
+              "step": 6900,
+              "batch_action_mse": 6.292979378486052e-05
+            },
+            {
+              "step": 7000,
+              "batch_action_mse": 4.083726253156783e-06
+            },
+            {
+              "step": 7100,
+              "batch_action_mse": 1.9688353859237395e-05
+            },
+            {
+              "step": 7200,
+              "batch_action_mse": 1.1201664165128022e-05
+            },
+            {
+              "step": 7300,
+              "batch_action_mse": 1.4942799680284224e-05
+            },
+            {
+              "step": 7400,
+              "batch_action_mse": 7.509995157306548e-06
+            },
+            {
+              "step": 7500,
+              "batch_action_mse": 8.656105819682125e-06
+            },
+            {
+              "step": 7600,
+              "batch_action_mse": 8.522589268977754e-06
+            },
+            {
+              "step": 7700,
+              "batch_action_mse": 2.7740919904317707e-05
+            },
+            {
+              "step": 7800,
+              "batch_action_mse": 2.387132371950429e-05
+            },
+            {
+              "step": 7900,
+              "batch_action_mse": 1.4179609024722595e-05
+            },
+            {
+              "step": 8000,
+              "batch_action_mse": 4.515412911132444e-06
+            }
+          ]
+        },
+        {
+          "method": "calibration-only NumPy Adam fixed-mask continuation with cosine learning rate",
+          "steps": 15000,
+          "batch_size": 256,
+          "seed": 2027,
+          "learning_rate": 0.0003,
+          "min_learning_rate": 1e-05,
+          "selected_step": 14000,
+          "selection_metric": "full calibration action MSE only",
+          "initial_action_mse": 1.4270837709773332e-05,
+          "final_action_mse": 8.932828677643556e-06,
+          "wall_seconds": 11.908469033999836,
+          "history": [
+            {
+              "step": 1000,
+              "calibration_action_mse": 1.2090496056771372e-05,
+              "learning_rate": 0.0002968314021064018
+            },
+            {
+              "step": 2000,
+              "calibration_action_mse": 1.1646626262518112e-05,
+              "learning_rate": 0.00028746409135817707
+            },
+            {
+              "step": 3000,
+              "calibration_action_mse": 1.0783671314129606e-05,
+              "learning_rate": 0.0002723074641843674
+            },
+            {
+              "step": 4000,
+              "calibration_action_mse": 1.0394822311354801e-05,
+              "learning_rate": 0.0002520239379220344
+            },
+            {
+              "step": 5000,
+              "calibration_action_mse": 1.0886412383115385e-05,
+              "learning_rate": 0.00022749999999999997
+            },
+            {
+              "step": 6000,
+              "calibration_action_mse": 9.839085578278173e-06,
+              "learning_rate": 0.00019980746418436736
+            },
+            {
+              "step": 7000,
+              "calibration_action_mse": 9.75783132162178e-06,
+              "learning_rate": 0.00017015662717380977
+            },
+            {
+              "step": 8000,
+              "calibration_action_mse": 9.459761713515036e-06,
+              "learning_rate": 0.00013984337282619026
+            },
+            {
+              "step": 9000,
+              "calibration_action_mse": 9.313055670645554e-06,
+              "learning_rate": 0.00011019253581563262
+            },
+            {
+              "step": 10000,
+              "calibration_action_mse": 9.538583071844187e-06,
+              "learning_rate": 8.250000000000001e-05
+            },
+            {
+              "step": 11000,
+              "calibration_action_mse": 9.212807526637334e-06,
+              "learning_rate": 5.797606207796559e-05
+            },
+            {
+              "step": 12000,
+              "calibration_action_mse": 8.986986358650029e-06,
+              "learning_rate": 3.769253581563263e-05
+            },
+            {
+              "step": 13000,
+              "calibration_action_mse": 8.984761734609492e-06,
+              "learning_rate": 2.2535908641822855e-05
+            },
+            {
+              "step": 14000,
+              "calibration_action_mse": 8.932828677643556e-06,
+              "learning_rate": 1.3168597893598192e-05
+            },
+            {
+              "step": 15000,
+              "calibration_action_mse": 8.940832231019158e-06,
+              "learning_rate": 1e-05
+            }
+          ]
+        },
+        {
+          "method": "Fixed-mask sparse action and input-Jacobian distillation from final deployed FP32 neural actor",
+          "steps": 8000,
+          "batch_size": 256,
+          "seed": 2029,
+          "environment_interactions": 0,
+          "calibration_observation_count": 20601,
+          "unloaded_regression_anchors": 24000,
+          "synthetic_anchors_are_not_physical_trajectories": true,
+          "teacher": "Full final FP32 neural actor; no physical teacher at this stage",
+          "raw_anchor_ranges": {
+            "position_error_mm": [
+              -0.015,
+              0.015
+            ],
+            "velocity_error_mms": [
+              -0.25,
+              0.25
+            ],
+            "acceleration_error_mms2": [
+              -300.0,
+              300.0
+            ],
+            "load_pressure_mpa": [
+              2.4,
+              5.8
+            ],
+            "supply_pressure_mpa": [
+              21.0,
+              21.0
+            ]
+          },
+          "loss": "calibration_action_MSE+30*unloaded_action_MSE+2*mean(((jac_student-jac_full)*[1,1,100,2,2])^2)",
+          "selection_metric": "calibration and synthetic unloaded-anchor joint objective only",
+          "selected_step": 7000,
+          "initial_action_mse": 8.93282594915945e-06,
+          "final_action_mse": 9.726838470669463e-06,
+          "initial_unloaded_anchor_action_mse": 4.533669084594294e-07,
+          "final_unloaded_anchor_action_mse": 6.237015792720513e-09,
+          "initial_unloaded_weighted_jacobian_mse": 0.008182448334991932,
+          "final_unloaded_weighted_jacobian_mse": 0.0003495510609354824,
+          "unchanged_pruning_mask": true,
+          "integer_rounding_differentiated": false,
+          "wall_seconds": 12.56712281199998,
+          "history": [
+            {
+              "step": 1000,
+              "calibration_action_mse": 1.0465382729307748e-05,
+              "unloaded_anchor_action_mse": 1.0838196118356791e-07,
+              "unloaded_weighted_jacobian_mse": 0.00038082426181063056,
+              "learning_rate": 0.00019316098900069184
+            },
+            {
+              "step": 2000,
+              "calibration_action_mse": 1.0016146006819326e-05,
+              "unloaded_anchor_action_mse": 3.8035729232888116e-08,
+              "unloaded_weighted_jacobian_mse": 0.0003600489581003785,
+              "learning_rate": 0.00017365835330124753
+            },
+            {
+              "step": 3000,
+              "calibration_action_mse": 1.0018601642514113e-05,
+              "unloaded_anchor_action_mse": 1.8152716663166757e-08,
+              "unloaded_weighted_jacobian_mse": 0.00035541708348318934,
+              "learning_rate": 0.00014446191830005692
+            },
+            {
+              "step": 4000,
+              "calibration_action_mse": 1.0192802619712893e-05,
+              "unloaded_anchor_action_mse": 1.3274952692654551e-08,
+              "unloaded_weighted_jacobian_mse": 0.0003528939269017428,
+              "learning_rate": 0.00011001767366777135
+            },
+            {
+              "step": 5000,
+              "calibration_action_mse": 9.867323569778819e-06,
+              "unloaded_anchor_action_mse": 1.874285260328179e-08,
+              "unloaded_weighted_jacobian_mse": 0.0003515015996526927,
+              "learning_rate": 7.557073771566023e-05
+            },
+            {
+              "step": 6000,
+              "calibration_action_mse": 9.740393579704687e-06,
+              "unloaded_anchor_action_mse": 6.989747447505579e-09,
+              "unloaded_weighted_jacobian_mse": 0.0003499039157759398,
+              "learning_rate": 4.636663858517066e-05
+            },
+            {
+              "step": 7000,
+              "calibration_action_mse": 9.726838470669463e-06,
+              "unloaded_anchor_action_mse": 6.237015792720513e-09,
+              "unloaded_weighted_jacobian_mse": 0.0003495510609354824,
+              "learning_rate": 2.685253302915765e-05
+            },
+            {
+              "step": 8000,
+              "calibration_action_mse": 9.769506505108438e-06,
+              "unloaded_anchor_action_mse": 1.6658596280194615e-08,
+              "unloaded_weighted_jacobian_mse": 0.00035027507692575455,
+              "learning_rate": 2e-05
+            }
+          ]
+        }
+      ]
+    },
+    "quantization_selection": {
+      "selection_metric": "calibration normalized-action MAE against fixed pruned FP32 actor",
+      "calibration_count": 20601,
+      "selected_alpha": 0.75,
+      "weight_quantization": "per-output-channel symmetric INT8",
+      "hidden_equalization": "positive diagonal ReLU cross-layer equalization, float-function preserving",
+      "final_logits": "INT32 dot-product output, dequantized only at final tanh",
+      "candidates": [
+        {
+          "alpha": 0.25,
+          "calibration_action_mae": 0.01418648287653923
+        },
+        {
+          "alpha": 0.5,
+          "calibration_action_mae": 0.009568914771080017
+        },
+        {
+          "alpha": 0.75,
+          "calibration_action_mae": 0.007397552020847797
+        }
+      ]
+    },
+    "artifact_bytes": {
+      "actor_fp32.npz": 18421,
+      "actor_pruned_fp32.npz": 8959,
+      "actor_int8.npz": 8888
+    },
+    "benchmark": {
+      "fp32": {
+        "median_ms": 0.0116325,
+        "p95_ms": 0.012069449999999999,
+        "min_ms": 0.008032,
+        "repeats": 2000,
+        "batch_size": 1
+      },
+      "pruned_fp32": {
+        "median_ms": 0.008353,
+        "p95_ms": 0.008803,
+        "min_ms": 0.008073,
+        "repeats": 2000,
+        "batch_size": 1
+      },
+      "int8": {
+        "median_ms": 0.036756,
+        "p95_ms": 0.1153125,
+        "min_ms": 0.035804,
+        "repeats": 2000,
+        "batch_size": 1
+      }
+    },
+    "commissioning_calibration_count": 601,
+    "calibration_not_held_out": true,
+    "synthetic_unloaded_anchor_count": 8000,
+    "benchmark_scope": "Single-observation NumPy actor kernels, including input affine preprocessing and tanh; excludes ODE, sensing, SB3 API and HOCBF.",
+    "closed_loop_velocity_rms_difference_mms": 2.2427270884905504,
+    "displayed_window_velocity_rms_difference_mms": 2.2427270884905504,
+    "displayed_window_rms_percent_of_50mms": 4.485454176981101
+  }
+}

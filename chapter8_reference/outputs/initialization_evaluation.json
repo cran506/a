@@ -1,0 +1,17 @@
+{
+  "minimum_velocity_error_mms": -16.327229543746316,
+  "minimum_velocity_error_time_s": 0.502,
+  "maximum_velocity_error_mms": 2.0553850619318,
+  "velocity_error_rms_mms": 1.5514479422583074,
+  "final_100ms_velocity_bias_mms": 0.023429037017839226,
+  "recovery_1mms_s": 0.017000000000000015,
+  "peak_voltage_v": 9.998562335968018,
+  "final_voltage_v": 6.680442932808753,
+  "max_abs_voltage_v": 9.998562335968018,
+  "max_voltage_step_v": 6.498435735702515,
+  "prefault_velocity_error_rms_mms": 0.24433352506815717,
+  "prefault_voltage_std_v": 0.03359324291892293,
+  "prefault_max_voltage_step_v": 0.21778345108032227,
+  "final_position_error_mm": 0.00467127049147073,
+  "prefault_velocity_rms_mms": 0.24433352506815717
+}

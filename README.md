@@ -1,23 +1,23 @@
 # 智能流体传动与控制课堂编程
 
-## 第八章：SAC、HOCBF 与剪枝 INT8
+## 第八章：五维参考接口修订版
 
-第八章独立项目提供真实百万步 SAC 训练、液压四状态故障对比、可配置二阶 HOCBF 安全实验和独立整数网络推理。新版补充经验 Z-score 等价坐标变换，采用 70% 固定掩码剪枝与逐通道 INT8 导出；原始日志、策略文件与实测指标随代码一起保存。
+依据补充参考代码重新训练五输入网络，保留指定标准化和基础奖励。项目提供真实百万步机理先验 SAC、单独记录的离线雅可比精修、共同四状态液压故障对比、二阶 HOCBF 验证和独立整数推理。为消除全 W8/A8 的巡航限环，最终采用 70% 剪枝、INT8 权重和 INT16 激活，所有矩阵运算走整数路径。
 
-- [完整项目与运行说明](chapter8_latest/README.md)
-- [第八章运行入口](chapter8_latest/drl_hydraulic_lab.py)
-- [四联结果图](chapter8_latest/outputs/chapter8_comparison.png)
-- [Word 实验报告](chapter8_latest/outputs/第八章实验报告.docx)
-- [完整 ZIP](chapter8_latest/deliverables/第八章_SAC安全控制完整交付.zip)
+- [新版项目与运行说明](chapter8_reference/README.md)
+- [运行入口](chapter8_reference/drl_hydraulic_lab.py)
+- [新版四联图](chapter8_reference/outputs/chapter8_comparison.png)
+- [原始数据与全部指标](chapter8_reference/outputs/metrics.json)
+- [完整 ZIP](chapter8_reference/deliverables/第八章_五维参考接口修订版.zip)
 
 ```bash
-cd chapter8_latest
+cd chapter8_reference
 python drl_hydraulic_lab.py --mode all --reuse-model
 ```
 
-需要先按项目说明安装 CPU PyTorch、Gymnasium 和 Stable-Baselines3。`--reuse-model` 使用随交付保存的真实训练策略；省略该选项会重新训练。
+需要先按项目说明安装 CPU PyTorch、Gymnasium 和 Stable-Baselines3。`--reuse-model` 使用随附模型；省略该选项会执行初始化、百万步 SAC 和离线精修。
 
-新版安全演示实际在 0.104891 s 记录未保护触边，HOCBF 最低制动电压约 −3.092 V，受保护轨迹趋于 98.8 mm；这是单独声明的二阶模型验证。5000 N 与体积模量减半故障下，FP32/INT8 的严格恢复时间分别约 0.068/0.050 s，显示窗口速度 RMS 差约 0.612 mm/s。四状态对象的真实速度谷值仍比课件示意更深，完整指标及实际推理耗时见项目报告。
+FP32/整数版故障速度谷值分别约 −16.38/−16.44 mm/s，持续恢复到 ±1 mm/s 分别耗时 21/23 ms，全窗口速度 RMS 差约 0.146 mm/s。HOCBF 最低制动电压约 −3.092 V，受保护位移趋于 98.8 mm。训练曲线及其与课件示意的差异均如实保留。此前十维版本保留在 [chapter8_latest](chapter8_latest/README.md)，与新版权重不兼容。
 
 ## 第六章作业 6-3：死区逆补偿鲁棒性与 tanh 光滑化
 

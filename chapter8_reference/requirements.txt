@@ -1,0 +1,9 @@
+# 已验证版本；先按 README 安装 CPU PyTorch，再安装本文件。
+# 本地版本 2.14.1+cpu 满足 torch==2.14.1；不会重新安装 CUDA 发行包。
+torch==2.14.1
+numpy==2.3.5
+scipy==1.17.0
+matplotlib==3.10.8
+python-docx==1.2.0
+gymnasium==1.4.0
+stable-baselines3[extra]==2.9.0
