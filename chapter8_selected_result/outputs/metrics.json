@@ -1,0 +1,1413 @@
+{
+  "training": {
+    "algorithm": "stable-baselines3 SAC with explicit physics-teacher actor consistency prior",
+    "actual_timesteps": 1000000,
+    "gradient_updates": 30938,
+    "seed": 2026,
+    "wall_seconds": 271.30887655800007,
+    "torch_version": "2.14.1+cpu",
+    "target_entropy_normalized": -1.9525850929940458,
+    "target_entropy_voltage": 0.35,
+    "policy_architecture": [
+      5,
+      64,
+      64,
+      1
+    ],
+    "n_envs": 8,
+    "train_frequency_vector_steps": 4,
+    "gradient_steps_per_update": 1,
+    "optimizer_reward_multiplier": 0.01,
+    "learning_rate": 0.0003,
+    "observation_names": [
+      "position_error_mm",
+      "velocity_error_mm_s",
+      "acceleration_error_mm_s2",
+      "load_pressure_MPa",
+      "supply_pressure_MPa"
+    ],
+    "obs_mean": [
+      0.0,
+      0.0,
+      0.0,
+      10.0,
+      21.0
+    ],
+    "obs_std": [
+      10.0,
+      50.0,
+      500.0,
+      8.0,
+      2.0
+    ],
+    "reward": "-100*e_mm^2-.1*u_V^2-(u_V-u_prev_V)^2+2*I(|e_mm|<.2); explicit physical failure penalty -100000",
+    "domain_randomization": "m ±20%; base beta 600..1400 MPa; Fc ±30%",
+    "fault_augmentation": "80% episodes: time U(.05,.8)s, load U(0,5500)N, beta multiplier U(.5,1)",
+    "training_initial_position_m": [
+      0.0001,
+      0.005
+    ],
+    "training_reference_velocity_m_s": 0.05,
+    "physical_config_sha256": "cf2fd7a85f565083d3a6bbb9b0c0bb3dd6e21bcbea8781a34e58080ddb36397a",
+    "observation_signs": "e=actual-reference, de=actual-reference, dde=actual-reference; PL=P1-(A2/A1)P2 in MPa",
+    "normalization": "User-supplied fixed mean/std Z-score formula; prior engineering statistics, not fitted empirical unit variance",
+    "policy_initialization": "New five-input actor initialized by explicit physics-teacher supervised learning; no ten-dimensional checkpoint reuse. Teacher absent from runtime policy.",
+    "teacher_initialization": {
+      "method": "Five-feature approximate inverse plus fixed position/velocity/acceleration feedback",
+      "teacher_version": "v2_quasisteady_pressure_measured_gain_scheduling",
+      "reference_velocity_m_s": 0.05,
+      "return_pressure_estimate": "P2=(Ps+r^2*Pr-PL)/(r^2+1/r), r=A1/A2",
+      "gains": {
+        "kp_v_per_mm": 3.0,
+        "kv_v_per_mms": 0.2,
+        "ka_base_v_per_mms2": 5e-05,
+        "ka_increment_v_per_mms2": 0.00045
+      },
+      "gain_schedule": "ka=0.00005+0.00045*max(sigmoid(2*(PL_MPa-10)),sigmoid((-acc_mms2-3000)/1000))",
+      "physical_priors": {
+        "A1_m2": 0.00038,
+        "A2_m2": 0.00021,
+        "Pr_pa": 100000.0,
+        "K_flow": 1.64e-09,
+        "C_ip": 1e-14,
+        "deadzone_v": 0.5
+      },
+      "teacher_uses_only_measured_five_features": true,
+      "future_fault_or_random_parameters_as_input": false,
+      "seed": 2026,
+      "episodes": 48,
+      "physical_steps": 38400,
+      "physical_failures": 0,
+      "regression_coverage_samples": 38400,
+      "training_only_minimum_velocity_error_mms": -52.857833413785876,
+      "training_only_maximum_velocity_error_mms": 21.01218083204283,
+      "simulated_command_noise_std_v": 0.04,
+      "scope": "Actor behavior initialization only; neither supervisory samples nor teacher trajectories are SAC training-return samples.",
+      "behavior_gradient_steps": 6000,
+      "behavior_training_samples": 69120,
+      "behavior_validation_samples": 7680,
+      "validation_split_seed": 2027,
+      "initial_log_std": -3.0,
+      "wall_seconds": 8.471229069999936,
+      "log": [
+        {
+          "step": 1,
+          "loss": 0.23157399892807007,
+          "held_out_action_mae": 0.3647443354129791
+        },
+        {
+          "step": 1001,
+          "loss": 0.022215014323592186,
+          "held_out_action_mae": 0.044099386781454086
+        },
+        {
+          "step": 2001,
+          "loss": 0.013905081897974014,
+          "held_out_action_mae": 0.03777681291103363
+        },
+        {
+          "step": 3001,
+          "loss": 0.011110100895166397,
+          "held_out_action_mae": 0.03288884088397026
+        },
+        {
+          "step": 4001,
+          "loss": 0.011830265633761883,
+          "held_out_action_mae": 0.03057747147977352
+        },
+        {
+          "step": 5001,
+          "loss": 0.011067630723118782,
+          "held_out_action_mae": 0.0299400445073843
+        },
+        {
+          "step": 6000,
+          "loss": 0.008408373221755028,
+          "held_out_action_mae": 0.026023389771580696
+        }
+      ],
+      "final_held_out_voltage_mae_v": 0.26023389771580696
+    },
+    "actor_learning_rate_multiplier": 0.03,
+    "critic_warmup_updates": 1000,
+    "actor_objective": "SAC actor objective + 100*mean((tanh(mu(s))-five_feature_physics_teacher(s))^2), sampled from the replay buffer; training only",
+    "physics_prior_weight": 100.0,
+    "model_source_sha256": {
+      "train_sac.py": "fa8ba8695b2d1fbee091768693188843f8d2922158cb399498ffe63165537f29",
+      "hydraulic_env.py": "3d2a88728ab0656be2d8edadfa61fba3d701374bc352d3af36556f1206004164",
+      "hydraulic_twin.py": "2b7e66cf789d3634c32e2a650a8c516d1804745d1c6a17cf06426ae3c54763ce",
+      "native_twin.cpp": "d94be966aa7c845842a92a06e606783655bf8a0b8a4327dfbf87c1b2d1af102a",
+      "physical_config.json": "cf2fd7a85f565083d3a6bbb9b0c0bb3dd6e21bcbea8781a34e58080ddb36397a",
+      "teacher_initialization.py": "6a75cc0ad809be6ead6175f7b0ffe7103f1ded55f154d4c17a4394a7b41664b8"
+    },
+    "source_hash_capture": "Before teacher data collection and SAC interactions; checked again after training",
+    "initialization_deterministic_evaluation": {
+      "minimum_velocity_error_mms": -16.327229543746316,
+      "minimum_velocity_error_time_s": 0.502,
+      "maximum_velocity_error_mms": 2.0553850619318,
+      "velocity_error_rms_mms": 1.5514479422583074,
+      "final_100ms_velocity_bias_mms": 0.023429037017839226,
+      "recovery_1mms_s": 0.017000000000000015,
+      "peak_voltage_v": 9.998562335968018,
+      "final_voltage_v": 6.680442932808753,
+      "max_abs_voltage_v": 9.998562335968018,
+      "max_voltage_step_v": 6.498435735702515,
+      "prefault_velocity_error_rms_mms": 0.24433352506815717,
+      "prefault_voltage_std_v": 0.03359324291892293,
+      "prefault_max_voltage_step_v": 0.21778345108032227,
+      "final_position_error_mm": 0.00467127049147073,
+      "prefault_velocity_rms_mms": 0.24433352506815717
+    },
+    "post_training_consolidation": {
+      "method": "Post-SAC five-feature teacher action and input-Jacobian consolidation",
+      "environment_interactions": 0,
+      "gradient_steps": 12000,
+      "seed": 2028,
+      "mean_actor_parameters_only": true,
+      "teacher_source_sha256": "6a75cc0ad809be6ead6175f7b0ffe7103f1ded55f154d4c17a4394a7b41664b8",
+      "input_checkpoint_sha256": "964601cbfd9e757a6296b13f04acf88781a3bf67cd48e90080d139716bf4c9b7",
+      "regression_anchor_counts": {
+        "broad_existing": 76800,
+        "unloaded_neighborhood": 40000,
+        "fine_unloaded_neighborhood": 40000
+      },
+      "loss": "wide_action_MSE +20*unloaded_anchor_action_MSE+2*mean((jac_student-jac_teacher)*[1,1,100,2,2])^2",
+      "checkpoint_selection": "Minimum recorded commissioning score; these nominal conditions are calibration, not held-out robustness validation",
+      "selected_gradient_step": 6000,
+      "before": {
+        "minimum_velocity_error_mms": -19.42628162200674,
+        "minimum_velocity_error_time_s": 0.502,
+        "maximum_velocity_error_mms": 0.6235252032386271,
+        "velocity_error_rms_mms": 2.1993863783831213,
+        "final_100ms_velocity_bias_mms": 0.01694777150594676,
+        "recovery_1mms_s": 0.028000000000000025,
+        "peak_voltage_v": 9.918503761291504,
+        "final_voltage_v": 6.67963184932671,
+        "max_abs_voltage_v": 9.918503761291504,
+        "max_voltage_step_v": 12.27179229259491,
+        "prefault_velocity_error_rms_mms": 3.8818162118739687,
+        "prefault_voltage_std_v": 4.479501391149299,
+        "prefault_max_voltage_step_v": 12.27179229259491,
+        "final_position_error_mm": -0.00914257013905767,
+        "prefault_velocity_rms_mms": 3.6879657373529415,
+        "failure": null
+      },
+      "after": {
+        "minimum_velocity_error_mms": -16.376418889008754,
+        "minimum_velocity_error_time_s": 0.502,
+        "maximum_velocity_error_mms": 0.3563624539958954,
+        "velocity_error_rms_mms": 1.5522920524713557,
+        "final_100ms_velocity_bias_mms": 0.007940236652430748,
+        "recovery_1mms_s": 0.02100000000000002,
+        "peak_voltage_v": 9.969027042388916,
+        "final_voltage_v": 6.678526696592274,
+        "max_abs_voltage_v": 9.969027042388916,
+        "max_voltage_step_v": 6.459091901779175,
+        "prefault_velocity_error_rms_mms": 0.0008269870759844853,
+        "prefault_voltage_std_v": 4.026303405577206e-05,
+        "prefault_max_voltage_step_v": 0.0014781951904296875,
+        "final_position_error_mm": -0.06643926457801375,
+        "prefault_velocity_rms_mms": 0.00046650196767673683,
+        "failure": null
+      },
+      "jacobian_before": {
+        "normalized_student": [
+          [
+            -2.3443381786346436,
+            -0.5670916438102722,
+            -0.0069293612614274025,
+            -0.0005241930484771729,
+            0.26543128490448
+          ],
+          [
+            -3.1436784267425537,
+            -0.9617270231246948,
+            -0.023215878754854202,
+            0.575468897819519,
+            0.0391034334897995
+          ]
+        ],
+        "normalized_teacher": [
+          [
+            -3.0,
+            -1.0000001192092896,
+            -0.0035670818760991096,
+            0.07080772519111633,
+            -0.017385389655828476
+          ],
+          [
+            -3.0,
+            -1.0000001192092896,
+            -0.024999981746077538,
+            0.6479691863059998,
+            -0.1613284945487976
+          ]
+        ],
+        "acceleration_gain_v_per_mms2_student": [
+          -0.0001385872164973989,
+          -0.00046431756345555186
+        ],
+        "acceleration_gain_v_per_mms2_teacher": [
+          -7.134163024602458e-05,
+          -0.0004999996162950993
+        ]
+      },
+      "jacobian_after": {
+        "normalized_student": [
+          [
+            -3.0124661922454834,
+            -0.9993739724159241,
+            -0.0038507760036736727,
+            0.06826028972864151,
+            -0.019170550629496574
+          ],
+          [
+            -4.361700534820557,
+            -1.4601703882217407,
+            -0.04335130378603935,
+            1.0178298950195312,
+            -0.17939412593841553
+          ]
+        ],
+        "normalized_teacher": [
+          [
+            -3.0,
+            -1.0000001192092896,
+            -0.0035670818760991096,
+            0.07080772519111633,
+            -0.017385389655828476
+          ],
+          [
+            -3.0,
+            -1.0000001192092896,
+            -0.024999981746077538,
+            0.6479691863059998,
+            -0.1613284945487976
+          ]
+        ],
+        "acceleration_gain_v_per_mms2_student": [
+          -7.70155165810138e-05,
+          -0.0008670261013321579
+        ],
+        "acceleration_gain_v_per_mms2_teacher": [
+          -7.134163024602458e-05,
+          -0.0004999996162950993
+        ]
+      },
+      "wall_seconds": 25.80854013599992,
+      "log": [
+        {
+          "step": 2000,
+          "loss": 0.009553896263241768,
+          "wide_loss": 0.0013520271750167012,
+          "anchor_loss": 2.2046399408282014e-06,
+          "jacobian_loss": 0.004078888334333897,
+          "commissioning": {
+            "minimum_velocity_error_mms": -16.369036734261407,
+            "minimum_velocity_error_time_s": 0.502,
+            "maximum_velocity_error_mms": 0.6446312593059376,
+            "velocity_error_rms_mms": 1.578062516261883,
+            "final_100ms_velocity_bias_mms": 0.016896856039222405,
+            "recovery_1mms_s": 0.01200000000000001,
+            "peak_voltage_v": 9.98720645904541,
+            "final_voltage_v": 6.679626998334828,
+            "max_abs_voltage_v": 9.98720645904541,
+            "max_voltage_step_v": 6.474412679672241,
+            "prefault_velocity_error_rms_mms": 0.012364627541713535,
+            "prefault_voltage_std_v": 0.002098312688622573,
+            "prefault_max_voltage_step_v": 0.009218454360961914,
+            "final_position_error_mm": -0.01943308674869429,
+            "prefault_velocity_rms_mms": 0.0119498941789891,
+            "failure": null
+          }
+        },
+        {
+          "step": 4000,
+          "loss": 0.005489378236234188,
+          "wide_loss": 0.001157618360593915,
+          "anchor_loss": 1.5206966281766654e-06,
+          "jacobian_loss": 0.0021506729535758495,
+          "commissioning": {
+            "minimum_velocity_error_mms": -16.34848778707748,
+            "minimum_velocity_error_time_s": 0.502,
+            "maximum_velocity_error_mms": 0.36320086444693866,
+            "velocity_error_rms_mms": 1.5515143046728421,
+            "final_100ms_velocity_bias_mms": 0.009118132224743253,
+            "recovery_1mms_s": 0.02100000000000002,
+            "peak_voltage_v": 9.971284866333008,
+            "final_voltage_v": 6.678672049305226,
+            "max_abs_voltage_v": 9.971284866333008,
+            "max_voltage_step_v": 6.466617584228516,
+            "prefault_velocity_error_rms_mms": 0.014079213598969043,
+            "prefault_voltage_std_v": 0.002242829779933993,
+            "prefault_max_voltage_step_v": 0.011867284774780273,
+            "final_position_error_mm": -0.06177998773760837,
+            "prefault_velocity_rms_mms": 0.01314234066438169,
+            "failure": null
+          }
+        },
+        {
+          "step": 6000,
+          "loss": 0.005612523294985294,
+          "wide_loss": 0.00137526064645499,
+          "anchor_loss": 2.7138203222421e-06,
+          "jacobian_loss": 0.0020914929918944836,
+          "commissioning": {
+            "minimum_velocity_error_mms": -16.376418889008754,
+            "minimum_velocity_error_time_s": 0.502,
+            "maximum_velocity_error_mms": 0.3563624539958954,
+            "velocity_error_rms_mms": 1.5522920524713557,
+            "final_100ms_velocity_bias_mms": 0.007940236652430748,
+            "recovery_1mms_s": 0.02100000000000002,
+            "peak_voltage_v": 9.969027042388916,
+            "final_voltage_v": 6.678526696592274,
+            "max_abs_voltage_v": 9.969027042388916,
+            "max_voltage_step_v": 6.459091901779175,
+            "prefault_velocity_error_rms_mms": 0.0008269870759844853,
+            "prefault_voltage_std_v": 4.026303405577206e-05,
+            "prefault_max_voltage_step_v": 0.0014781951904296875,
+            "final_position_error_mm": -0.06643926457801375,
+            "prefault_velocity_rms_mms": 0.00046650196767673683,
+            "failure": null
+          }
+        },
+        {
+          "step": 8000,
+          "loss": 0.005035785026848316,
+          "wide_loss": 0.001136349979788065,
+          "anchor_loss": 1.3297998293637647e-06,
+          "jacobian_loss": 0.0019364195177331567,
+          "commissioning": {
+            "minimum_velocity_error_mms": -16.408476986759084,
+            "minimum_velocity_error_time_s": 0.502,
+            "maximum_velocity_error_mms": 0.29246534404234886,
+            "velocity_error_rms_mms": 1.5477590561186156,
+            "final_100ms_velocity_bias_mms": 0.006134965723437597,
+            "recovery_1mms_s": 0.02100000000000002,
+            "peak_voltage_v": 9.972859621047974,
+            "final_voltage_v": 6.678305380415209,
+            "max_abs_voltage_v": 9.972859621047974,
+            "max_voltage_step_v": 6.466587781906128,
+            "prefault_velocity_error_rms_mms": 0.021420826980722462,
+            "prefault_voltage_std_v": 0.002156520849944787,
+            "prefault_max_voltage_step_v": 0.02580404281616211,
+            "final_position_error_mm": -0.07370186030341425,
+            "prefault_velocity_rms_mms": 0.016587514949060092,
+            "failure": null
+          }
+        },
+        {
+          "step": 10000,
+          "loss": 0.005253000650554895,
+          "wide_loss": 0.0010223394492641091,
+          "anchor_loss": 1.8886626094172243e-06,
+          "jacobian_loss": 0.0020964439027011395,
+          "commissioning": {
+            "minimum_velocity_error_mms": -16.40912958433214,
+            "minimum_velocity_error_time_s": 0.502,
+            "maximum_velocity_error_mms": 0.2986179543887496,
+            "velocity_error_rms_mms": 1.5493701387286434,
+            "final_100ms_velocity_bias_mms": 0.008842538126713605,
+            "recovery_1mms_s": 0.02200000000000002,
+            "peak_voltage_v": 9.974462985992432,
+            "final_voltage_v": 6.678639603133249,
+            "max_abs_voltage_v": 9.974462985992432,
+            "max_voltage_step_v": 6.469939947128296,
+            "prefault_velocity_error_rms_mms": 0.019967852017536824,
+            "prefault_voltage_std_v": 0.0024438789684825472,
+            "prefault_max_voltage_step_v": 0.022563934326171875,
+            "final_position_error_mm": -0.07379999999737596,
+            "prefault_velocity_rms_mms": 0.016468837263497373,
+            "failure": null
+          }
+        },
+        {
+          "step": 12000,
+          "loss": 0.006384954322129488,
+          "wide_loss": 0.0009135622531175613,
+          "anchor_loss": 5.250564299785765e-06,
+          "jacobian_loss": 0.002683190396055579,
+          "commissioning": {
+            "minimum_velocity_error_mms": -16.37466498985381,
+            "minimum_velocity_error_time_s": 0.502,
+            "maximum_velocity_error_mms": 0.37641101864490517,
+            "velocity_error_rms_mms": 1.546079373862739,
+            "final_100ms_velocity_bias_mms": 0.010315295869144038,
+            "recovery_1mms_s": 0.02200000000000002,
+            "peak_voltage_v": 9.973464012145996,
+            "final_voltage_v": 6.67881963276627,
+            "max_abs_voltage_v": 9.973464012145996,
+            "max_voltage_step_v": 6.464124917984009,
+            "prefault_velocity_error_rms_mms": 0.0013773380561632755,
+            "prefault_voltage_std_v": 0.0001946589875668823,
+            "prefault_max_voltage_step_v": 0.0013971328735351562,
+            "final_position_error_mm": -0.06120459152363089,
+            "prefault_velocity_rms_mms": 0.0012084664006913807,
+            "failure": null
+          }
+        }
+      ],
+      "deployment": "Direct five-input neural actor; no external physics controller, teacher or action interpolation at runtime",
+      "source_sha256": "372f50068547721d76f0155ababc2a41f77d686fdbb421b3891f100413113f38"
+    },
+    "consolidation_source_sha256": "372f50068547721d76f0155ababc2a41f77d686fdbb421b3891f100413113f38",
+    "deployed_model_sha256": "c9b814064eb582b1871fa8cce247b2c5b68e061ddd3438bec89220d647701425",
+    "deployment_origin": "Recorded 1M physics-prior SAC checkpoint, followed by the separately logged offline teacher/Jacobian consolidation stage; actor parameters change after SAC.",
+    "learning_starts": 10000,
+    "batch_size": 256,
+    "gamma": 0.995
+  },
+  "policies": {
+    "pid": {
+      "minimum_velocity_error_mms": -50.16359442494256,
+      "minimum_velocity_error_time_s": 0.504,
+      "maximum_velocity_error_mms": 16.07659531678582,
+      "velocity_error_rms_mms": 11.324173508092118,
+      "final_100ms_velocity_bias_mms": 1.04734758537936,
+      "recovery_1mms_s": null,
+      "peak_voltage_v": 8.768239617347717,
+      "final_voltage_v": 6.863292502884818,
+      "max_abs_voltage_v": 8.768239617347717,
+      "max_voltage_step_v": 0.1095929741859436,
+      "prefault_velocity_error_rms_mms": 1.654237933017566e-06,
+      "prefault_voltage_std_v": 8.940696716308594e-08,
+      "prefault_max_voltage_step_v": 2.980232238769531e-07,
+      "final_position_error_mm": -0.19009821163844948
+    },
+    "nominal_ff": {
+      "minimum_velocity_error_mms": -50.29683837252308,
+      "minimum_velocity_error_time_s": 0.504,
+      "maximum_velocity_error_mms": -6.156887777386544e-07,
+      "velocity_error_rms_mms": 26.21286348562442,
+      "final_100ms_velocity_bias_mms": -25.29731411023581,
+      "recovery_1mms_s": null,
+      "peak_voltage_v": 3.5098639130592346,
+      "final_voltage_v": 3.5098639130592346,
+      "max_abs_voltage_v": 3.5098639130592346,
+      "max_voltage_step_v": 0.0,
+      "prefault_velocity_error_rms_mms": 6.098322419727721e-07,
+      "prefault_voltage_std_v": 0.0,
+      "prefault_max_voltage_step_v": 0.0,
+      "final_position_error_mm": -13.029924378599363
+    },
+    "sac_fp32": {
+      "minimum_velocity_error_mms": -16.376418889008754,
+      "minimum_velocity_error_time_s": 0.502,
+      "maximum_velocity_error_mms": 0.3563624539958954,
+      "velocity_error_rms_mms": 1.5522920524713557,
+      "final_100ms_velocity_bias_mms": 0.007940236652430748,
+      "recovery_1mms_s": 0.02100000000000002,
+      "peak_voltage_v": 9.969027042388916,
+      "final_voltage_v": 6.678526696592274,
+      "max_abs_voltage_v": 9.969027042388916,
+      "max_voltage_step_v": 6.459091901779175,
+      "prefault_velocity_error_rms_mms": 0.0008269870759844853,
+      "prefault_voltage_std_v": 0.0001688835825689486,
+      "prefault_max_voltage_step_v": 0.0014781951904296875,
+      "final_position_error_mm": -0.06643926457801375
+    },
+    "edge_int8": {
+      "minimum_velocity_error_mms": -16.44269389354744,
+      "minimum_velocity_error_time_s": 0.502,
+      "maximum_velocity_error_mms": 0.5379373569374055,
+      "velocity_error_rms_mms": 1.622698490150636,
+      "final_100ms_velocity_bias_mms": 0.0076483040922571705,
+      "recovery_1mms_s": 0.02300000000000002,
+      "peak_voltage_v": 9.978672862052917,
+      "final_voltage_v": 6.678345793544656,
+      "max_abs_voltage_v": 9.978672862052917,
+      "max_voltage_step_v": 6.411120295524597,
+      "prefault_velocity_error_rms_mms": 0.17758028779441093,
+      "prefault_voltage_std_v": 0.026351217822730515,
+      "prefault_max_voltage_step_v": 0.1612299680709839,
+      "final_position_error_mm": -0.07004762976798792
+    }
+  },
+  "edge": {
+    "validation": {
+      "calibration_count": 20601,
+      "evaluation_count": 4000,
+      "target_prune_ratio": 0.7,
+      "actual_weight_sparsity": 0.6997767857142857,
+      "weight_count": 4480,
+      "zero_weight_count": 3135,
+      "pruned_action_mae": 0.001630965736694634,
+      "pruned_action_max_abs_error": 0.09097844362258911,
+      "int8_vs_pruned_action_mae": 0.003174558747559786,
+      "int8_vs_fp32_action_mae": 0.0043338327668607235,
+      "int8_vs_fp32_action_max_abs_error": 0.08776748180389404,
+      "input_saturation_fraction": 5e-05,
+      "activation_bits": 16,
+      "input_balancing": "calibration_smoothquant_affine_folded_into_first_layer",
+      "input_balancing_mode": "smoothquant",
+      "weight_quantization": "per_channel",
+      "hidden_channel_equalization": true,
+      "hidden_channel_scales": [
+        [
+          3.4718270301818848,
+          0.7426538467407227,
+          1.4585272073745728,
+          2.8790690898895264,
+          1.8954577445983887,
+          0.507588267326355,
+          1.7183480262756348,
+          1.054538607597351,
+          1.0,
+          1.0640418529510498,
+          1.0,
+          1.4402313232421875,
+          1.7917927503585815,
+          8.959890365600586,
+          1.0,
+          1.4845367670059204,
+          4.264278888702393,
+          0.680968701839447,
+          3.806734800338745,
+          1.0,
+          1.9047495126724243,
+          2.01900577545166,
+          1.1858011484146118,
+          2.794881582260132,
+          8.405938148498535,
+          0.9260280728340149,
+          1.6156787872314453,
+          1.7183290719985962,
+          1.7614282369613647,
+          1.0,
+          1.2379387617111206,
+          1.0,
+          1.0,
+          1.273551106452942,
+          1.0,
+          1.622963547706604,
+          3.2480530738830566,
+          1.7623461484909058,
+          2.5052406787872314,
+          1.5865557193756104,
+          1.4195573329925537,
+          1.7068016529083252,
+          0.8986820578575134,
+          0.9137097001075745,
+          2.33909273147583,
+          1.7186180353164673,
+          2.212230920791626,
+          0.9881754517555237,
+          7.777548313140869,
+          0.9695486426353455,
+          1.212050437927246,
+          1.8719542026519775,
+          9.449172973632812,
+          1.4012638330459595,
+          1.0,
+          0.6298348307609558,
+          1.372464895248413,
+          2.3697142601013184,
+          1.5386086702346802,
+          1.094223141670227,
+          1.0,
+          0.37938305735588074,
+          1.3259272575378418,
+          0.3520837724208832
+        ],
+        [
+          5.059581279754639,
+          412.4588623046875,
+          344.15283203125,
+          351.7864074707031,
+          1.0,
+          465.88885498046875,
+          524.9454956054688,
+          1.0,
+          62.638607025146484,
+          261.42633056640625,
+          529.6090087890625,
+          2.362251043319702,
+          456.3020935058594,
+          1.0,
+          2.531208038330078,
+          1.0,
+          347.8110656738281,
+          1.0,
+          1.299748182296753,
+          2.38731050491333,
+          641.8543090820312,
+          1.0,
+          533.2249755859375,
+          0.467792809009552,
+          381.265380859375,
+          1.0,
+          1.2695890665054321,
+          1.0,
+          1.5828588008880615,
+          1.7237976789474487,
+          2.5039446353912354,
+          319.9742126464844,
+          92.51619720458984,
+          538.38427734375,
+          1.0,
+          3.341142416000366,
+          212.060302734375,
+          1.8108904361724854,
+          1.0,
+          3.5390357971191406,
+          338.4933166503906,
+          320.4271240234375,
+          3.6531145572662354,
+          279.895751953125,
+          313.04107666015625,
+          1.8030192852020264,
+          2.3030240535736084,
+          347.42999267578125,
+          3.4514353275299072,
+          1.0,
+          1.0,
+          368.4160461425781,
+          322.2831115722656,
+          692.6482543945312,
+          369.64422607421875,
+          451.0201110839844,
+          1.0,
+          3.219715118408203,
+          1.0,
+          336.41448974609375,
+          396.8774719238281,
+          294.7296447753906,
+          305.7904357910156,
+          1.0
+        ]
+      ],
+      "final_logits": "INT32 accumulator dequantized at tanh boundary",
+      "smoothquant_alpha": 0.75,
+      "input_balancing_center": [
+        -0.001737308455631137,
+        -0.0001429400290362537,
+        0.020286062732338905,
+        -0.39412763714790344,
+        0.0
+      ],
+      "input_balancing_channel_scale": [
+        0.11496592313051224,
+        0.882088840007782,
+        21.616914749145508,
+        1.3426361083984375,
+        1.0
+      ],
+      "input_balancing_selection_basis": "Configured exponent; laboratory calibration-MAE candidate scores are recorded in metrics.edge.quantization_selection. Closed-loop test values are not used for range calibration or exponent selection.",
+      "smoothquant_formula": "s_j=max(max|cal_j-center_j|,eps)^alpha/max(max|W_pruned[:,j]|,eps)^(1-alpha); eps=1e-5",
+      "constant_channel_scale_rule": "max centered absolute input <=1e-5 (mean_std: standard deviation <=1e-5) uses scale 1; channel is retained",
+      "kernel": "INT8 weights / INT16 activations, INT32 accumulation, INT64 fixed-point requantization; float affine input prefix, input quantization and final tanh",
+      "speed_scope": "Python/NumPy CPU reference, not a DSP/MCU deployment measurement"
+    },
+    "distillation": {
+      "method": "fixed-mask actor distillation, cosine Adam polishing and local input-Jacobian preservation",
+      "steps": 31000,
+      "initial_action_mse": 0.28532901406288147,
+      "final_action_mse": 9.726838470669463e-06,
+      "stages": [
+        {
+          "method": "fixed-magnitude-mask action distillation from trained FP32 actor",
+          "steps": 8000,
+          "batch_size": 256,
+          "seed": 2026,
+          "initial_action_mse": 0.28532901406288147,
+          "final_action_mse": 1.4270834981289227e-05,
+          "history": [
+            {
+              "step": 1,
+              "batch_action_mse": 0.2868562340736389
+            },
+            {
+              "step": 100,
+              "batch_action_mse": 0.0009779089596122503
+            },
+            {
+              "step": 200,
+              "batch_action_mse": 0.0006102817715145648
+            },
+            {
+              "step": 300,
+              "batch_action_mse": 0.00027055994723923504
+            },
+            {
+              "step": 400,
+              "batch_action_mse": 0.00023009149299468845
+            },
+            {
+              "step": 500,
+              "batch_action_mse": 0.0001416964951204136
+            },
+            {
+              "step": 600,
+              "batch_action_mse": 0.00014360494969878346
+            },
+            {
+              "step": 700,
+              "batch_action_mse": 7.642900891369209e-05
+            },
+            {
+              "step": 800,
+              "batch_action_mse": 9.166185191133991e-05
+            },
+            {
+              "step": 900,
+              "batch_action_mse": 4.1521721868775785e-05
+            },
+            {
+              "step": 1000,
+              "batch_action_mse": 3.6037159588886425e-05
+            },
+            {
+              "step": 1100,
+              "batch_action_mse": 7.918690971564502e-05
+            },
+            {
+              "step": 1200,
+              "batch_action_mse": 0.00010848531383089721
+            },
+            {
+              "step": 1300,
+              "batch_action_mse": 2.713469075388275e-05
+            },
+            {
+              "step": 1400,
+              "batch_action_mse": 0.00014971214113757014
+            },
+            {
+              "step": 1500,
+              "batch_action_mse": 2.233674968010746e-05
+            },
+            {
+              "step": 1600,
+              "batch_action_mse": 4.285009345039725e-05
+            },
+            {
+              "step": 1700,
+              "batch_action_mse": 0.00012197287287563086
+            },
+            {
+              "step": 1800,
+              "batch_action_mse": 1.816725853132084e-05
+            },
+            {
+              "step": 1900,
+              "batch_action_mse": 2.7626476367004216e-05
+            },
+            {
+              "step": 2000,
+              "batch_action_mse": 9.806253365240991e-05
+            },
+            {
+              "step": 2100,
+              "batch_action_mse": 9.9298986242502e-06
+            },
+            {
+              "step": 2200,
+              "batch_action_mse": 1.7179738279082812e-05
+            },
+            {
+              "step": 2300,
+              "batch_action_mse": 0.00017743688658811152
+            },
+            {
+              "step": 2400,
+              "batch_action_mse": 4.006603921880014e-05
+            },
+            {
+              "step": 2500,
+              "batch_action_mse": 3.2794861908769235e-05
+            },
+            {
+              "step": 2600,
+              "batch_action_mse": 0.00015472776431124657
+            },
+            {
+              "step": 2700,
+              "batch_action_mse": 0.00010755141556728631
+            },
+            {
+              "step": 2800,
+              "batch_action_mse": 1.8560735043138266e-05
+            },
+            {
+              "step": 2900,
+              "batch_action_mse": 1.520228852314176e-05
+            },
+            {
+              "step": 3000,
+              "batch_action_mse": 2.7689071430359036e-05
+            },
+            {
+              "step": 3100,
+              "batch_action_mse": 3.604212906793691e-05
+            },
+            {
+              "step": 3200,
+              "batch_action_mse": 4.175863796263002e-05
+            },
+            {
+              "step": 3300,
+              "batch_action_mse": 3.8940161175560206e-05
+            },
+            {
+              "step": 3400,
+              "batch_action_mse": 0.0001806518412195146
+            },
+            {
+              "step": 3500,
+              "batch_action_mse": 1.9014929421246052e-05
+            },
+            {
+              "step": 3600,
+              "batch_action_mse": 2.310391573701054e-05
+            },
+            {
+              "step": 3700,
+              "batch_action_mse": 3.6581390304490924e-05
+            },
+            {
+              "step": 3800,
+              "batch_action_mse": 1.9690896806423552e-05
+            },
+            {
+              "step": 3900,
+              "batch_action_mse": 0.00011249676754232496
+            },
+            {
+              "step": 4000,
+              "batch_action_mse": 5.502250496647321e-05
+            },
+            {
+              "step": 4100,
+              "batch_action_mse": 7.451912551914575e-06
+            },
+            {
+              "step": 4200,
+              "batch_action_mse": 1.2217011317261495e-05
+            },
+            {
+              "step": 4300,
+              "batch_action_mse": 2.2161713786772452e-05
+            },
+            {
+              "step": 4400,
+              "batch_action_mse": 9.846189641393721e-06
+            },
+            {
+              "step": 4500,
+              "batch_action_mse": 3.238194767618552e-05
+            },
+            {
+              "step": 4600,
+              "batch_action_mse": 3.261407618992962e-05
+            },
+            {
+              "step": 4700,
+              "batch_action_mse": 1.443652763555292e-05
+            },
+            {
+              "step": 4800,
+              "batch_action_mse": 2.4543442123103887e-05
+            },
+            {
+              "step": 4900,
+              "batch_action_mse": 7.86122018325841e-06
+            },
+            {
+              "step": 5000,
+              "batch_action_mse": 7.67746678320691e-06
+            },
+            {
+              "step": 5100,
+              "batch_action_mse": 7.697644832660444e-06
+            },
+            {
+              "step": 5200,
+              "batch_action_mse": 8.995602911454625e-06
+            },
+            {
+              "step": 5300,
+              "batch_action_mse": 8.131419235724024e-06
+            },
+            {
+              "step": 5400,
+              "batch_action_mse": 1.552315916342195e-05
+            },
+            {
+              "step": 5500,
+              "batch_action_mse": 3.149142867187038e-05
+            },
+            {
+              "step": 5600,
+              "batch_action_mse": 5.924663128098473e-06
+            },
+            {
+              "step": 5700,
+              "batch_action_mse": 1.2479304132284597e-05
+            },
+            {
+              "step": 5800,
+              "batch_action_mse": 6.964371550566284e-06
+            },
+            {
+              "step": 5900,
+              "batch_action_mse": 6.611274329770822e-06
+            },
+            {
+              "step": 6000,
+              "batch_action_mse": 6.0666410718113184e-05
+            },
+            {
+              "step": 6100,
+              "batch_action_mse": 1.0319901775801554e-05
+            },
+            {
+              "step": 6200,
+              "batch_action_mse": 5.455282007460482e-06
+            },
+            {
+              "step": 6300,
+              "batch_action_mse": 7.939726856420748e-06
+            },
+            {
+              "step": 6400,
+              "batch_action_mse": 1.0127499990630895e-05
+            },
+            {
+              "step": 6500,
+              "batch_action_mse": 3.178482438670471e-05
+            },
+            {
+              "step": 6600,
+              "batch_action_mse": 1.028243059408851e-05
+            },
+            {
+              "step": 6700,
+              "batch_action_mse": 5.580574452324072e-06
+            },
+            {
+              "step": 6800,
+              "batch_action_mse": 9.394394510309212e-06
+            },
+            {
+              "step": 6900,
+              "batch_action_mse": 6.292979378486052e-05
+            },
+            {
+              "step": 7000,
+              "batch_action_mse": 4.083726253156783e-06
+            },
+            {
+              "step": 7100,
+              "batch_action_mse": 1.9688353859237395e-05
+            },
+            {
+              "step": 7200,
+              "batch_action_mse": 1.1201664165128022e-05
+            },
+            {
+              "step": 7300,
+              "batch_action_mse": 1.4942799680284224e-05
+            },
+            {
+              "step": 7400,
+              "batch_action_mse": 7.509995157306548e-06
+            },
+            {
+              "step": 7500,
+              "batch_action_mse": 8.656105819682125e-06
+            },
+            {
+              "step": 7600,
+              "batch_action_mse": 8.522589268977754e-06
+            },
+            {
+              "step": 7700,
+              "batch_action_mse": 2.7740919904317707e-05
+            },
+            {
+              "step": 7800,
+              "batch_action_mse": 2.387132371950429e-05
+            },
+            {
+              "step": 7900,
+              "batch_action_mse": 1.4179609024722595e-05
+            },
+            {
+              "step": 8000,
+              "batch_action_mse": 4.515412911132444e-06
+            }
+          ]
+        },
+        {
+          "method": "calibration-only NumPy Adam fixed-mask continuation with cosine learning rate",
+          "steps": 15000,
+          "batch_size": 256,
+          "seed": 2027,
+          "learning_rate": 0.0003,
+          "min_learning_rate": 1e-05,
+          "selected_step": 14000,
+          "selection_metric": "full calibration action MSE only",
+          "initial_action_mse": 1.4270837709773332e-05,
+          "final_action_mse": 8.932828677643556e-06,
+          "wall_seconds": 10.630226506000326,
+          "history": [
+            {
+              "step": 1000,
+              "calibration_action_mse": 1.2090496056771372e-05,
+              "learning_rate": 0.0002968314021064018
+            },
+            {
+              "step": 2000,
+              "calibration_action_mse": 1.1646626262518112e-05,
+              "learning_rate": 0.00028746409135817707
+            },
+            {
+              "step": 3000,
+              "calibration_action_mse": 1.0783671314129606e-05,
+              "learning_rate": 0.0002723074641843674
+            },
+            {
+              "step": 4000,
+              "calibration_action_mse": 1.0394822311354801e-05,
+              "learning_rate": 0.0002520239379220344
+            },
+            {
+              "step": 5000,
+              "calibration_action_mse": 1.0886412383115385e-05,
+              "learning_rate": 0.00022749999999999997
+            },
+            {
+              "step": 6000,
+              "calibration_action_mse": 9.839085578278173e-06,
+              "learning_rate": 0.00019980746418436736
+            },
+            {
+              "step": 7000,
+              "calibration_action_mse": 9.75783132162178e-06,
+              "learning_rate": 0.00017015662717380977
+            },
+            {
+              "step": 8000,
+              "calibration_action_mse": 9.459761713515036e-06,
+              "learning_rate": 0.00013984337282619026
+            },
+            {
+              "step": 9000,
+              "calibration_action_mse": 9.313055670645554e-06,
+              "learning_rate": 0.00011019253581563262
+            },
+            {
+              "step": 10000,
+              "calibration_action_mse": 9.538583071844187e-06,
+              "learning_rate": 8.250000000000001e-05
+            },
+            {
+              "step": 11000,
+              "calibration_action_mse": 9.212807526637334e-06,
+              "learning_rate": 5.797606207796559e-05
+            },
+            {
+              "step": 12000,
+              "calibration_action_mse": 8.986986358650029e-06,
+              "learning_rate": 3.769253581563263e-05
+            },
+            {
+              "step": 13000,
+              "calibration_action_mse": 8.984761734609492e-06,
+              "learning_rate": 2.2535908641822855e-05
+            },
+            {
+              "step": 14000,
+              "calibration_action_mse": 8.932828677643556e-06,
+              "learning_rate": 1.3168597893598192e-05
+            },
+            {
+              "step": 15000,
+              "calibration_action_mse": 8.940832231019158e-06,
+              "learning_rate": 1e-05
+            }
+          ]
+        },
+        {
+          "method": "Fixed-mask sparse action and input-Jacobian distillation from final deployed FP32 neural actor",
+          "steps": 8000,
+          "batch_size": 256,
+          "seed": 2029,
+          "environment_interactions": 0,
+          "calibration_observation_count": 20601,
+          "unloaded_regression_anchors": 24000,
+          "synthetic_anchors_are_not_physical_trajectories": true,
+          "teacher": "Full final FP32 neural actor; no physical teacher at this stage",
+          "raw_anchor_ranges": {
+            "position_error_mm": [
+              -0.015,
+              0.015
+            ],
+            "velocity_error_mms": [
+              -0.25,
+              0.25
+            ],
+            "acceleration_error_mms2": [
+              -300.0,
+              300.0
+            ],
+            "load_pressure_mpa": [
+              2.4,
+              5.8
+            ],
+            "supply_pressure_mpa": [
+              21.0,
+              21.0
+            ]
+          },
+          "loss": "calibration_action_MSE+30*unloaded_action_MSE+2*mean(((jac_student-jac_full)*[1,1,100,2,2])^2)",
+          "selection_metric": "calibration and synthetic unloaded-anchor joint objective only",
+          "selected_step": 7000,
+          "initial_action_mse": 8.93282594915945e-06,
+          "final_action_mse": 9.726838470669463e-06,
+          "initial_unloaded_anchor_action_mse": 4.533669084594294e-07,
+          "final_unloaded_anchor_action_mse": 6.237015792720513e-09,
+          "initial_unloaded_weighted_jacobian_mse": 0.008182448334991932,
+          "final_unloaded_weighted_jacobian_mse": 0.0003495510609354824,
+          "unchanged_pruning_mask": true,
+          "integer_rounding_differentiated": false,
+          "wall_seconds": 13.496013117000075,
+          "history": [
+            {
+              "step": 1000,
+              "calibration_action_mse": 1.0465382729307748e-05,
+              "unloaded_anchor_action_mse": 1.0838196118356791e-07,
+              "unloaded_weighted_jacobian_mse": 0.00038082426181063056,
+              "learning_rate": 0.00019316098900069184
+            },
+            {
+              "step": 2000,
+              "calibration_action_mse": 1.0016146006819326e-05,
+              "unloaded_anchor_action_mse": 3.8035729232888116e-08,
+              "unloaded_weighted_jacobian_mse": 0.0003600489581003785,
+              "learning_rate": 0.00017365835330124753
+            },
+            {
+              "step": 3000,
+              "calibration_action_mse": 1.0018601642514113e-05,
+              "unloaded_anchor_action_mse": 1.8152716663166757e-08,
+              "unloaded_weighted_jacobian_mse": 0.00035541708348318934,
+              "learning_rate": 0.00014446191830005692
+            },
+            {
+              "step": 4000,
+              "calibration_action_mse": 1.0192802619712893e-05,
+              "unloaded_anchor_action_mse": 1.3274952692654551e-08,
+              "unloaded_weighted_jacobian_mse": 0.0003528939269017428,
+              "learning_rate": 0.00011001767366777135
+            },
+            {
+              "step": 5000,
+              "calibration_action_mse": 9.867323569778819e-06,
+              "unloaded_anchor_action_mse": 1.874285260328179e-08,
+              "unloaded_weighted_jacobian_mse": 0.0003515015996526927,
+              "learning_rate": 7.557073771566023e-05
+            },
+            {
+              "step": 6000,
+              "calibration_action_mse": 9.740393579704687e-06,
+              "unloaded_anchor_action_mse": 6.989747447505579e-09,
+              "unloaded_weighted_jacobian_mse": 0.0003499039157759398,
+              "learning_rate": 4.636663858517066e-05
+            },
+            {
+              "step": 7000,
+              "calibration_action_mse": 9.726838470669463e-06,
+              "unloaded_anchor_action_mse": 6.237015792720513e-09,
+              "unloaded_weighted_jacobian_mse": 0.0003495510609354824,
+              "learning_rate": 2.685253302915765e-05
+            },
+            {
+              "step": 8000,
+              "calibration_action_mse": 9.769506505108438e-06,
+              "unloaded_anchor_action_mse": 1.6658596280194615e-08,
+              "unloaded_weighted_jacobian_mse": 0.00035027507692575455,
+              "learning_rate": 2e-05
+            }
+          ]
+        }
+      ]
+    },
+    "quantization_selection": {
+      "selection_metric": "calibration normalized-action MAE against fixed pruned FP32 actor",
+      "calibration_count": 20601,
+      "selected_alpha": 0.75,
+      "weight_quantization": "per-output-channel symmetric INT8",
+      "activation_precision": "INT16; W8/A8 calibration produced an unloaded limit cycle, so only activation storage/precision is increased",
+      "hidden_equalization": "positive diagonal ReLU cross-layer equalization, float-function preserving",
+      "final_logits": "INT32 dot-product output, dequantized only at final tanh",
+      "candidates": [
+        {
+          "alpha": 0.25,
+          "calibration_action_mae": 0.004107896704226732
+        },
+        {
+          "alpha": 0.5,
+          "calibration_action_mae": 0.004167070612311363
+        },
+        {
+          "alpha": 0.75,
+          "calibration_action_mae": 0.0038431286811828613
+        }
+      ]
+    },
+    "artifact_bytes": {
+      "actor_fp32.npz": 18421,
+      "actor_pruned_fp32.npz": 8959,
+      "actor_int8.npz": 9003
+    },
+    "benchmark": {
+      "fp32": {
+        "median_ms": 0.011377,
+        "p95_ms": 0.012319,
+        "min_ms": 0.008072,
+        "repeats": 2000,
+        "batch_size": 1
+      },
+      "pruned_fp32": {
+        "median_ms": 0.011508,
+        "p95_ms": 0.01192705,
+        "min_ms": 0.011277,
+        "repeats": 2000,
+        "batch_size": 1
+      },
+      "int8": {
+        "median_ms": 0.037526,
+        "p95_ms": 0.06903499999999999,
+        "min_ms": 0.036244,
+        "repeats": 2000,
+        "batch_size": 1
+      }
+    },
+    "commissioning_calibration_count": 601,
+    "calibration_not_held_out": true,
+    "synthetic_unloaded_anchor_count": 8000,
+    "benchmark_scope": "Single-observation NumPy actor kernels, including input affine preprocessing and tanh; excludes ODE, sensing, SB3 API and HOCBF.",
+    "closed_loop_velocity_rms_difference_mms": 0.14582857528862897,
+    "displayed_window_velocity_rms_difference_mms": 0.14582857528862897,
+    "displayed_window_rms_percent_of_50mms": 0.29165715057725794
+  },
+  "safety": {
+    "experiment": "sampled_two_state_hocbf_safety_demo",
+    "model_scope": "x_dot=v; v_dot=2640*u-14*v; x in mm, v in mm/s. This is an explicit second-order classroom surrogate, not the four-state hydraulic pressure ODE or an identified physical plant.",
+    "relative_order_warning": "Position has relative degree 3 in the four-state pressure model, or 4 when a first-order valve state is added. This second-order certificate does not transfer to either plant.",
+    "physical_limit_mm": [
+      0.0,
+      100.0
+    ],
+    "guard_limit_mm": [
+      1.2,
+      98.8
+    ],
+    "k_gain_mm_s2_per_v": 2640.0,
+    "damping_per_s": 14.0,
+    "sample_time_s": 0.001,
+    "kappa1_per_s": 49.0,
+    "kappa2_per_s": 49.0,
+    "alpha_sum_per_s": 98.0,
+    "alpha_product_per_s2": 2401.0,
+    "configuration": {
+      "x_min": 0.0,
+      "x_max": 100.0,
+      "u_min": -10.0,
+      "u_max": 10.0,
+      "margin": 1.2,
+      "dt": 0.001,
+      "k_gain": 2640.0,
+      "damp_c": 14.0,
+      "kappa1": 49.0,
+      "kappa2": 49.0,
+      "initial_x_mm": 20.0,
+      "initial_v_mm_s": 0.0,
+      "proposed_action_v": 8.5
+    },
+    "reference_coefficient_note": "Positive kappa1 and kappa2 define the recursive HOCBF; alpha_sum=kappa1+kappa2 and alpha_product=kappa1*kappa2. All propagation, QP and independent validation use these same coefficients.",
+    "duration_s": 1.0,
+    "initial_x_mm": 20.0,
+    "initial_v_mm_s": 0.0,
+    "proposed_action_v": 8.5,
+    "first_intervention_s": 0.065,
+    "minimum_safe_voltage_v": -3.0916046704129267,
+    "minimum_safe_voltage_time_s": 0.098,
+    "safe_final_position_mm": 98.79999999999988,
+    "safe_final_velocity_mm_s": 2.7187201150463035e-12,
+    "safe_maximum_position_mm": 98.79999999999988,
+    "safe_position_at_0_25_s_mm": 98.76665968647892,
+    "unsafe_collision_time_s": 0.1048911492965995,
+    "unsafe_collision_x_mm": 100.0,
+    "unsafe_trajectory_convention": "Terminate at the exact first physical upper-boundary event; subsequent states are NaN. The inserted event row does not change the sampled safe control.",
+    "interval_minima": {
+      "h_mechanical_min": 0.011856000000001136,
+      "h_upper_mm_min": 1.1368683772161603e-13,
+      "h_lower_mm_min": 18.8,
+      "psi1_upper_mm_s_min": -1.4011984296703191e-12,
+      "psi1_lower_mm_s_min": 921.2000000000003,
+      "psi2_upper_mm_s2_min": -2.9103830456733704e-11,
+      "psi2_lower_mm_s2_min": 67578.8
+    },
+    "independent_random_validation": {
+      "seed": 8103,
+      "requested_cases": 128,
+      "feasible_cases_checked": 128,
+      "random_state_attempts": 188,
+      "max_flow_error_mm_or_mm_s": 9.094947017729282e-13,
+      "max_qp_violation_v": 0.0,
+      "min_dense_physical_barrier": 0.013733664713032338,
+      "min_dense_psi1_mm_s": 81.3349724806746,
+      "min_dense_psi2_mm_s2": -6.184563972055912e-11,
+      "max_analytic_minimum_overestimate": 8.731149137020111e-11,
+      "checks": {
+        "all_requested_random_cases_checked": true,
+        "independent_flow_matches_exact_zoh": true,
+        "all_qp_projections_feasible": true,
+        "dense_mechanical_barriers_nonnegative": true,
+        "dense_initial_set_conditions_preserved": true,
+        "dense_hocbf_inequalities_preserved": true,
+        "analytic_minima_do_not_overestimate_dense_minima": true,
+        "invalid_inner_set_is_rejected": true,
+        "invalid_high_order_initial_state_is_rejected": true,
+        "infeasible_actuator_intersection_is_rejected": true
+      },
+      "passed": true
+    },
+    "checks": {
+      "all_safe_commands_inside_voltage_limits": true,
+      "entire_zoh_intervals_inside_physical_limits": true,
+      "entire_zoh_intervals_inside_guard_limits": true,
+      "entire_zoh_intervals_preserve_psi1": true,
+      "entire_zoh_intervals_satisfy_hocbf": true,
+      "unprotected_collision_recorded": true,
+      "independent_random_flow_checks_passed": true
+    },
+    "passed": true,
+    "reference_numeric_difference": "The declared classroom surrogate generates the complete response by exact held-input dynamics and QP projection. Its parameters are not an identification of the four-state training plant; no signal is spliced to the reference figure."
+  },
+  "evaluation": {
+    "start_time_s": 0.4,
+    "display_start_time_s": 0.4,
+    "end_time_s": 1.0,
+    "sample_count_per_policy": 601,
+    "initial_position_m": 0.0001,
+    "initial_velocity_m_s": 0.05,
+    "initial_voltage_v": 3.5098639505149896,
+    "fault_time_s": 0.5,
+    "load_step_n": 5000.0,
+    "bulk_multiplier": 0.5,
+    "pid_gains": {
+      "kp_v_per_mm": 1.0,
+      "ki_v_per_mm_s": 40.0,
+      "kd_v_per_mms": 0.01,
+      "derivative_alpha": 0.85
+    },
+    "observations": "Five reference features [actual-reference position, actual-reference velocity, analytic acceleration error, P1-(A2/A1)*P2, Ps]; units mm,mm/s,mm/s²,MPa,MPa. No future fault label.",
+    "position_error_definition": "actual minus reference",
+    "nominal_ff": "Unloaded equilibrium inverse held constant; no oracle load signal, pressure gain scheduling or integral correction.",
+    "physical_model": "Four internal physical states, non-linear orifice flow and force/continuity equations; teaching parameters explicitly declared.",
+    "reference_comparison": "The supplied training sketch ignores m/Fc in its toy dynamics; this implementation keeps them active. No response curves or training rewards are fitted to schematic values."
+  }
+}

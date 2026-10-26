@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+*.so
+trials/
+models/checkpoints/
+models/sac_checkpoint.zip
+models/progress.json

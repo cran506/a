@@ -1,5 +1,20 @@
 # 智能流体传动与控制课堂编程
 
+## 当前选定交付：截图中的第八章结果
+
+截图对应的五维机理引导 SAC 版本已单独保存到 `chapter8_selected_result/`。代码、模型、原始实测四联图和完整包均完整取自历史提交 `780f0dc`，便于固定使用这一版。
+
+- [选定版本目录与说明](chapter8_selected_result/README.md)
+- [截图对应的原始对比图](chapter8_selected_result/outputs/chapter8_comparison.png)
+- [下载完整包](chapter8_selected_result/deliverables/第八章_五维参考接口修订版.zip)
+
+FP32／整数版故障速度谷值分别为 **−16.38／−16.44 mm/s**，持续恢复到 ±1 mm/s 分别耗时 **21／23 ms**。量化采用 INT8 权重与 INT16 激活；该版本包含百万步机理引导训练和离线稳定性精修。
+
+```bash
+cd chapter8_selected_result
+python drl_hydraulic_lab.py --mode all --reuse-model
+```
+
 ## 第八章图 (a)：PPT 教学示意与真实训练分开交付
 
 按本次选择，主图 (a) 重绘为明确标注的 **PPT 教学示意（非训练日志）**：奖励目标 −180→−2，策略熵目标 2.8→0.35。图 (b)–(d) 保留原控制对照的实测数据。
