@@ -99,22 +99,22 @@
   "comparison_duration_s": 0.15,
   "max_absolute_state_error_si_by_substeps": {
     "8": [
-      9.030710901303252e-10,
-      2.021425468332061e-07,
-      70.74423604388721,
-      2.7612790251150727
+      9.030685895264345e-10,
+      2.0214205902202576e-07,
+      70.74408614821732,
+      2.761269937735051
     ],
     "16": [
-      3.3173620968274253e-10,
-      7.541021232460032e-08,
-      22.667981246951967,
-      1.1717505236156285
+      3.3173365530242416e-10,
+      7.540966331931465e-08,
+      22.667831351282075,
+      1.1717414362356067
     ],
     "32": [
-      1.6114171629000307e-10,
-      3.234460089346358e-08,
-      8.06541369180195,
-      0.5674729500897229
+      1.611391619096847e-10,
+      3.2344051888177905e-08,
+      8.065263796132058,
+      0.567463971208781
     ]
   },
   "fixed_voltage_fault_final_state_si": [
@@ -123,7 +123,7 @@
     17259375.90367391,
     1273592.3216947922
   ],
-  "benchmark_600_native_steps_seconds": 0.007273007999174297,
+  "benchmark_600_native_steps_seconds": 0.007192397999915556,
   "mean_internal_substeps": 8.0,
   "checks": {
     "all_equilibrium_force_balances": true,
@@ -136,5 +136,18 @@
     "fault_run_remains_finite": true,
     "fault_reduces_speed_at_fixed_voltage": true
   },
-  "passed": true
+  "passed": true,
+  "source_sha256": {
+    "physical_config.json": "a9a7f6b2f9ace465bc2aea60175726c23492c52e1c0280fb8cb33e30bcb0b4e6",
+    "hydraulic_twin.py": "2b7e66cf789d3634c32e2a650a8c516d1804745d1c6a17cf06426ae3c54763ce",
+    "native_twin.cpp": "d94be966aa7c845842a92a06e606783655bf8a0b8a4327dfbf87c1b2d1af102a",
+    "safety_filter.py": "90ec8ec16fa5f3c9f30cc3cc0bb0267c4e8a9edf1a41bc3ff550cb284a39eb8c",
+    "safety_experiment.py": "c434826930e1295ab7540b2d79b97a022aa36a642f850d199fac4aa250ce8064",
+    "test_physics_safety.py": "4537a0a56b08e3f2bcc98d579d988cc49e427186ba6256ae12469284e6a0cd9b",
+    "safety_config.json": "594d3e829680e1b61bb08cbdfdc250925ac0a9357341a52ae65c79dcc86a9b37"
+  },
+  "safety_evidence_sha256": {
+    "outputs/safety.csv": "45423e9301c60aa79dca744334e9d045a06dfecca948bacfde8c6f9468bdaa32",
+    "outputs/safety_summary.json": "ee22f9c4081d7ed04afbea6302526ca7247ddc7668fab8296c3e62e5f2941627"
+  }
 }

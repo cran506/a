@@ -101,16 +101,16 @@
       "final_position_error_mm": 0.10614010724706302
     },
     "edge_int8": {
-      "minimum_velocity_error_mms": -32.97089593772137,
-      "maximum_velocity_error_mms": 13.972278007221659,
-      "velocity_error_rms_mms": 4.256216037279404,
-      "final_100ms_velocity_bias_mms": -0.13686519728891502,
-      "recovery_1mms_s": 0.44999999999999996,
-      "peak_voltage_v": 9.980620741844177,
-      "final_voltage_v": 6.661213907865014,
-      "max_abs_voltage_v": 9.980620741844177,
-      "max_voltage_step_v": 6.491257958114147,
-      "final_position_error_mm": 0.12038843484701856
+      "minimum_velocity_error_mms": -33.35111321896589,
+      "maximum_velocity_error_mms": 14.596084203940777,
+      "velocity_error_rms_mms": 4.311114559492116,
+      "final_100ms_velocity_bias_mms": -0.0734794605412028,
+      "recovery_1mms_s": 0.050000000000000044,
+      "peak_voltage_v": 9.988628625869751,
+      "final_voltage_v": 6.665186191549395,
+      "max_abs_voltage_v": 9.988628625869751,
+      "max_voltage_step_v": 7.300820127129555,
+      "final_position_error_mm": 0.1075908914732332
     }
   },
   "edge": {
@@ -121,15 +121,152 @@
       "actual_weight_sparsity": 0.6997916666666667,
       "weight_count": 4800,
       "zero_weight_count": 3359,
-      "pruned_action_mae": 0.039836585521698,
-      "pruned_action_max_abs_error": 0.27868348360061646,
-      "int8_vs_pruned_action_mae": 0.016385765746235847,
-      "int8_vs_fp32_action_mae": 0.043389976024627686,
-      "int8_vs_fp32_action_max_abs_error": 0.3044767379760742,
-      "input_saturation_fraction": 0.0,
+      "pruned_action_mae": 0.03765548765659332,
+      "pruned_action_max_abs_error": 0.28587281703948975,
+      "int8_vs_pruned_action_mae": 0.01191793940961361,
+      "int8_vs_fp32_action_mae": 0.03935277834534645,
+      "int8_vs_fp32_action_max_abs_error": 0.28071606159210205,
+      "input_saturation_fraction": 2.5e-05,
       "input_balancing": "calibration_smoothquant_affine_folded_into_first_layer",
       "input_balancing_mode": "smoothquant",
-      "smoothquant_alpha": 0.5,
+      "weight_quantization": "per_channel",
+      "hidden_channel_equalization": true,
+      "hidden_channel_scales": [
+        [
+          0.3343004882335663,
+          1.003935694694519,
+          0.530280590057373,
+          0.7332526445388794,
+          0.7494489550590515,
+          1.0238595008850098,
+          0.7189061641693115,
+          0.5552210807800293,
+          1.5366007089614868,
+          0.7361067533493042,
+          0.9083959460258484,
+          0.2864023447036743,
+          0.9220918416976929,
+          0.41765689849853516,
+          1.0,
+          0.3481460213661194,
+          1.384187936782837,
+          1.2043906450271606,
+          0.6255525350570679,
+          1.7938165664672852,
+          0.38809046149253845,
+          0.5675427913665771,
+          0.5865965485572815,
+          0.8971438407897949,
+          0.9850530624389648,
+          0.7975333333015442,
+          1.6098735332489014,
+          0.6515378952026367,
+          1.0504196882247925,
+          1.2783095836639404,
+          0.9346029162406921,
+          0.49200907349586487,
+          0.8552993535995483,
+          1.445770502090454,
+          0.5117430090904236,
+          0.6307688355445862,
+          0.7893322110176086,
+          0.6066148281097412,
+          0.6898819804191589,
+          1.8572413921356201,
+          0.660798192024231,
+          1.7933896780014038,
+          0.3155001997947693,
+          0.9089999794960022,
+          0.9191707372665405,
+          0.9761434197425842,
+          1.5054914951324463,
+          1.0,
+          0.5383509397506714,
+          0.9768900275230408,
+          0.5117366313934326,
+          0.31279557943344116,
+          1.0831654071807861,
+          0.462749183177948,
+          0.8951115012168884,
+          1.1489181518554688,
+          1.0,
+          0.8324612379074097,
+          1.0,
+          1.406152606010437,
+          0.7628698945045471,
+          0.6682067513465881,
+          0.6487327814102173,
+          0.7599384188652039
+        ],
+        [
+          217.94178771972656,
+          1.0,
+          341.6146240234375,
+          310.1835632324219,
+          1.0,
+          353.4876708984375,
+          1.0,
+          549.190185546875,
+          337.1266174316406,
+          0.710391104221344,
+          1.0,
+          0.4395650327205658,
+          1.0,
+          358.2203369140625,
+          368.85235595703125,
+          279.5046081542969,
+          1.0,
+          1.0,
+          335.5116882324219,
+          348.1048583984375,
+          1.0,
+          1.0,
+          1.0,
+          286.7721252441406,
+          219.89097595214844,
+          1.0,
+          1.5014958381652832,
+          1.0,
+          1.2183899879455566,
+          345.0409240722656,
+          0.2951776385307312,
+          0.5368727445602417,
+          2.0578455924987793,
+          273.90618896484375,
+          86.83280944824219,
+          182.92906188964844,
+          1.0,
+          264.5658874511719,
+          344.6697998046875,
+          362.8388366699219,
+          1.0,
+          33.75697708129883,
+          392.3214416503906,
+          393.42352294921875,
+          32.05436325073242,
+          1.6631182432174683,
+          519.3165283203125,
+          454.6009826660156,
+          279.97314453125,
+          1.0,
+          109.4593505859375,
+          1.0,
+          369.050537109375,
+          400.9619445800781,
+          367.871826171875,
+          428.1421813964844,
+          457.55743408203125,
+          197.84336853027344,
+          1.492256760597229,
+          325.42120361328125,
+          0.3384222388267517,
+          264.72943115234375,
+          1.0,
+          307.5228271484375
+        ]
+      ],
+      "final_logits": "INT32 accumulator dequantized at tanh boundary",
+      "smoothquant_alpha": 0.75,
       "input_balancing_center": [
         -0.1494700163602829,
         -0.0025583889801055193,
@@ -143,400 +280,501 @@
         0.0
       ],
       "input_balancing_channel_scale": [
-        0.5753908753395081,
-        0.9657329320907593,
-        0.9098669290542603,
-        1.28931725025177,
-        0.5285530686378479,
-        1.490651249885559,
-        0.7897828221321106,
+        0.557477593421936,
+        1.0507724285125732,
+        1.0568516254425049,
+        1.3227266073226929,
+        0.3992989957332611,
+        1.738775372505188,
+        0.7345156073570251,
         1.0,
-        1.5301463603973389,
+        1.4975712299346924,
         1.0
       ],
       "input_balancing_selection_basis": "Configured exponent; laboratory calibration-MAE candidate scores are recorded in metrics.edge.quantization_selection. Closed-loop test values are not used for range calibration or exponent selection.",
       "smoothquant_formula": "s_j=max(max|cal_j-center_j|,eps)^alpha/max(max|W_pruned[:,j]|,eps)^(1-alpha); eps=1e-5",
       "constant_channel_scale_rule": "max centered absolute input <=1e-5 (mean_std: standard deviation <=1e-5) uses scale 1; channel is retained",
-      "kernel": "INT8 weights/activations, INT32 accumulation, INT64 fixed-point requantization; float affine input prefix, input quantization and final tanh",
+      "kernel": "INT8 weights/hidden activations, INT32 accumulation, INT64 fixed-point requantization; float affine input prefix, input quantization and final tanh",
       "speed_scope": "Python/NumPy CPU reference, not a DSP/MCU deployment measurement"
     },
     "distillation": {
-      "method": "fixed-magnitude-mask action distillation from trained FP32 actor",
-      "steps": 8000,
-      "batch_size": 256,
-      "seed": 2026,
+      "method": "fixed-mask actor distillation followed by calibration-only cosine Adam polishing",
+      "steps": 23000,
       "initial_action_mse": 0.8341790437698364,
-      "final_action_mse": 0.0025524040684103966,
-      "history": [
-        {
-          "step": 1,
-          "batch_action_mse": 0.8244783282279968
-        },
-        {
-          "step": 100,
-          "batch_action_mse": 0.03340806066989899
-        },
-        {
-          "step": 200,
-          "batch_action_mse": 0.02339697629213333
-        },
-        {
-          "step": 300,
-          "batch_action_mse": 0.015838460996747017
-        },
-        {
-          "step": 400,
-          "batch_action_mse": 0.013110857456922531
-        },
-        {
-          "step": 500,
-          "batch_action_mse": 0.012323183938860893
-        },
-        {
-          "step": 600,
-          "batch_action_mse": 0.009314141236245632
-        },
-        {
-          "step": 700,
-          "batch_action_mse": 0.010213726200163364
-        },
-        {
-          "step": 800,
-          "batch_action_mse": 0.007845873944461346
-        },
-        {
-          "step": 900,
-          "batch_action_mse": 0.007029509637504816
-        },
-        {
-          "step": 1000,
-          "batch_action_mse": 0.007242889143526554
-        },
-        {
-          "step": 1100,
-          "batch_action_mse": 0.0073228939436376095
-        },
-        {
-          "step": 1200,
-          "batch_action_mse": 0.006505593657493591
-        },
-        {
-          "step": 1300,
-          "batch_action_mse": 0.006603730842471123
-        },
-        {
-          "step": 1400,
-          "batch_action_mse": 0.00556782865896821
-        },
-        {
-          "step": 1500,
-          "batch_action_mse": 0.005073743872344494
-        },
-        {
-          "step": 1600,
-          "batch_action_mse": 0.006040868815034628
-        },
-        {
-          "step": 1700,
-          "batch_action_mse": 0.005752394907176495
-        },
-        {
-          "step": 1800,
-          "batch_action_mse": 0.006123566068708897
-        },
-        {
-          "step": 1900,
-          "batch_action_mse": 0.004676861688494682
-        },
-        {
-          "step": 2000,
-          "batch_action_mse": 0.005798625759780407
-        },
-        {
-          "step": 2100,
-          "batch_action_mse": 0.005517288576811552
-        },
-        {
-          "step": 2200,
-          "batch_action_mse": 0.005504421424120665
-        },
-        {
-          "step": 2300,
-          "batch_action_mse": 0.004064415115863085
-        },
-        {
-          "step": 2400,
-          "batch_action_mse": 0.004984431900084019
-        },
-        {
-          "step": 2500,
-          "batch_action_mse": 0.005507349502295256
-        },
-        {
-          "step": 2600,
-          "batch_action_mse": 0.004946476314216852
-        },
-        {
-          "step": 2700,
-          "batch_action_mse": 0.004840872250497341
-        },
-        {
-          "step": 2800,
-          "batch_action_mse": 0.00548695120960474
-        },
-        {
-          "step": 2900,
-          "batch_action_mse": 0.004661357495933771
-        },
-        {
-          "step": 3000,
-          "batch_action_mse": 0.004969360306859016
-        },
-        {
-          "step": 3100,
-          "batch_action_mse": 0.005232686642557383
-        },
-        {
-          "step": 3200,
-          "batch_action_mse": 0.0037139137275516987
-        },
-        {
-          "step": 3300,
-          "batch_action_mse": 0.003808029927313328
-        },
-        {
-          "step": 3400,
-          "batch_action_mse": 0.004506120923906565
-        },
-        {
-          "step": 3500,
-          "batch_action_mse": 0.0040721772238612175
-        },
-        {
-          "step": 3600,
-          "batch_action_mse": 0.005134760867804289
-        },
-        {
-          "step": 3700,
-          "batch_action_mse": 0.004292654804885387
-        },
-        {
-          "step": 3800,
-          "batch_action_mse": 0.004050147254019976
-        },
-        {
-          "step": 3900,
-          "batch_action_mse": 0.00457174563780427
-        },
-        {
-          "step": 4000,
-          "batch_action_mse": 0.0035112383775413036
-        },
-        {
-          "step": 4100,
-          "batch_action_mse": 0.003432069905102253
-        },
-        {
-          "step": 4200,
-          "batch_action_mse": 0.0032114232890307903
-        },
-        {
-          "step": 4300,
-          "batch_action_mse": 0.003931072540581226
-        },
-        {
-          "step": 4400,
-          "batch_action_mse": 0.0037215137854218483
-        },
-        {
-          "step": 4500,
-          "batch_action_mse": 0.003985780291259289
-        },
-        {
-          "step": 4600,
-          "batch_action_mse": 0.002815032610669732
-        },
-        {
-          "step": 4700,
-          "batch_action_mse": 0.003442276269197464
-        },
-        {
-          "step": 4800,
-          "batch_action_mse": 0.0032980774994939566
-        },
-        {
-          "step": 4900,
-          "batch_action_mse": 0.0029483954422175884
-        },
-        {
-          "step": 5000,
-          "batch_action_mse": 0.003216305747628212
-        },
-        {
-          "step": 5100,
-          "batch_action_mse": 0.0035255462862551212
-        },
-        {
-          "step": 5200,
-          "batch_action_mse": 0.0033061804715543985
-        },
-        {
-          "step": 5300,
-          "batch_action_mse": 0.003381909802556038
-        },
-        {
-          "step": 5400,
-          "batch_action_mse": 0.0026858134660869837
-        },
-        {
-          "step": 5500,
-          "batch_action_mse": 0.002612013602629304
-        },
-        {
-          "step": 5600,
-          "batch_action_mse": 0.0028512992430478334
-        },
-        {
-          "step": 5700,
-          "batch_action_mse": 0.0032705131452530622
-        },
-        {
-          "step": 5800,
-          "batch_action_mse": 0.0031975023448467255
-        },
-        {
-          "step": 5900,
-          "batch_action_mse": 0.0027589094825088978
-        },
-        {
-          "step": 6000,
-          "batch_action_mse": 0.0027727512642741203
-        },
-        {
-          "step": 6100,
-          "batch_action_mse": 0.002822962822392583
-        },
-        {
-          "step": 6200,
-          "batch_action_mse": 0.0026949832681566477
-        },
-        {
-          "step": 6300,
-          "batch_action_mse": 0.003135985927656293
-        },
-        {
-          "step": 6400,
-          "batch_action_mse": 0.0025185737758874893
-        },
-        {
-          "step": 6500,
-          "batch_action_mse": 0.0031404783949255943
-        },
-        {
-          "step": 6600,
-          "batch_action_mse": 0.0025910306721925735
-        },
-        {
-          "step": 6700,
-          "batch_action_mse": 0.003010359825566411
-        },
-        {
-          "step": 6800,
-          "batch_action_mse": 0.003062671748921275
-        },
-        {
-          "step": 6900,
-          "batch_action_mse": 0.002813967177644372
-        },
-        {
-          "step": 7000,
-          "batch_action_mse": 0.003033318789675832
-        },
-        {
-          "step": 7100,
-          "batch_action_mse": 0.0029368370305746794
-        },
-        {
-          "step": 7200,
-          "batch_action_mse": 0.0027937793638557196
-        },
-        {
-          "step": 7300,
-          "batch_action_mse": 0.0026130815967917442
-        },
-        {
-          "step": 7400,
-          "batch_action_mse": 0.002320836065337062
-        },
-        {
-          "step": 7500,
-          "batch_action_mse": 0.0028596771880984306
-        },
-        {
-          "step": 7600,
-          "batch_action_mse": 0.002469110768288374
-        },
-        {
-          "step": 7700,
-          "batch_action_mse": 0.0029210106004029512
-        },
-        {
-          "step": 7800,
-          "batch_action_mse": 0.0029583796858787537
-        },
-        {
-          "step": 7900,
-          "batch_action_mse": 0.0029781339690089226
-        },
-        {
-          "step": 8000,
-          "batch_action_mse": 0.002176546724513173
+      "final_action_mse": 0.0022524723317474127,
+      "stages": [
+        {
+          "method": "fixed-magnitude-mask action distillation from trained FP32 actor",
+          "steps": 8000,
+          "batch_size": 256,
+          "seed": 2026,
+          "initial_action_mse": 0.8341790437698364,
+          "final_action_mse": 0.0025524040684103966,
+          "history": [
+            {
+              "step": 1,
+              "batch_action_mse": 0.8244783282279968
+            },
+            {
+              "step": 100,
+              "batch_action_mse": 0.03340806066989899
+            },
+            {
+              "step": 200,
+              "batch_action_mse": 0.02339697629213333
+            },
+            {
+              "step": 300,
+              "batch_action_mse": 0.015838460996747017
+            },
+            {
+              "step": 400,
+              "batch_action_mse": 0.013110857456922531
+            },
+            {
+              "step": 500,
+              "batch_action_mse": 0.012323183938860893
+            },
+            {
+              "step": 600,
+              "batch_action_mse": 0.009314141236245632
+            },
+            {
+              "step": 700,
+              "batch_action_mse": 0.010213726200163364
+            },
+            {
+              "step": 800,
+              "batch_action_mse": 0.007845873944461346
+            },
+            {
+              "step": 900,
+              "batch_action_mse": 0.007029509637504816
+            },
+            {
+              "step": 1000,
+              "batch_action_mse": 0.007242889143526554
+            },
+            {
+              "step": 1100,
+              "batch_action_mse": 0.0073228939436376095
+            },
+            {
+              "step": 1200,
+              "batch_action_mse": 0.006505593657493591
+            },
+            {
+              "step": 1300,
+              "batch_action_mse": 0.006603730842471123
+            },
+            {
+              "step": 1400,
+              "batch_action_mse": 0.00556782865896821
+            },
+            {
+              "step": 1500,
+              "batch_action_mse": 0.005073743872344494
+            },
+            {
+              "step": 1600,
+              "batch_action_mse": 0.006040868815034628
+            },
+            {
+              "step": 1700,
+              "batch_action_mse": 0.005752394907176495
+            },
+            {
+              "step": 1800,
+              "batch_action_mse": 0.006123566068708897
+            },
+            {
+              "step": 1900,
+              "batch_action_mse": 0.004676861688494682
+            },
+            {
+              "step": 2000,
+              "batch_action_mse": 0.005798625759780407
+            },
+            {
+              "step": 2100,
+              "batch_action_mse": 0.005517288576811552
+            },
+            {
+              "step": 2200,
+              "batch_action_mse": 0.005504421424120665
+            },
+            {
+              "step": 2300,
+              "batch_action_mse": 0.004064415115863085
+            },
+            {
+              "step": 2400,
+              "batch_action_mse": 0.004984431900084019
+            },
+            {
+              "step": 2500,
+              "batch_action_mse": 0.005507349502295256
+            },
+            {
+              "step": 2600,
+              "batch_action_mse": 0.004946476314216852
+            },
+            {
+              "step": 2700,
+              "batch_action_mse": 0.004840872250497341
+            },
+            {
+              "step": 2800,
+              "batch_action_mse": 0.00548695120960474
+            },
+            {
+              "step": 2900,
+              "batch_action_mse": 0.004661357495933771
+            },
+            {
+              "step": 3000,
+              "batch_action_mse": 0.004969360306859016
+            },
+            {
+              "step": 3100,
+              "batch_action_mse": 0.005232686642557383
+            },
+            {
+              "step": 3200,
+              "batch_action_mse": 0.0037139137275516987
+            },
+            {
+              "step": 3300,
+              "batch_action_mse": 0.003808029927313328
+            },
+            {
+              "step": 3400,
+              "batch_action_mse": 0.004506120923906565
+            },
+            {
+              "step": 3500,
+              "batch_action_mse": 0.0040721772238612175
+            },
+            {
+              "step": 3600,
+              "batch_action_mse": 0.005134760867804289
+            },
+            {
+              "step": 3700,
+              "batch_action_mse": 0.004292654804885387
+            },
+            {
+              "step": 3800,
+              "batch_action_mse": 0.004050147254019976
+            },
+            {
+              "step": 3900,
+              "batch_action_mse": 0.00457174563780427
+            },
+            {
+              "step": 4000,
+              "batch_action_mse": 0.0035112383775413036
+            },
+            {
+              "step": 4100,
+              "batch_action_mse": 0.003432069905102253
+            },
+            {
+              "step": 4200,
+              "batch_action_mse": 0.0032114232890307903
+            },
+            {
+              "step": 4300,
+              "batch_action_mse": 0.003931072540581226
+            },
+            {
+              "step": 4400,
+              "batch_action_mse": 0.0037215137854218483
+            },
+            {
+              "step": 4500,
+              "batch_action_mse": 0.003985780291259289
+            },
+            {
+              "step": 4600,
+              "batch_action_mse": 0.002815032610669732
+            },
+            {
+              "step": 4700,
+              "batch_action_mse": 0.003442276269197464
+            },
+            {
+              "step": 4800,
+              "batch_action_mse": 0.0032980774994939566
+            },
+            {
+              "step": 4900,
+              "batch_action_mse": 0.0029483954422175884
+            },
+            {
+              "step": 5000,
+              "batch_action_mse": 0.003216305747628212
+            },
+            {
+              "step": 5100,
+              "batch_action_mse": 0.0035255462862551212
+            },
+            {
+              "step": 5200,
+              "batch_action_mse": 0.0033061804715543985
+            },
+            {
+              "step": 5300,
+              "batch_action_mse": 0.003381909802556038
+            },
+            {
+              "step": 5400,
+              "batch_action_mse": 0.0026858134660869837
+            },
+            {
+              "step": 5500,
+              "batch_action_mse": 0.002612013602629304
+            },
+            {
+              "step": 5600,
+              "batch_action_mse": 0.0028512992430478334
+            },
+            {
+              "step": 5700,
+              "batch_action_mse": 0.0032705131452530622
+            },
+            {
+              "step": 5800,
+              "batch_action_mse": 0.0031975023448467255
+            },
+            {
+              "step": 5900,
+              "batch_action_mse": 0.0027589094825088978
+            },
+            {
+              "step": 6000,
+              "batch_action_mse": 0.0027727512642741203
+            },
+            {
+              "step": 6100,
+              "batch_action_mse": 0.002822962822392583
+            },
+            {
+              "step": 6200,
+              "batch_action_mse": 0.0026949832681566477
+            },
+            {
+              "step": 6300,
+              "batch_action_mse": 0.003135985927656293
+            },
+            {
+              "step": 6400,
+              "batch_action_mse": 0.0025185737758874893
+            },
+            {
+              "step": 6500,
+              "batch_action_mse": 0.0031404783949255943
+            },
+            {
+              "step": 6600,
+              "batch_action_mse": 0.0025910306721925735
+            },
+            {
+              "step": 6700,
+              "batch_action_mse": 0.003010359825566411
+            },
+            {
+              "step": 6800,
+              "batch_action_mse": 0.003062671748921275
+            },
+            {
+              "step": 6900,
+              "batch_action_mse": 0.002813967177644372
+            },
+            {
+              "step": 7000,
+              "batch_action_mse": 0.003033318789675832
+            },
+            {
+              "step": 7100,
+              "batch_action_mse": 0.0029368370305746794
+            },
+            {
+              "step": 7200,
+              "batch_action_mse": 0.0027937793638557196
+            },
+            {
+              "step": 7300,
+              "batch_action_mse": 0.0026130815967917442
+            },
+            {
+              "step": 7400,
+              "batch_action_mse": 0.002320836065337062
+            },
+            {
+              "step": 7500,
+              "batch_action_mse": 0.0028596771880984306
+            },
+            {
+              "step": 7600,
+              "batch_action_mse": 0.002469110768288374
+            },
+            {
+              "step": 7700,
+              "batch_action_mse": 0.0029210106004029512
+            },
+            {
+              "step": 7800,
+              "batch_action_mse": 0.0029583796858787537
+            },
+            {
+              "step": 7900,
+              "batch_action_mse": 0.0029781339690089226
+            },
+            {
+              "step": 8000,
+              "batch_action_mse": 0.002176546724513173
+            }
+          ]
+        },
+        {
+          "method": "calibration-only NumPy Adam fixed-mask continuation with cosine learning rate",
+          "steps": 15000,
+          "batch_size": 256,
+          "seed": 2027,
+          "learning_rate": 0.0003,
+          "min_learning_rate": 1e-05,
+          "selected_step": 15000,
+          "selection_metric": "full calibration action MSE only",
+          "initial_action_mse": 0.0025524043012410402,
+          "final_action_mse": 0.0022524723317474127,
+          "wall_seconds": 4.704890421000073,
+          "history": [
+            {
+              "step": 1000,
+              "calibration_action_mse": 0.0024709359277039766,
+              "learning_rate": 0.0002968314021064018
+            },
+            {
+              "step": 2000,
+              "calibration_action_mse": 0.0024562871549278498,
+              "learning_rate": 0.00028746409135817707
+            },
+            {
+              "step": 3000,
+              "calibration_action_mse": 0.0023956820368766785,
+              "learning_rate": 0.0002723074641843674
+            },
+            {
+              "step": 4000,
+              "calibration_action_mse": 0.0023728543892502785,
+              "learning_rate": 0.0002520239379220344
+            },
+            {
+              "step": 5000,
+              "calibration_action_mse": 0.00234345905482769,
+              "learning_rate": 0.00022749999999999997
+            },
+            {
+              "step": 6000,
+              "calibration_action_mse": 0.002331762807443738,
+              "learning_rate": 0.00019980746418436736
+            },
+            {
+              "step": 7000,
+              "calibration_action_mse": 0.002310224110260606,
+              "learning_rate": 0.00017015662717380977
+            },
+            {
+              "step": 8000,
+              "calibration_action_mse": 0.0022957618348300457,
+              "learning_rate": 0.00013984337282619026
+            },
+            {
+              "step": 9000,
+              "calibration_action_mse": 0.0022875748109072447,
+              "learning_rate": 0.00011019253581563262
+            },
+            {
+              "step": 10000,
+              "calibration_action_mse": 0.002273285062983632,
+              "learning_rate": 8.250000000000001e-05
+            },
+            {
+              "step": 11000,
+              "calibration_action_mse": 0.002267021220177412,
+              "learning_rate": 5.797606207796559e-05
+            },
+            {
+              "step": 12000,
+              "calibration_action_mse": 0.0022603918332606554,
+              "learning_rate": 3.769253581563263e-05
+            },
+            {
+              "step": 13000,
+              "calibration_action_mse": 0.002256003674119711,
+              "learning_rate": 2.2535908641822855e-05
+            },
+            {
+              "step": 14000,
+              "calibration_action_mse": 0.0022543463855981827,
+              "learning_rate": 1.3168597893598192e-05
+            },
+            {
+              "step": 15000,
+              "calibration_action_mse": 0.0022524723317474127,
+              "learning_rate": 1e-05
+            }
+          ]
         }
       ]
     },
     "quantization_selection": {
       "selection_metric": "calibration normalized-action MAE against fixed pruned FP32 actor",
       "calibration_count": 12701,
-      "selected_alpha": 0.5,
+      "selected_alpha": 0.75,
+      "weight_quantization": "per-output-channel symmetric INT8",
+      "hidden_equalization": "positive diagonal ReLU cross-layer equalization, float-function preserving",
+      "final_logits": "INT32 dot-product output, dequantized only at final tanh",
       "candidates": [
         {
           "alpha": 0.25,
-          "calibration_action_mae": 0.017177479341626167
+          "calibration_action_mae": 0.011951245367527008
         },
         {
           "alpha": 0.5,
-          "calibration_action_mae": 0.016791274771094322
+          "calibration_action_mae": 0.012264705263078213
         },
         {
           "alpha": 0.75,
-          "calibration_action_mae": 0.01752568408846855
+          "calibration_action_mae": 0.011802228167653084
         }
       ]
     },
     "artifact_bytes": {
       "actor_fp32.npz": 19696,
-      "actor_pruned_fp32.npz": 9394,
-      "actor_int8.npz": 4940
+      "actor_pruned_fp32.npz": 9396,
+      "actor_int8.npz": 9171
     },
     "benchmark": {
       "fp32": {
-        "median_ms": 0.008372,
-        "p95_ms": 0.008773,
-        "min_ms": 0.008082,
+        "median_ms": 0.008212,
+        "p95_ms": 0.008715949999999998,
+        "min_ms": 0.007942,
         "repeats": 2000,
         "batch_size": 1
       },
       "pruned_fp32": {
-        "median_ms": 0.008402,
-        "p95_ms": 0.009083,
-        "min_ms": 0.008072,
+        "median_ms": 0.008252,
+        "p95_ms": 0.008473499999999998,
+        "min_ms": 0.008022,
         "repeats": 2000,
         "batch_size": 1
       },
       "int8": {
-        "median_ms": 0.0497035,
-        "p95_ms": 0.0803145,
-        "min_ms": 0.048222,
+        "median_ms": 0.036786,
+        "p95_ms": 0.05179055,
+        "min_ms": 0.035915,
         "repeats": 2000,
         "batch_size": 1
       }
@@ -544,13 +782,13 @@
     "commissioning_calibration_count": 701,
     "benchmark_scope": "Single-observation NumPy actor kernels only; excludes hydraulic integration, sensing, SB3 Python API and HOCBF. Input affine preprocessing and final tanh included.",
     "calibration_not_held_out": true,
-    "closed_loop_velocity_rms_difference_mms": 1.2283532988758978,
-    "displayed_window_velocity_rms_difference_mms": 0.7527818170658744,
-    "displayed_window_rms_percent_of_50mms": 1.5055636341317489
+    "closed_loop_velocity_rms_difference_mms": 1.3604566882704148,
+    "displayed_window_velocity_rms_difference_mms": 0.6116171474644442,
+    "displayed_window_rms_percent_of_50mms": 1.2232342949288884
   },
   "safety": {
     "experiment": "sampled_two_state_hocbf_safety_demo",
-    "model_scope": "x_dot=v; v_dot=1850*u-14*v; x in mm, v in mm/s. This is an explicit second-order surrogate, not the four-state hydraulic pressure ODE.",
+    "model_scope": "x_dot=v; v_dot=2640*u-14*v; x in mm, v in mm/s. This is an explicit second-order classroom surrogate, not the four-state hydraulic pressure ODE or an identified physical plant.",
     "relative_order_warning": "Position has relative degree 3 in the four-state pressure model, or 4 when a first-order valve state is added. This second-order certificate does not transfer to either plant.",
     "physical_limit_mm": [
       0.0,
@@ -560,48 +798,63 @@
       1.2,
       98.8
     ],
-    "k_gain_mm_s2_per_v": 1850.0,
+    "k_gain_mm_s2_per_v": 2640.0,
     "damping_per_s": 14.0,
     "sample_time_s": 0.001,
-    "kappa1_per_s": 24.0,
-    "kappa2_per_s": 24.0,
-    "alpha_sum_per_s": 48.0,
-    "alpha_product_per_s2": 576.0,
-    "reference_coefficient_note": "The supplied alpha_product=580 gives discriminant 48^2-4*580=-16; use the factorable kappa1=kappa2=24 product 576 for the stated recursive HOCBF proof.",
+    "kappa1_per_s": 49.0,
+    "kappa2_per_s": 49.0,
+    "alpha_sum_per_s": 98.0,
+    "alpha_product_per_s2": 2401.0,
+    "configuration": {
+      "x_min": 0.0,
+      "x_max": 100.0,
+      "u_min": -10.0,
+      "u_max": 10.0,
+      "margin": 1.2,
+      "dt": 0.001,
+      "k_gain": 2640.0,
+      "damp_c": 14.0,
+      "kappa1": 49.0,
+      "kappa2": 49.0,
+      "initial_x_mm": 20.0,
+      "initial_v_mm_s": 0.0,
+      "proposed_action_v": 8.5
+    },
+    "reference_coefficient_note": "Positive kappa1 and kappa2 define the recursive HOCBF; alpha_sum=kappa1+kappa2 and alpha_product=kappa1*kappa2. All propagation, QP and independent validation use these same coefficients.",
     "duration_s": 1.0,
     "initial_x_mm": 20.0,
     "initial_v_mm_s": 0.0,
     "proposed_action_v": 8.5,
-    "first_intervention_s": 0.052000000000000005,
-    "minimum_safe_voltage_v": -0.30107445960624557,
-    "minimum_safe_voltage_time_s": 0.168,
-    "safe_final_position_mm": 98.79999984341002,
-    "safe_final_velocity_mm_s": 3.5119222613814524e-06,
-    "safe_maximum_position_mm": 98.79999984341002,
-    "safe_position_at_0_25_s_mm": 96.69381492765967,
-    "unsafe_collision_time_s": 0.13128596368704312,
+    "first_intervention_s": 0.065,
+    "minimum_safe_voltage_v": -3.0916046704129267,
+    "minimum_safe_voltage_time_s": 0.098,
+    "safe_final_position_mm": 98.79999999999988,
+    "safe_final_velocity_mm_s": 2.7187201150463035e-12,
+    "safe_maximum_position_mm": 98.79999999999988,
+    "safe_position_at_0_25_s_mm": 98.76665968647892,
+    "unsafe_collision_time_s": 0.1048911492965995,
     "unsafe_collision_x_mm": 100.0,
-    "unsafe_trajectory_convention": "Terminate at the exact first x=100 mm event; subsequent states are NaN. The inserted event row does not change the sampled safe control.",
+    "unsafe_trajectory_convention": "Terminate at the exact first physical upper-boundary event; subsequent states are NaN. The inserted event row does not change the sampled safe control.",
     "interval_minima": {
-      "h_mechanical_min": 0.011856001528318196,
-      "h_upper_mm_min": 1.565899765409995e-07,
+      "h_mechanical_min": 0.011856000000001136,
+      "h_upper_mm_min": 1.1368683772161603e-13,
       "h_lower_mm_min": 18.8,
-      "psi1_upper_mm_s_min": 2.462373651878865e-07,
-      "psi1_lower_mm_s_min": 451.19999999999993,
-      "psi2_upper_mm_s2_min": -2.2737367544323206e-12,
-      "psi2_lower_mm_s2_min": 26553.800000000003
+      "psi1_upper_mm_s_min": -1.4011984296703191e-12,
+      "psi1_lower_mm_s_min": 921.2000000000003,
+      "psi2_upper_mm_s2_min": -2.9103830456733704e-11,
+      "psi2_lower_mm_s2_min": 67578.8
     },
     "independent_random_validation": {
       "seed": 8103,
       "requested_cases": 128,
       "feasible_cases_checked": 128,
-      "random_state_attempts": 130,
-      "max_flow_error_mm_or_mm_s": 4.547473508864641e-13,
+      "random_state_attempts": 188,
+      "max_flow_error_mm_or_mm_s": 9.094947017729282e-13,
       "max_qp_violation_v": 0.0,
       "min_dense_physical_barrier": 0.013733664713032338,
-      "min_dense_psi1_mm_s": 12.289587072716017,
-      "min_dense_psi2_mm_s2": -1.8189894035458565e-11,
-      "max_analytic_minimum_overestimate": 1.8189894035458565e-11,
+      "min_dense_psi1_mm_s": 81.3349724806746,
+      "min_dense_psi2_mm_s2": -6.184563972055912e-11,
+      "max_analytic_minimum_overestimate": 8.731149137020111e-11,
       "checks": {
         "all_requested_random_cases_checked": true,
         "independent_flow_matches_exact_zoh": true,
@@ -626,7 +879,7 @@
       "independent_random_flow_checks_passed": true
     },
     "passed": true,
-    "reference_numeric_difference": "Computed minimum control is approximately -0.30 V, not the illustrative -3.1 V; the plant approaches 98.8 mm asymptotically. No signal is spliced to the reference figure."
+    "reference_numeric_difference": "The declared classroom surrogate generates the complete response by exact held-input dynamics and QP projection. Its parameters are not an identification of the four-state training plant; no signal is spliced to the reference figure."
   },
   "evaluation": {
     "start_time_s": 0.3,

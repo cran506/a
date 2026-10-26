@@ -3,38 +3,46 @@ from __future__ import annotations
 import os
 os.environ.setdefault('MPLCONFIGDIR','/tmp/chapter8_mpl')
 os.environ.setdefault('XDG_CACHE_HOME','/tmp/chapter8_cache')
-try:
-    import gymnasium as gym
-    from gymnasium import spaces
-    from stable_baselines3 import SAC
-    HAS_SB3 = True
-except ImportError:
-    HAS_SB3 = False
-    print('\n[环境缺失] 请先安装必需的深度强化学习基础库：')
-    print('pip install stable-baselines3[extra] gymnasium\n')
-    import sys
-    sys.exit(1)
-
 import argparse
 from pathlib import Path
-import torch
+
+
+def require_learning_runtime():
+    try:
+        import torch
+        import gymnasium
+        import stable_baselines3
+    except ImportError as error:
+        raise SystemExit('缺少强化学习依赖，请按 README 安装 CPU PyTorch 和 requirements.txt。') from error
+    torch.set_num_threads(1)
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--mode',choices=['all','train','evaluate','report'],default='all')
+    parser.add_argument('--mode',choices=['all','train','evaluate','report','safety','normalize'],default='all')
     parser.add_argument('--timesteps',type=int,default=1_000_000)
     parser.add_argument('--seed',type=int,default=2026)
     parser.add_argument('--reuse-model',action='store_true')
     args=parser.parse_args()
     root=Path(__file__).resolve().parent
-    torch.set_num_threads(1)
+    if args.mode in ['all','train','evaluate','normalize']:
+        require_learning_runtime()
     if args.mode in ['all','train'] and not args.reuse_model:
         from train_sac import train
         train(root,args.timesteps,args.seed)
     if args.mode in ['all','evaluate']:
         from evaluation import evaluate
         evaluate(root)
+    if args.mode in ['all','evaluate','train','normalize']:
+        from observation_normalization import run_normalization_diagnostic
+        run_normalization_diagnostic(root)
+    if args.mode=='safety':
+        from safety_experiment import run_safety_experiment
+        result=run_safety_experiment(root/'outputs')
+        print(result['summary'])
+    if args.mode=='all':
+        from test_physics_safety import write_independent_validation
+        write_independent_validation(root)
     if args.mode in ['all','report']:
         from reporting import build_report
         build_report(root)

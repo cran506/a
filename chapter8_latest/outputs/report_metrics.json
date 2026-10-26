@@ -30,12 +30,12 @@
     "sample_count": 701
   },
   "edge_int8": {
-    "minimum_velocity_error_mms": -32.97089593772137,
-    "maximum_abs_velocity_error_mms": 32.97089593772137,
-    "post_fault_rms_mms": 4.256216037279404,
-    "tail_mean_error_mms": -0.13686519728891502,
-    "recovery_s_band_1mms_hold_50ms": 0.44999999999999996,
-    "maximum_abs_voltage_v": 9.980620741844177,
+    "minimum_velocity_error_mms": -33.35111321896589,
+    "maximum_abs_velocity_error_mms": 33.35111321896589,
+    "post_fault_rms_mms": 4.311114559492116,
+    "tail_mean_error_mms": -0.0734794605412028,
+    "recovery_s_band_1mms_hold_50ms": 0.050000000000000044,
+    "maximum_abs_voltage_v": 9.988628625869751,
     "final_time_s": 1.0,
     "sample_count": 701
   }

@@ -89,6 +89,22 @@ def validate_physics():
         "checks": checks, "passed": bool(all(checks.values()))}
 
 
+def write_independent_validation(root=None):
+    """Generate fresh physics/safety evidence and bind it to exact sources/data."""
+    from verify_experiment import _file_hashes,physics_source_files
+    root=Path(root or Path(__file__).resolve().parent).resolve()
+    out=root/'outputs';out.mkdir(exist_ok=True)
+    result=validate_physics()
+    safety=run_safety_experiment(out)
+    result['source_sha256']=_file_hashes(root,physics_source_files(root))
+    result['safety_evidence_sha256']=_file_hashes(root,('outputs/safety.csv','outputs/safety_summary.json'))
+    (out/'physics_validation.json').write_text(
+        json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    if not result['passed'] or not safety['summary']['passed']:
+        raise AssertionError('Independent physics/safety validation failed')
+    return result,safety
+
+
 class TestPhysicsAndSafety(unittest.TestCase):
     def test_configuration_and_explicit_override_precedence(self):
         config = dict(m=300., beta_e=1.2e9, F_c=1400.,
@@ -132,12 +148,5 @@ if __name__ == "__main__":
     import sys
     if "--write-summary" in sys.argv:
         sys.argv.remove("--write-summary")
-        out = Path(__file__).resolve().parent/"outputs"
-        out.mkdir(exist_ok=True)
-        result = validate_physics()
-        (out/"physics_validation.json").write_text(
-            json.dumps(result, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
-        safety = run_safety_experiment(out)
-        if not result["passed"] or not safety["summary"]["passed"]:
-            raise SystemExit("Independent verification failed")
+        write_independent_validation()
     unittest.main()

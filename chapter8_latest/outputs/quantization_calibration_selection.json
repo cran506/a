@@ -1,19 +1,22 @@
 {
   "selection_metric": "calibration normalized-action MAE against fixed pruned FP32 actor",
   "calibration_count": 12701,
-  "selected_alpha": 0.5,
+  "selected_alpha": 0.75,
+  "weight_quantization": "per-output-channel symmetric INT8",
+  "hidden_equalization": "positive diagonal ReLU cross-layer equalization, float-function preserving",
+  "final_logits": "INT32 dot-product output, dequantized only at final tanh",
   "candidates": [
     {
       "alpha": 0.25,
-      "calibration_action_mae": 0.017177479341626167
+      "calibration_action_mae": 0.011951245367527008
     },
     {
       "alpha": 0.5,
-      "calibration_action_mae": 0.016791274771094322
+      "calibration_action_mae": 0.012264705263078213
     },
     {
       "alpha": 0.75,
-      "calibration_action_mae": 0.01752568408846855
+      "calibration_action_mae": 0.011802228167653084
     }
   ]
 }

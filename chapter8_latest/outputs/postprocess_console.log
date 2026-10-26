@@ -1,32 +1,46 @@
-Running ['drl_hydraulic_lab.py', '--mode', 'evaluate']
-pid {"minimum_velocity_error_mms": -51.08531623567176, "maximum_velocity_error_mms": 5.2833345983027415, "velocity_error_rms_mms": 10.120851930800697, "final_100ms_velocity_bias_mms": 5.0102491098816815, "recovery_1mms_s": null, "peak_voltage_v": 7.35806497458844, "final_voltage_v": 7.31805888162085, "max_abs_voltage_v": 7.35806497458844, "max_voltage_step_v": 0.10795774030029115, "final_position_error_mm": 0.754396465231101}
-nominal_ff {"minimum_velocity_error_mms": -51.24591921417209, "maximum_velocity_error_mms": -6.156831156012288e-07, "velocity_error_rms_mms": 26.28000217527568, "final_100ms_velocity_bias_mms": -25.29730796203242, "recovery_1mms_s": null, "peak_voltage_v": 3.5098639505149896, "final_voltage_v": 3.509863950514991, "max_abs_voltage_v": 3.5098639505149896, "max_voltage_step_v": 0.0, "final_position_error_mm": 13.046291753504136}
-sac_fp32 {"minimum_velocity_error_mms": -17.791620075482204, "maximum_velocity_error_mms": 5.966815549312942, "velocity_error_rms_mms": 2.064334163163037, "final_100ms_velocity_bias_mms": -0.23079091421597564, "recovery_1mms_s": 0.051000000000000045, "peak_voltage_v": 9.977731704711914, "final_voltage_v": 6.648100260460731, "max_abs_voltage_v": 9.977731704711914, "max_voltage_step_v": 6.569373607635498, "final_position_error_mm": 0.10337275494090928}
-edge_int8 {"minimum_velocity_error_mms": -23.954687829264948, "maximum_velocity_error_mms": 3.6292259640933744, "velocity_error_rms_mms": 2.914596383667999, "final_100ms_velocity_bias_mms": -0.3290756006904773, "recovery_1mms_s": null, "peak_voltage_v": 9.938212037086487, "final_voltage_v": 6.653852321133755, "max_abs_voltage_v": 9.938212037086487, "max_voltage_step_v": 6.690489053726196, "final_position_error_mm": 0.08652416408621785}
-Running ['drl_hydraulic_lab.py', '--mode', 'report']
-Running ['verify_experiment.py']
 {
-  "checks": {
-    "real_million_steps": true,
-    "no_synthetic_entropy": true,
-    "finite_training_reward": true,
-    "all_four_policies_present": true,
-    "complete_shared_time_grid": true,
-    "identical_initial_physical_states": true,
-    "finite_physical_records": true,
-    "all_actual_inputs_within_limits": true,
-    "identical_fault_inputs": true,
-    "reported_metrics_recomputed_from_raw_csv": true,
-    "exported_fp32_matches_sb3": true,
-    "pruning_at_least_69_percent": true,
-    "independent_sampled_safety_passed": true,
-    "independent_physics_validation_present": true,
-    "all_checks_passed": true
-  },
-  "expected_timesteps": 1000000,
-  "fp32_export_max_normalized_action_error": 5.662441253662109e-07,
-  "model_sha256": "3ef93cbf18624830bc828840e28833f9b90fa97d98f854dc373893a6e432a1b4",
-  "int8_sha256": "6c65cbced39fde4ba6485eb5aa961f31e05600e75f69b404bae73a790481498c",
-  "scope": "Software/numerical consistency, not hardware certification. Performance values are measured, not thresholded to match a reference image."
+  "figure": "/workspace/a/chapter8_latest/outputs/chapter8_comparison.png",
+  "report": "/workspace/a/chapter8_latest/outputs/第八章实验报告.docx",
+  "computed_policy_metrics": {
+    "pid": {
+      "minimum_velocity_error_mms": -53.82432428668152,
+      "maximum_abs_velocity_error_mms": 53.82432428668152,
+      "post_fault_rms_mms": 10.517246804911284,
+      "tail_mean_error_mms": 4.997409968125888,
+      "recovery_s_band_1mms_hold_50ms": null,
+      "maximum_abs_voltage_v": 7.3581105028328695,
+      "final_time_s": 1.0,
+      "sample_count": 701
+    },
+    "nominal_ff": {
+      "minimum_velocity_error_mms": -54.104709741777086,
+      "maximum_abs_velocity_error_mms": 54.104709741777086,
+      "post_fault_rms_mms": 26.457031178909183,
+      "tail_mean_error_mms": -25.297282255873093,
+      "recovery_s_band_1mms_hold_50ms": null,
+      "maximum_abs_voltage_v": 3.5098639505149896,
+      "final_time_s": 1.0,
+      "sample_count": 701
+    },
+    "sac_fp32": {
+      "minimum_velocity_error_mms": -32.455360035710456,
+      "maximum_abs_velocity_error_mms": 32.455360035710456,
+      "post_fault_rms_mms": 4.109528625631109,
+      "tail_mean_error_mms": -0.02832296567900895,
+      "recovery_s_band_1mms_hold_50ms": 0.06800000000000006,
+      "maximum_abs_voltage_v": 9.957422018051147,
+      "final_time_s": 1.0,
+      "sample_count": 701
+    },
+    "edge_int8": {
+      "minimum_velocity_error_mms": -33.35111321896589,
+      "maximum_abs_velocity_error_mms": 33.35111321896589,
+      "post_fault_rms_mms": 4.311114559492116,
+      "tail_mean_error_mms": -0.0734794605412028,
+      "recovery_s_band_1mms_hold_50ms": 0.050000000000000044,
+      "maximum_abs_voltage_v": 9.988628625869751,
+      "final_time_s": 1.0,
+      "sample_count": 701
+    }
+  }
 }
-POSTPROCESS_COMPLETE

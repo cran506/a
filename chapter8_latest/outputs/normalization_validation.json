@@ -1,0 +1,61 @@
+{
+  "scope": "Post-training equivalent coordinate transform; original million-step training used fixed engineering scales.",
+  "source": "Recorded training-replay observations inverted through the declared original affine normalization.",
+  "calibration_rows": 12000,
+  "held_out_rows": 4000,
+  "observation_names": [
+    "position_error_mm",
+    "velocity_error_mm_s",
+    "acceleration_error_mm_s2",
+    "P1_MPa",
+    "P2_MPa",
+    "position_mm",
+    "reference_velocity_mm_s",
+    "reference_acceleration_mm_s2",
+    "previous_u_V",
+    "Ps_MPa"
+  ],
+  "empirical_mean": [
+    -0.16006472232515018,
+    -0.14410288274498934,
+    3.2318609669418197,
+    10.696628386954544,
+    3.2671625911990803,
+    58.20342368953666,
+    52.56214021099731,
+    0.0,
+    4.646040505015879,
+    21.0
+  ],
+  "empirical_scale": [
+    0.14073693239161694,
+    2.633844534435307,
+    1097.9771185661339,
+    4.138727909566071,
+    1.239098718631298,
+    31.85877201982863,
+    7.737676933691899,
+    1.0,
+    1.4100872129995567,
+    1.0
+  ],
+  "constant_channels": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    true
+  ],
+  "max_held_out_normalized_action_difference": 1.4710455076283324e-15,
+  "checks": {
+    "calibration_mean_zero": true,
+    "varying_calibration_variance_one": true,
+    "held_out_actor_coordinate_equivalence": true
+  },
+  "passed": true
+}

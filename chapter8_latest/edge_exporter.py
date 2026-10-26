@@ -76,6 +76,67 @@ class IntegerLayer:
         return np.clip(output, -128, 127).astype(np.int8)
 
 
+@dataclass
+class PerChannelIntegerLayer:
+    """W8/A8 layer with per-output weight scales and INT32 accumulation.
+
+    The final mean head may retain its INT32 accumulator until the already
+    floating-point tanh boundary, avoiding an unnecessary 8-bit logit grid.
+    """
+    weights: np.ndarray
+    bias: np.ndarray
+    input_scale: float
+    input_zero: int
+    weight_scale: np.ndarray
+    output_scale: float
+    output_zero: int
+    multiplier: np.ndarray
+    shift: int
+    relu: bool
+    output_int32: bool = False
+
+    def accumulate(self, activation):
+        x=np.asarray(activation,dtype=np.int32)-self.input_zero
+        return x@self.weights.astype(np.int32).T+self.bias
+
+    def forward(self, activation):
+        accum=self.accumulate(activation)
+        if self.output_int32:
+            return accum
+        scaled=accum.astype(np.int64)*self.multiplier
+        denom=1<<self.shift
+        rounded=np.sign(scaled)*((np.abs(scaled)+denom//2)//denom)
+        output=rounded+self.output_zero
+        if self.relu:
+            output=np.maximum(output,self.output_zero)
+        return np.clip(output,-128,127).astype(np.int8)
+
+
+def equalize_relu_channels(weights, biases, calibration):
+    """Exact positive diagonal ReLU reparameterization, before quantization.
+
+    Divide one layer's row and bias by s>0 and multiply the following layer's
+    column by s. Since ReLU(z/s)=ReLU(z)/s, the float function and zero mask
+    remain unchanged. Only calibration states determine these scales.
+    """
+    weights=[np.asarray(w,dtype=np.float32).copy() for w in weights]
+    biases=[np.asarray(b,dtype=np.float32).copy() for b in biases]
+    x=np.asarray(calibration,dtype=np.float32)
+    channel_scales=[]
+    for i in range(len(weights)-1):
+        activation=np.maximum(x@weights[i].T+biases[i],0.)
+        amax=np.max(np.abs(activation),axis=0)
+        wmax=np.max(np.abs(weights[i+1]),axis=0)
+        scale=np.sqrt(np.maximum(amax,1e-5)/np.maximum(wmax,1e-5))
+        scale=np.where(amax>1e-5,scale,1.).astype(np.float32)
+        weights[i]/=scale[:,None]
+        biases[i]/=scale
+        weights[i+1]*=scale[None,:]
+        x=activation/scale
+        channel_scales.append(scale)
+    return weights,biases,channel_scales
+
+
 class EdgeLightweightExporter:
     """FP32, masked-pruned FP32, and INT8 references sharing one actor topology."""
 
@@ -90,7 +151,9 @@ class EdgeLightweightExporter:
 
     def __init__(self, weights, biases, calibration_obs, prune_ratio=.70,
                  pruned_weights=None, pruned_biases=None, balance_inputs=True,
-                 balance_mode="smoothquant", smoothquant_alpha=.5):
+                 balance_mode="smoothquant", smoothquant_alpha=.5,
+                 quantization_mode="per_tensor", equalize_hidden=False,
+                 final_int32=False):
         if len(weights) != len(biases) or not weights:
             raise ValueError("Nonempty matching weights/biases required")
         self.weights = [np.asarray(w, dtype=np.float32).copy() for w in weights]
@@ -121,6 +184,14 @@ class EdgeLightweightExporter:
         self.balance_mode = balance_mode if self.balance_inputs else "none"
         self.smoothquant_alpha = float(smoothquant_alpha)
         self.input_balancing_floor = 1e-5
+        if quantization_mode not in {"per_tensor","per_channel"}:
+            raise ValueError("quantization_mode must be per_tensor or per_channel")
+        if (equalize_hidden or final_int32) and quantization_mode!="per_channel":
+            raise ValueError("Hidden equalization/final INT32 requires per_channel quantization")
+        self.quantization_mode=quantization_mode
+        self.equalize_hidden=bool(equalize_hidden)
+        self.final_int32=bool(final_int32)
+        self.hidden_channel_scales=[]
         self.integer_layers = self._build_integer_layers(cal)
 
     @classmethod
@@ -200,6 +271,8 @@ class EdgeLightweightExporter:
             self.input_center = np.zeros(cal.shape[1], dtype=np.float32)
             self.input_channel_scale = np.ones(cal.shape[1], dtype=np.float32)
         weights, biases = self._integer_float_parameters()
+        if self.quantization_mode=="per_channel":
+            return self._build_per_channel_layers(cal,weights,biases)
         layers = []
         x = self._balanced_input(cal)
         sx, zx = _affine_params(x)
@@ -236,6 +309,45 @@ class EdgeLightweightExporter:
             sx, zx = sy, zy
         return layers
 
+    def _build_per_channel_layers(self,cal,weights,biases):
+        balanced=self._balanced_input(cal)
+        self.hidden_channel_scales=[]
+        if self.equalize_hidden:
+            weights,biases,self.hidden_channel_scales=equalize_relu_channels(
+                weights,biases,balanced)
+        sx,zx=_affine_params(balanced)
+        qx=_quantize(balanced,sx,zx)
+        layers=[]
+        for i,(w,b) in enumerate(zip(weights,biases)):
+            sw=np.max(np.abs(w),axis=1)/127.
+            sw=np.where(sw>1e-12,sw,1.).astype(np.float64)
+            qw=np.clip(np.rint(w/sw[:,None]),-127,127).astype(np.int8)
+            raw_bias=np.rint(b/(sx*sw))
+            if np.max(np.abs(raw_bias),initial=0.)>=2**31-1:
+                raise ValueError("INT32 per-channel bias overflow")
+            qb=raw_bias.astype(np.int32)
+            max_acc=w.shape[1]*255*127+np.max(np.abs(qb.astype(np.int64)),initial=0)
+            if max_acc>=2**31-1:
+                raise ValueError("INT32 per-channel dot-product overflow")
+            accum=(qx.astype(np.int32)-zx)@qw.astype(np.int32).T+qb
+            y=accum.astype(np.float64)*(sx*sw)
+            relu=i<len(weights)-1
+            if relu:y=np.maximum(y,0.)
+            sy,zy=_affine_params(y)
+            ratio=sx*sw/sy
+            shift=30
+            while shift>0 and max_acc*max(1,int(np.max(np.rint(ratio*(1<<shift)))))>=2**62:
+                shift-=1
+            multiplier=np.rint(ratio*(1<<shift)).astype(np.int64)
+            if np.any(multiplier<=0):
+                raise ValueError("Per-channel fixed-point multiplier underflow")
+            layer=PerChannelIntegerLayer(qw,qb,sx,zx,sw,sy,zy,multiplier,shift,relu,
+                                        self.final_int32 and not relu)
+            layers.append(layer)
+            qx=layer.forward(qx)
+            sx,zx=sy,zy
+        return layers
+
     def action(self, obs, variant="int8"):
         obs = np.asarray(obs, dtype=np.float32)
         if not np.isfinite(obs).all():
@@ -251,6 +363,8 @@ class EdgeLightweightExporter:
         for layer in self.integer_layers:
             q = layer.forward(q)
         last = self.integer_layers[-1]
+        if isinstance(last,PerChannelIntegerLayer) and last.output_int32:
+            return np.tanh(q.astype(np.float64)*(last.input_scale*last.weight_scale)).astype(np.float32)
         return np.tanh(last.output_scale * (q.astype(np.float32) - last.output_zero))
 
     def distill_pruned(self, calibration_obs, steps=1000, batch_size=256,
@@ -332,15 +446,80 @@ class EdgeLightweightExporter:
             "input_saturation_fraction": float(np.mean((raw < -128.5) | (raw > 127.5))),
             "input_balancing": "calibration_"+self.balance_mode+"_affine_folded_into_first_layer" if self.balance_inputs else "identity",
             "input_balancing_mode": self.balance_mode,
+            "weight_quantization": self.quantization_mode,
+            "hidden_channel_equalization": self.equalize_hidden,
+            "hidden_channel_scales": [s.tolist() for s in self.hidden_channel_scales],
+            "final_logits": "INT32 accumulator dequantized at tanh boundary" if self.final_int32 else "INT8 affine grid",
             "smoothquant_alpha": self.smoothquant_alpha if self.balance_mode == "smoothquant" else None,
             "input_balancing_center": self.input_center.tolist(),
             "input_balancing_channel_scale": self.input_channel_scale.tolist(),
             "input_balancing_selection_basis": "Configured exponent; laboratory calibration-MAE candidate scores are recorded in metrics.edge.quantization_selection. Closed-loop test values are not used for range calibration or exponent selection.",
             "smoothquant_formula": "s_j=max(max|cal_j-center_j|,eps)^alpha/max(max|W_pruned[:,j]|,eps)^(1-alpha); eps=1e-5",
             "constant_channel_scale_rule": "max centered absolute input <=1e-5 (mean_std: standard deviation <=1e-5) uses scale 1; channel is retained",
-            "kernel": "INT8 weights/activations, INT32 accumulation, INT64 fixed-point requantization; float affine input prefix, input quantization and final tanh",
+            "kernel": "INT8 weights/hidden activations, INT32 accumulation, INT64 fixed-point requantization; float affine input prefix, input quantization and final tanh",
             "speed_scope": "Python/NumPy CPU reference, not a DSP/MCU deployment measurement",
         }
+
+    def polish_pruned(self,calibration_obs,steps=15000,batch_size=256,
+                      learning_rate=3e-4,min_learning_rate=1e-5,seed=2027):
+        """Continue fixed-mask distillation with calibrated-only cosine Adam.
+
+        This reproducible NumPy optimizer starts from the already distilled
+        sparse student. Selection uses full calibration MSE only; held-out
+        observations and physical evaluation trajectories never select a step.
+        It adds no environment interaction and does not alter the SAC teacher.
+        """
+        if (steps<1 or batch_size<1 or not 0<min_learning_rate<=learning_rate
+                or not np.isfinite([learning_rate,min_learning_rate]).all()):
+            raise ValueError("Invalid fixed-mask polishing settings")
+        x=np.asarray(calibration_obs,dtype=np.float32)
+        if x.ndim!=2 or not len(x) or x.shape[1]!=self.weights[0].shape[1] or not np.isfinite(x).all():
+            raise ValueError("Invalid polishing calibration observations")
+        def forward(values,weights,biases,cache=False):
+            acts=[values];pre=[]
+            for i,(w,b) in enumerate(zip(weights,biases)):
+                z=acts[-1]@w.T+b;pre.append(z)
+                acts.append(np.maximum(z,0.) if i<len(weights)-1 else np.tanh(z))
+            return (acts[-1],acts,pre) if cache else acts[-1]
+        labels=forward(x,self.weights,self.biases)
+        weights=[w.copy() for w in self.pruned_weights]
+        biases=[b.copy() for b in self.pruned_biases]
+        parameters=weights+biases
+        moment=[np.zeros_like(p) for p in parameters]
+        variance=[np.zeros_like(p) for p in parameters]
+        initial=float(np.mean((forward(x,weights,biases)-labels)**2))
+        best=initial;selected_step=0
+        best_w=[w.copy() for w in weights];best_b=[b.copy() for b in biases]
+        history=[];rng=np.random.default_rng(seed);started=time.perf_counter()
+        for step in range(1,steps+1):
+            indices=rng.integers(len(x),size=batch_size)
+            output,acts,pre=forward(x[indices],weights,biases,True)
+            delta=2.*(output-labels[indices])/output.size*(1.-output*output)
+            wg=[None]*len(weights);bg=[None]*len(weights)
+            for i in range(len(weights)-1,-1,-1):
+                wg[i]=(delta.T@acts[i])*self.masks[i]
+                bg[i]=np.sum(delta,axis=0)
+                if i:delta=(delta@weights[i])*(pre[i-1]>0.)
+            rate=min_learning_rate+(learning_rate-min_learning_rate)*.5*(1.+np.cos(np.pi*step/steps))
+            for i,(parameter,gradient) in enumerate(zip(parameters,wg+bg)):
+                moment[i]*=.9;moment[i]+=.1*gradient
+                variance[i]*=.999;variance[i]+=.001*gradient*gradient
+                parameter-=rate*(moment[i]/(1.-.9**step))/(np.sqrt(variance[i]/(1.-.999**step))+1e-8)
+            for weight,mask in zip(weights,self.masks):weight*=mask
+            if step%1000==0 or step==steps:
+                mse=float(np.mean((forward(x,weights,biases)-labels)**2))
+                history.append(dict(step=step,calibration_action_mse=mse,learning_rate=float(rate)))
+                if mse<best:
+                    best=mse;selected_step=step
+                    best_w=[w.copy() for w in weights];best_b=[b.copy() for b in biases]
+        self.pruned_weights,self.pruned_biases=best_w,best_b
+        self.integer_layers=self._build_integer_layers(x)
+        return dict(method="calibration-only NumPy Adam fixed-mask continuation with cosine learning rate",
+                    steps=steps,batch_size=batch_size,seed=seed,learning_rate=learning_rate,
+                    min_learning_rate=min_learning_rate,selected_step=selected_step,
+                    selection_metric="full calibration action MSE only",
+                    initial_action_mse=initial,final_action_mse=best,
+                    wall_seconds=time.perf_counter()-started,history=history)
 
     def benchmark(self, obs, repeats=2000, warmup=100):
         obs = np.asarray(obs, dtype=np.float32).reshape(-1)
@@ -369,18 +548,29 @@ class EdgeLightweightExporter:
             np.savez_compressed(directory / f"actor_{variant}.npz", **arrays)
         arrays = {"input_center": self.input_center,
                   "input_channel_scale": self.input_channel_scale}
-        metadata = {"format_version": 2, "prune_ratio": self.prune_ratio,
+        metadata = {"format_version": 3 if self.quantization_mode=="per_channel" else 2,
+                    "prune_ratio": self.prune_ratio,
                     "input_balancing": "calibration_"+self.balance_mode+"_affine_folded_into_first_layer" if self.balance_inputs else "identity",
                     "input_balancing_mode": self.balance_mode,
                     "smoothquant_alpha": self.smoothquant_alpha if self.balance_mode == "smoothquant" else None,
                     "input_balancing_floor": self.input_balancing_floor,
-                    "calibration_count": self.calibration_count, "layers": []}
+                    "calibration_count": self.calibration_count,
+                    "weight_quantization":self.quantization_mode,
+                    "hidden_channel_equalization":self.equalize_hidden,
+                    "hidden_channel_scales":[s.tolist() for s in self.hidden_channel_scales],
+                    "final_int32_logits":self.final_int32,"layers": []}
         for i, layer in enumerate(self.integer_layers):
             arrays[f"weight_{i}"] = layer.weights
             arrays[f"bias_{i}"] = layer.bias
-            metadata["layers"].append({key: getattr(layer, key) for key in
-                ("input_scale", "input_zero", "weight_scale", "weight_zero", "output_scale",
-                 "output_zero", "multiplier", "shift", "relu")})
+            if isinstance(layer,PerChannelIntegerLayer):
+                arrays[f'weight_scale_{i}']=layer.weight_scale
+                arrays[f'multiplier_{i}']=layer.multiplier
+                metadata['layers'].append(dict(kind='per_channel',**{key:getattr(layer,key) for key in
+                    ('input_scale','input_zero','output_scale','output_zero','shift','relu','output_int32')}))
+            else:
+                metadata["layers"].append({key: getattr(layer, key) for key in
+                    ("input_scale", "input_zero", "weight_scale", "weight_zero", "output_scale",
+                     "output_zero", "multiplier", "shift", "relu")})
         arrays["metadata_json"] = np.array(json.dumps(metadata))
         np.savez_compressed(directory / "actor_int8.npz", **arrays)
         sizes = {name: (directory / name).stat().st_size for name in
@@ -392,8 +582,26 @@ class EdgeLightweightExporter:
         """Return a standalone callable; no Torch or original float weights needed."""
         with np.load(path, allow_pickle=False) as data:
             metadata = json.loads(str(data["metadata_json"]))
-            layers = [IntegerLayer(data[f"weight_{i}"].copy(), data[f"bias_{i}"].copy(), **meta)
-                      for i, meta in enumerate(metadata["layers"])]
+            layers=[]
+            for i,meta in enumerate(metadata['layers']):
+                parameters=dict(meta)
+                if parameters.pop('kind',None)=='per_channel':
+                    scales=data[f'weight_scale_{i}'].copy()
+                    multipliers=data[f'multiplier_{i}'].copy()
+                    count=data[f'weight_{i}'].shape[0]
+                    if (scales.shape!=(count,) or multipliers.shape!=(count,)
+                            or not np.isfinite(scales).all() or np.any(scales<=0)
+                            or multipliers.dtype.kind not in 'iu' or np.any(multipliers<=0)):
+                        raise ValueError('Invalid per-channel INT8 scales/multipliers')
+                    if (data[f'weight_{i}'].dtype!=np.int8 or data[f'bias_{i}'].dtype!=np.int32
+                            or data[f'bias_{i}'].shape!=(count,)
+                            or (parameters.get('output_int32') and
+                                (i!=len(metadata['layers'])-1 or parameters.get('relu')))):
+                        raise ValueError('Invalid per-channel INT8 layer representation')
+                    layers.append(PerChannelIntegerLayer(data[f'weight_{i}'].copy(),data[f'bias_{i}'].copy(),
+                        weight_scale=scales,multiplier=multipliers,**parameters))
+                else:
+                    layers.append(IntegerLayer(data[f'weight_{i}'].copy(),data[f'bias_{i}'].copy(),**parameters))
             # Version 1 artifacts had no affine prefix. Never infer new
             # statistics when loading: their original integer layers require
             # the identity input transformation.
@@ -414,5 +622,7 @@ class EdgeLightweightExporter:
             for layer in layers:
                 q = layer.forward(q)
             last = layers[-1]
+            if isinstance(last,PerChannelIntegerLayer) and last.output_int32:
+                return np.tanh(q.astype(np.float64)*(last.input_scale*last.weight_scale)).astype(np.float32)
             return np.tanh(last.output_scale * (q.astype(np.float32) - last.output_zero))
         return action

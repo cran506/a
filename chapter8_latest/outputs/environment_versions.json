@@ -1,9 +1,8 @@
 {
+  "python": "3.12.14",
   "torch": "2.14.1+cpu",
   "gymnasium": "1.4.0",
-  "stable-baselines3": "2.9.0",
+  "stable_baselines3": "2.9.0",
   "numpy": "2.3.5",
-  "scipy": "1.17.0",
-  "matplotlib": "3.10.8",
-  "python-docx": "1.2.0"
+  "scipy": "1.17.0"
 }

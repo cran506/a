@@ -4,7 +4,8 @@ import unittest
 import tempfile
 from pathlib import Path
 import numpy as np
-from edge_exporter import EdgeLightweightExporter, magnitude_prune, IntegerLayer
+from edge_exporter import (EdgeLightweightExporter, magnitude_prune, IntegerLayer,
+                           PerChannelIntegerLayer,equalize_relu_channels)
 
 
 class EdgeTests(unittest.TestCase):
@@ -138,6 +139,57 @@ class EdgeTests(unittest.TestCase):
     def test_nonfinite_calibration_rejected(self):
         with self.assertRaises(ValueError):
             EdgeLightweightExporter([np.ones((1, 1))], [np.zeros(1)], [[np.nan]])
+
+    def test_relu_channel_equalization_preserves_function_and_pruning_mask(self):
+        edge,obs=self.make_exporter()
+        weights,biases,scales=equalize_relu_channels(edge.pruned_weights,edge.pruned_biases,obs)
+        self.assertEqual(len(scales),len(weights)-1)
+        for original,changed in zip(edge.pruned_weights,weights):
+            np.testing.assert_array_equal(original==0.,changed==0.)
+        np.testing.assert_allclose(edge._float_forward(obs,weights,biases),
+                                   edge.action(obs,'pruned_fp32'),atol=5e-7,rtol=2e-5)
+
+    def test_per_channel_int32_head_and_version_three_roundtrip(self):
+        edge,obs=self.make_exporter(quantization_mode='per_channel',
+                                    equalize_hidden=True,final_int32=True)
+        first=edge.integer_layers[0]
+        self.assertIsInstance(first,PerChannelIntegerLayer)
+        self.assertEqual(first.weight_scale.shape,(64,))
+        q=np.array([[127,-128]],dtype=np.int8)
+        layer=PerChannelIntegerLayer(np.array([[127,-127],[64,0]],dtype=np.int8),
+              np.array([5,-10],dtype=np.int32),.1,-128,np.array([.01,.02]),
+              .1,0,np.array([1,2],dtype=np.int64),0,False,True)
+        np.testing.assert_array_equal(layer.forward(q),[[32390,16310]])
+        self.assertEqual(layer.forward(q).dtype,np.int32)
+        with tempfile.TemporaryDirectory() as path:
+            edge.save(path)
+            filename=Path(path)/'actor_int8.npz'
+            restored=edge.load_int8(filename)
+            np.testing.assert_array_equal(restored(obs),edge.action(obs))
+            with np.load(filename,allow_pickle=False) as archive:
+                metadata=json.loads(str(archive['metadata_json']))
+                self.assertEqual(metadata['format_version'],3)
+                self.assertTrue(metadata['final_int32_logits'])
+                self.assertEqual(archive['weight_0'].dtype,np.int8)
+                self.assertEqual(archive['bias_0'].dtype,np.int32)
+                self.assertTrue(np.all(archive['weight_scale_0']>0))
+            report=edge.validation_report(obs)
+            self.assertEqual(report['weight_quantization'],'per_channel')
+            self.assertGreater(report['actual_weight_sparsity'],.699)
+
+    def test_numpy_polishing_uses_fixed_mask_and_reduces_calibration_loss(self):
+        rng=np.random.default_rng(23)
+        obs=rng.normal(size=(256,4)).astype(np.float32)
+        obs[:,2]=obs[:,0];obs[:,3]=0.
+        weights=[np.array([[.9,.7,.3,.1]],np.float32)]
+        edge=EdgeLightweightExporter(weights,[np.zeros(1,np.float32)],obs,.5)
+        teacher=edge.weights[0].copy()
+        result=edge.polish_pruned(obs,steps=500,batch_size=64,
+                                  learning_rate=.003,min_learning_rate=.0003,seed=7)
+        self.assertLess(result['final_action_mse'],result['initial_action_mse']*.5)
+        np.testing.assert_array_equal(edge.weights[0],teacher)
+        self.assertTrue(np.all(edge.pruned_weights[0][~edge.masks[0]]==0.))
+        self.assertEqual(result['selection_metric'],'full calibration action MSE only')
 
     def test_requantization_rejects_int32_overflow(self):
         with self.assertRaises(ValueError):

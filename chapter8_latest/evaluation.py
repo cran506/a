@@ -83,19 +83,30 @@ def evaluate(root):
     # for integer deployment: INT8 receives its own evolving observations.
     cal=np.concatenate([cal,fp_obs])
     edge=EdgeLightweightExporter.from_sb3(model,cal,prune_ratio=.70)
-    distillation=edge.distill_pruned(cal,steps=8000,batch_size=256)
+    initial_distillation=edge.distill_pruned(cal,steps=8000,batch_size=256)
+    polishing=edge.polish_pruned(cal,steps=15000,batch_size=256,
+                                learning_rate=3e-4,min_learning_rate=1e-5,seed=2027)
+    distillation=dict(method='fixed-mask actor distillation followed by calibration-only cosine Adam polishing',
+        steps=initial_distillation['steps']+polishing['steps'],
+        initial_action_mse=initial_distillation['initial_action_mse'],
+        final_action_mse=polishing['final_action_mse'],
+        stages=[initial_distillation,polishing])
     # Choose quantization balancing using calibration actions only. Held-out
     # states and the integer closed-loop trajectory do not select the exponent.
     candidates=[]
     for alpha in [.25,.5,.75]:
         candidate=EdgeLightweightExporter(edge.weights,edge.biases,cal,prune_ratio=.70,
             pruned_weights=edge.pruned_weights,pruned_biases=edge.pruned_biases,
-            smoothquant_alpha=alpha)
+            smoothquant_alpha=alpha,quantization_mode='per_channel',
+            equalize_hidden=True,final_int32=True)
         score=float(np.mean(np.abs(candidate.action(cal,'int8')-candidate.action(cal,'pruned_fp32'))))
         candidates.append((score,alpha,candidate))
     _,selected_alpha,edge=min(candidates,key=lambda item:item[0])
     quantization_selection=dict(selection_metric='calibration normalized-action MAE against fixed pruned FP32 actor',
         calibration_count=len(cal),selected_alpha=selected_alpha,
+        weight_quantization='per-output-channel symmetric INT8',
+        hidden_equalization='positive diagonal ReLU cross-layer equalization, float-function preserving',
+        final_logits='INT32 dot-product output, dequantized only at final tanh',
         candidates=[dict(alpha=alpha,calibration_action_mae=score) for score,alpha,_ in candidates])
     (out/'quantization_calibration_selection.json').write_text(json.dumps(quantization_selection,indent=2)+'\n')
     validation_report=edge.validation_report(validation)
