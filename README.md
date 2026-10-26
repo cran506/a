@@ -1,5 +1,17 @@
 # 智能流体传动与控制课堂编程
 
+## 第八章图 (a)：PPT 教学示意与真实训练分开交付
+
+按本次选择，主图 (a) 重绘为明确标注的 **PPT 教学示意（非训练日志）**：奖励目标 −180→−2，策略熵目标 2.8→0.35。图 (b)–(d) 保留原控制对照的实测数据。
+
+- [更新后的课堂主图](chapter8_reference/outputs/chapter8_comparison.png)
+- [PPT 目标示意单图](chapter8_reference/outputs/ppt_training_target.png)
+- [真实从零百万步训练曲线](chapter8_from_scratch/outputs/sac_training_actual.png)
+- [真实固定工况验证曲线](chapter8_from_scratch/outputs/training_validation.png)
+- [从零训练代码、日志和完整包](chapter8_from_scratch/README.md)
+
+真实训练取消教师预热、统一奖励统计口径，初始策略熵约 2.985，后 10 万步平均熵约 0.341；固定重载短窗验证平均每步奖励从 −272.69 改善到 −2.79。示意图不作为实测证据，新原生策略的部署性能限制也如实保留在附录中。
+
 ## 第八章：五维参考接口修订版
 
 依据补充参考代码重新训练五输入网络，保留指定标准化和基础奖励。项目提供真实百万步机理先验 SAC、单独记录的离线雅可比精修、共同四状态液压故障对比、二阶 HOCBF 验证和独立整数推理。为消除全 W8/A8 的巡航限环，最终采用 70% 剪枝、INT8 权重和 INT16 激活，所有矩阵运算走整数路径。

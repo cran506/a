@@ -1,0 +1,71 @@
+{
+  "algorithm": "Vanilla SAC from uninformed random initial policy; original actor and critic losses",
+  "actual_timesteps": 1000000,
+  "gradient_updates": 118750,
+  "seed": 2026,
+  "wall_seconds": 632.482238046,
+  "torch_version": "2.14.1+cpu",
+  "policy_architecture": [
+    5,
+    64,
+    64,
+    1
+  ],
+  "n_envs": 4,
+  "learning_starts": 50000,
+  "train_frequency_vector_steps": 4,
+  "gradient_steps_per_update": 2,
+  "batch_size": 128,
+  "gamma": 0.99,
+  "learning_rate": 0.0003,
+  "temperature_learning_rate": 0.001,
+  "optimizer_reward_multiplier": 0.001,
+  "target_entropy_normalized": -1.9525850929940458,
+  "target_entropy_voltage": 0.35,
+  "observation_names": [
+    "position_error_mm",
+    "velocity_error_mm_s",
+    "acceleration_error_mm_s2",
+    "load_pressure_MPa",
+    "supply_pressure_MPa"
+  ],
+  "obs_mean": [
+    0.0,
+    0.0,
+    0.0,
+    10.0,
+    21.0
+  ],
+  "obs_std": [
+    10.0,
+    50.0,
+    500.0,
+    8.0,
+    2.0
+  ],
+  "reward": "-100*e_mm^2-.1*u_V^2-(u_V-u_prev_V)^2+2*I(|e_mm|<.2); physical failure cost separately -100000",
+  "reward_log": "Consistent last10000 actual step base_reward window from first row; terminal cost and raw episode returns separate",
+  "entropy_log": "Tanh-corrected voltage entropy H(u)=H(a)+ln10; fixed physical probe and replay separately recorded",
+  "initial_actor": "Random hidden layers; mu output weight/bias zero; log_std output weight zero, bias -0.1. No teacher pretraining or inherited checkpoint.",
+  "teacher_initialization": false,
+  "teacher_prior": false,
+  "post_training_teacher_consolidation": false,
+  "uniform_exploration_steps": 50000,
+  "domain_randomization": "m±20%; beta600..1400MPa; Fc±30%",
+  "fault_augmentation": "80% episodes: time U(.05,.8)s, load U(0,5500)N, beta multiplier U(.5,1)",
+  "training_initial_position_m": [
+    0.0001,
+    0.005
+  ],
+  "training_reference_velocity_m_s": 0.05,
+  "physical_config_sha256": "cf2fd7a85f565083d3a6bbb9b0c0bb3dd6e21bcbea8781a34e58080ddb36397a",
+  "model_source_sha256": {
+    "train_sac.py": "04184c197ed5ebc1f37add943f6d39b57cfb4e23a018c13e266faa0c5ebbe697",
+    "hydraulic_env.py": "3d2a88728ab0656be2d8edadfa61fba3d701374bc352d3af36556f1206004164",
+    "hydraulic_twin.py": "2b7e66cf789d3634c32e2a650a8c516d1804745d1c6a17cf06426ae3c54763ce",
+    "native_twin.cpp": "d94be966aa7c845842a92a06e606783655bf8a0b8a4327dfbf87c1b2d1af102a",
+    "physical_config.json": "cf2fd7a85f565083d3a6bbb9b0c0bb3dd6e21bcbea8781a34e58080ddb36397a"
+  },
+  "deployed_model_sha256": "439a37d54d05d5b6ded5ceed4877c8b7c1c576437bf8c2b2de92c427b935e4bf",
+  "deployment_origin": "Exactly the final 1M SAC checkpoint, without offline actor modification"
+}

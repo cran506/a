@@ -1,0 +1,30 @@
+{
+  "experiment": "Fixed loaded steady-state short-window stochastic-policy validation",
+  "training_reward_replacement": false,
+  "horizon_s": 0.05,
+  "episodes_per_checkpoint": 16,
+  "initial_position_m": 0.05,
+  "initial_velocity_m_s": 0.05,
+  "load_n": 5000.0,
+  "beta_multiplier": 0.5,
+  "initial_pressure": "Force/flow equilibrium of each randomized physical plant at 5000N and50mm/s",
+  "previous_voltage": "Actual equilibrium voltage immediately before the validation window; not an actor input",
+  "reward": "Unchanged textbook Eq8.1 base_reward, averaged per actual environment step",
+  "domain_randomization": "m±20%, beta600..1400MPa, Fc±30%, same fixed episode seeds8100...",
+  "actual_extra_validation_interactions": 8800,
+  "validation_not_added_to_replay": true,
+  "raw_trace": "training_validation_trace.csv",
+  "checkpoint_sha256": {
+    "models/sac_untrained.zip": "485e68a5c4ae870957f629ad996dd375466fef639eb0a6765e88a34c413a121e",
+    "models/checkpoints/sac_100000.zip": "c5d30c72a5d71c13bc375421298e512a2982a9a8268baa157df7e3b15bc912bf",
+    "models/checkpoints/sac_200000.zip": "ea62a0475af4d884a0a9cc515beddac86666d28b9b7d4c0acf693e375a559faf",
+    "models/checkpoints/sac_300000.zip": "debdb099ccb3169bbd0d8b146e019892ba2ba261010a0d342ae7ab6d8468b5c7",
+    "models/checkpoints/sac_400000.zip": "0d5165b7a364eaab5d5ed0f3e12b030c229e02434043306c27799ab1501f7e9b",
+    "models/checkpoints/sac_500000.zip": "788b41f7936d0ebc44f04a1fc9c7f105e18a30506f460e379b9e104b83135ef9",
+    "models/checkpoints/sac_600000.zip": "9b3d6d376b5ba69c5e779b2131ba69af71ea0ed7b3e4b20b24b07a610a85ea2f",
+    "models/checkpoints/sac_700000.zip": "26ff33a0b4a22e66634ffccd8d31ee72473e77b5e3e1330a04981f56818cf7dc",
+    "models/checkpoints/sac_800000.zip": "4d58be19f0a2a6130d8f97244f34dc3a69c8eca3317d5826f155eea544b57a72",
+    "models/checkpoints/sac_900000.zip": "c21694f7905bb5a034100a4703cec2d2ce7849a076e9299ca57cbff0d76f4757",
+    "models/sac_model.zip": "439a37d54d05d5b6ded5ceed4877c8b7c1c576437bf8c2b2de92c427b935e4bf"
+  }
+}

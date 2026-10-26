@@ -123,7 +123,7 @@
     17259376.07341738,
     1273592.6075319985
   ],
-  "benchmark_600_native_steps_seconds": 0.007469836999916879,
+  "benchmark_600_native_steps_seconds": 0.007584888000565115,
   "mean_internal_substeps": 8.0,
   "checks": {
     "all_equilibrium_force_balances": true,

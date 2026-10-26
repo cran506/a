@@ -82,7 +82,8 @@
     "native_twin.cpp": "d94be966aa7c845842a92a06e606783655bf8a0b8a4327dfbf87c1b2d1af102a",
     "package_delivery.py": "ef1c51cdfa0716d2b422b6be7faed52be903a237fe112cdf889f33dc2bcc6fd8",
     "physical_config.json": "cf2fd7a85f565083d3a6bbb9b0c0bb3dd6e21bcbea8781a34e58080ddb36397a",
-    "reporting.py": "9ea0188764e4d0f5986f16f8c73963c6861d89f138a6de89aa6a42fe7ee87c7f",
+    "ppt_training_reference.py": "0ab4fed3e281f9b17533f18cf6596b9fedb676d2a5019c82d8f9bcb044487303",
+    "reporting.py": "ebc674d719ad195bf871b753ec0be486abd9331548bdd107b7da500c161c6339",
     "requirements.txt": "450bef3153b6a0b88262736f6271648077b010d9a7d8e27689519108ad0b2c3e",
     "safety_config.json": "594d3e829680e1b61bb08cbdfdc250925ac0a9357341a52ae65c79dcc86a9b37",
     "safety_experiment.py": "c434826930e1295ab7540b2d79b97a022aa36a642f850d199fac4aa250ce8064",
@@ -95,6 +96,7 @@
     "test_evaluation.py": "1db13e67e8fcc1b77ea1634dd87f71c4e0d8a33a2ff17e6a5f9dd2a47524131c",
     "test_mixed_precision.py": "7902fcda29a1db60fc133b4d3301185b3c7e7d323ad20a44f966e62859bede09",
     "test_physics_safety.py": "3d5a5e898cdf354ef1ce2d1ef4296c9f5da3cba6b62608476f2c4bed367e003d",
+    "test_ppt_reference.py": "a82efa6bcf13a8f8bbe6d4466fb15b4c04929b6edc314ecf90ec164583239a2c",
     "train_sac.py": "fa8ba8695b2d1fbee091768693188843f8d2922158cb399498ffe63165537f29",
     "verify_experiment.py": "8043824f1114a8d9f3e6363ee2e2165368173491363fc5aa7b1572a3c16e4f59",
     "verify_weight_robustness.py": "3907c54c2ccf4e392008d861c87a046526dc88c01a5a651a730d78dce09ec67b"
@@ -108,11 +110,11 @@
     "models/training_metadata.json": "1ecac0b7d52fd80f9888020706e08f5fb8f90bd26b5bb23370b58e374313b82f"
   },
   "data_sha256": {
-    "outputs/chapter8_comparison.pdf": "8bf39513725435918689cf9f3ebf642fe805a0275272ff38201c80818b58a869",
-    "outputs/chapter8_comparison.png": "f7ebddc82e45f290acd9fc38e285cdcad4a8a882986f1c23390cc20fca5194c0",
+    "outputs/chapter8_comparison.pdf": "9a68504c790b1b59a1c066e5b2c985f264a5f3e03be9dfd3a93c28c07c0c7123",
+    "outputs/chapter8_comparison.png": "237640ab06cd7bf28c1c7e03bcdc1f2e81ebcc5d85cb9b1ee2923114a03ec0bc",
     "outputs/evaluation.csv": "15aea572cbe63ba0085520b728b2ef42e6723db0fae4196535bf99d5007ec522",
     "outputs/metrics.json": "110dfde42364c6740dab3602a86799108a49c3975b97d04d0f438a84fb1441fa",
-    "outputs/physics_validation.json": "c5e490edf41a6d10a0c9612540c5f2e5dbd2386e95d79b3d59f00f4455ada2f7",
+    "outputs/physics_validation.json": "ab4c824fb04c393c35d7d245cb0f6077fab89e24995e522fe1d20aae8ac098ea",
     "outputs/safety.csv": "45423e9301c60aa79dca744334e9d045a06dfecca948bacfde8c6f9468bdaa32",
     "outputs/safety_summary.json": "ee22f9c4081d7ed04afbea6302526ca7247ddc7668fab8296c3e62e5f2941627",
     "outputs/training.csv": "7135d4ce42a1a7ce41319cf83e97877b42cd85451ee6e1ad7d2ea12b11a11ae6"

@@ -1,6 +1,6 @@
-"""从保存的训练日志和独立闭环记录绘制课堂四联图。
+"""课堂四联图：(a) 为用户选择的 PPT 教学示意，其余为独立闭环记录。
 
-只读取真实 CSV；不插入参考响应，不对误差、电压或训练奖励作拟合。
+教学目标不写入训练 CSV；真实训练图和数据另行保存。
 """
 from __future__ import annotations
 
@@ -84,8 +84,8 @@ def _recovery_time(t, error, fault_time=.5):
     return None
 
 
-def generate_figures(root=None):
-    """Save PNG/PDF from raw outputs; return paths to the generated figures."""
+def generate_figures(root=None,training_view='ppt'):
+    """Save the labelled teaching schematic plus measured control panels."""
     root = Path(root or Path(__file__).resolve().parent)
     out = root / "outputs"
     training = _read_csv(out / "training.csv")
@@ -103,38 +103,11 @@ def generate_figures(root=None):
         ax.grid(True, linestyle=":", alpha=.4)
         ax.set_axisbelow(True)
 
-    ax = axes[0, 0]
-    steps = _column(training, "timesteps")
-    reward = _column(training, "reward_mean")
-    entropy = _column(training, "voltage_entropy")
-    if np.any(np.diff(steps) <= 0):
-        raise ValueError("训练步数必须严格递增")
-    last_step = float(steps[-1]) / 1000.
-    phases = [(0., min(50., last_step), "#eeeeee", "0–50k：课件阶段 I"),
-              (50., min(400., last_step), "#e8edfc", "50k–400k：课件阶段 II"),
-              (400., last_step, "#e7f5e9", ">400k：课件阶段 III")]
-    phase_handles = []
-    for left, right, color, label in phases:
-        if right > left:
-            ax.axvspan(left, right, color=color, zorder=0)
-            phase_handles.append(Patch(facecolor=color, label=label))
-    line_reward, = ax.plot(steps / 1000., reward, color=COLORS["sac_fp32"], lw=1.7, label="实际平均每步奖励")
-    if np.max(np.abs(reward)) > 10000.:
-        ax.set_yscale("symlog", linthresh=10.)
-        ax.set_ylabel("原始平均每步奖励（对称对数轴）", color=COLORS["sac_fp32"])
+    if training_view=='ppt':
+        from ppt_training_reference import draw_ppt_panel,generate_ppt_reference
+        draw_ppt_panel(axes[0,0]);generate_ppt_reference(root)
     else:
-        ax.set_ylabel("原始平均每步奖励", color=COLORS["sac_fp32"])
-    ax.tick_params(axis="y", colors=COLORS["sac_fp32"])
-    entropy_ax = ax.twinx()
-    line_entropy, = entropy_ax.plot(steps / 1000., entropy, color="#333333", ls="--", lw=1.4,
-                                   label="实际电压动作熵 H(u)")
-    entropy_ax.set_ylabel("H(u) / nat（tanh 后，u 以 V 计）")
-    ax.set_xlim(0., last_step)
-    ax.set_xlabel("实际训练交互步数 / 千步")
-    ax.set_title(f"(a) SAC 真实训练日志（{int(steps[-1]):,} 步）", pad=12)
-    ax.text(.02, .03, "机理教师预热 + SAC；色带仅标记课件的步数区间", transform=ax.transAxes,
-            fontsize=7.2, color="#444444", bbox=dict(fc="white", ec="none", alpha=.8))
-    ax.legend(handles=[*phase_handles, line_reward, line_entropy], loc="best", framealpha=.95, fontsize=7.2)
+        raise ValueError('实际训练图单独保存为 chapter8_measured_comparison；主图按用户选择显示 PPT 教学示意')
 
     ax = axes[0, 1]
     t = _column(safety, "time_s")
@@ -190,7 +163,7 @@ def generate_figures(root=None):
     text += f"持续恢复至 ±1 mm/s：{recovery:.3f} s" if recovery is not None else "本窗口未持续恢复至 ±1 mm/s"
     ax.text(.45, .47, text, transform=ax.transAxes, fontsize=8,
             bbox=dict(boxstyle="round,pad=.3", fc="white", ec=COLORS["sac_fp32"], alpha=.95))
-    fig.text(.065, .065, "(a) 为实际 SAC 日志；部署均值另经离线雅可比精修。(c)(d) 四策略共用物理对象，FP32/INT8 分别运行自身闭环。", fontsize=8.5, color="#444444")
+    fig.text(.065, .065, "(a) 为 PPT 教学示意，非训练日志；真实从零百万步记录另附。(c)(d) 保留原部署对照的实际闭环数据。", fontsize=8.5, color="#444444")
     fig.text(.065, .04, f"(b) 为独立教学约化模型 ẋ=v，v̇={summary['k_gain_mm_s2_per_v']:g}u−{summary['damping_per_s']:g}v；其二阶证书不能直接转移到四状态液压对象。", fontsize=8.5, color="#444444")
     paths = [out / "chapter8_comparison.png", out / "chapter8_comparison.pdf"]
     for path in paths:

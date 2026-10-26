@@ -1,6 +1,10 @@
 # 第八章课堂实验：按五维参考接口重新训练
 
-本版依据第八章 PPT 和此次提供的训练代码重新实现。保留五维观察、动作电压范围、指定标准化参数和奖励公式；数字孪生由实际四状态液压方程推进。训练日志、四种控制器的独立闭环数据和图中标注均由程序计算。
+本版依据第八章 PPT 和提供的训练代码实现。保留五维观察、动作电压范围、指定标准化参数和奖励公式；数字孪生由四状态液压方程推进。
+
+**按本次选择，主图 (a) 采用 PPT 三阶段教学示意，明确标注“非训练日志”。** 奖励 −180→−2、熵 2.8→0.35 由公开目标锚点插值表达，不作为实测证据。图 (b)–(d) 保留原部署对照的实际数据；[此前实测四联图](outputs/chapter8_measured_comparison.png) 另存。
+
+本次还取消教师预热，重新完成一次真实从零百万步 SAC 训练。其 [完整训练曲线](../chapter8_from_scratch/outputs/sac_training_actual.png)、[固定工况验证](../chapter8_from_scratch/outputs/training_validation.png)、[全部代码与原始日志](../chapter8_from_scratch/README.md) 单独提供；主图示意与这次真实数据不混称。
 
 - [运行入口](drl_hydraulic_lab.py)
 - [四联图](outputs/chapter8_comparison.png) / [PDF](outputs/chapter8_comparison.pdf)
@@ -8,6 +12,7 @@
 - [四策略闭环记录](outputs/evaluation.csv) / [量化、计时与性能指标](outputs/metrics.json)
 - [HOCBF 验证](outputs/safety_summary.json)
 - [上传的原始参考文件](materials/user_training_reference.py) / [第八章课件](materials/chap08-ppt.pdf)
+- [真实从零训练附件（含完整复现实验 ZIP）](actual_training/README.md)
 
 ## 本次运行结果
 

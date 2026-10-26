@@ -1,0 +1,19 @@
+{
+  "checkpoint_sha256": "439a37d54d05d5b6ded5ceed4877c8b7c1c576437bf8c2b2de92c427b935e4bf",
+  "actual_final_metrics": {
+    "minimum_velocity_error_mms": -16.133211325844616,
+    "minimum_velocity_error_time_s": 0.502,
+    "maximum_velocity_error_mms": 7.663974245084193,
+    "velocity_error_rms_mms": 2.2591095376045267,
+    "final_100ms_velocity_bias_mms": -0.002943689178723054,
+    "recovery_1mms_s": 0.07200000000000006,
+    "peak_voltage_v": 9.850091934204102,
+    "final_voltage_v": 6.677198610683479,
+    "max_abs_voltage_v": 9.850091934204102,
+    "max_voltage_step_v": 5.981841087341309,
+    "prefault_velocity_error_rms_mms": 3.4940483324070537,
+    "prefault_voltage_std_v": 1.0782778129209016,
+    "prefault_max_voltage_step_v": 4.683011770248413,
+    "final_position_error_mm": -0.0720323491214675
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "artifact_type": "clearly_labelled_teaching_target_schematic",
+  "contains_measured_training_data": false,
+  "source": {
+    "file": "materials/chap08-ppt.pdf",
+    "page": 12,
+    "section": "8.5.1",
+    "sha256": "41c67c5ba838e4d54240e5b6ffed062de0ca0f38c3477d64e3057f5bbf6fffe6"
+  },
+  "source_explicit_targets": {
+    "stage_I_steps": [
+      0,
+      50000
+    ],
+    "stage_I_entropy_approx": 2.8,
+    "stage_II_steps": [
+      50000,
+      400000
+    ],
+    "stage_II_reward_description": "-180 to -15, then the steady platform",
+    "stage_III_start_step": 400000,
+    "stage_III_reward_approx": -2.0,
+    "stage_III_entropy_approx": 0.35
+  },
+  "interpolation": "shape-preserving monotone piecewise cubic Hermite (SciPy PchipInterpolator)",
+  "anchors_steps_k": [
+    0.0,
+    50.0,
+    100.0,
+    150.0,
+    200.0,
+    300.0,
+    400.0,
+    1000.0
+  ],
+  "anchors_reward_target": [
+    -180.0,
+    -170.0,
+    -145.0,
+    -105.0,
+    -65.0,
+    -15.0,
+    -2.0,
+    -2.0
+  ],
+  "anchors_entropy_target": [
+    2.8,
+    2.75,
+    2.4,
+    1.9,
+    1.15,
+    0.5,
+    0.35,
+    0.35
+  ],
+  "intermediate_anchor_scope": "Illustration design choices, not values extracted from an original training log",
+  "random_jitter_added": false,
+  "warning": "Not model output, not a training CSV, not convergence/performance/safety evidence"
+}
