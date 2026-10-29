@@ -1,0 +1,27 @@
+{
+  "origin": "User-selected historical result; reused frozen actor weights, not newly trained by the rewritten program",
+  "repository": "https://github.com/cran506/a",
+  "source_commit": "780f0dc8de0e4f534f45b4351c3924deecac1791",
+  "source_directory": "chapter8_reference/models",
+  "method": "1M physics-teacher-guided SAC followed by separately recorded offline teacher/Jacobian consolidation; sparse actor distillation before W8/A16 export",
+  "integer_format": "INT8 weights, INT16 activations, INT32 accumulation, INT64 requantization; float input affine and final tanh",
+  "verification": {
+    "sample_count": 1202,
+    "integer_action_max_abs_diff": 0.0,
+    "float_action_max_abs_diff_against_sb3": 2.384185791015625e-07
+  },
+  "files": {
+    "actor_int8.npz": {
+      "sha256": "492ed883a094f147b863ed5f8160809bab57f19d7563bbf88769f215c38ff068",
+      "bytes": 9003
+    },
+    "actor_fp32.npz": {
+      "sha256": "969e8171496223cb4c9c52a8d2dd70729c4db89f28b03cd787b31b95219e4e48",
+      "bytes": 18421
+    },
+    "actor_pruned_fp32.npz": {
+      "sha256": "73661d4aa225eda30ec0b74d1fe1d3ada740d0595f4d3408cd58333da19830f8",
+      "bytes": 8959
+    }
+  }
+}

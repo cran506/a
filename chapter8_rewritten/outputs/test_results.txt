@@ -1,0 +1,51 @@
+test_affine_quantization_and_reconstruction (test_drl_hydraulic_lab.EdgeDeploymentTests.test_affine_quantization_and_reconstruction) ... ok
+test_float_actor_batch_and_roundtrip (test_drl_hydraulic_lab.EdgeDeploymentTests.test_float_actor_batch_and_roundtrip) ... ok
+test_float_actor_validates_topology_and_observation (test_drl_hydraulic_lab.EdgeDeploymentTests.test_float_actor_validates_topology_and_observation) ... ok
+test_frozen_original_float_fixture (test_drl_hydraulic_lab.EdgeDeploymentTests.test_frozen_original_float_fixture) ... ok
+test_frozen_original_integer_fixture (test_drl_hydraulic_lab.EdgeDeploymentTests.test_frozen_original_integer_fixture) ... ok
+test_integer_export_rejects_bad_calibration_and_precision (test_drl_hydraulic_lab.EdgeDeploymentTests.test_integer_export_rejects_bad_calibration_and_precision) ... ok
+test_integer_export_uses_int8_weights_and_matches_simple_actor (test_drl_hydraulic_lab.EdgeDeploymentTests.test_integer_export_uses_int8_weights_and_matches_simple_actor) ... ok
+test_integer_loader_rejects_int32_accumulation_overflow (test_drl_hydraulic_lab.EdgeDeploymentTests.test_integer_loader_rejects_int32_accumulation_overflow) ... ok
+test_integer_loader_rejects_int64_requantization_overflow (test_drl_hydraulic_lab.EdgeDeploymentTests.test_integer_loader_rejects_int64_requantization_overflow) ... ok
+test_integer_loader_rejects_unsafe_dtype_and_invalid_shift (test_drl_hydraulic_lab.EdgeDeploymentTests.test_integer_loader_rejects_unsafe_dtype_and_invalid_shift) ... ok
+test_integer_roundtrip_is_exact (test_drl_hydraulic_lab.EdgeDeploymentTests.test_integer_roundtrip_is_exact) ... ok
+test_pruning_rejects_nan_empty_and_invalid_ratios (test_drl_hydraulic_lab.EdgeDeploymentTests.test_pruning_rejects_nan_empty_and_invalid_ratios) ... ok
+test_stable_tie_pruning_has_exact_count (test_drl_hydraulic_lab.EdgeDeploymentTests.test_stable_tie_pruning_has_exact_count) ... ok
+test_zero_and_fully_pruned_weights_are_valid (test_drl_hydraulic_lab.EdgeDeploymentTests.test_zero_and_fully_pruned_weights_are_valid) ... ok
+test_action_clipping_and_invalid_action_atomicity (test_drl_hydraulic_lab.GymEnvironmentTests.test_action_clipping_and_invalid_action_atomicity) ... ok
+test_domain_randomization_envelope_and_variation (test_drl_hydraulic_lab.GymEnvironmentTests.test_domain_randomization_envelope_and_variation) ... ok
+test_episode_truncation_requires_reset (test_drl_hydraulic_lab.GymEnvironmentTests.test_episode_truncation_requires_reset) ... ok
+test_evaluation_disables_randomization_and_restores_nominal_parameters (test_drl_hydraulic_lab.GymEnvironmentTests.test_evaluation_disables_randomization_and_restores_nominal_parameters) ... ok
+test_future_fault_labels_do_not_change_prefault_observation (test_drl_hydraulic_lab.GymEnvironmentTests.test_future_fault_labels_do_not_change_prefault_observation) ... ok
+test_gymnasium_contract (test_drl_hydraulic_lab.GymEnvironmentTests.test_gymnasium_contract) ... /workspace/.venvs/chapter8/lib/python3.12/site-packages/gymnasium/utils/env_checker.py:372: UserWarning: [33mWARN: A Box observation space minimum value is -infinity. This is probably too low.[0m
+  logger.warn(
+/workspace/.venvs/chapter8/lib/python3.12/site-packages/gymnasium/utils/env_checker.py:376: UserWarning: [33mWARN: A Box observation space maximum value is infinity. This is probably too high.[0m
+  logger.warn(
+ok
+test_normalization_exact_values_and_dtype (test_drl_hydraulic_lab.GymEnvironmentTests.test_normalization_exact_values_and_dtype) ... ok
+test_observation_pressure_and_error_coordinates (test_drl_hydraulic_lab.GymEnvironmentTests.test_observation_pressure_and_error_coordinates) ... ok
+test_reset_and_actions_are_reproducible_for_seed (test_drl_hydraulic_lab.GymEnvironmentTests.test_reset_and_actions_are_reproducible_for_seed) ... ok
+test_reward_terms_match_textbook_and_strict_bonus_boundary (test_drl_hydraulic_lab.GymEnvironmentTests.test_reward_terms_match_textbook_and_strict_bonus_boundary) ... ok
+test_step_reward_records_raw_formula_and_previous_control (test_drl_hydraulic_lab.GymEnvironmentTests.test_step_reward_records_raw_formula_and_previous_control) ... ok
+test_601_sample_fault_replay_native_versus_radau (test_drl_hydraulic_lab.PhysicsTests.test_601_sample_fault_replay_native_versus_radau) ... ok
+test_backend_validation (test_drl_hydraulic_lab.PhysicsTests.test_backend_validation) ... ok
+test_bulk_modulus_changes_pressure_continuity (test_drl_hydraulic_lab.PhysicsTests.test_bulk_modulus_changes_pressure_continuity) ... ok
+test_default_parameter_copy_is_independent (test_drl_hydraulic_lab.PhysicsTests.test_default_parameter_copy_is_independent) ... ok
+test_equilibrium_solves_same_rhs (test_drl_hydraulic_lab.PhysicsTests.test_equilibrium_solves_same_rhs) ... ok
+test_explicit_parameters_override_config (test_drl_hydraulic_lab.PhysicsTests.test_explicit_parameters_override_config) ... ok
+test_friction_randomization_is_in_force_equation (test_drl_hydraulic_lab.PhysicsTests.test_friction_randomization_is_in_force_equation) ... ok
+test_invalid_actions_do_not_commit_state_or_clock (test_drl_hydraulic_lab.PhysicsTests.test_invalid_actions_do_not_commit_state_or_clock) ... ok
+test_invalid_parameter_update_rolls_back (test_drl_hydraulic_lab.PhysicsTests.test_invalid_parameter_update_rolls_back) ... ok
+test_mass_changes_force_acceleration (test_drl_hydraulic_lab.PhysicsTests.test_mass_changes_force_acceleration) ... ok
+test_dimensionless_barrier_shape (test_drl_hydraulic_lab.SafetyFilterTests.test_dimensionless_barrier_shape) ... ok
+test_exact_zoh_transition_matches_closed_form (test_drl_hydraulic_lab.SafetyFilterTests.test_exact_zoh_transition_matches_closed_form) ... ok
+test_infeasible_intersection_is_reported (test_drl_hydraulic_lab.SafetyFilterTests.test_infeasible_intersection_is_reported) ... ok
+test_one_second_safety_demo_and_raw_collision_convention (test_drl_hydraulic_lab.SafetyFilterTests.test_one_second_safety_demo_and_raw_collision_convention) ... ok
+test_projected_input_satisfies_whole_hold_interval (test_drl_hydraulic_lab.SafetyFilterTests.test_projected_input_satisfies_whole_hold_interval) ... ok
+test_reference_formula_matches_supplied_code (test_drl_hydraulic_lab.SafetyFilterTests.test_reference_formula_matches_supplied_code) ... ok
+test_sampled_gains_and_high_order_initial_set (test_drl_hydraulic_lab.SafetyFilterTests.test_sampled_gains_and_high_order_initial_set) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 1.594s
+
+OK

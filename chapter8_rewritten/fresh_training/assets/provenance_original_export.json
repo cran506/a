@@ -1,0 +1,19 @@
+{
+  "origin": "New vanilla SAC training from random initialization",
+  "source_commit": null,
+  "method": "No teacher or post-SAC actor update; newly pruned quantizer requires validation",
+  "files": {
+    "actor_fp32.npz": {
+      "sha256": "4fd0687c0660f153c9219af8d2ff9f13f6b5ca924dd6009353350619f234a624",
+      "bytes": 19085
+    },
+    "actor_int8.npz": {
+      "sha256": "537a4e79e6150629fcb51582561cd53efb52b2b2cf86459351adef802c8d10c0",
+      "bytes": 7951
+    }
+  },
+  "actual_timesteps": 1000000,
+  "held_out_action_mae": 0.6113760471343994,
+  "held_out_action_max_error": 1.109789490699768,
+  "deployment_ready": false
+}

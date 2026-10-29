@@ -1,0 +1,36 @@
+{
+  "actual_timesteps": 1000000,
+  "gradient_updates": 118750,
+  "completed_episodes": 716,
+  "wall_seconds": 534.563202543,
+  "final_10000_step_base_reward": -2.16112202563324,
+  "first_10000_step_base_reward": -11257.732012838322,
+  "final_100000_step_mean_voltage_entropy_nat": 0.336985544177365,
+  "new_policies": {
+    "sac_fp32": {
+      "minimum_velocity_error_mms": -18.575280138341643,
+      "maximum_velocity_error_mms": 5.195819376614182,
+      "velocity_error_rms_mms": 2.2953966121081577,
+      "recovery_1mms_s": 0.07800000000000007,
+      "final_100ms_velocity_bias_mms": 6.985167180440614e-06,
+      "peak_voltage_v": 9.910509586334229,
+      "final_voltage_v": 6.6775572949116775,
+      "max_abs_voltage_v": 9.910509586334229,
+      "prefault_velocity_error_rms_mms": 4.984440377057235,
+      "final_position_error_mm": 0.035404759966148336
+    },
+    "edge_int8": {
+      "minimum_velocity_error_mms": -40.20008683251404,
+      "maximum_velocity_error_mms": 25.831954667781652,
+      "velocity_error_rms_mms": 19.19621197498601,
+      "recovery_1mms_s": null,
+      "final_100ms_velocity_bias_mms": -0.341953682159463,
+      "peak_voltage_v": 9.886240363121033,
+      "final_voltage_v": 7.51041988039961,
+      "max_abs_voltage_v": 9.886240363121033,
+      "prefault_velocity_error_rms_mms": 15.674720575953152,
+      "final_position_error_mm": -0.8890966917363096
+    }
+  },
+  "evaluation_backend": "radau"
+}

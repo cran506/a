@@ -1,0 +1,5 @@
+# Extra dependencies only for --mode train. Install a suitable PyTorch wheel
+# for the local CPU/CUDA platform if the default pip wheel is unsuitable.
+-r requirements.txt
+torch>=2.2,<3
+stable-baselines3>=2.3,<3

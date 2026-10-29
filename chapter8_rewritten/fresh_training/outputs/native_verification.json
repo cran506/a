@@ -1,0 +1,82 @@
+{
+  "checks": {
+    "pid": {
+      "maximum_absolute_state_difference": [
+        1.6989555162022496e-10,
+        2.4938284868408767e-07,
+        9.242923960089684,
+        0.33260291907936335
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "passed": true
+    },
+    "nominal_ff": {
+      "maximum_absolute_state_difference": [
+        1.6872997356948138e-10,
+        3.1272068862957594e-07,
+        9.54921368137002,
+        0.3309002313762903
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "passed": true
+    },
+    "sac_fp32": {
+      "maximum_absolute_state_difference": [
+        1.6590686380962838e-05,
+        0.0005665261074444816,
+        135688.07392674312,
+        40893.14836378768
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "passed": false
+    },
+    "edge_int8": {
+      "maximum_absolute_state_difference": [
+        1.9121818001346979e-07,
+        4.6020185693614046e-05,
+        12480.373970121145,
+        708.2549632787704
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "passed": false
+    },
+    "sac_fp32_closed_loop_reproduction": {
+      "max_speed_error_difference_mms": 0.0,
+      "passed": true
+    },
+    "edge_int8_closed_loop_reproduction": {
+      "max_speed_error_difference_mms": 0.0,
+      "passed": true
+    },
+    "sampled_hocbf": {
+      "passed": true,
+      "scope": "independent second-order classroom object, not hydraulic pressure ODE"
+    },
+    "model_files_match_declared_provenance": {
+      "passed": true
+    }
+  },
+  "all_checks_passed": false,
+  "verification_scope": "model hashes, independent ODE replay, closed-loop reproduction and 2nd-order sampled barrier",
+  "performance_scope": "PPT teaching target values are not pass/fail assertions"
+}

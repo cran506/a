@@ -1,0 +1,5 @@
+# Replay, plotting, Gym environment and verification. Python 3.11/3.12 recommended.
+numpy>=1.26,<3
+scipy>=1.11,<2
+matplotlib>=3.8,<4
+gymnasium>=1.0,<2

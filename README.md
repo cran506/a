@@ -1,5 +1,15 @@
 # 智能流体传动与控制课堂编程
 
+## 第八章重新编写：单文件课堂实验
+
+[chapter8_rewritten](chapter8_rewritten/README.md) 将物理数字孪生、五维环境、SAC 训练、HOCBF、量化和绘图集中在一个主程序，提供独立重放验证。主图明确区分 PPT 教学示意与真实闭环，随附来源可查的预训练策略及本次重新运行的百万步训练记录。
+
+- [重写主程序](chapter8_rewritten/drl_hydraulic_lab.py)
+- [课堂四联图](chapter8_rewritten/outputs/chapter8_comparison.png)
+- [本次从零百万步真实训练](chapter8_rewritten/fresh_training/outputs/sac_training_actual.png)
+- [下载重写版完整包](chapter8_rewritten/deliverables/第八章_课堂编程_重写版.zip)
+- [完整运行说明与结果范围](chapter8_rewritten/README.md)
+
 ## 当前选定交付：截图中的第八章结果
 
 截图对应的五维机理引导 SAC 版本已单独保存到 `chapter8_selected_result/`。代码、模型、原始实测四联图和完整包均完整取自历史提交 `780f0dc`，便于固定使用这一版。

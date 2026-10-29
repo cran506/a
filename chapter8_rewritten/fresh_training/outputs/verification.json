@@ -1,0 +1,86 @@
+{
+  "checks": {
+    "pid": {
+      "maximum_absolute_state_difference": [
+        3.701032535996518e-15,
+        2.6641512346908813e-12,
+        0.00026204437017440796,
+        7.2838738560676575e-06
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "independent_solver": "DOP853",
+      "passed": true
+    },
+    "nominal_ff": {
+      "maximum_absolute_state_difference": [
+        3.4633754197876954e-15,
+        2.1426966104187706e-11,
+        0.0002507604658603668,
+        5.800742655992508e-06
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "independent_solver": "DOP853",
+      "passed": true
+    },
+    "sac_fp32": {
+      "maximum_absolute_state_difference": [
+        6.919441404400206e-10,
+        2.0252039280299616e-07,
+        44.23415354825556,
+        2.518456667661667
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "independent_solver": "DOP853",
+      "passed": true
+    },
+    "edge_int8": {
+      "maximum_absolute_state_difference": [
+        1.2207596045143987e-13,
+        4.475318379770776e-11,
+        0.05235307803377509,
+        0.0004606572911143303
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "independent_solver": "DOP853",
+      "passed": true
+    },
+    "sac_fp32_closed_loop_reproduction": {
+      "max_speed_error_difference_mms": 0.0,
+      "passed": true
+    },
+    "edge_int8_closed_loop_reproduction": {
+      "max_speed_error_difference_mms": 0.0,
+      "passed": true
+    },
+    "sampled_hocbf": {
+      "passed": true,
+      "scope": "independent second-order classroom object, not hydraulic pressure ODE"
+    },
+    "model_files_match_declared_provenance": {
+      "passed": true
+    }
+  },
+  "all_checks_passed": true,
+  "verification_scope": "model hashes, ODE replay with a different solver, closed-loop reproduction and 2nd-order sampled barrier",
+  "performance_scope": "PPT teaching target values are not pass/fail assertions"
+}

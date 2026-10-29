@@ -1,0 +1,36 @@
+{
+  "artifact_type": "PPT teaching schematic, not training measurements",
+  "contains_measured_data": false,
+  "source_page": 12,
+  "anchors_steps_k": [
+    0.0,
+    50.0,
+    100.0,
+    150.0,
+    200.0,
+    300.0,
+    400.0,
+    1000.0
+  ],
+  "anchors_reward": [
+    -180.0,
+    -170.0,
+    -145.0,
+    -105.0,
+    -65.0,
+    -15.0,
+    -2.0,
+    -2.0
+  ],
+  "anchors_entropy": [
+    2.8,
+    2.75,
+    2.4,
+    1.9,
+    1.15,
+    0.5,
+    0.35,
+    0.35
+  ],
+  "interpolation": "PCHIP; intermediate anchors are illustration choices; no random jitter"
+}

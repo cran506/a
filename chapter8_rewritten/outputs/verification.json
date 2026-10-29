@@ -1,0 +1,86 @@
+{
+  "checks": {
+    "pid": {
+      "maximum_absolute_state_difference": [
+        1.6989555162022496e-10,
+        2.4938284868408767e-07,
+        9.242923960089684,
+        0.33260291907936335
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "independent_solver": "Radau",
+      "passed": true
+    },
+    "nominal_ff": {
+      "maximum_absolute_state_difference": [
+        1.6872997356948138e-10,
+        3.1272068862957594e-07,
+        9.54921368137002,
+        0.3309002313762903
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "independent_solver": "Radau",
+      "passed": true
+    },
+    "sac_fp32": {
+      "maximum_absolute_state_difference": [
+        7.811033417293167e-11,
+        6.868455151853858e-09,
+        9.31119116768241,
+        0.11292751086875796
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "independent_solver": "Radau",
+      "passed": true
+    },
+    "edge_int8": {
+      "maximum_absolute_state_difference": [
+        1.1389988431587117e-10,
+        4.7321467869232414e-08,
+        64.11362885590643,
+        0.22399487532675266
+      ],
+      "units": [
+        "m",
+        "m/s",
+        "Pa",
+        "Pa"
+      ],
+      "independent_solver": "Radau",
+      "passed": true
+    },
+    "sac_fp32_closed_loop_reproduction": {
+      "max_speed_error_difference_mms": 0.0,
+      "passed": true
+    },
+    "edge_int8_closed_loop_reproduction": {
+      "max_speed_error_difference_mms": 0.0,
+      "passed": true
+    },
+    "sampled_hocbf": {
+      "passed": true,
+      "scope": "independent second-order classroom object, not hydraulic pressure ODE"
+    },
+    "model_files_match_declared_provenance": {
+      "passed": true
+    }
+  },
+  "all_checks_passed": true,
+  "verification_scope": "model hashes, ODE replay with a different solver, closed-loop reproduction and 2nd-order sampled barrier",
+  "performance_scope": "PPT teaching target values are not pass/fail assertions"
+}

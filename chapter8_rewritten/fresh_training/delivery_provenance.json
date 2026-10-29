@@ -1,0 +1,16 @@
+{
+  "training_components_match_final_runtime": true,
+  "training_component_sha256": {
+    "HydraulicGymEnv": "86c148875c6e12a72bc7196b5940b56cc112e80464ac1e6aea0a54ea87ee4af5",
+    "HydraulicTwinCore": "e0811c06bda441aa737105724bbbf8e4abc28bf30ca4b998e8aeea9ec47f9e6d",
+    "train_agent": "28cc8396c19ab1274f919dd6d4d7710b1a5f8a72cbfae0c82b29c8a659f69ade"
+  },
+  "training_snapshot_sha256": "0903bb032f1cb9324b8274995d6829a10a7ecf71e6c968850484c2de40956d4a",
+  "final_runtime_sha256": "16c9bb56ad83b5b21d21a32c882a5f83405dc95c5172ee5327043a8161d940f7",
+  "note": "Final plotting and evaluation handling were revised while training. Actual training components unchanged; original executable snapshot retained. Frozen actor files and raw training log were not edited.",
+  "figures_regenerated_with_final_runtime": true,
+  "teacher_used": false,
+  "post_sac_fp32_actor_change": false,
+  "evaluation_backend": "radau",
+  "native_evaluation_preserved": true
+}

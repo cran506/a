@@ -1,0 +1,39 @@
+{
+  "model": "x_dot=v; v_dot=2.64*u-14*v; x,v in SI",
+  "scope": "independent second-order classroom object, not hydraulic pressure ODE",
+  "sample_time_s": 0.001,
+  "recursive_gains_per_s": [
+    49.0,
+    49.0
+  ],
+  "effective_alpha_coefficients": [
+    98.0,
+    2401.0
+  ],
+  "proposed_voltage_v": 8.5,
+  "duration_s": 1.0,
+  "minimum_safe_voltage_v": -3.09160467041294,
+  "first_intervention_s": 0.065,
+  "safe_final_position_mm": 98.79999999999988,
+  "safe_max_position_mm": 98.79999999999988,
+  "safe_final_velocity_mm_s": 2.6550002105629575e-12,
+  "unsafe_first_collision_s": 0.1048911492965993,
+  "unsafe_record_convention": "unprotected trajectory ends at first collision; no clipped plateau",
+  "interval_minima": {
+    "h_mechanical_min": 0.011856000000001136,
+    "h_upper_m_min": 1.1102230246251565e-16,
+    "h_lower_m_min": 0.0188,
+    "psi1_upper_m_s_min": -1.2986415042188406e-15,
+    "psi1_lower_m_s_min": 0.9211999999999998,
+    "psi2_upper_m_s2_min": -3.332056852656251e-14,
+    "psi2_lower_m_s2_min": 67.57879999999999
+  },
+  "checks": {
+    "all_zoh_position_barriers_nonnegative": true,
+    "all_inner_position_barriers_nonnegative": true,
+    "all_zoh_psi1_nonnegative": true,
+    "all_zoh_psi2_nonnegative": true,
+    "all_commands_within_voltage_limits": true
+  },
+  "passed": true
+}

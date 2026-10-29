@@ -1,0 +1,20 @@
+{
+  "timesteps": 1000000,
+  "base_reward_mean": -2.16112202563324,
+  "reward_window_count": 10000,
+  "reward_window_is_full": true,
+  "reward_source": "base_reward_last_10000_actual_environment_steps",
+  "raw_reward_mean": -2.16112202563324,
+  "failure_penalty_mean": 0.0,
+  "window_physical_failures": 0,
+  "completed_episode_per_step_mean": -2.3752662728166665,
+  "completed_episodes": 716,
+  "replay_action_entropy_nat": -1.976416826248169,
+  "replay_voltage_entropy_nat": 0.32616826674587696,
+  "entropy_replay_cohort_count": 1024,
+  "uniform_exploration_active": false,
+  "behavior_voltage_entropy_nat": 0.32616826674587696,
+  "temperature_alpha": 0.004200079012662172,
+  "gradient_updates": 118748,
+  "elapsed_s": 534.5140483829999
+}
