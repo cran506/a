@@ -1,0 +1,26 @@
+{
+  "model": "same four-state asymmetric hydraulic ODE as training",
+  "relative_degree": 3,
+  "protected_duration_s": 1.0,
+  "failure": null,
+  "software_limit_mm": 100.0,
+  "physical_cylinder_length_mm": 1000.0,
+  "inner_margin_mm": 1.2,
+  "initial_state_si": [
+    0.02,
+    0.0,
+    5000000.0,
+    10000000.0
+  ],
+  "unprotected_first_detected_limit_time_s": null,
+  "unprotected_other_failure": "pressure_constraint_before_stroke_limit",
+  "unprotected_other_failure_time_s": 0.011,
+  "minimum_safe_voltage_v": -0.5043075687196207,
+  "final_safe_position_mm": 98.79999931183009,
+  "observed_substep_min_x_mm": 20.0,
+  "observed_substep_max_x_mm": 98.79999931183009,
+  "min_pressure_mpa": 2.292627192512485,
+  "max_pressure_mpa": 10.0,
+  "empirical_node_safety_pass": true,
+  "certificate_scope": "sample-time continuous HOCBF plus grid/root one-step viability refinement; substep-node monitoring is not a continuous-time or Sim2Real proof"
+}

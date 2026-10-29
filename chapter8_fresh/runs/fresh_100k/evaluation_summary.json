@@ -1,0 +1,87 @@
+{
+  "metrics": {
+    "PID": {
+      "completed": true,
+      "failure": null,
+      "samples": 1001,
+      "last_time_s": 1.0,
+      "max_speed_drop_mms": -44.792310457694064,
+      "post_fault_velocity_rmse_mms": 14.203600345989685,
+      "recovery_to_1mms_s": null,
+      "steady_velocity_error_mms": -0.4018070557413435,
+      "intervention_fraction": 0.3086913086913087
+    },
+    "nominal_feedforward": {
+      "completed": true,
+      "failure": null,
+      "samples": 1001,
+      "last_time_s": 1.0,
+      "max_speed_drop_mms": -45.30627076055139,
+      "post_fault_velocity_rmse_mms": 9.987844368619154,
+      "recovery_to_1mms_s": null,
+      "steady_velocity_error_mms": -1.021876456497311,
+      "intervention_fraction": 0.13586413586413587
+    },
+    "SAC_FP32": {
+      "completed": true,
+      "failure": null,
+      "samples": 1001,
+      "last_time_s": 1.0,
+      "max_speed_drop_mms": -30.88999784065102,
+      "post_fault_velocity_rmse_mms": 4.672187306811618,
+      "recovery_to_1mms_s": null,
+      "steady_velocity_error_mms": -0.16621176604428378,
+      "intervention_fraction": 0.985014985014985
+    },
+    "pruned_INT8": {
+      "completed": true,
+      "failure": null,
+      "samples": 1001,
+      "last_time_s": 1.0,
+      "max_speed_drop_mms": -42.17172571169819,
+      "post_fault_velocity_rmse_mms": 6.9485220716420795,
+      "recovery_to_1mms_s": null,
+      "steady_velocity_error_mms": -0.14486214709262513,
+      "intervention_fraction": 0.971028971028971
+    }
+  },
+  "compression": {
+    "hidden_widths_before": [
+      64,
+      64
+    ],
+    "hidden_widths_after": [
+      19,
+      19
+    ],
+    "removed_hidden_channel_fraction": 0.703125,
+    "calibration_count": 1500,
+    "calibration": "separate nominal and 600/1400MPa trajectories, no test fault trace",
+    "calibration_head_refit": true,
+    "weight_connections_before": 4480,
+    "weight_connections_after": 475,
+    "calibration_action_mae_v": 3.0012354850769043,
+    "fp32_npz_bytes": 19874,
+    "int8_npz_bytes": 5033,
+    "file_reduction_fraction": 0.7467545536882358
+  },
+  "cpu_numpy_inference": {
+    "FP32_numpy": {
+      "median_ms": 0.009878,
+      "p95_ms": 0.010351550000000001,
+      "samples": 300
+    },
+    "INT8_numpy": {
+      "median_ms": 0.049562499999999995,
+      "p95_ms": 0.074117,
+      "samples": 300
+    }
+  },
+  "initial_nominal_voltage_v": 0.8884023549634537,
+  "all_policies_use_identical_safety_filter": true,
+  "timestep_s": 0.001,
+  "fault_time_s": 0.5,
+  "fault_load_n": 5000.0,
+  "fault_beta_ratio": 0.5,
+  "deployment_scope": "Python CPU reference; no claimed MCU timing, no real-world data or fine-tuning"
+}

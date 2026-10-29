@@ -1,0 +1,28 @@
+{
+  "implementation_origin": "newly written from uploaded PPTs and original uploaded twin; no existing repository code, data or models used",
+  "actual_training_steps": 100000,
+  "requested_textbook_target_steps": 1000000,
+  "unit_tests": {
+    "executed": 11,
+    "passed": 11
+  },
+  "independent_method_checks": {
+    "executed": 16,
+    "passed": true
+  },
+  "trained_actor_c_validation": {
+    "tested_observations": 150,
+    "max_normalized_action_error": 5.960464477539063e-08,
+    "passed": true
+  },
+  "source_hash_matches_training": true,
+  "convergence_claim": false,
+  "textbook_performance_targets_met": false,
+  "limitations": [
+    "100k validation run is not a one-million-step convergence result",
+    "SAC/INT8 safety interventions exceed 97%; results describe policy plus safety filter",
+    "70% structural channel pruning degraded tracking",
+    "Sample-time HOCBF and finite-grid viability refinement are numerical checks, not continuous-time or hardware certificates",
+    "No real-world few-shot data or MCU timing measurements"
+  ]
+}

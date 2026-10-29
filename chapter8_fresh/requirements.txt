@@ -1,0 +1,8 @@
+# PyTorch CPU/GPU版请先按README选择安装。
+numpy>=1.24
+scipy>=1.10
+matplotlib>=3.7
+torch>=2.2
+gymnasium>=1.0
+stable-baselines3>=2.4
+numba>=0.60

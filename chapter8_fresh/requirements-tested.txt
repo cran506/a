@@ -1,0 +1,8 @@
+# 本次Python 3.12的已验证版本；CPU PyTorch的+cpu构建来自官方CPU索引。
+numpy==2.3.5
+scipy==1.17.0
+matplotlib==3.10.8
+torch==2.15.0
+gymnasium==1.4.0
+stable-baselines3==2.9.2
+numba==0.68.1

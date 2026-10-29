@@ -1,0 +1,16 @@
+test_randomization_reproducible_and_reward_exact (test_lab.LearningInterfaceTests.test_randomization_reproducible_and_reward_exact) ... ok
+test_equilibrium_and_force_balance (test_lab.PhysicsTests.test_equilibrium_and_force_balance) ... ok
+test_load_beta_mass_and_friction_have_physical_effect (test_lab.PhysicsTests.test_load_beta_mass_and_friction_have_physical_effect) ... ok
+test_rk4_against_independent_radau_through_fault (test_lab.PhysicsTests.test_rk4_against_independent_radau_through_fault) ... ok
+test_third_order_lie_derivative_against_directional_difference (test_lab.PhysicsTests.test_third_order_lie_derivative_against_directional_difference) ... ok
+test_affine_zero_and_error_bound (test_lab.QuantizationTests.test_affine_zero_and_error_bound) ... ok
+test_generated_static_c_matches_numpy_integer_policy (test_lab.QuantizationTests.test_generated_static_c_matches_numpy_integer_policy) ... ok
+test_structural_pruning_and_saved_integer_inference (test_lab.QuantizationTests.test_structural_pruning_and_saved_integer_inference) ... ok
+test_initial_unsafe_state_rejected (test_lab.SafetyTests.test_initial_unsafe_state_rejected) ... ok
+test_safe_trajectory_and_unprotected_failure_recorded (test_lab.SafetyTests.test_safe_trajectory_and_unprotected_failure_recorded) ... ok
+test_transparency_for_equilibrium_and_voltage_limits (test_lab.SafetyTests.test_transparency_for_equilibrium_and_voltage_limits) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.959s
+
+OK

@@ -1,0 +1,124 @@
+{"steps": 10000, "mean_base_reward": -1508.4880498101568, "mean_terminal_penalty": -10.0, "voltage_entropy_nat": 0.6601278462136504, "intervention_fraction": 0.991, "alpha": 0.11022412031888962, "gradient_updates": 1249, "elapsed_s": 10.44273005499781}
+{"steps": 20000, "mean_base_reward": -98694.40951662563, "mean_terminal_penalty": 0.0, "voltage_entropy_nat": 0.6075293698037383, "intervention_fraction": 0.994, "alpha": 0.21447016298770905, "gradient_updates": 3749, "elapsed_s": 27.30449827600023}
+{"steps": 30000, "mean_base_reward": -273.4663445663263, "mean_terminal_penalty": 0.0, "voltage_entropy_nat": 1.2608743586266753, "intervention_fraction": 0.988, "alpha": 0.2683713436126709, "gradient_updates": 6249, "elapsed_s": 44.09261680199779}
+{"steps": 40000, "mean_base_reward": -145.2563715139044, "mean_terminal_penalty": 0.0, "voltage_entropy_nat": 0.9520177521432158, "intervention_fraction": 0.97, "alpha": 0.2384433150291443, "gradient_updates": 8749, "elapsed_s": 60.814737323999}
+{"steps": 50000, "mean_base_reward": -471.7189388858087, "mean_terminal_penalty": 0.0, "voltage_entropy_nat": 0.9668446459496733, "intervention_fraction": 0.977, "alpha": 0.28916671872138977, "gradient_updates": 11249, "elapsed_s": 77.20453630799966}
+{"steps": 60000, "mean_base_reward": -874.7305929736218, "mean_terminal_penalty": 0.0, "voltage_entropy_nat": 0.9181991495812651, "intervention_fraction": 0.978, "alpha": 0.5586360096931458, "gradient_updates": 13749, "elapsed_s": 93.91316638599892}
+{"steps": 70000, "mean_base_reward": -1483.4396843711738, "mean_terminal_penalty": 0.0, "voltage_entropy_nat": 0.06819864890224903, "intervention_fraction": 0.992, "alpha": 0.4129275977611542, "gradient_updates": 16249, "elapsed_s": 110.36669517200062}
+{"steps": 80000, "mean_base_reward": -2209.1757874363225, "mean_terminal_penalty": 0.0, "voltage_entropy_nat": -0.6237864814078096, "intervention_fraction": 0.988, "alpha": 0.20760400593280792, "gradient_updates": 18749, "elapsed_s": 127.4697242479997}
+{"steps": 90000, "mean_base_reward": -2163.917160617439, "mean_terminal_penalty": 0.0, "voltage_entropy_nat": -0.6866290889059785, "intervention_fraction": 0.992, "alpha": 0.1130446195602417, "gradient_updates": 21249, "elapsed_s": 144.04450098599773}
+{"steps": 100000, "mean_base_reward": -2701.151309130892, "mean_terminal_penalty": 0.0, "voltage_entropy_nat": 2.9468606390679595, "intervention_fraction": 0.987, "alpha": 0.053977303206920624, "gradient_updates": 23749, "elapsed_s": 160.67434947699803}
+Fontconfig error: No writable cache directories
+{
+  "model": "same four-state asymmetric hydraulic ODE as training",
+  "relative_degree": 3,
+  "protected_duration_s": 1.0,
+  "failure": null,
+  "software_limit_mm": 100.0,
+  "physical_cylinder_length_mm": 1000.0,
+  "inner_margin_mm": 1.2,
+  "initial_state_si": [
+    0.02,
+    0.0,
+    5000000.0,
+    10000000.0
+  ],
+  "unprotected_first_detected_limit_time_s": null,
+  "unprotected_other_failure": "pressure_constraint_before_stroke_limit",
+  "unprotected_other_failure_time_s": 0.011,
+  "minimum_safe_voltage_v": -0.5043075687196207,
+  "final_safe_position_mm": 98.79999931183009,
+  "observed_substep_min_x_mm": 20.0,
+  "observed_substep_max_x_mm": 98.79999931183009,
+  "min_pressure_mpa": 2.292627192512485,
+  "max_pressure_mpa": 10.0,
+  "empirical_node_safety_pass": true,
+  "certificate_scope": "sample-time continuous HOCBF plus grid/root one-step viability refinement; substep-node monitoring is not a continuous-time or Sim2Real proof"
+}
+{
+  "metrics": {
+    "PID": {
+      "completed": true,
+      "failure": null,
+      "samples": 1001,
+      "last_time_s": 1.0,
+      "max_speed_drop_mms": -44.792310457694064,
+      "post_fault_velocity_rmse_mms": 14.203600345989685,
+      "recovery_to_1mms_s": null,
+      "steady_velocity_error_mms": -0.4018070557413435,
+      "intervention_fraction": 0.3086913086913087
+    },
+    "nominal_feedforward": {
+      "completed": true,
+      "failure": null,
+      "samples": 1001,
+      "last_time_s": 1.0,
+      "max_speed_drop_mms": -45.30627076055139,
+      "post_fault_velocity_rmse_mms": 9.987844368619154,
+      "recovery_to_1mms_s": null,
+      "steady_velocity_error_mms": -1.021876456497311,
+      "intervention_fraction": 0.13586413586413587
+    },
+    "SAC_FP32": {
+      "completed": true,
+      "failure": null,
+      "samples": 1001,
+      "last_time_s": 1.0,
+      "max_speed_drop_mms": -30.88999784065102,
+      "post_fault_velocity_rmse_mms": 4.672187306811618,
+      "recovery_to_1mms_s": null,
+      "steady_velocity_error_mms": -0.16621176604428378,
+      "intervention_fraction": 0.985014985014985
+    },
+    "pruned_INT8": {
+      "completed": true,
+      "failure": null,
+      "samples": 1001,
+      "last_time_s": 1.0,
+      "max_speed_drop_mms": -42.17172571169819,
+      "post_fault_velocity_rmse_mms": 6.9485220716420795,
+      "recovery_to_1mms_s": null,
+      "steady_velocity_error_mms": -0.14486214709262513,
+      "intervention_fraction": 0.971028971028971
+    }
+  },
+  "compression": {
+    "hidden_widths_before": [
+      64,
+      64
+    ],
+    "hidden_widths_after": [
+      19,
+      19
+    ],
+    "removed_hidden_channel_fraction": 0.703125,
+    "calibration_count": 1500,
+    "calibration": "separate nominal and 600/1400MPa trajectories, no test fault trace",
+    "calibration_head_refit": true,
+    "weight_connections_before": 4480,
+    "weight_connections_after": 475,
+    "calibration_action_mae_v": 3.0012354850769043,
+    "fp32_npz_bytes": 19874,
+    "int8_npz_bytes": 5033,
+    "file_reduction_fraction": 0.7467545536882358
+  },
+  "cpu_numpy_inference": {
+    "FP32_numpy": {
+      "median_ms": 0.009878,
+      "p95_ms": 0.010351550000000001,
+      "samples": 300
+    },
+    "INT8_numpy": {
+      "median_ms": 0.049562499999999995,
+      "p95_ms": 0.074117,
+      "samples": 300
+    }
+  },
+  "initial_nominal_voltage_v": 0.8884023549634537,
+  "all_policies_use_identical_safety_filter": true,
+  "timestep_s": 0.001,
+  "fault_time_s": 0.5,
+  "fault_load_n": 5000.0,
+  "fault_beta_ratio": 0.5,
+  "deployment_scope": "Python CPU reference; no claimed MCU timing, no real-world data or fine-tuning"
+}

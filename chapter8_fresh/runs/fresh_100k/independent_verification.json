@@ -1,0 +1,79 @@
+{
+  "checks": {
+    "source_sha256_matches_training": true,
+    "actual_steps_match_final_log": true,
+    "training_clock_strictly_increases": true,
+    "newly_initialized_model_provenance": true,
+    "numpy_actor_matches_new_sac_checkpoint": true,
+    "sb3_step_counter_matches_metadata": true,
+    "PID_saved_voltage_replays_own_states": true,
+    "PID_complete_common_clock": true,
+    "nominal_feedforward_saved_voltage_replays_own_states": true,
+    "nominal_feedforward_complete_common_clock": true,
+    "SAC_FP32_saved_voltage_replays_own_states": true,
+    "SAC_FP32_uses_own_policy": true,
+    "SAC_FP32_complete_common_clock": true,
+    "pruned_INT8_saved_voltage_replays_own_states": true,
+    "pruned_INT8_uses_own_policy": true,
+    "pruned_INT8_complete_common_clock": true
+  },
+  "all_method_checks_pass": true,
+  "maximum_numpy_vs_torch_action_error": 4.023313522338867e-07,
+  "replay": {
+    "PID": {
+      "max_state_error_si": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "own_actor_proposal_error_v": 0.0
+    },
+    "nominal_feedforward": {
+      "max_state_error_si": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "own_actor_proposal_error_v": 0.0
+    },
+    "SAC_FP32": {
+      "max_state_error_si": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "own_actor_proposal_error_v": 0.0
+    },
+    "pruned_INT8": {
+      "max_state_error_si": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "own_actor_proposal_error_v": 0.0
+    }
+  },
+  "recomputed_performance": {
+    "PID": {
+      "min_speed_error_mms": -44.792310457694064,
+      "post_fault_rmse_mms": 14.203600345989685
+    },
+    "nominal_feedforward": {
+      "min_speed_error_mms": -45.30627076055139,
+      "post_fault_rmse_mms": 9.987844368619154
+    },
+    "SAC_FP32": {
+      "min_speed_error_mms": -30.88999784065102,
+      "post_fault_rmse_mms": 4.672187306811618
+    },
+    "pruned_INT8": {
+      "min_speed_error_mms": -42.17172571169819,
+      "post_fault_rmse_mms": 6.9485220716420795
+    }
+  },
+  "performance_scope": "method checks do not imply convergence or textbook performance"
+}

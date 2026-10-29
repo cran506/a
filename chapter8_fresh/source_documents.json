@@ -1,0 +1,30 @@
+[
+  {
+    "uploaded_file": "chap03-ppt.pdf",
+    "sha256": "65fbb2e613088bfdc4a949f28ef39c4019bcd9f26344c09a35787fc0d78a12db"
+  },
+  {
+    "uploaded_file": "chap04-ppt.pdf",
+    "sha256": "a2162feef244e48f2a496c34cfb09b74850adec5ad058019d5cc992f5582c8c8"
+  },
+  {
+    "uploaded_file": "chap05-ppt.pdf",
+    "sha256": "c0de6f073ec33516812c1d9caa79d48e1495d066e8e13aa04682b139aa89574f"
+  },
+  {
+    "uploaded_file": "chap06-ppt.pdf",
+    "sha256": "1f83c1f3826c7ad4eee561ce63b98c52b2e64c225b77b4696c69c4ffd92e2b1f"
+  },
+  {
+    "uploaded_file": "chap07-ppt.pdf",
+    "sha256": "54efaab3d90b72ec04b29b383064015a66c0239ee388d269161a2bd64edcf560"
+  },
+  {
+    "uploaded_file": "chap08-ppt.pdf",
+    "sha256": "41c67c5ba838e4d54240e5b6ffed062de0ca0f38c3477d64e3057f5bbf6fffe6"
+  },
+  {
+    "uploaded_file": "hydraulic_digital_twin.py",
+    "sha256": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f"
+  }
+]
