@@ -1,0 +1,21 @@
+{
+  "R_at_midplane": 117.5,
+  "c": 30.0,
+  "e": 15.0,
+  "b": 15.0,
+  "theta_cone_halfangle_deg": 10.0,
+  "alpha_third_offset_deg": 0,
+  "shaft_direction": [
+    0,
+    0,
+    1
+  ],
+  "shaft_point": [
+    30.0,
+    15.0,
+    0
+  ],
+  "seat_outer_radius": 140,
+  "nominal_interference": 0,
+  "full_thickness_conical_contact": true
+}
