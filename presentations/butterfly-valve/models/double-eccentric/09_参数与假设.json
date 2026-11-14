@@ -1,0 +1,50 @@
+{
+  "units": "mm / degree",
+  "type": "double_eccentric_resilient_seat_reference",
+  "reused": {
+    "c_axial_offset": 30,
+    "e_radial_offset": 15,
+    "b_disc_thickness": 15
+  },
+  "reinterpreted": {
+    "R0_as_disc_max_radius": 117.5
+  },
+  "not_reused": [
+    "theta=10 deg",
+    "alpha=5 deg",
+    "A0",
+    "B0"
+  ],
+  "coordinates": {
+    "x": "flow/axial; disc midplane x=0",
+    "y": "radial offset direction",
+    "z": "shaft axis direction"
+  },
+  "axis_point": [
+    30,
+    15,
+    0
+  ],
+  "axis_direction": [
+    0,
+    0,
+    1
+  ],
+  "assumptions": {
+    "seat_lip_inner_radius": 117.2,
+    "nominal_radial_interference_at_midplane": 0.3,
+    "seat_outer_radius": 125,
+    "seat_axial_length": 24,
+    "body_inner_radius": 125,
+    "body_outer_radius": 145,
+    "body_length_without_flanges": 90,
+    "flange_outer_radius": 162,
+    "flange_thickness": 10,
+    "shaft_radius": 8,
+    "shaft_bore_in_disc_radius": 8.15,
+    "shaft_bore_in_body_radius": 8.6
+  },
+  "scope": "conceptual full valve geometry; no actuator, bearings, stem packing, keys, fasteners, pressure-rating or strength validation",
+  "tolerance_note": "0.001 mm3 is numerical reporting threshold, not a design acceptance tolerance",
+  "contact_note": "soft-seat geometric overlap is intentional precompression; it does not verify allowable rubber strain, torque or sealing."
+}
