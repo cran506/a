@@ -1,0 +1,59 @@
+{
+  "coordinate": "x axial, y radial, z shaft",
+  "H": [
+    30,
+    15,
+    0
+  ],
+  "R_reference_at_x0": 117.5,
+  "c": 30.0,
+  "e": 15.0,
+  "disc_thickness": 15.0,
+  "sealing_land_axial_width": 1.0,
+  "cone_half_angles_deg": [
+    10,
+    15
+  ],
+  "third_angular_eccentricity_deg": 0,
+  "sealing": "rigid cone-cone; no nominal overlap at closure",
+  "sampling_angles_deg": [
+    0,
+    0.01,
+    0.025,
+    0.05,
+    0.075,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.75,
+    1,
+    1.25,
+    1.5,
+    2,
+    3,
+    5,
+    7.5,
+    10,
+    15,
+    20,
+    30,
+    45,
+    60,
+    75,
+    90
+  ],
+  "threshold_mm3": 0.001,
+  "thin_line_initial_angle_range_deg": [
+    12.757532160876679,
+    16.313852426260556
+  ],
+  "initial_clearance_rate_mm_per_rad": {
+    "10": -7.152220658191271,
+    "15": 1.9993093909476782
+  }
+}
