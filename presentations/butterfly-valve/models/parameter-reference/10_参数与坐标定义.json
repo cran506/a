@@ -1,0 +1,86 @@
+{
+  "units": "mm, deg",
+  "model_status": "assumption_based_reference_not_paper_reconstruction",
+  "coordinates": {
+    "x": "pipe axial direction",
+    "y": "radial offset direction",
+    "z": "shaft direction"
+  },
+  "parameters": {
+    "R0_mm": 117.5,
+    "theta_half_angle_deg": 10,
+    "c_from_plate_midplane_mm": 30.0,
+    "e_from_midplane_ellipse_center_mm": 15.0,
+    "alpha_magnitude_deg": 5,
+    "assumed_alpha_signed_deg": -5,
+    "B0_midplane_ellipse_semiaxis_z_mm": 113.05,
+    "A0_reported_mm": 113.49,
+    "A0_computed_mm": 113.49533826824684,
+    "b_axial_thickness_mm": 15.0,
+    "seat_outer_radius_assumed_mm": 140,
+    "seat_axial_thickness_assumed_mm": 15,
+    "reference_shaft_radius_assumed_mm": 5
+  },
+  "cone": {
+    "apex_xyz_mm": [
+      -638.6226811021619,
+      57.62309340127609,
+      0.0
+    ],
+    "axis_unit_vector": [
+      0.9961946980917455,
+      -0.08715574274765817,
+      0.0
+    ],
+    "R0_reference_section_center_xyz_mm": [
+      25.217172308092245,
+      -0.45536816883235076,
+      0.0
+    ],
+    "reference_section_plane_normal": [
+      0.9961946980917455,
+      -0.08715574274765817,
+      0.0
+    ]
+  },
+  "shaft": {
+    "point_xyz_mm": [
+      30.0,
+      15.0,
+      0
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ]
+  },
+  "checked_angles_deg": [
+    0,
+    0.1,
+    0.5,
+    1,
+    2,
+    5,
+    10,
+    20,
+    30,
+    45,
+    60,
+    75,
+    90,
+    -0.1,
+    -0.5,
+    -1,
+    -2,
+    -5,
+    -10,
+    -20,
+    -30,
+    -45,
+    -60,
+    -75,
+    -90
+  ],
+  "interference_note": "Rigid solid overlap for plate and seat only. Reference shaft excluded. Positive rotation follows right-hand rule about +z. No elastic contact, no load analysis."
+}
