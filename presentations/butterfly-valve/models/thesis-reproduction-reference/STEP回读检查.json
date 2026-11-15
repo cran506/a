@@ -1,0 +1,22 @@
+{
+  "04_Assembly_closed.step": {
+    "valid": true,
+    "solid_count": 3,
+    "volume_mm3": 669103.3884890896
+  },
+  "02_Seat_closed.step": {
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 40883.60426249546
+  },
+  "03_H_axis_reference_NOT_structural_shaft.step": {
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 23561.94490192345
+  },
+  "01_Disc_closed.step": {
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 604657.8393207545
+  }
+}

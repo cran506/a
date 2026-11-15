@@ -1,0 +1,72 @@
+{
+  "status": "assumption-based reference, not exact thesis reconstruction; not CFD-ready",
+  "units": "mm, deg",
+  "paper_table": {
+    "R0": 117.5,
+    "theta_half_angle": 10,
+    "c": 30,
+    "e": 15,
+    "alpha_magnitude": 5,
+    "B0": 113.05,
+    "A0": 113.49,
+    "b": 15
+  },
+  "coordinates": {
+    "x": "axial; disc midplane x=0",
+    "y": "radial offset direction",
+    "z": "shaft direction"
+  },
+  "interpretations": {
+    "midplane_ellipse_semiaxis_z": 113.05,
+    "computed_midplane_ellipse_semiaxis_y": 113.49533826824684,
+    "signed_cone_axis_tilt_deg": -5,
+    "c_reference": "disc midplane",
+    "e_reference": "midplane ellipse centre"
+  },
+  "assumed_dimensions": {
+    "seat_outer_radius": 140,
+    "seat_axial_width": 2,
+    "seat_axial_range": [
+      5.5,
+      7.5
+    ],
+    "reference_axis_cylinder_radius": 5,
+    "reference_axis_cylinder_length": 300
+  },
+  "cone": {
+    "apex": [
+      -638.6226811021619,
+      57.62309340127609,
+      0.0
+    ],
+    "axis": [
+      0.9961946980917455,
+      -0.08715574274765817,
+      0.0
+    ],
+    "R0_reference_section_center": [
+      25.217172308092245,
+      -0.45536816883235076,
+      0.0
+    ]
+  },
+  "shaft_reference": {
+    "point": [
+      30,
+      15,
+      0
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ]
+  },
+  "solid_validity": {
+    "disc": true,
+    "seat": true,
+    "axis_reference": true
+  },
+  "closed_overlap_mm3": 0.0,
+  "step_note": "STEP assemblies carry placement, no SolidWorks mates/motors/features"
+}
