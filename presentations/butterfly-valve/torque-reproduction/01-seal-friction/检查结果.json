@@ -1,0 +1,12 @@
+{
+  "method": "published-endpoint linear replot, not independent equation verification",
+  "endpoint_1_MPa_Nm": {
+    "opening": 840.92,
+    "closing": 174.64
+  },
+  "at_0_45_MPa_Nm": {
+    "opening": 378.414,
+    "closing": 78.588
+  },
+  "origin_both_zero": true
+}
