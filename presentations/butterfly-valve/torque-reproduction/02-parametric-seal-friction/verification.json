@@ -1,0 +1,38 @@
+{
+  "status": "SciPy numerical verification only; MATLAB unavailable",
+  "demo_parameters": {
+    "A_mm": 113.49,
+    "B_mm": 113.05,
+    "R0_mm": 117.5,
+    "b_mm": 15,
+    "c_mm": 30,
+    "e_mm": 15,
+    "theta_half_deg": 10,
+    "tilt_deg": 5,
+    "mu": 0.05,
+    "normal_projection": "local"
+  },
+  "geometry": {
+    "C_mm": 9.983866986293375,
+    "h_mm": 646.0990536374044,
+    "theta1_deg": 92.56305630581012,
+    "alpha1_deg": 14.999999999999998
+  },
+  "components_at_1_MPa_Nm": [
+    466.51233575448055,
+    314.55846507530066,
+    45.094544584450425,
+    39.53018392448413
+  ],
+  "slopes_Nm_per_MPa": [
+    786.6351614897475,
+    146.3895100192136
+  ],
+  "quad_trapezoid_max_component_difference_Nm": 2.0212371509842342e-07,
+  "checks": {
+    "zero_mu_zero_torque": true,
+    "all_lengths_doubled_torque_times_8": true,
+    "zero_c_zero_M3_M4": true,
+    "zero_pressure_zero_torque": true
+  }
+}
