@@ -1,0 +1,51 @@
+{
+  "repository": "https://github.com/cran506/a",
+  "commit": "bae77ed1fbfb6d9711a50e2e7a9bad437945e5bb",
+  "excluded_chapter": "第八章及其所有模型/数据",
+  "references": [
+    {
+      "chapter": "第3章",
+      "path": "chapter5_latest/chapter5/hydraulic_digital_twin.py",
+      "sha256": "6cac5f1122be9e5f26728f0354aaa26e15836669a2496b0dc442e51301e7332f",
+      "use": "四阶机理与原始参数参考",
+      "url": "https://github.com/cran506/a/blob/bae77ed1fbfb6d9711a50e2e7a9bad437945e5bb/chapter5_latest/chapter5/hydraulic_digital_twin.py"
+    },
+    {
+      "chapter": "第4章",
+      "path": "chapter5_latest/chapter5_materials/chap04.txt",
+      "sha256": "d3e648515dabd3714af80387965495aa6ce71ba2eafef8c6c04e800e78f1a962",
+      "use": "参数辨识方法参考；本任务按beta/Ct新增目标函数",
+      "url": "https://github.com/cran506/a/blob/bae77ed1fbfb6d9711a50e2e7a9bad437945e5bb/chapter5_latest/chapter5_materials/chap04.txt"
+    },
+    {
+      "chapter": "第5章",
+      "path": "chapter5_latest/chapter5/controllers.py",
+      "sha256": "305994f363531aa50b88b6c0b54c854b3290507cd775380f953379041dc4fdeb",
+      "use": "增量式输出记忆与不完全微分",
+      "url": "https://github.com/cran506/a/blob/bae77ed1fbfb6d9711a50e2e7a9bad437945e5bb/chapter5_latest/chapter5/controllers.py"
+    },
+    {
+      "chapter": "第5章",
+      "path": "chapter5_latest/chapter5/trajectory.py",
+      "sha256": "416e5bb0177942d7c7b9f9d09fab3c2f2d478308c9b8e1484c058cc19f4aa746",
+      "use": "解析轨迹思想，本项目采用五次多项式",
+      "url": "https://github.com/cran506/a/blob/bae77ed1fbfb6d9711a50e2e7a9bad437945e5bb/chapter5_latest/chapter5/trajectory.py"
+    },
+    {
+      "chapter": "第6章",
+      "path": "chapter6_latest/model_assisted_controller.py",
+      "sha256": "7e88f5ebea496e2b86a6c04a4eb7f2184823c3d93aa84e21ce548f475756209e",
+      "use": "液压力G/H逆模型、死区逆与反馈合成",
+      "url": "https://github.com/cran506/a/blob/bae77ed1fbfb6d9711a50e2e7a9bad437945e5bb/chapter6_latest/model_assisted_controller.py"
+    },
+    {
+      "chapter": "第7章",
+      "path": "chapter7_latest/mpc_core.py",
+      "sha256": "cb0820f88ca94ae9578cf0fbf63cfb3aec0d0e7a7948570c74b18a84303e9937",
+      "use": "仿射LTV预测、增量决策与QP压力矩阵",
+      "url": "https://github.com/cran506/a/blob/bae77ed1fbfb6d9711a50e2e7a9bad437945e5bb/chapter7_latest/mpc_core.py"
+    }
+  ],
+  "new_modules": "级联滤波、beta/Ct目标函数、统一四阶闭环及综合报告为本工程新增实现",
+  "task_pdf_sha256": "c4cd4f63a3e18755176a25bba3c0d47f9e5bfcd400021db9d0c9db6238dca3fe"
+}

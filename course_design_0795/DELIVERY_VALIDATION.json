@@ -1,0 +1,25 @@
+{
+  "scope": "course design excluding chapter8 by explicit user request",
+  "student_id_last_four": "0795",
+  "seed_integer": 795,
+  "unit_tests_passed": 15,
+  "independent_checks_passed": 50,
+  "report_checks": {
+    "pdf_pages": 24,
+    "body_pages": 20,
+    "toc_entries": 27,
+    "all_pages_readable": true
+  },
+  "source_hashes_match": true,
+  "synthetic_observations_declared": true,
+  "main_comparison_complete": true,
+  "limits": [
+    "SAC/HOCBF and graduate-only PHM/RUL deferred",
+    "No physical bench data",
+    "MPC not 1ms hard-real-time",
+    "Pressure QP constrains upper bounds only; severe low-pressure risk remains in the brake case",
+    "Model-assisted extreme brake terminates at inverse gain failure; not padded",
+    "Personal cover fields remain for user completion"
+  ],
+  "pdf_unit_superscripts_visually_verified": true
+}

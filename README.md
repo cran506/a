@@ -1,5 +1,19 @@
 # 智能流体传动与控制课堂编程
 
+
+## 课程设计：变负载液压伺服系统（0795）
+
+[课程设计完整项目](course_design_0795/README.md) 汇总第2—7章的滤波、四阶建模、beta/Ct辨识和PID／模型辅助／LTV-MPC统一对比；第八章按当前要求暂缓。学号后四位为0795，全局随机种子为795。
+
+- [课程设计报告 PDF（正文20页、共24页）](course_design_0795/results/课程设计报告_0795.pdf)
+- [可编辑 Word 报告](course_design_0795/results/课程设计报告_0795.docx)
+- [下载完整工程 ZIP](deliverables/课程设计完整工程_0795.zip)
+- [一键运行入口](course_design_0795/run_course_design.py)
+- [任务要求落实表](course_design_0795/任务要求落实表.md)
+- [原始数据、图表和独立验证](course_design_0795/results/)
+
+已通过15项单元测试与50项独立核验。辨识数据为合成观测；报告明确披露低压风险、模型辅助急停终止和MPC未达到1ms硬实时等边界，封面个人信息留待本人填写。
+
 ## 第八章重新编写：单文件课堂实验
 
 [chapter8_rewritten](chapter8_rewritten/README.md) 将物理数字孪生、五维环境、SAC 训练、HOCBF、量化和绘图集中在一个主程序，提供独立重放验证。主图明确区分 PPT 教学示意与真实闭环，随附来源可查的预训练策略及本次重新运行的百万步训练记录。

@@ -1,0 +1,242 @@
+{
+  "checks": {
+    "student_seed_matches": true,
+    "global_numpy_seed_matches_student": true,
+    "beta_identified_within_2percent": true,
+    "Ct_identified_within_2percent": true,
+    "held_out_position_rmse_below_0_05mm": true,
+    "nominal/PID/independent_radau_replay": true,
+    "nominal/PID/full_common_clock": true,
+    "nominal/PID/metrics_recompute": true,
+    "nominal/ModelAssisted/independent_radau_replay": true,
+    "nominal/ModelAssisted/full_common_clock": true,
+    "nominal/ModelAssisted/metrics_recompute": true,
+    "nominal/LTV_MPC/independent_radau_replay": true,
+    "nominal/LTV_MPC/full_common_clock": true,
+    "nominal/LTV_MPC/metrics_recompute": true,
+    "extreme/PID/independent_radau_replay": true,
+    "extreme/PID/full_common_clock": true,
+    "extreme/PID/metrics_recompute": true,
+    "extreme/ModelAssisted/independent_radau_replay": true,
+    "extreme/ModelAssisted/full_common_clock": true,
+    "extreme/ModelAssisted/metrics_recompute": true,
+    "extreme/LTV_MPC/independent_radau_replay": true,
+    "extreme/LTV_MPC/full_common_clock": true,
+    "extreme/LTV_MPC/metrics_recompute": true,
+    "braking/PID/independent_radau_replay": true,
+    "braking/PID/metrics_recompute": true,
+    "braking/ModelAssisted/independent_radau_replay": true,
+    "braking/ModelAssisted/metrics_recompute": true,
+    "braking/InputOnlyMPC/independent_radau_replay": true,
+    "braking/InputOnlyMPC/metrics_recompute": true,
+    "braking/LTV_MPC/independent_radau_replay": true,
+    "braking/LTV_MPC/metrics_recompute": true,
+    "braking_LTV_MPC_matrices_k0000/pressure_rows_correct": true,
+    "braking_LTV_MPC_matrices_k0000/qp_feasible": true,
+    "braking_LTV_MPC_matrices_k0060/pressure_rows_correct": true,
+    "braking_LTV_MPC_matrices_k0060/qp_feasible": true,
+    "extreme_LTV_MPC_matrices_k0000/pressure_rows_correct": true,
+    "extreme_LTV_MPC_matrices_k0000/qp_feasible": true,
+    "extreme_LTV_MPC_matrices_k0060/pressure_rows_correct": true,
+    "extreme_LTV_MPC_matrices_k0060/qp_feasible": true,
+    "extreme_LTV_MPC_matrices_k0500/pressure_rows_correct": true,
+    "extreme_LTV_MPC_matrices_k0500/qp_feasible": true,
+    "nominal_LTV_MPC_matrices_k0000/pressure_rows_correct": true,
+    "nominal_LTV_MPC_matrices_k0000/qp_feasible": true,
+    "nominal_LTV_MPC_matrices_k0060/pressure_rows_correct": true,
+    "nominal_LTV_MPC_matrices_k0060/qp_feasible": true,
+    "nominal_LTV_MPC_matrices_k0500/pressure_rows_correct": true,
+    "nominal_LTV_MPC_matrices_k0500/qp_feasible": true,
+    "braking/constrained_mpc_completed": true,
+    "braking/constrained_mpc_below_21MPa": true,
+    "braking/input_only_exceeds_21MPa": true
+  },
+  "all_checks_passed": true,
+  "replays": {
+    "nominal/PID": {
+      "max_state_error_si": [
+        3.069714681058766e-08,
+        1.1929385944735305e-06,
+        38.656068827956915,
+        27.22422364540398
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 9.226275415001592,
+      "independent_radau_pmax_mpa": 9.226267792928756,
+      "passed": true,
+      "complete": true
+    },
+    "nominal/ModelAssisted": {
+      "max_state_error_si": [
+        5.745404152435185e-15,
+        6.359288096113858e-13,
+        2.0377803593873978e-05,
+        8.205883204936981e-06
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 8.584200302156713,
+      "independent_radau_pmax_mpa": 8.584200302156066,
+      "passed": true,
+      "complete": true
+    },
+    "nominal/LTV_MPC": {
+      "max_state_error_si": [
+        5.4817261840867104e-15,
+        6.15570094897322e-13,
+        1.9733794033527374e-05,
+        8.772127330303192e-06
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 8.51108187439196,
+      "independent_radau_pmax_mpa": 8.511081874391229,
+      "passed": true,
+      "complete": true
+    },
+    "extreme/PID": {
+      "max_state_error_si": [
+        1.0463852548325825e-08,
+        3.843650843993185e-07,
+        14.08691737963818,
+        5.801274373196065
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 14.257341992888202,
+      "independent_radau_pmax_mpa": 14.257344038200632,
+      "passed": true,
+      "complete": true
+    },
+    "extreme/ModelAssisted": {
+      "max_state_error_si": [
+        5.87446757904786e-14,
+        6.332267067470088e-12,
+        9.440910071134567e-05,
+        5.612708628177643e-05
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 13.131005819989007,
+      "independent_radau_pmax_mpa": 13.13100581997983,
+      "passed": true,
+      "complete": true
+    },
+    "extreme/LTV_MPC": {
+      "max_state_error_si": [
+        3.1510904996423506e-13,
+        1.60126911730174e-11,
+        0.0004865722730755806,
+        0.0003122230991721153
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 7.105659919535692,
+      "independent_radau_pmax_mpa": 7.105659919138049,
+      "passed": true,
+      "complete": true
+    },
+    "braking/PID": {
+      "max_state_error_si": [
+        2.4536101136951594e-08,
+        1.7825300142812472e-06,
+        59.09285658132285,
+        44.73881889786571
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 10.288233643507622,
+      "independent_radau_pmax_mpa": 10.288233816588376,
+      "passed": true,
+      "complete": true
+    },
+    "braking/ModelAssisted": {
+      "max_state_error_si": [
+        9.822022084549076e-10,
+        6.958615872409979e-08,
+        13.958314670308027,
+        2.7797574810683727
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 22.79780766029125,
+      "independent_radau_pmax_mpa": 22.797792691022543,
+      "passed": true,
+      "complete": false
+    },
+    "braking/InputOnlyMPC": {
+      "max_state_error_si": [
+        2.3465128853872308e-08,
+        1.3767622552285363e-06,
+        77.2685037329793,
+        33.76821197941899
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 26.221239539919893,
+      "independent_radau_pmax_mpa": 26.221296901951465,
+      "passed": true,
+      "complete": true
+    },
+    "braking/LTV_MPC": {
+      "max_state_error_si": [
+        9.369171966033818e-10,
+        1.2171802998839354e-07,
+        7.748702276228869,
+        1.815263781696558
+      ],
+      "tolerance_si": [
+        1e-06,
+        0.0003,
+        10000.0,
+        10000.0
+      ],
+      "saved_substep_pmax_mpa": 19.536166786730863,
+      "independent_radau_pmax_mpa": 19.53616840510499,
+      "passed": true,
+      "complete": true
+    }
+  },
+  "wall_seconds": 17.851117586000328,
+  "safety_scope": "sample-time QP pressure upper limits and independently checked trajectories; no robust invariant-set theorem or physical hardware certification",
+  "reference_state_tolerances": "1 um position, 0.3 mm/s velocity, 0.01 MPa pressure; per-run actual errors disclosed",
+  "identification_data_origin": "synthetic, ground truth and noisy observations both saved",
+  "exclusion": "SAC/HOCBF/PHM/RUL not implemented by explicit user scope"
+}

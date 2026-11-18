@@ -1,0 +1,20 @@
+test_affine_constant_term_preserves_equilibrium (test_course_design.ControlTests.test_affine_constant_term_preserves_equilibrium) ... ok
+test_incremental_equivalence_before_saturation (test_course_design.ControlTests.test_incremental_equivalence_before_saturation) ... ok
+test_prediction_matrix_direct_recursion (test_course_design.ControlTests.test_prediction_matrix_direct_recursion) ... ok
+test_qp_pressure_constraints_and_input_mapping (test_course_design.ControlTests.test_qp_pressure_constraints_and_input_mapping) ... ok
+test_saturation_output_memory (test_course_design.ControlTests.test_saturation_output_memory) ... ok
+test_causality (test_course_design.FilterTests.test_causality) ... ok
+test_constant_preserved (test_course_design.FilterTests.test_constant_preserved) ... ok
+test_recursive_butterworth_against_scipy (test_course_design.FilterTests.test_recursive_butterworth_against_scipy) ... ok
+test_metric_definitions (test_course_design.MetricTests.test_metric_definitions) ... ok
+test_deadzone_and_inverse (test_course_design.PhysicsTests.test_deadzone_and_inverse) ... ok
+test_four_states_and_force (test_course_design.PhysicsTests.test_four_states_and_force) ... ok
+test_friction_odd_and_leakage_sign (test_course_design.PhysicsTests.test_friction_odd_and_leakage_sign) ... ok
+test_reference_boundary_conditions (test_course_design.PhysicsTests.test_reference_boundary_conditions) ... ok
+test_stationary_balance_and_moving_equilibrium (test_course_design.PhysicsTests.test_stationary_balance_and_moving_equilibrium) ... ok
+test_substep_convergence (test_course_design.PhysicsTests.test_substep_convergence) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.307s
+
+OK

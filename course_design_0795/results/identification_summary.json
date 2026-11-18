@@ -1,0 +1,95 @@
+{
+  "seed_integer": 795,
+  "global_numpy_seed_word": 795,
+  "student_id_last_four": "0795",
+  "truth": {
+    "A1": 0.002,
+    "A2": 0.001,
+    "L": 0.3,
+    "V01": 0.00015,
+    "V02": 0.00015,
+    "mass": 500.0,
+    "Ps": 21000000.0,
+    "Pr": 100000.0,
+    "beta": 1100000000.0,
+    "Ct": 2.4e-12,
+    "Cd": 0.62,
+    "width": 0.02,
+    "xvmax": 0.001,
+    "rho": 870.0,
+    "deadzone": 0.5,
+    "Fc": 500.0,
+    "Fs": 800.0,
+    "vs": 0.05,
+    "viscous": 1000.0,
+    "gamma": 300.0,
+    "makeup_area": 0.0001,
+    "fault_beta_ratio": 1.0
+  },
+  "identified": {
+    "A1": 0.002,
+    "A2": 0.001,
+    "L": 0.3,
+    "V01": 0.00015,
+    "V02": 0.00015,
+    "mass": 500.0,
+    "Ps": 21000000.0,
+    "Pr": 100000.0,
+    "beta": 1100058092.9228606,
+    "Ct": 2.4016601604609862e-12,
+    "Cd": 0.62,
+    "width": 0.02,
+    "xvmax": 0.001,
+    "rho": 870.0,
+    "deadzone": 0.5,
+    "Fc": 500.0,
+    "Fs": 800.0,
+    "vs": 0.05,
+    "viscous": 1000.0,
+    "gamma": 300.0,
+    "makeup_area": 0.0001,
+    "fault_beta_ratio": 1.0
+  },
+  "beta_relative_error": 5.281174805515931e-05,
+  "Ct_relative_error": 0.0006917335254110757,
+  "objective": 0.00012334696548991472,
+  "optimizer_success": true,
+  "optimizer_message": "Optimization terminated successfully.",
+  "generations": 34,
+  "objective_evaluations": 877,
+  "wall_seconds": 54.880276715000036,
+  "raw_noise_rmse": [
+    9.242528728897345e-05,
+    67776.40940014228,
+    56560.095926384354
+  ],
+  "filtered_noise_rmse_against_causally_filtered_truth": [
+    2.116580103583815e-05,
+    28302.69203299911,
+    24715.911679759043
+  ],
+  "independent_validation_rmse_si": [
+    4.199833008110351e-06,
+    9.695520116117216e-06,
+    284.73503714098206,
+    470.14947616776004
+  ],
+  "measurement_origin": "independently generated synthetic observations, not physical bench measurements",
+  "filter": {
+    "window": 5,
+    "cutoff_hz": 120,
+    "order": 2,
+    "causal": true,
+    "model_and_observation_filtered_identically": true
+  },
+  "normalized_bounds": {
+    "beta_pa": [
+      500000000.0,
+      1800000000.0
+    ],
+    "Ct_m3_s_pa": [
+      3.162277660168379e-13,
+      1e-11
+    ]
+  }
+}

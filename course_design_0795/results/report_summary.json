@@ -1,0 +1,22 @@
+{
+  "title": "变负载液压伺服系统的多阶控制算法设计与对比",
+  "pdf_total_pages": 24,
+  "body_pages": 20,
+  "front_matter_pages": 2,
+  "references_pages": 1,
+  "appendix_pages": 1,
+  "student_id_last_four": "0795",
+  "seed_integer": 795,
+  "pdf_auto_toc": true,
+  "word_auto_toc_field": true,
+  "word_toc_note": "已写入自动TOC域及PDF对应页码缓存；在Word全选F9可更新。不同字体/编辑会影响Word分页，固定页码以PDF为准。",
+  "chapter_titles": [
+    "第1章 绪论",
+    "第2章 液压伺服系统机理建模与参数反演",
+    "第3章 基于机理补偿与物理约束的确定性控制策略",
+    "第4章 统一极限工况对比与安全评估",
+    "第5章 总结"
+  ],
+  "pdf_file": "课程设计报告_0795.pdf",
+  "word_file": "课程设计报告_0795.docx"
+}
